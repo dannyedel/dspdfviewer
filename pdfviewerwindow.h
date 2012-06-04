@@ -39,7 +39,7 @@ public:
    * @param monitor monitor to start on (usually 0 for primary)
    * @param dspdfviewer Pointer to the application (to handle next/prev commands)
    */
-    explicit PDFViewerWindow(unsigned int monitor, DSPDFViewer* dspdfviewer);
+    explicit PDFViewerWindow(unsigned int monitor);
     
     /** Sets the monitor to display this window on
      * Automatically calls reposition
@@ -63,6 +63,8 @@ public:
     virtual void wheelEvent(QWheelEvent* e);
     
     virtual void keyPressEvent(QKeyEvent* e);
+    
+    void setViewer(DSPDFViewer* v);
     
     
 };

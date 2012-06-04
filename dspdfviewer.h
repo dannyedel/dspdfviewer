@@ -2,11 +2,10 @@
 #define dspdfviewer_H
 
 #include <QObject>
-#include "primarywindow.h"
-#include "secondarywindow.h"
 #include <poppler/qt4/poppler-qt4.h>
 
 #include <memory> // shared pointer
+#include "pdfviewerwindow.h"
 
 class DSPDFViewer: public QObject
 {

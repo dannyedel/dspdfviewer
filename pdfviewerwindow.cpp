@@ -40,7 +40,7 @@ unsigned int PDFViewerWindow::getMonitor() const
   return m_monitor;
 }
 
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, DSPDFViewer* dspdfviewer): QWidget(),
+PDFViewerWindow::PDFViewerWindow(unsigned int monitor): QWidget(),
   m_monitor(monitor)
 {
   this->setContentsMargins(0,0,0,0);
@@ -104,11 +104,17 @@ void PDFViewerWindow::mouseDoubleClickEvent(QMouseEvent* e)
 void PDFViewerWindow::wheelEvent(QWheelEvent* e)
 {
     QWidget::wheelEvent(e);
+    
+    if ( ! m_dspdfviewer )
+      return;
+    
     if ( e->delta() > 0 )
     {
+      qDebug() << "Back";
       m_dspdfviewer->goBackward();
     }
     else{
+      qDebug() << "Next";
       m_dspdfviewer->goForward();
     }
 }
@@ -116,6 +122,9 @@ void PDFViewerWindow::wheelEvent(QWheelEvent* e)
 void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
 {
     QWidget::keyPressEvent(e);
+    
+    if ( ! m_dspdfviewer )
+      return;
     
     if ( e->key() == Qt::Key_F12 )
     {
@@ -125,6 +134,12 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
       m_dspdfviewer->exit();
 }
 }
+
+void PDFViewerWindow::setViewer(DSPDFViewer* v)
+{
+  m_dspdfviewer = v;
+}
+
 
 
 

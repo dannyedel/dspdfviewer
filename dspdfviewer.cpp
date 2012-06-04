@@ -13,9 +13,12 @@
 DSPDFViewer::DSPDFViewer(QString filename): pdfDocument(
   Poppler::Document::load(filename)
 ),
- primaryWindow(),
- secondaryWindow()
+ primaryWindow(0),
+ secondaryWindow(1),
+ m_pagenumber(0)
 {
+  primaryWindow.setViewer(this);
+  secondaryWindow.setViewer(this);
   if ( ! pdfDocument  || pdfDocument->isLocked() )
   {
     /// FIXME: Error message
@@ -23,7 +26,7 @@ DSPDFViewer::DSPDFViewer(QString filename): pdfDocument(
   }
   pdfDocument->setRenderHint(Poppler::Document::Antialiasing, true);
   pdfDocument->setRenderHint(Poppler::Document::TextAntialiasing, true);
-  currentPage.reset( pdfDocument->page(0) );
+  currentPage.reset( pdfDocument->page(m_pagenumber) );
   renderPage();
 }
 
@@ -51,6 +54,7 @@ void DSPDFViewer::renderPage()
   {
     throw QString("Oh crap");
   }
+  qDebug() << "Rendering page " << m_pagenumber;
   QSize pagesize = currentPage->pageSize();
   
   /** Render left half on primary display */
@@ -114,10 +118,24 @@ void DSPDFViewer::gotoPage(unsigned int pageNumber)
       && pdfDocument->numPages() > pageNumber )
   {
     currentPage.reset(pdfDocument->page(pageNumber));
+    m_pagenumber = pageNumber;
     renderPage();
   }
 }
 
+void DSPDFViewer::swapScreens()
+{
+  if ( primaryWindow.getMonitor() == 0 )
+  {
+    primaryWindow.setMonitor(1);
+    secondaryWindow.setMonitor(0);
+  }
+  else
+  {
+    primaryWindow.setMonitor(0);
+    secondaryWindow.setMonitor(1);
+  }
+}
 
 
 
