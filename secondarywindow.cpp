@@ -26,15 +26,8 @@ SecondaryWindow::~SecondaryWindow()
 
 }
 
-SecondaryWindow::SecondaryWindow(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f)
+SecondaryWindow::SecondaryWindow(): PDFViewerWindow(1)
 {
-  QLabel* lab = new QLabel(this);
-  lab->setText("SECONDARY");
-  
-  QVBoxLayout* layout = new QVBoxLayout;
-  
-  layout->addWidget(lab);
-  this->setLayout(layout);
 }
 
 

@@ -20,12 +20,13 @@
 #ifndef PRIMARYWINDOW_H
 #define PRIMARYWINDOW_H
 #include <QMainWindow>
+#include "pdfviewerwindow.h"
 
-class PrimaryWindow: public QMainWindow
+class PrimaryWindow: public PDFViewerWindow
 {
 Q_OBJECT
 public:
-    explicit PrimaryWindow(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    explicit PrimaryWindow(int monitor=0);
     virtual ~PrimaryWindow();
 };
 

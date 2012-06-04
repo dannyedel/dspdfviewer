@@ -18,15 +18,16 @@
 
 
 #include "primarywindow.h"
+#include <QLabel>
+#include <qlayout.h>
 
 PrimaryWindow::~PrimaryWindow()
 {
 
 }
 
-PrimaryWindow::PrimaryWindow(QWidget* parent, Qt::WindowFlags flags): QMainWindow(parent, flags)
+PrimaryWindow::PrimaryWindow(int monitor): PDFViewerWindow(monitor)
 {
-
 }
 
 

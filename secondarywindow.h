@@ -22,11 +22,11 @@
 #include <QMainWindow>
 #include "primarywindow.h"
 
-class SecondaryWindow: public QWidget
+class SecondaryWindow: public PDFViewerWindow
 {
   Q_OBJECT
 public:
-    explicit SecondaryWindow(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    explicit SecondaryWindow();
     virtual ~SecondaryWindow();
 };
 
