@@ -72,8 +72,11 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor): QWidget(),
 
 void PDFViewerWindow::reposition()
 {
-  QRect rect = QApplication::desktop()->screenGeometry(m_monitor);
-  setGeometry(rect);
+  this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
+  this->showNormal();
+  QRect rect = QApplication::desktop()->screenGeometry(getMonitor());
+  setFixedSize(rect.size());
+  move(rect.topLeft());
   this->setWindowFlags( windowFlags() | Qt::FramelessWindowHint);
   this->showFullScreen();
 //  this->resize( 100, 100 );
@@ -85,21 +88,10 @@ void PDFViewerWindow::reposition()
 void PDFViewerWindow::displayImage(QImage image)
 {
   label.setPixmap(QPixmap::fromImage(image));
+  if ( geometry() != getTargetWindowSize() )
+    reposition();
 }
 
-
-void PDFViewerWindow::mouseDoubleClickEvent(QMouseEvent* e)
-{
-    QWidget::mouseDoubleClickEvent(e);
-    if ( isFullScreen() )
-    {
-      this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint );
-      showMaximized();
-    } else {
-      this->setWindowFlags( windowFlags() | Qt::FramelessWindowHint);
-      showFullScreen();
-    }
-}
 
 void PDFViewerWindow::wheelEvent(QWheelEvent* e)
 {
@@ -126,13 +118,29 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
     if ( ! m_dspdfviewer )
       return;
     
-    if ( e->key() == Qt::Key_F12 )
+    switch( e->key() )
     {
-      m_dspdfviewer->swapScreens();
+      case Qt::Key_F12:
+	m_dspdfviewer->swapScreens();
+	break;
+      case Qt::Key_Escape:
+	m_dspdfviewer->exit();
+	break;
+      case Qt::Key_Space:
+      case Qt::Key_Enter:
+      case Qt::Key_Return:
+      case Qt::Key_PageDown:
+      case Qt::Key_Down:
+      case Qt::Key_Right:
+	m_dspdfviewer->goForward();
+	break;
+      case Qt::Key_PageUp:
+      case Qt::Key_Up:
+      case Qt::Key_Left:
+      case Qt::Key_Backspace:
+	m_dspdfviewer->goBackward();
+	break;
     }
-    else if ( e->key() == Qt::Key_Escape ) {
-      m_dspdfviewer->exit();
-}
 }
 
 void PDFViewerWindow::setViewer(DSPDFViewer* v)
@@ -140,7 +148,23 @@ void PDFViewerWindow::setViewer(DSPDFViewer* v)
   m_dspdfviewer = v;
 }
 
+QRect PDFViewerWindow::getTargetWindowSize() const
+{
+  return QApplication::desktop()->screenGeometry(getMonitor());
+}
 
+void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
+{
+    QWidget::mousePressEvent(e);
+    switch (e->button()) {
+      case Qt::LeftButton:
+	m_dspdfviewer->goForward();
+	break;
+      case Qt::RightButton:
+	m_dspdfviewer->goBackward();
+	break;
+    }
+}
 
 
 

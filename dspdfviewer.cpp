@@ -58,11 +58,11 @@ void DSPDFViewer::renderPage()
   QSize pagesize = currentPage->pageSize();
   
   /** Render left half on primary display */
-  QRect primaryRect = primaryWindow.contentsRect();
+  QRect primaryRect = primaryWindow.getTargetWindowSize();
   int primWidth = primaryRect.width();
   int primHeight = primaryRect.height();
   
-  QRect secondaryRect = secondaryWindow.contentsRect();
+  QRect secondaryRect = secondaryWindow.getTargetWindowSize();
   int secondWidth = secondaryRect.width();
   int secondHeight = secondaryRect.height();
   
@@ -129,11 +129,13 @@ void DSPDFViewer::swapScreens()
   {
     primaryWindow.setMonitor(1);
     secondaryWindow.setMonitor(0);
+    renderPage();
   }
   else
   {
     primaryWindow.setMonitor(0);
     secondaryWindow.setMonitor(1);
+    renderPage();
   }
 }
 

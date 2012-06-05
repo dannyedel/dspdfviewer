@@ -58,13 +58,15 @@ public:
      */
     void displayImage(QImage image);
     
-    virtual void mouseDoubleClickEvent(QMouseEvent* e);
-    
     virtual void wheelEvent(QWheelEvent* e);
     
     virtual void keyPressEvent(QKeyEvent* e);
     
+    virtual void mousePressEvent(QMouseEvent* e);
+    
     void setViewer(DSPDFViewer* v);
+    
+    QRect getTargetWindowSize() const;
     
     
 };
