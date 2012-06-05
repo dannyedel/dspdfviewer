@@ -13,16 +13,18 @@
 DSPDFViewer::DSPDFViewer(QString filename): pdfDocument(
   Poppler::Document::load(filename)
 ),
- primaryWindow(0),
+ audienceWindow(0),
  secondaryWindow(1),
  m_pagenumber(0)
 {
-  primaryWindow.setViewer(this);
+  audienceWindow.setViewer(this);
   secondaryWindow.setViewer(this);
+  //secondaryWindow.showInformationLine();
+  secondaryWindow.hideInformationLine();
   if ( ! pdfDocument  || pdfDocument->isLocked() )
   {
     /// FIXME: Error message
-    throw QString("Shit");
+    throw QString("I was not able to open the PDF document. Sorry.");
   }
   setHighQuality(true);
   currentPage.reset( pdfDocument->page(m_pagenumber) );
@@ -49,97 +51,93 @@ unsigned int DSPDFViewer::pageNumber()
   return m_pagenumber;
 }
 
+QImage DSPDFViewer::renderForTarget(std::shared_ptr<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf)
+{
+  qDebug() << "Rendering for target size of " << targetSize;
+  if ( ! page )
+  {
+    throw QString("I dont have a page to render. Thats not good.");
+  }
+  
+  /* pagesize in points, (72 points is an inch) */
+  QSize pagesize = page->pageSize(); 
+  QSize fullsize = pagesize;
+  
+  if ( onlyHalf )
+  {
+    /* Only render half the page */
+    pagesize.setWidth(pagesize.width()/2);
+  }
+  
+  /* Calculate DPI for displaying on size */
+  /* the 72 comes from converting from points to inches */
+  double dpiWidth = 72.0 * targetSize.width() / pagesize.width();
+  double dpiHeight = 72.0 * targetSize.height() / pagesize.height();
+  
+  /* Take the smaller one, so that the image surely fits on target area */
+  double dpi = std::min(dpiWidth, dpiHeight);
+  
+  /* Calculate Page Size in pixels */
+  
+  QSize fullSizePixels( dpi * fullsize.width() / 72.0,
+			dpi * fullsize.height() / 72.0);
+  
+  /* Calculate rendered image size */
+  QSize imageSizePixels(dpi * pagesize.width() / 72.0,
+		  dpi * pagesize.height() / 72.0 );
+  
+  /* Calculate x-offset */
+  int x = 0;
+  if ( onlyHalf  && rightHalf ) {
+    /* start at an offset of width() pixels to the right */
+    x = fullSizePixels.width()/2+1;
+  }
+  
+  /* render it */
+  QImage renderedImage =  page->renderToImage(
+    dpi, dpi,
+    x, /* x-offset */
+    0, /* y-offset */
+    imageSizePixels.width(),
+    imageSizePixels.height()
+		      );
+  
+  qDebug() << "Rendered an image of size " << renderedImage.size();
+  return renderedImage;
+}
+
+
 void DSPDFViewer::renderPage()
 {
   if ( ! currentPage )
   {
     throw QString("Oh crap");
   }
+  if (0) {
+  for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
+  {
+    if ( ! secondaryWindow.hasThumbnailForPage(i) )
+    {
+      std::shared_ptr<Poppler::Page> page( pdfDocument->page(i) );
+      if ( page ) {
+	QImage thumbnail = renderForTarget(page, thumbnailSize, false);
+	secondaryWindow.addThumbnail(i, thumbnail);
+      }
+    }
+  }
+  secondaryWindow.renderThumbnails(m_pagenumber);
+  }
   qDebug() << "Rendering page " << m_pagenumber;
-  QSize pagesize = currentPage->pageSize();
-  
-  /** Render left half on primary display */
-  QRect primaryRect = primaryWindow.getTargetWindowSize();
-  int primWidth = primaryRect.width();
-  int primHeight = primaryRect.height();
-  
-  QRect secondaryRect = secondaryWindow.getTargetWindowSize();
-  int secondWidth = secondaryRect.width();
-  int secondHeight = secondaryRect.height();
-  
-  /** Goal: Render half the page size to primWidth **/
-  int halfPageSizePoints = pagesize.width()/2;
-  int pageHeightPoints = pagesize.height();
-  
-  /** DPI value: Pixels per Inch.
-   */
-  double primaryDPIw = 1.0 * primWidth / ( halfPageSizePoints / 72.0);
-  double primaryDPIh = 1.0 * primHeight / ( pageHeightPoints / 72.0);
-  double secondaryDPIw = 1.0 * secondWidth / (halfPageSizePoints / 72.0);
-  double secondaryDPIh = 1.0 * secondHeight / ( pageHeightPoints / 72.0);
-  
-  qDebug() << "Computed DPI Primary: " << primaryDPIw << "x" <<primaryDPIh;
-  qDebug() << "Computed DPI Secondary: " << secondaryDPIw << "x" << secondaryDPIh;
-  
-  double primaryDPI = std::min(primaryDPIh,primaryDPIw);
-  
-  /** Total page width in Pixels **/
-  int pageWidthPixelsL = primaryDPI * ( pagesize.width() / 72.0 );
-  int pageHeightPixelsL = primaryDPI * ( pagesize.height() / 72.0 );
-  
-  double secondaryDPI = std::min(secondaryDPIh, secondaryDPIw);
-  
-  int pageWidthPixelsR = secondaryDPI * ( pagesize.width() / 72.0 );
-  int pageHeightPixelsR = secondaryDPI * ( pagesize.height() / 72.0 );
-  
-  QImage leftImage;
-  QImage rightImage;
-  
-  QImage thumbnail = currentPage->thumbnail();
-  
-  
-  if ( thumbnail.isNull() )
-  {
-    qDebug() << "No thumbnail available. Rendering one ourselves.";
-    QDateTime t1 = QDateTime::currentDateTime();
-    thumbnail = currentPage->renderToImage(20.0, 20.0);
-    QDateTime t2 = QDateTime::currentDateTime();
-    qDebug() << "Thumbnail rendering took " << t1.msecsTo(t2) << " msecs";
-    
-  }
-  
-  leftImage = thumbnail.copy(0,0, thumbnail.width()/2, thumbnail.height());
-  rightImage = thumbnail.copy(thumbnail.width()/2+1, 0, thumbnail.width()- (thumbnail.width()/2+1), thumbnail.height());
-  
-  
   QDateTime t = QDateTime::currentDateTime();
-  if ( leftImage.isNull() )
-  {
-    qDebug() << "No thumbnail for left side available.";
-    leftImage = currentPage->renderToImage(
-      primaryDPI,
-      primaryDPI,
-      0, 0,
-      pageWidthPixelsL/2,
-      pageHeightPixelsL);
-  }
-  primaryWindow.displayImage(leftImage);
+  QImage leftImage = renderForTarget(currentPage, audienceWindow.getTargetImageSize(), true, false);
   QDateTime render1 = QDateTime::currentDateTime();
   qDebug() << "Left image rendered, took " << t.msecsTo(render1) << " msecs.";
-  if ( rightImage.isNull() )
-  {
-    qDebug() << "No thumbnail for right side available.";
-      rightImage = currentPage->renderToImage(
-    secondaryDPI,
-    secondaryDPI,
-    pageWidthPixelsR/2,
-    0,
-    pageWidthPixelsR-pageWidthPixelsR/2,
-    pageHeightPixelsR);
-  }
-  secondaryWindow.displayImage(rightImage);
+  QImage rightImage = renderForTarget(currentPage, secondaryWindow.getTargetImageSize(), true, true);
   QDateTime render2 = QDateTime::currentDateTime();
   qDebug() << "Right image rendered, took " << render1.msecsTo(render2) << " msecs.";
+  audienceWindow.displayImage(leftImage);
+  secondaryWindow.displayImage(rightImage);
+  
 }
 
 
@@ -156,15 +154,15 @@ void DSPDFViewer::gotoPage(unsigned int pageNumber)
 
 void DSPDFViewer::swapScreens()
 {
-  if ( primaryWindow.getMonitor() == 0 )
+  if ( audienceWindow.getMonitor() == 0 )
   {
-    primaryWindow.setMonitor(1);
+    audienceWindow.setMonitor(1);
     secondaryWindow.setMonitor(0);
     renderPage();
   }
   else
   {
-    primaryWindow.setMonitor(0);
+    audienceWindow.setMonitor(0);
     secondaryWindow.setMonitor(1);
     renderPage();
   }
@@ -174,7 +172,7 @@ void DSPDFViewer::swapScreens()
 
 void DSPDFViewer::exit()
 {
-  primaryWindow.close();
+  audienceWindow.close();
   secondaryWindow.close();
 }
 
@@ -185,5 +183,6 @@ void DSPDFViewer::setHighQuality(bool hq)
   pdfDocument->setRenderHint(Poppler::Document::TextHinting, hq);
 }
 
+const QSize DSPDFViewer::thumbnailSize = QSize(200, 100);
 
 #include "dspdfviewer.moc"

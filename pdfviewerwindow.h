@@ -1,4 +1,4 @@
-/*
+ /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2012  <copyright holder> <email>
 
@@ -22,6 +22,9 @@
 
 #include <qwidget.h>
 #include <QLabel>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QMap>
 
 class DSPDFViewer;
 /** Shared base class for both windows (primary and secondary)
@@ -33,7 +36,14 @@ class PDFViewerWindow : public QWidget
 private:
   unsigned int m_monitor;
   DSPDFViewer* m_dspdfviewer;
-  QLabel label;
+  QLabel imageLabel;
+  bool informationLineVisible;
+  QVBoxLayout* outerlayout;
+  QHBoxLayout* innerlayout;
+  QHBoxLayout* informationLineLayout;
+  QMap<int, QImage> thumbnails;
+  QMap<int, QLabel*> thumbnailLabels;
+
 public:
   /** Standard constructor
    * @param monitor monitor to start on (usually 0 for primary)
@@ -66,9 +76,20 @@ public:
     
     void setViewer(DSPDFViewer* v);
     
-    QRect getTargetImageSize() const;
+    QSize getTargetImageSize() const;
     
+        
+    void showInformationLine();
     
+    void hideInformationLine();
+    
+    bool isInformationLineVisible() const;
+    
+    void addThumbnail(int pageNumber, QImage thumbnail);
+    
+    void renderThumbnails(int currentPage);
+    
+    bool hasThumbnailForPage(int pageNumber) const;
 };
 
 #endif // PDFVIEWERWINDOW_H

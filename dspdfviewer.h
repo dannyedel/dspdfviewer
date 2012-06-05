@@ -11,7 +11,7 @@ class DSPDFViewer: public QObject
 {
   
 private:
-  PDFViewerWindow primaryWindow;
+  PDFViewerWindow audienceWindow;
   PDFViewerWindow secondaryWindow;
   
   
@@ -20,6 +20,12 @@ private:
   std::shared_ptr<Poppler::Document> pdfDocument;
   std::shared_ptr<Poppler::Page> currentPage;
   unsigned int m_pagenumber;
+  
+public:
+  static const QSize thumbnailSize;
+  
+private:
+  QImage renderForTarget( std::shared_ptr<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf=false);
   
 Q_OBJECT
 public:
@@ -51,6 +57,9 @@ public:
     void swapScreens();
     
     void exit();
+
+    
+    
 };
 
 #endif // dspdfviewer_H

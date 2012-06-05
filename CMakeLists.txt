@@ -4,7 +4,7 @@ find_package(Qt4 REQUIRED)
 
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 
-add_definitions(-std=c++0x)
+add_definitions(-ggdb -std=c++0x)
 
 set(dspdfviewer_SRCS pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
 qt4_automoc(${dspdfviewer_SRCS})

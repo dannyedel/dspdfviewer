@@ -44,16 +44,19 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor): QWidget(),
   m_monitor(monitor)
 {
   this->setContentsMargins(0,0,0,0);
-  QHBoxLayout* outerlayout = new QHBoxLayout();
+  outerlayout = new QVBoxLayout();
   this->setLayout(outerlayout);
-  QVBoxLayout* innerlayout = new QVBoxLayout();
+  innerlayout = new QHBoxLayout();
+  
+  informationLineLayout = new QHBoxLayout();
   
   outerlayout->addStretch();
   outerlayout->addLayout(innerlayout);
   outerlayout->addStretch();
+  outerlayout->addLayout(informationLineLayout);
   
   innerlayout->addStretch();
-  innerlayout->addWidget(&label);
+  innerlayout->addWidget(&imageLabel);
   innerlayout->addStretch();
   
   outerlayout->setSpacing(0);
@@ -61,6 +64,20 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor): QWidget(),
   
   innerlayout->setSpacing(0);
   innerlayout->setContentsMargins(0,0,0,0);
+  
+//  informationLineLayout->setSpacing(10);
+  informationLineLayout->addStretch();
+  for ( int i=0; i<10; i++)
+  {
+    if ( i == 3 || i == 4 )
+      informationLineLayout->addStretch();
+    QLabel* l= new QLabel();
+    thumbnailLabels.insert(i, l);
+    informationLineLayout->addWidget(l);
+  }
+  informationLineLayout->addStretch();
+  
+  hideInformationLine();
   
   QPalette pal = palette();
   pal.setColor(backgroundRole(), Qt::black);
@@ -90,9 +107,11 @@ void PDFViewerWindow::reposition()
 
 void PDFViewerWindow::displayImage(QImage image)
 {
-  label.setPixmap(QPixmap::fromImage(image));
-  if ( geometry() != getTargetWindowSize() )
+  imageLabel.setPixmap(QPixmap::fromImage(image));
+  /*
+  if ( geometry().size() != getTargetImageSize() )
     reposition();
+  */
 }
 
 
@@ -151,9 +170,14 @@ void PDFViewerWindow::setViewer(DSPDFViewer* v)
   m_dspdfviewer = v;
 }
 
-QRect PDFViewerWindow::getTargetWindowSize() const
+QSize PDFViewerWindow::getTargetImageSize() const
 {
-  return QApplication::desktop()->screenGeometry(getMonitor());
+  QSize screenSize = QApplication::desktop()->screenGeometry(getMonitor()).size();
+  if ( isInformationLineVisible() )
+  {
+    screenSize.setHeight( screenSize.height() - informationLineLayout->geometry().height() );
+  }
+  return screenSize;
 }
 
 void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
@@ -168,6 +192,71 @@ void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
 	break;
     }
 }
+
+void PDFViewerWindow::hideInformationLine()
+{
+  informationLineVisible=false;
+  for( QLabel*l : thumbnailLabels) {
+    l->hide();
+  }
+}
+
+bool PDFViewerWindow::isInformationLineVisible() const
+{
+  return informationLineVisible;
+}
+
+void PDFViewerWindow::showInformationLine()
+{
+  informationLineVisible=true;
+  for( QLabel*l : thumbnailLabels) {
+    l->show();
+  }
+}
+
+void PDFViewerWindow::addThumbnail(int pageNumber, QImage thumbnail)
+{
+  thumbnails.insert(pageNumber, thumbnail);
+}
+
+void PDFViewerWindow::renderThumbnails(int currentPage)
+{
+  if ( !isInformationLineVisible() )
+    return;
+  /* clear all current thumbnails */
+  for( int i=1; i < informationLineLayout->count()-1; i++ )
+  {
+    QLabel* p = (QLabel*) informationLineLayout->itemAt(i)->widget();
+    p->clear();
+  }
+  /* render up to three previous pages */
+  for( int page=currentPage-3, i=0; page<currentPage; page++, i++) {
+    if ( thumbnails.contains(page) )
+    {
+      thumbnailLabels[i]->setPixmap( QPixmap::fromImage(thumbnails[page] ));
+    }
+  }
+  /* Render current page */
+  if ( thumbnails.contains(currentPage) )
+  {
+    thumbnailLabels[3]->setPixmap(QPixmap::fromImage(thumbnails[currentPage] ));
+  }
+  /* render up to 6 next pages */
+  for( int page=currentPage+1, i=4; i<10; page++, i++) {
+    if ( thumbnails.contains(page) )
+    {
+      thumbnailLabels[i]->setPixmap(QPixmap::fromImage(thumbnails[page]));
+    }
+  }
+}
+bool PDFViewerWindow::hasThumbnailForPage(int pageNumber) const
+{
+  return thumbnails.contains(pageNumber);
+}
+
+
+
+
 
 
 
