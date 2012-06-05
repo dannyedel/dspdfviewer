@@ -66,7 +66,7 @@ public:
     
     void setViewer(DSPDFViewer* v);
     
-    QRect getTargetWindowSize() const;
+    QRect getTargetImageSize() const;
     
     
 };

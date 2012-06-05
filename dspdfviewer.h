@@ -14,6 +14,8 @@ private:
   PDFViewerWindow primaryWindow;
   PDFViewerWindow secondaryWindow;
   
+  
+  
 private:
   std::shared_ptr<Poppler::Document> pdfDocument;
   std::shared_ptr<Poppler::Page> currentPage;
@@ -35,6 +37,8 @@ public:
     /** get current page number
      */
     unsigned int pageNumber();
+    
+    void setHighQuality(bool hq);
     
     /** go Forward one page
      */
