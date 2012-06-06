@@ -20,13 +20,14 @@
 #include "renderutils.h"
 
 #include <QDebug>
+#include <stdexcept>
 
 QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize targetSize, PagePart whichPart)
 {
   qDebug() << "Rendering for target size of " << targetSize;
   if ( ! page )
   {
-    throw QString("I dont have a page to render. Thats not good.");
+    throw std::runtime_error("I dont have a page to render. Thats not good.");
   }
   
   /* pagesize in points, (72 points is an inch) */

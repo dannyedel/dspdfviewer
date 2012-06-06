@@ -6,6 +6,7 @@
 
 #include <memory> // shared pointer
 #include "pdfviewerwindow.h"
+#include "pdfrenderfactory.h"
 
 class DSPDFViewer: public QObject
 {
@@ -17,15 +18,16 @@ private:
   
   
 private:
-  std::shared_ptr<Poppler::Document> pdfDocument;
-  std::shared_ptr<Poppler::Page> currentPage;
+  QSharedPointer<Poppler::Document> pdfDocument;
+  QSharedPointer<Poppler::Page> currentPage;
   unsigned int m_pagenumber;
+  PdfRenderFactory renderFactory;
   
 public:
   static const QSize thumbnailSize;
   
 private:
-  QImage renderForTarget( std::shared_ptr<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf=false);
+  QImage renderForTarget( QSharedPointer<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf=false);
   
 Q_OBJECT
 public:
@@ -57,9 +59,8 @@ public:
     void swapScreens();
     
     void exit();
-
     
-    
+    PdfRenderFactory* theFactory();
 };
 
 #endif // dspdfviewer_H

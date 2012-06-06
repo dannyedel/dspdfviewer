@@ -30,7 +30,7 @@ RenderThread::RenderThread(QSharedPointer< Poppler::Page > thePage, RenderingIde
 
 void RenderThread::run()
 {
-  QImage renderImage = RenderUtils::renderPagePart(m_page, renderMe.pageSize(), renderMe.pagePart());
+  QImage renderImage = RenderUtils::renderPagePart(m_page, renderMe.requestedPageSize(), renderMe.pagePart());
   QList< QSharedPointer<Poppler::Link> > links;
   
   for( Poppler::Link* link: m_page->links() )

@@ -24,7 +24,7 @@ bool RenderingIdentifier::operator==(const RenderingIdentifier& other) const
   return
     thePageNumber == other.thePageNumber
     && thePagePart == other.thePagePart
-    && thePageSize == other.thePageSize;
+    && theRequestedPageSize == other.theRequestedPageSize;
 }
 
 RenderingIdentifier::operator QString() const
@@ -39,7 +39,7 @@ RenderingIdentifier::operator QString() const
       partId=2;
       break;
   }
-  return s.arg(pageNumber()).arg(partId).arg(pageSize().width()).arg(pageSize().height());
+  return s.arg(pageNumber()).arg(partId).arg(requestedPageSize().width()).arg(requestedPageSize().height());
 }
 
 int RenderingIdentifier::pageNumber() const
@@ -52,13 +52,13 @@ PagePart RenderingIdentifier::pagePart() const
   return thePagePart;
 }
 
-QSize RenderingIdentifier::pageSize() const
+QSize RenderingIdentifier::requestedPageSize() const
 {
-  return thePageSize;
+  return theRequestedPageSize;
 }
 
 RenderingIdentifier::RenderingIdentifier(int pagenum, PagePart pagepart, QSize pagesize):
-  thePageNumber(pagenum), thePagePart(pagepart), thePageSize(pagesize)
+  thePageNumber(pagenum), thePagePart(pagepart), theRequestedPageSize(pagesize)
 {
   
 }

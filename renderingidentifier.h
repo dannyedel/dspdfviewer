@@ -29,13 +29,13 @@ class RenderingIdentifier
 private:
   int thePageNumber;
   PagePart thePagePart;
-  QSize thePageSize;
+  QSize theRequestedPageSize;
   
 public:
-  RenderingIdentifier(int pagenum, PagePart pagepart, QSize pagesize);
+  RenderingIdentifier(int pagenum, PagePart pagepart, QSize requestedPageSize);
   int pageNumber() const;
   PagePart pagePart() const;
-  QSize pageSize() const;
+  QSize requestedPageSize() const;
   
   bool operator == (const RenderingIdentifier& other) const;
   

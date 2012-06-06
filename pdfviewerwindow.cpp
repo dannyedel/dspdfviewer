@@ -40,8 +40,8 @@ unsigned int PDFViewerWindow::getMonitor() const
   return m_monitor;
 }
 
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor): QWidget(),
-  m_monitor(monitor)
+PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part): QWidget(),
+  m_monitor(monitor), myPart(part)
 {
   this->setContentsMargins(0,0,0,0);
   outerlayout = new QVBoxLayout();
@@ -254,6 +254,37 @@ bool PDFViewerWindow::hasThumbnailForPage(int pageNumber) const
   return thumbnails.contains(pageNumber);
 }
 
+
+
+void PDFViewerWindow::renderedPageIncoming(RenderedPage p)
+{
+  // If we are not waiting for an image, ignore incoming answers.
+  if ( correntImageRendered )
+    return;
+  
+  if ( p.getPageNumber() != this->currentPageNumber )
+    return; // This page is not for us. Ignore it.
+    
+  if ( p.getPart() != this->myPart )
+    return; // This is not our part
+    
+  // There is an image incoming that might fit.
+  this->imageLabel.setPixmap( QPixmap::fromImage( p.getImage() ) );
+  
+  // It was even the right size! Yeah!
+  if ( p.getIdentifier().requestedPageSize() == getTargetImageSize() ) {
+    this->correntImageRendered= true;
+  }
+}
+
+void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
+{
+  /// FIXME Loading image
+  
+  this->currentPageNumber = pageNumberToWaitFor;
+  this->correntImageRendered = false;  
+  imageLabel.setText("LOADING");
+}
 
 
 

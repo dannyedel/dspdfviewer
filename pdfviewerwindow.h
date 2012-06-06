@@ -25,6 +25,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QMap>
+#include "renderedpage.h"
+#include "pdfrenderfactory.h"
 
 class DSPDFViewer;
 /** Shared base class for both windows (primary and secondary)
@@ -43,13 +45,17 @@ private:
   QHBoxLayout* informationLineLayout;
   QMap<int, QImage> thumbnails;
   QMap<int, QLabel*> thumbnailLabels;
+  
+  int currentPageNumber;
+  bool correntImageRendered;
+  PagePart myPart;
 
 public:
   /** Standard constructor
    * @param monitor monitor to start on (usually 0 for primary)
    * @param dspdfviewer Pointer to the application (to handle next/prev commands)
    */
-    explicit PDFViewerWindow(unsigned int monitor);
+    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart);
     
     /** Sets the monitor to display this window on
      * Automatically calls reposition
@@ -90,6 +96,12 @@ public:
     void renderThumbnails(int currentPage);
     
     bool hasThumbnailForPage(int pageNumber) const;
+    
+    void showLoadingScreen(int pageNumberToWaitFor);
+    
+public slots:
+  void renderedPageIncoming( RenderedPage p);
+    
 };
 
 #endif // PDFVIEWERWINDOW_H
