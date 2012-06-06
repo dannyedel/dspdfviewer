@@ -96,9 +96,9 @@ void PDFViewerWindow::reposition()
   move(rect.topLeft());
   this->setWindowFlags( windowFlags()
   | Qt::FramelessWindowHint
-  | Qt::WindowStaysOnTopHint
   );
   this->showFullScreen();
+  this->activateWindow();
 //  this->resize( 100, 100 );
  // this->move(rect.topLeft());
   //this->showFullScreen();

@@ -1,4 +1,6 @@
 #include "dspdfviewer.h"
+#include "renderutils.h"
+#include "renderingidentifier.h"
 
 #include <QtGui/QLabel>
 #include <QtGui/QMenu>
@@ -53,57 +55,13 @@ unsigned int DSPDFViewer::pageNumber()
 
 QImage DSPDFViewer::renderForTarget(std::shared_ptr<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf)
 {
-  qDebug() << "Rendering for target size of " << targetSize;
-  if ( ! page )
-  {
-    throw QString("I dont have a page to render. Thats not good.");
-  }
-  
-  /* pagesize in points, (72 points is an inch) */
-  QSize pagesize = page->pageSize(); 
-  QSize fullsize = pagesize;
-  
-  if ( onlyHalf )
-  {
-    /* Only render half the page */
-    pagesize.setWidth(pagesize.width()/2);
-  }
-  
-  /* Calculate DPI for displaying on size */
-  /* the 72 comes from converting from points to inches */
-  double dpiWidth = 72.0 * targetSize.width() / pagesize.width();
-  double dpiHeight = 72.0 * targetSize.height() / pagesize.height();
-  
-  /* Take the smaller one, so that the image surely fits on target area */
-  double dpi = std::min(dpiWidth, dpiHeight);
-  
-  /* Calculate Page Size in pixels */
-  
-  QSize fullSizePixels( dpi * fullsize.width() / 72.0,
-			dpi * fullsize.height() / 72.0);
-  
-  /* Calculate rendered image size */
-  QSize imageSizePixels(dpi * pagesize.width() / 72.0,
-		  dpi * pagesize.height() / 72.0 );
-  
-  /* Calculate x-offset */
-  int x = 0;
-  if ( onlyHalf  && rightHalf ) {
-    /* start at an offset of width() pixels to the right */
-    x = fullSizePixels.width()/2+1;
-  }
-  
-  /* render it */
-  QImage renderedImage =  page->renderToImage(
-    dpi, dpi,
-    x, /* x-offset */
-    0, /* y-offset */
-    imageSizePixels.width(),
-    imageSizePixels.height()
-		      );
-  
-  qDebug() << "Rendered an image of size " << renderedImage.size();
-  return renderedImage;
+  QSharedPointer<Poppler::Page> pagePtr;
+  PagePart part( 
+    onlyHalf?
+      ( rightHalf? PagePart::RightHalf : PagePart::LeftHalf )
+      : PagePart::FullPage );
+  return RenderUtils::renderPagePart(pagePtr, targetSize, part);
+
 }
 
 
