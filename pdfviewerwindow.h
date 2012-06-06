@@ -39,11 +39,13 @@ private:
   unsigned int m_monitor;
   DSPDFViewer* m_dspdfviewer;
   QLabel imageLabel;
+  QImage currentImage;
   
   bool informationLineVisible;
   QVBoxLayout* outerlayout;
   QHBoxLayout* innerlayout;
   QHBoxLayout* informationLineLayout;
+  
   QMap<int, QImage> thumbnails;
   QMap<int, QLabel*> thumbnailLabels;
   
@@ -102,6 +104,7 @@ public:
     
 public slots:
   void renderedPageIncoming( QSharedPointer<RenderedPage> renderedPage);
+  void renderedThumbnailIncoming( QSharedPointer<RenderedPage> renderedThumbnail);
     
 };
 

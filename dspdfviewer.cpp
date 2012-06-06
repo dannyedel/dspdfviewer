@@ -25,8 +25,8 @@ DSPDFViewer::DSPDFViewer(QString filename): pdfDocument(
   secondaryWindow.setViewer(this);
   audienceWindow.showLoadingScreen(0);
   secondaryWindow.showLoadingScreen(0);
-  //secondaryWindow.showInformationLine();
-  secondaryWindow.hideInformationLine();
+  secondaryWindow.showInformationLine();
+  // secondaryWindow.hideInformationLine();
   if ( ! pdfDocument  || pdfDocument->isLocked() )
   {
     /// FIXME: Error message
@@ -37,6 +37,8 @@ DSPDFViewer::DSPDFViewer(QString filename): pdfDocument(
   connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
   connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
   
+  connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
+  connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
   
   renderPage();
 }
@@ -90,14 +92,15 @@ for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
 #endif /* 0 */
 
   qDebug() << "Requesting rendering of page " << m_pagenumber;
-  QDateTime t = QDateTime::currentDateTime();
   audienceWindow.showLoadingScreen(m_pagenumber);
   secondaryWindow.showLoadingScreen(m_pagenumber);
+  theFactory()->requestThumbnailRendering(m_pagenumber);
   theFactory()->requestPageRendering(m_pagenumber, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
   theFactory()->requestPageRendering(m_pagenumber, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
   
   /** Pre-Render next 10 pages **/
   for ( int i=m_pagenumber; i<m_pagenumber+10 && i < pdfDocument->numPages() ; i++) {
+    theFactory()->requestThumbnailRendering(i);
     theFactory()->requestPageRendering(i, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
     theFactory()->requestPageRendering(i, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
   }
@@ -105,6 +108,7 @@ for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
   /** Request previous 3 pages **/
   
   for ( int i= std::max(m_pagenumber,3u)-3; i<m_pagenumber; i++) {
+    theFactory()->requestThumbnailRendering(i);
     theFactory()->requestPageRendering(i, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
     theFactory()->requestPageRendering(i, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
   }

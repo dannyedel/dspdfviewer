@@ -107,6 +107,7 @@ void PDFViewerWindow::reposition()
 
 void PDFViewerWindow::displayImage(QImage image)
 {
+  currentImage= image;
   imageLabel.setPixmap(QPixmap::fromImage(image));
   /*
   if ( geometry().size() != getTargetImageSize() )
@@ -161,6 +162,9 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
       case Qt::Key_Left:
       case Qt::Key_Backspace:
 	m_dspdfviewer->goBackward();
+	break;
+      case Qt::Key_Home:
+	m_dspdfviewer->gotoPage(0);
 	break;
     }
 }
@@ -224,10 +228,9 @@ void PDFViewerWindow::renderThumbnails(int currentPage)
   if ( !isInformationLineVisible() )
     return;
   /* clear all current thumbnails */
-  for( int i=1; i < informationLineLayout->count()-1; i++ )
+  for( QLabel* p: thumbnailLabels )
   {
-    QLabel* p = (QLabel*) informationLineLayout->itemAt(i)->widget();
-    p->clear();
+    p->setPixmap(QPixmap());
   }
   /* render up to three previous pages */
   for( int page=currentPage-3, i=0; page<currentPage; page++, i++) {
@@ -283,11 +286,32 @@ void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
   
   this->currentPageNumber = pageNumberToWaitFor;
   this->correntImageRendered = false;  
+  this->currentImage = QImage();
   imageLabel.setText("LOADING");
 }
 
 
 
+void PDFViewerWindow::renderedThumbnailIncoming(QSharedPointer< RenderedPage > renderedThumbnail)
+{
+  /* If a thumbnail for the page we're waiting for is incoming and we have no page at all, its better than nothing */
+  if ( renderedThumbnail->getPageNumber() == currentPageNumber
+    && currentImage.isNull() )
+  {
+    QImage myHalf;
+    if ( myPart == PagePart::LeftHalf )
+    {
+      myHalf = renderedThumbnail->getImage().copy(0, 0, renderedThumbnail->getImage().width()/2, renderedThumbnail->getImage().height());
+    } else if ( myPart == PagePart::RightHalf )
+    {
+      myHalf = renderedThumbnail->getImage().copy(renderedThumbnail->getImage().width()/2, 0, renderedThumbnail->getImage().width()/2, renderedThumbnail->getImage().height());
+    }
+    displayImage(myHalf);
+  }
+  
+  addThumbnail(renderedThumbnail->getPageNumber(), renderedThumbnail->getImage());
+  renderThumbnails(currentPageNumber);
+}
 
 
 
