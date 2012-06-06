@@ -29,16 +29,18 @@ class RenderThread: public QObject, public QRunnable
   Q_OBJECT;
   
 private:
+  QSharedPointer<Poppler::Document> m_document;
   QSharedPointer<Poppler::Page> m_page;
   RenderingIdentifier renderMe;
   
 public:
-  RenderThread( QSharedPointer<Poppler::Page> thePage, RenderingIdentifier renderMe);
+  RenderThread( QSharedPointer< Poppler::Document > theDocument, RenderingIdentifier renderIdent);
   
   void run();
   
   signals:
-    void renderingFinished(RenderedPage result);
+    void renderingFinished(QSharedPointer<RenderedPage> result);
+    void renderingFailed(QSharedPointer<RenderingIdentifier> requestedRender);
 };
 
 #endif // RENDERTHREAD_H

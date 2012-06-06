@@ -11,7 +11,7 @@ int main(int argc, char** argv)
       /// FIXME Error message goes here
       return 1;
     }
-    
+    qRegisterMetaType< QSharedPointer<RenderedPage> >("QSharedPointer<RenderedPage>");
     
     DSPDFViewer foo(app.arguments().at(1));
     

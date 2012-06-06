@@ -41,4 +41,6 @@ public:
   RenderingIdentifier getIdentifier() const;
 };
 
+Q_DECLARE_METATYPE(QSharedPointer<RenderedPage>);
+
 #endif // RENDEREDPAGE_H

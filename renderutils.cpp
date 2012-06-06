@@ -24,10 +24,10 @@
 
 QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize targetSize, PagePart whichPart)
 {
-  qDebug() << "Rendering for target size of " << targetSize;
   if ( ! page )
   {
-    throw std::runtime_error("I dont have a page to render. Thats not good.");
+    throw std::runtime_error( QString("RenderUtils::renderPagePart called with null page. Target size was %1x%2").
+      arg(targetSize.width()).arg(targetSize.height()).toStdString() );
   }
   
   /* pagesize in points, (72 points is an inch) */
@@ -73,6 +73,5 @@ QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize t
     imageSizePixels.height()
 		      );
   
-  qDebug() << "Rendered an image of size " << renderedImage.size();
   return renderedImage;
 }

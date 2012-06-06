@@ -19,27 +19,37 @@
 
 #include "renderthread.h"
 #include "renderutils.h"
+#include <QDebug>
 
-RenderThread::RenderThread(QSharedPointer< Poppler::Page > thePage, RenderingIdentifier renderIdentifier):
+RenderThread::RenderThread(QSharedPointer< Poppler::Document > theDocument, RenderingIdentifier renderIdent):
   QObject(),
   QRunnable(),
-  m_page(thePage), renderMe(renderIdentifier)
+  m_document(theDocument), renderMe(renderIdent)
 {
-  
+  m_page = QSharedPointer<Poppler::Page>( m_document->page(renderIdent.pageNumber()) );
 }
 
 void RenderThread::run()
 {
+  qDebug() << "RenderThread for " << renderMe << " started";
   QImage renderImage = RenderUtils::renderPagePart(m_page, renderMe.requestedPageSize(), renderMe.pagePart());
-  QList< QSharedPointer<Poppler::Link> > links;
+  if ( renderImage.isNull() )
+  {
+    qDebug() << "RenderThread for " << renderMe << " failed";
+    QSharedPointer<RenderingIdentifier> ri( new RenderingIdentifier(renderMe) );
+    emit renderingFailed(ri);
+    return;
+  }
   
+  QList< QSharedPointer<Poppler::Link> > links;
+
   for( Poppler::Link* link: m_page->links() )
   {
     QSharedPointer<Poppler::Link> ptrLink(link);
     links.append(ptrLink);
   }
-  RenderedPage renderResult( renderImage, links, renderMe );
-  
+  QSharedPointer<RenderedPage> renderResult(new RenderedPage( renderImage, links, renderMe ));
+  qDebug() << "RenderThread for " << renderMe << " successful, image has size " << renderResult->getImage().size();
   emit renderingFinished(renderResult);
 }
 

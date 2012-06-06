@@ -32,7 +32,7 @@ class PdfRenderFactory : public QObject
   Q_OBJECT
   
 private:
-  QSharedPointer<Poppler::Document> m_document;
+  QString documentFilename;
   
   QSet< RenderingIdentifier > currentlyRenderingPages;
   QSet < int > currentlyRenderingThumbnails;
@@ -43,11 +43,9 @@ private:
   QMutex mutex;
   
 private:
-  void initialize();
+  QSharedPointer<Poppler::Document> fetchDocument();
   
 public:
-  PdfRenderFactory( QSharedPointer<Poppler::Document> document);
-  
   PdfRenderFactory( QString filename );
   
   void requestPageRendering( int pageNumber, QSize targetSize, PagePart targetPart );

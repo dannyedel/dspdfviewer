@@ -15,11 +15,9 @@ private:
   PDFViewerWindow audienceWindow;
   PDFViewerWindow secondaryWindow;
   
-  
+  QSharedPointer< Poppler::Document > pdfDocument;
   
 private:
-  QSharedPointer<Poppler::Document> pdfDocument;
-  QSharedPointer<Poppler::Page> currentPage;
   unsigned int m_pagenumber;
   PdfRenderFactory renderFactory;
   

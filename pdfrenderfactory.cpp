@@ -23,6 +23,7 @@
 
 #include <QMutexLocker>
 #include <QThreadPool>
+#include <stdexcept>
 
 
 static const QSize ThumbnailSize(200,100);
@@ -49,24 +50,21 @@ void PdfRenderFactory::thumbnailThreadFinishedRendering(QSharedPointer<RenderedP
   }
 }
 
-void PdfRenderFactory::initialize()
+QSharedPointer<Poppler::Document> PdfRenderFactory::fetchDocument()
 {
+  QSharedPointer<Poppler::Document> m_document( Poppler::Document::load(documentFilename) );
   if ( !m_document || m_document->isLocked() )
-    throw QString("Document not readable");
+    throw std::runtime_error("Document not readable");
   m_document->setRenderHint(Poppler::Document::Antialiasing, true);
   m_document->setRenderHint(Poppler::Document::TextAntialiasing, true);
   m_document->setRenderHint(Poppler::Document::TextHinting, true);
+  return m_document;
 }
 
 
-PdfRenderFactory::PdfRenderFactory(QSharedPointer< Poppler::Document > document): QObject(), m_document(document)
+PdfRenderFactory::PdfRenderFactory(QString filename): QObject(), documentFilename(filename)
 {
-  initialize();
-}
-
-PdfRenderFactory::PdfRenderFactory(QString filename): QObject(), m_document(Poppler::Document::load(filename) )
-{
-  initialize();
+  fetchDocument();
 }
 
 void PdfRenderFactory::requestPageRendering(int pageNumber, QSize targetSize, PagePart targetPart)
@@ -87,12 +85,10 @@ void PdfRenderFactory::requestPageRendering(int pageNumber, QSize targetSize, Pa
     /* Page is already rendering, so there is nothing to do. */
     return;
   }
-  
-  
   /* Nobody is working on the page right now. Lets create it. */
-  QSharedPointer< Poppler::Page > page( m_document->page(pageNumber) );
-  RenderThread* t = new RenderThread( page, r );
-  connect( t, SIGNAL(renderingFinished(RenderedPage)), this, SLOT(pageThreadFinishedRendering(RenderedPage)));
+  
+  RenderThread* t = new RenderThread( fetchDocument(), r );
+  connect(t, SIGNAL(renderingFinished(QSharedPointer<RenderedPage>)), this, SLOT(pageThreadFinishedRendering(QSharedPointer<RenderedPage>)));
   currentlyRenderingPages.insert(r);
   QThreadPool::globalInstance()->start(t);
   
@@ -119,9 +115,8 @@ void PdfRenderFactory::requestThumbnailRendering(int pageNumber)
   /* We have to render it */
   RenderingIdentifier r(pageNumber, PagePart::FullPage, ThumbnailSize);
   
-  QSharedPointer< Poppler::Page > page(m_document->page(pageNumber) );
-  RenderThread* t = new RenderThread(page, r);
-  connect( t, SIGNAL(renderingFinished(RenderedPage)), this, SLOT(thumbnailThreadFinishedRendering(RenderedPage)));
+  RenderThread* t = new RenderThread(fetchDocument(), r);
+  connect( t, SIGNAL(renderingFinished(QSharedPointer<RenderedPage>)), this, SLOT(thumbnailThreadFinishedRendering(QSharedPointer<RenderedPage>)));
   currentlyRenderingThumbnails.insert(pageNumber);
   QThreadPool::globalInstance()->start(t);
 }

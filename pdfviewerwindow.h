@@ -39,6 +39,7 @@ private:
   unsigned int m_monitor;
   DSPDFViewer* m_dspdfviewer;
   QLabel imageLabel;
+  
   bool informationLineVisible;
   QVBoxLayout* outerlayout;
   QHBoxLayout* innerlayout;
@@ -100,7 +101,7 @@ public:
     void showLoadingScreen(int pageNumberToWaitFor);
     
 public slots:
-  void renderedPageIncoming( RenderedPage p);
+  void renderedPageIncoming( QSharedPointer<RenderedPage> renderedPage);
     
 };
 

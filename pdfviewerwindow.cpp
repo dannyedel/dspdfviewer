@@ -256,23 +256,23 @@ bool PDFViewerWindow::hasThumbnailForPage(int pageNumber) const
 
 
 
-void PDFViewerWindow::renderedPageIncoming(RenderedPage p)
+void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > renderedPage)
 {
   // If we are not waiting for an image, ignore incoming answers.
   if ( correntImageRendered )
     return;
   
-  if ( p.getPageNumber() != this->currentPageNumber )
+  if ( renderedPage->getPageNumber() != this->currentPageNumber )
     return; // This page is not for us. Ignore it.
     
-  if ( p.getPart() != this->myPart )
+  if ( renderedPage->getPart() != this->myPart )
     return; // This is not our part
     
   // There is an image incoming that might fit.
-  this->imageLabel.setPixmap( QPixmap::fromImage( p.getImage() ) );
+  this->imageLabel.setPixmap( QPixmap::fromImage( renderedPage->getImage() ) );
   
   // It was even the right size! Yeah!
-  if ( p.getIdentifier().requestedPageSize() == getTargetImageSize() ) {
+  if ( renderedPage->getIdentifier().requestedPageSize() == getTargetImageSize() ) {
     this->correntImageRendered= true;
   }
 }

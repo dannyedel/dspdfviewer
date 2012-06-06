@@ -23,6 +23,8 @@ DSPDFViewer::DSPDFViewer(QString filename): pdfDocument(
 {
   audienceWindow.setViewer(this);
   secondaryWindow.setViewer(this);
+  audienceWindow.showLoadingScreen(0);
+  secondaryWindow.showLoadingScreen(0);
   //secondaryWindow.showInformationLine();
   secondaryWindow.hideInformationLine();
   if ( ! pdfDocument  || pdfDocument->isLocked() )
@@ -31,7 +33,11 @@ DSPDFViewer::DSPDFViewer(QString filename): pdfDocument(
     throw std::runtime_error("I was not able to open the PDF document. Sorry.");
   }
   setHighQuality(true);
-  currentPage = QSharedPointer<Poppler::Page>( pdfDocument->page(m_pagenumber) );
+  
+  connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
+  connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
+  
+  
   renderPage();
 }
 
@@ -68,10 +74,6 @@ QImage DSPDFViewer::renderForTarget(QSharedPointer< Poppler::Page > page, QSize 
 
 void DSPDFViewer::renderPage()
 {
-  if ( ! currentPage )
-  {
-    throw QString("Oh crap");
-  }
 #if 0
 for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
   {
@@ -90,9 +92,22 @@ for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
   qDebug() << "Requesting rendering of page " << m_pagenumber;
   QDateTime t = QDateTime::currentDateTime();
   audienceWindow.showLoadingScreen(m_pagenumber);
-  theFactory()->requestPageRendering(m_pagenumber, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
   secondaryWindow.showLoadingScreen(m_pagenumber);
+  theFactory()->requestPageRendering(m_pagenumber, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
   theFactory()->requestPageRendering(m_pagenumber, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
+  
+  /** Pre-Render next 10 pages **/
+  for ( int i=m_pagenumber; i<m_pagenumber+10 && i < pdfDocument->numPages() ; i++) {
+    theFactory()->requestPageRendering(i, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
+    theFactory()->requestPageRendering(i, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
+  }
+  
+  /** Request previous 3 pages **/
+  
+  for ( int i= std::max(m_pagenumber,3u)-3; i<m_pagenumber; i++) {
+    theFactory()->requestPageRendering(i, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
+    theFactory()->requestPageRendering(i, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
+  }
   
 }
 
@@ -102,7 +117,6 @@ void DSPDFViewer::gotoPage(unsigned int pageNumber)
   if ( m_pagenumber != pageNumber 
       && pdfDocument->numPages() > pageNumber )
   {
-    currentPage = QSharedPointer<Poppler::Page>(pdfDocument->page(pageNumber));
     m_pagenumber = pageNumber;
     renderPage();
   }

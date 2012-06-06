@@ -29,14 +29,14 @@ bool RenderingIdentifier::operator==(const RenderingIdentifier& other) const
 
 RenderingIdentifier::operator QString() const
 {
-  QString s("page%1_part%2_size%3x%4");
-  int partId = 0;
+  QString s("page%1_%2_size%3x%4");
+  QString partId="FullPage";
   switch( pagePart() ) {
     case PagePart::LeftHalf:
-      partId=1;
+      partId="LeftHalf";
       break;
     case PagePart::RightHalf:
-      partId=2;
+      partId="RightHalf";
       break;
   }
   return s.arg(pageNumber()).arg(partId).arg(requestedPageSize().width()).arg(requestedPageSize().height());
