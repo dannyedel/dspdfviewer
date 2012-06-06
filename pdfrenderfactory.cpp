@@ -27,24 +27,24 @@
 
 static const QSize ThumbnailSize(200,100);
 
-void PdfRenderFactory::pageThreadFinishedRendering(RenderedPage renderedPage)
+void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> renderedPage)
 {
   {
     QMutexLocker lock(&mutex);
-    const RenderingIdentifier ident( renderedPage.getIdentifier() );
-    renderedPages.insert(ident, new RenderedPage(renderedPage));
+    const RenderingIdentifier ident( renderedPage->getIdentifier() );
+    renderedPages.insert(ident, new RenderedPage(*renderedPage));
     currentlyRenderingPages.remove(ident);
   }
   
   emit pageRendered(renderedPage);
 }
 
-void PdfRenderFactory::thumbnailThreadFinishedRendering(RenderedPage renderedPage)
+void PdfRenderFactory::thumbnailThreadFinishedRendering(QSharedPointer<RenderedPage> renderedPage)
 {
   {
     QMutexLocker lock(&mutex);
-    int pageNumber = renderedPage.getPageNumber();
-    renderedThumbnails.insert(pageNumber, new RenderedPage(renderedPage));
+    int pageNumber = renderedPage->getPageNumber();
+    renderedThumbnails.insert(pageNumber, new RenderedPage(*renderedPage));
     currentlyRenderingThumbnails.remove(pageNumber);
   }
 }
@@ -77,7 +77,7 @@ void PdfRenderFactory::requestPageRendering(int pageNumber, QSize targetSize, Pa
   if ( renderedPages.contains(r) )
   {
     /* Page is ready. Take a copy and lets go. */
-    RenderedPage page( * renderedPages.object(r) );
+    QSharedPointer<RenderedPage> page( new RenderedPage( * renderedPages.object(r) ));
     emit pageRendered(page);
     return;
   }
@@ -105,7 +105,7 @@ void PdfRenderFactory::requestThumbnailRendering(int pageNumber)
   if ( renderedThumbnails.contains(pageNumber) )
   {
     /* Its ready. Take a copy and lets go. */
-    RenderedPage thumb( * renderedThumbnails.object(pageNumber ) );
+    QSharedPointer<RenderedPage> thumb( new RenderedPage( * renderedThumbnails.object(pageNumber ) ));
     emit thumbnailRendered(thumb);
     return;
   }

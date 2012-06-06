@@ -54,12 +54,12 @@ public:
   void requestThumbnailRendering( int pageNumber);
   
 private slots:
-  void pageThreadFinishedRendering( RenderedPage renderedPage );
-  void thumbnailThreadFinishedRendering( RenderedPage renderedPage );
+  void pageThreadFinishedRendering( QSharedPointer<RenderedPage> renderedPage );
+  void thumbnailThreadFinishedRendering( QSharedPointer<RenderedPage> renderedPage );
   
 signals:
-  void pageRendered( const RenderedPage & renderedPage);
-  void thumbnailRendered( const RenderedPage & renderedThumbnail);
+  void pageRendered( QSharedPointer<RenderedPage> renderedPage);
+  void thumbnailRendered( QSharedPointer<RenderedPage> renderedThumbnail);
   
 };
 
