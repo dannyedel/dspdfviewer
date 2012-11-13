@@ -1,8 +1,8 @@
-dspdfviewer (0.1b+7+g297ce1e) UNRELEASED; urgency=low
+dspdfviewer (0.1b+10+ge54e032) UNRELEASED; urgency=low
 
-  * Minor bugfixes
+  * Now it actually installs an executable.  
 
- -- Danny Edel <mail@danny-edel.de>  Tue, 13 Nov 2012 16:14:53 +0100
+ -- Danny Edel <mail@danny-edel.de>  Tue, 13 Nov 2012 17:03:18 +0100
 
 dspdfviewer (0.1b) unstable; urgency=low
 
