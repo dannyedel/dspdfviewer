@@ -2,3 +2,7 @@ build/
 *~
 *.kate-swp
 .kdev4
+
+#Debian build system creates those directories:
+obj-*/
+
