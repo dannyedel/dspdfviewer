@@ -10,7 +10,7 @@ add_definitions(-Wall -Wextra -pedantic -Werror -ggdb -Wfatal-errors -Wold-style
 
 #I like these for my code, but Qt doesnt compile with them
 # add_definitions( -Weffc++ )
-
+add_definitions(-Wno-effc++)
 
 set(dspdfviewer_SRCS renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
 qt4_automoc(${dspdfviewer_SRCS})
