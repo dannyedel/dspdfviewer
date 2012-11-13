@@ -1,5 +1,5 @@
 Source: dspdfviewer
-Section: unknown
+Section: text
 Priority: extra
 Maintainer: Danny Edel <mail@danny-edel.de>
 Build-Depends: debhelper (>= 8.0.0), cmake
@@ -7,9 +7,30 @@ Standards-Version: 3.9.3
 Homepage: <insert the upstream URL, if relevant>
 #Vcs-Git: git://git.debian.org/collab-maint/dspdfviewer.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/dspdfviewer.git;a=summary
+# Git will be published on github once the software is ready for it
 
 Package: dspdfviewer
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Recommends: latex-beamer
+Description: Dual-Screen PDF Viewer for LaTeX-beamer
+ This is a specialized PDF Viewing application custom-made for
+ the LaTeX class beamer, specifically the
+ "show notes on second screen=right" option.
+ .
+ To make use of this program, you will need a document created
+ by latex-beamer, and you will need two monitors connected to
+ your computer.
+ They do not need to have the same resolution, not even the same
+ aspect ratio.
+ .
+ This program will split your PDF page in half, and display the
+ left half (intended for the audience) on one monitor (think:
+ a notebook's VGA output connected to your university's projector)
+ and it will display the right half (intended for you) on the
+ second screen.
+ Also, on the second screen, you get page thumbnails and status
+ information, like the time since you started the presentation
+ and a "wall clock".
+
+
