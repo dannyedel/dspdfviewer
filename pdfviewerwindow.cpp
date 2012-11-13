@@ -194,6 +194,9 @@ void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
       case Qt::RightButton:
 	m_dspdfviewer->goBackward();
 	break;
+      default: /* any other button */
+	/* do nothing */
+	;
     }
 }
 

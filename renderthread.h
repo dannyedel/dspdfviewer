@@ -26,7 +26,7 @@
 
 class RenderThread: public QObject, public QRunnable
 {
-  Q_OBJECT;
+  Q_OBJECT
   
 private:
   QSharedPointer<Poppler::Document> m_document;

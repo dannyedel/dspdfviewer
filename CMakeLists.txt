@@ -4,7 +4,13 @@ find_package(Qt4 REQUIRED)
 
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 
-add_definitions(-ggdb -std=c++0x)
+add_definitions(-ggdb -std=c++11)
+#add some warnings
+add_definitions(-Wall -Wextra -pedantic -Werror -ggdb -Wfatal-errors -Wold-style-cast -Woverloaded-virtual)
+
+#I like these for my code, but Qt doesnt compile with them
+# add_definitions( -Weffc++ )
+
 
 set(dspdfviewer_SRCS renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
 qt4_automoc(${dspdfviewer_SRCS})

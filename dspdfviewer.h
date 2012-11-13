@@ -4,7 +4,6 @@
 #include <QObject>
 #include <poppler/qt4/poppler-qt4.h>
 
-#include <memory> // shared pointer
 #include "pdfviewerwindow.h"
 #include "pdfrenderfactory.h"
 
@@ -12,10 +11,10 @@ class DSPDFViewer: public QObject
 {
   
 private:
+  QSharedPointer< Poppler::Document > pdfDocument;
   PDFViewerWindow audienceWindow;
   PDFViewerWindow secondaryWindow;
   
-  QSharedPointer< Poppler::Document > pdfDocument;
   
 private:
   unsigned int m_pagenumber;
@@ -43,6 +42,10 @@ public:
     /** get current page number
      */
     unsigned int pageNumber();
+    
+    /** get page count
+     */
+    unsigned int numberOfPages();
     
     void setHighQuality(bool hq);
     

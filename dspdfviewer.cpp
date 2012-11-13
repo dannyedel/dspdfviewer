@@ -99,7 +99,7 @@ for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
   theFactory()->requestPageRendering(m_pagenumber, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
   
   /** Pre-Render next 10 pages **/
-  for ( int i=m_pagenumber; i<m_pagenumber+10 && i < pdfDocument->numPages() ; i++) {
+  for ( unsigned i=m_pagenumber; i<m_pagenumber+10 && i < numberOfPages() ; i++) {
     theFactory()->requestThumbnailRendering(i);
     theFactory()->requestPageRendering(i, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
     theFactory()->requestPageRendering(i, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
@@ -107,7 +107,7 @@ for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
   
   /** Request previous 3 pages **/
   
-  for ( int i= std::max(m_pagenumber,3u)-3; i<m_pagenumber; i++) {
+  for ( unsigned i= std::max(m_pagenumber,3u)-3; i<m_pagenumber; i++) {
     theFactory()->requestThumbnailRendering(i);
     theFactory()->requestPageRendering(i, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
     theFactory()->requestPageRendering(i, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
@@ -119,7 +119,7 @@ for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
 void DSPDFViewer::gotoPage(unsigned int pageNumber)
 {
   if ( m_pagenumber != pageNumber 
-      && pdfDocument->numPages() > pageNumber )
+      && numberOfPages() > pageNumber )
   {
     m_pagenumber = pageNumber;
     renderPage();
@@ -163,6 +163,21 @@ PdfRenderFactory* DSPDFViewer::theFactory()
 {
   return &renderFactory;
 }
+
+unsigned int DSPDFViewer::numberOfPages() {
+	if ( pdfDocument->numPages() < 0 )
+	{
+		/* What the... ?! 
+		 *
+		 * I return zero, so that any kind of loop that counts "for
+		 * all pages" will terminate immediately.
+		 */
+		return 0;
+	}
+	/* numPages is non-negative and therefore safe to use. */
+	return pdfDocument->numPages() ;
+}
+
 
 
 #include "dspdfviewer.moc"
