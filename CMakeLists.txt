@@ -16,3 +16,6 @@ set(dspdfviewer_SRCS renderutils.cpp renderthread.cpp renderingidentifier.cpp pa
 qt4_automoc(${dspdfviewer_SRCS})
 add_executable(dspdfviewer ${dspdfviewer_SRCS})
 target_link_libraries(dspdfviewer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} poppler-qt4)
+
+install(TARGETS	dspdfviewer
+	RUNTIME DESTINATION bin)
