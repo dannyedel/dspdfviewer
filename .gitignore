@@ -6,3 +6,6 @@ build/
 #Debian build system creates those directories:
 obj-*/
 
+# Debian build system's log files.
+# Not really meant to be comitted.
+debian/*.log
