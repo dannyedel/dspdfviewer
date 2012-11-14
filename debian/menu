@@ -3,5 +3,6 @@
 	section="Applications/Viewers" \
 	title="DSPDFViewer" \
 	command="/usr/bin/dspdfviewer" \
-	longtitle="Dual-Screen PDF Viewer" \
+	longtitle="Dual-Screen PDF Viewer"
+	
 
