@@ -1,3 +1,10 @@
+dspdfviewer (0.3) testing; urgency=low
+
+  * Added GitHub links in the package file 
+  * Small INSTALL and README files 
+
+ -- Danny Edel <mail@danny-edel.de>  Wed, 14 Nov 2012 13:53:39 +0100
+
 dspdfviewer (0.2c) testing; urgency=low
 
   * Changed release to testing 

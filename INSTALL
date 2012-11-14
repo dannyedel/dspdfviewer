@@ -16,7 +16,12 @@ Instructions on how to use it are inside.
 
 1.2 Compile it yourself
 -----------------------
-You're in luck. Its really easy. Assuming you're in the base directory, just
+You're in luck. Its really easy. First, you want to install the "devscripts"
+package for debuild and debi:
+
+su -c "apt-get install devscripts"
+
+To build the software - assuming you're in the base directory - just
 execute the following commands:
 
 debuild -tc # If it complains about missing build-deps, use apt-get install...

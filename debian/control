@@ -4,11 +4,11 @@ Priority: extra
 Maintainer: Danny Edel <mail@danny-edel.de>
 Build-Depends: debhelper (>= 8.0.0), cmake, libpoppler-qt4-dev, hardening-wrapper
 Standards-Version: 3.9.3
+Vcs-Git: git://github.com/dannyedel/dspdfviewer.git
+Vcs-Browser: https://github.com/dannyedel/dspdfviewer
 # Homepage: http://danny-edel.de/projects/dspdfviewer
-# NOTE: There is no homepage yet.
-#Vcs-Git: git://git.debian.org/collab-maint/dspdfviewer.git
-# NOTE: Probably will be on github.
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/dspdfviewer.git;a=summary
+# NOTE: I have not written a homepage yet, but probably writing
+# the source code is more important.
 
 Package: dspdfviewer
 Architecture: any
