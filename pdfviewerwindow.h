@@ -87,6 +87,8 @@ public:
     
     QSize getTargetImageSize() const;
     
+    PagePart getMyPagePart() const;
+    
         
     void showInformationLine();
     

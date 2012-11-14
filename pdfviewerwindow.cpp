@@ -305,15 +305,25 @@ void PDFViewerWindow::renderedThumbnailIncoming(QSharedPointer< RenderedPage > r
     if ( myPart == PagePart::LeftHalf )
     {
       myHalf = renderedThumbnail->getImage().copy(0, 0, renderedThumbnail->getImage().width()/2, renderedThumbnail->getImage().height());
-    } else if ( myPart == PagePart::RightHalf )
+    }
+    else if ( myPart == PagePart::RightHalf )
     {
       myHalf = renderedThumbnail->getImage().copy(renderedThumbnail->getImage().width()/2, 0, renderedThumbnail->getImage().width()/2, renderedThumbnail->getImage().height());
+    }
+    else if ( myPart == PagePart::FullPage )
+    {
+      myHalf = renderedThumbnail->getImage();
     }
     displayImage(myHalf);
   }
   
   addThumbnail(renderedThumbnail->getPageNumber(), renderedThumbnail->getImage());
   renderThumbnails(currentPageNumber);
+}
+
+PagePart PDFViewerWindow::getMyPagePart() const
+{
+  return myPart;
 }
 
 

@@ -27,6 +27,8 @@
 #include <poppler/qt4/poppler-qt4.h>
 #include "renderedpage.h"
 
+class PDFViewerWindow; // forward-declare
+
 class PdfRenderFactory : public QObject
 {
   Q_OBJECT
@@ -48,7 +50,7 @@ private:
 public:
   PdfRenderFactory( QString filename );
   
-  void requestPageRendering( int pageNumber, QSize targetSize, PagePart targetPart );
+  void requestPageRendering( int pageNumber, const PDFViewerWindow& targetWindow);
   void requestThumbnailRendering( int pageNumber);
   
 private slots:

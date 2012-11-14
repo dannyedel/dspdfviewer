@@ -11,7 +11,24 @@ int main(int argc, char** argv)
 	 * Its the least i can do.
 	 */
 	try {
-		if ( app.arguments().size() < 2 )
+		bool splitPageMode = true;
+		QStringList cmdLineArguments = app.arguments();
+		
+		/** TODO: This is extremely simple command line handling.
+		 * It can probably be done a lot better.
+		 */
+		if ( cmdLineArguments.contains("--full-page") )
+		{
+		  cmdLineArguments.removeOne("--full-page");
+		  splitPageMode=false;
+		}
+		if ( cmdLineArguments.contains("-f") )
+		{
+		  cmdLineArguments.removeOne("-f");
+		  splitPageMode=false;
+		}
+		
+		if ( cmdLineArguments.size() != 2 )
 		{
 			throw std::runtime_error("No filename specified on the command line");
 		}
@@ -21,7 +38,7 @@ int main(int argc, char** argv)
 		*/
 		qRegisterMetaType< QSharedPointer<RenderedPage> >("QSharedPointer<RenderedPage>");
 		
-		DSPDFViewer foo(app.arguments().at(1));
+		DSPDFViewer foo(cmdLineArguments.at(1), splitPageMode);
 		
 		return app.exec();
 	} catch ( std::exception& e ) {

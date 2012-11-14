@@ -13,11 +13,11 @@
 #include <QDebug>
 #include <stdexcept>
 
-DSPDFViewer::DSPDFViewer(QString filename): pdfDocument(
+DSPDFViewer::DSPDFViewer(QString filename, bool splitMode): pdfDocument(
   Poppler::Document::load(filename)
 ),
- audienceWindow(0, PagePart::LeftHalf),
- secondaryWindow(1, PagePart::RightHalf),
+ audienceWindow(0,  splitMode? PagePart::LeftHalf : PagePart::FullPage),
+ secondaryWindow(1, splitMode? PagePart::RightHalf: PagePart::FullPage),
  m_pagenumber(0),
  renderFactory(filename)
 {
@@ -95,22 +95,22 @@ for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
   audienceWindow.showLoadingScreen(m_pagenumber);
   secondaryWindow.showLoadingScreen(m_pagenumber);
   theFactory()->requestThumbnailRendering(m_pagenumber);
-  theFactory()->requestPageRendering(m_pagenumber, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
-  theFactory()->requestPageRendering(m_pagenumber, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
+  theFactory()->requestPageRendering(m_pagenumber, audienceWindow);
+  theFactory()->requestPageRendering(m_pagenumber, secondaryWindow);
   
   /** Pre-Render next 10 pages **/
   for ( unsigned i=m_pagenumber; i<m_pagenumber+10 && i < numberOfPages() ; i++) {
     theFactory()->requestThumbnailRendering(i);
-    theFactory()->requestPageRendering(i, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
-    theFactory()->requestPageRendering(i, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
+    theFactory()->requestPageRendering(i, audienceWindow);
+    theFactory()->requestPageRendering(i, secondaryWindow);
   }
   
   /** Request previous 3 pages **/
   
   for ( unsigned i= std::max(m_pagenumber,3u)-3; i<m_pagenumber; i++) {
     theFactory()->requestThumbnailRendering(i);
-    theFactory()->requestPageRendering(i, audienceWindow.getTargetImageSize(), PagePart::LeftHalf);
-    theFactory()->requestPageRendering(i, secondaryWindow.getTargetImageSize(), PagePart::RightHalf);
+    theFactory()->requestPageRendering(i, audienceWindow);
+    theFactory()->requestPageRendering(i, secondaryWindow);
   }
   
 }

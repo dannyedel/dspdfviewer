@@ -19,6 +19,7 @@
 
 #include "pdfrenderfactory.h"
 #include "renderthread.h"
+#include "pdfviewerwindow.h"
 
 
 #include <QMutexLocker>
@@ -67,11 +68,11 @@ PdfRenderFactory::PdfRenderFactory(QString filename): QObject(), documentFilenam
   fetchDocument();
 }
 
-void PdfRenderFactory::requestPageRendering(int pageNumber, QSize targetSize, PagePart targetPart)
+void PdfRenderFactory::requestPageRendering(int pageNumber, const PDFViewerWindow& targetWindow)
 {
   QMutexLocker lock(&mutex);
   
-  RenderingIdentifier r( pageNumber, targetPart, targetSize );
+  RenderingIdentifier r( pageNumber, targetWindow.getMyPagePart(), targetWindow.getTargetImageSize() );
   if ( renderedPages.contains(r) )
   {
     /* Page is ready. Take a copy and lets go. */
