@@ -1,2 +1,7 @@
-?package(dspdfviewer):needs="X11|text|vc|wm" section="Applications/see-menu-manual"\
-  title="dspdfviewer" command="/usr/bin/dspdfviewer"
+?package(dspdfviewer): \
+	needs="X11" \
+	section="Applications/Viewers" \
+	title="DSPDFViewer" \
+	command="/usr/bin/dspdfviewer" \
+	longtitle="Dual-Screen PDF Viewer" \
+
