@@ -1,8 +1,10 @@
-dspdfviewer (0.1b+10+ge54e032) UNRELEASED; urgency=low
+dspdfviewer (0.2b) unstable; urgency=low
 
-  * Now it actually installs an executable.  
+  * Fully debianized
+  * Installs a manpage
+  * No lintian errors
 
- -- Danny Edel <mail@danny-edel.de>  Tue, 13 Nov 2012 17:03:18 +0100
+ -- Danny Edel <mail@danny-edel.de>  Wed, 14 Nov 2012 11:52:06 +0100
 
 dspdfviewer (0.1b) unstable; urgency=low
 
