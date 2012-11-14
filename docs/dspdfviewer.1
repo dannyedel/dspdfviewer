@@ -4,7 +4,7 @@
 .\" First parameter, NAME, should be all caps
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
-.TH DSPDFVIEWER SECTION "November 13, 2012"
+.TH DSPDFVIEWER 1 "November 14, 2012"
 .\" Please adjust this date whenever revising the manpage.
 .\"
 .\" Some roff macros, for reference:
@@ -18,39 +18,64 @@
 .\" .sp <n>    insert n+1 empty lines
 .\" for manpage-specific macros, see man(7)
 .SH NAME
-dspdfviewer \- program to do something
+dspdfviewer \- Dual-Screen PDF Viewer
 .SH SYNOPSIS
 .B dspdfviewer
-.RI [ options ] " files" ...
+.RI [ options ] " filename"
 .br
-.B bar
-.RI [ options ] " files" ...
 .SH DESCRIPTION
-This manual page documents briefly the
-.B dspdfviewer
-and
-.B bar
-commands.
-.PP
+The Dual-Screen PDF viewer is intended for presentations created with the
+.B latex-beamer
+class. Its purpose is to display the left half of a page on the audience's screen
+(which will most commonly be a projector) and the right half on your "private"
+screen (think: the notebook you carried to the presentation site).
+The basic idea is that you will display personal notes and information to
+help you with your presentation on your personal screen, while the audience
+sees only the PDF they are supposed to see.
+.\" TODO: Clocks and timers on second screen
+.\" .PP
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
 .\" \fI<whatever>\fP escape sequences to invode bold face and italics,
 .\" respectively.
-\fBdspdfviewer\fP is a program that...
+.\"\fBdspdfviewer\fP is a program that...
 .SH OPTIONS
-These programs follow the usual GNU command line syntax, with long
-options starting with two dashes (`-').
+This program follows the usual GNU command line syntax, with long
+options starting with two dashes ('-').
 A summary of options is included below.
-For a complete description, see the Info files.
 .TP
 .B \-h, \-\-help
 Show summary of options.
 .TP
 .B \-v, \-\-version
 Show version of program.
+.SH CONTROLS
+You can use the following controls while
+.B dspdfviewer
+is running:
+.TP
+.B Left mouse button, Up Arrow, Right Arrow, Page Up, Return
+Go to next page
+.TP
+.B Right mouse button, Down Arrow, Left Arrow, Page Down, Backspace
+Go to previous page
+.TP
+.B Home (also called Pos 1)
+Go to first page
+.TP
+.B Escape
+Quit viewer
+.TP
+.B F12
+Switch primary and secondary screens
+(Use this if the audience sees your 'note' side instead of the actual
+presentation)
+.\" TODO: and reset the clocks
 .SH SEE ALSO
-.BR bar (1),
-.BR baz (1).
-.br
-The programs are documented fully by
-.IR "The Rise and Fall of a Fooish Bar" ,
-available via the Info system.
+.BR /usr/share/doc/latex-beamer/beameruserguide.pdf.gz
+from the 
+.B latex-beamer
+package.
+
+Note: Use "show notes on second screen=right" because
+.B dspdfviewer
+assumes that the right half of the page is the notes.
