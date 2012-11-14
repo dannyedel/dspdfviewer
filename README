@@ -1,0 +1,8 @@
+This is the dual-screen PDF viewer.
+
+It is a simple viewer for latex-beamer's show notes on second screen option.
+
+For more information on how to install it, consult the INSTALL file.
+
+For usage information, please read the manpage in the docs/ subdirectory.
+
