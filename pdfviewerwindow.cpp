@@ -43,6 +43,7 @@ unsigned int PDFViewerWindow::getMonitor() const
 PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part): QWidget(),
   m_monitor(monitor), myPart(part)
 {
+#ifdef USE_OLD_PROGRAMMATIC_LAYOUT
   this->setContentsMargins(0,0,0,0);
   outerlayout = new QVBoxLayout();
   this->setLayout(outerlayout);
@@ -82,6 +83,9 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part): QWidget()
   QPalette pal = palette();
   pal.setColor(backgroundRole(), Qt::black);
   setPalette(pal);
+#else /* New, ui-based layout */
+  setupUi(this);
+#endif
   reposition();
 }
 
@@ -92,8 +96,8 @@ void PDFViewerWindow::reposition()
   this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
   this->showNormal();
   QRect rect = QApplication::desktop()->screenGeometry(getMonitor());
-  setFixedSize(rect.size());
   move(rect.topLeft());
+  setFixedSize(rect.size());
   this->setWindowFlags( windowFlags()
   | Qt::FramelessWindowHint
   );
@@ -108,7 +112,8 @@ void PDFViewerWindow::reposition()
 void PDFViewerWindow::displayImage(QImage image)
 {
   currentImage= image;
-  imageLabel.setPixmap(QPixmap::fromImage(image));
+  imageLabel->setText("");
+  imageLabel->setPixmap(QPixmap::fromImage(image));
   /*
   if ( geometry().size() != getTargetImageSize() )
     reposition();
@@ -176,12 +181,16 @@ void PDFViewerWindow::setViewer(DSPDFViewer* v)
 
 QSize PDFViewerWindow::getTargetImageSize() const
 {
+#ifdef USE_OLD_PROGRAMMATIC_LAYOUT
   QSize screenSize = QApplication::desktop()->screenGeometry(getMonitor()).size();
   if ( isInformationLineVisible() )
   {
     screenSize.setHeight( screenSize.height() - informationLineLayout->geometry().height() );
   }
   return screenSize;
+#else
+  return imageAreaWidget->geometry().size();
+#endif
 }
 
 void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
@@ -224,12 +233,30 @@ void PDFViewerWindow::showInformationLine()
 void PDFViewerWindow::addThumbnail(int pageNumber, QImage thumbnail)
 {
   thumbnails.insert(pageNumber, thumbnail);
+  QLabel*p = new QLabel(this);
+  p->setPixmap(QPixmap::fromImage(thumbnail));
+  thumbnailLabels.insert(pageNumber, p);
+  
+  /* Simple way: insert at the end */
+  QList<int> keys = thumbnailLabels.keys();
+  if ( keys.isEmpty() || keys.last() < pageNumber ) {
+    thumbnailAreaWidget->layout()->addWidget(p);
+    return;
+  }
+
+#if 0
+  if ( thumbnailLabels.keys()
+  for( int i=0; i< thumbnailLabels.size(); ++i) {
+    if ( thumbnailLabels.
+  }
+#endif
 }
 
 void PDFViewerWindow::renderThumbnails(int currentPage)
 {
   if ( !isInformationLineVisible() )
     return;
+#ifdef USE_OLD_PROGRAMMATIC_LAYOUT
   /* clear all current thumbnails */
   for( QLabel* p: thumbnailLabels )
   {
@@ -254,6 +281,13 @@ void PDFViewerWindow::renderThumbnails(int currentPage)
       thumbnailLabels[i]->setPixmap(QPixmap::fromImage(thumbnails[page]));
     }
   }
+#else
+  /** Scroll to thumbnail's label */
+  QLabel* l = thumbnailLabels.value(currentPage);
+  if ( l )
+    thumbnailArea->ensureWidgetVisible(l);
+#endif
+
 }
 bool PDFViewerWindow::hasThumbnailForPage(int pageNumber) const
 {
@@ -275,7 +309,8 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
     return; // This is not our part
     
   // There is an image incoming that might fit.
-  this->imageLabel.setPixmap( QPixmap::fromImage( renderedPage->getImage() ) );
+  this->imageLabel->setText("");
+  this->imageLabel->setPixmap( QPixmap::fromImage( renderedPage->getImage() ) );
   
   // It was even the right size! Yeah!
   if ( renderedPage->getIdentifier().requestedPageSize() == getTargetImageSize() ) {
@@ -290,7 +325,8 @@ void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
   this->currentPageNumber = pageNumberToWaitFor;
   this->correntImageRendered = false;  
   this->currentImage = QImage();
-  imageLabel.setText("LOADING");
+  imageLabel->setPixmap(QPixmap());
+  imageLabel->setText(QString("Loading page number %1").arg(pageNumberToWaitFor) );
 }
 
 

@@ -28,17 +28,18 @@
 #include "renderedpage.h"
 #include "pdfrenderfactory.h"
 
+#include "ui_form.h"
+
 class DSPDFViewer;
 /** Shared base class for both windows (primary and secondary)
  * 
  */
-class PDFViewerWindow : public QWidget
+class PDFViewerWindow : public QWidget, private Ui::Form
 {
   Q_OBJECT
 private:
   unsigned int m_monitor;
   DSPDFViewer* m_dspdfviewer;
-  QLabel imageLabel;
   QImage currentImage;
   
   bool informationLineVisible;
