@@ -13,9 +13,11 @@
 #include <QDebug>
 #include <stdexcept>
 
-DSPDFViewer::DSPDFViewer(QString filename, bool splitMode): pdfDocument(
-  Poppler::Document::load(filename)
-),
+DSPDFViewer::DSPDFViewer(QString filename, bool splitMode): 
+	presentationClocksRunning(false),
+	readyToRender(false),
+	pdfDocument(Poppler::Document::load(filename))
+	,
  renderFactory(filename),
  m_pagenumber(0),
  audienceWindow(0,  splitMode? PagePart::LeftHalf : PagePart::FullPage, false),

@@ -14,10 +14,10 @@ private:
   QTimer	clockDisplayTimer;
   QTime 	slideStart;
   QTime		presentationStart;
-  bool		presentationClocksRunning=false;
+  bool		presentationClocksRunning;
 
 private:
-  bool readyToRender=false;
+  bool readyToRender;
   
   QSharedPointer< Poppler::Document > pdfDocument;
   PdfRenderFactory renderFactory;
