@@ -36,6 +36,12 @@ else()
 	message(WARNING "Compiling with a Non-GNU compiler. A lot less warnings will be output, so more coding errors might go undetected.")
 endif()
 
+if( "${CMAKE_BUILD_TYPE}" MATCHES "^Debug$" )
+  # do nothing
+else()
+  add_definitions(-DQT_NO_DEBUG_OUTPUT)
+endif()
+
 set(dspdfviewer_SRCS renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
 qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
