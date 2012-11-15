@@ -4,7 +4,7 @@
 .\" First parameter, NAME, should be all caps
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
-.TH DSPDFVIEWER 1 "November 14, 2012"
+.TH DSPDFVIEWER 1 "November 15, 2012"
 .\" Please adjust this date whenever revising the manpage.
 .\"
 .\" Some roff macros, for reference:
@@ -32,7 +32,22 @@ screen (think: the notebook you carried to the presentation site).
 The basic idea is that you will display personal notes and information to
 help you with your presentation on your personal screen, while the audience
 sees only the PDF they are supposed to see.
-.\" TODO: Clocks and timers on second screen
+
+On the secondary screen you will see three clocks:
+A "wall clock", a "presentation" clock and a "slide" clock.
+
+The wall clock in the bottom left corner that display current time of day,
+the presentation clock (labeled "Total") counts the time you spent since
+you started the presentation, and the "slide" counter (bottom right)
+displays the time you spent on the current slide.
+
+The clocks don't start the second you launch the program, the idea behind that
+behaviour is that many people have a "title" slide active long before the audience
+even arrives.
+
+Once you use the next/previous slide commands, the clock starts. If you want to
+start the clock, but still display the title slide, just press "previous"
+(for example, Up Arrow or Right Mouse Button) on the title slide.
 .\" .PP
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
 .\" \fI<whatever>\fP escape sequences to invode bold face and italics,
@@ -43,11 +58,16 @@ This program follows the usual GNU command line syntax, with long
 options starting with two dashes ('-').
 A summary of options is included below.
 .TP
-.B \-h, \-\-help
-Show summary of options.
-.TP
-.B \-v, \-\-version
-Show version of program.
+.B \-f, \-\-full-page
+Use the presentation program with a standard PDF, that is display the full page
+on the primary AND secondary monitor. The secondary screen still contains timers
+and thumbnails to help you with your presentation.
+.\".TP
+.\".B \-h, \-\-help
+.\"Show summary of options.
+.\".TP
+.\".B \-v, \-\-version
+.\"Show version of program.
 .SH CONTROLS
 You can use the following controls while
 .B dspdfviewer
@@ -59,8 +79,9 @@ Go to next page
 .B Right mouse button, Down Arrow, Left Arrow, Page Down, Backspace
 Go to previous page
 .TP
-.B Home (also called Pos 1)
-Go to first page
+.B Home (also called Pos 1 on some keyboards)
+Go to first page and 
+.B reset the presentation and the slide clock to zero
 .TP
 .B Escape
 Quit viewer
@@ -69,7 +90,7 @@ Quit viewer
 Switch primary and secondary screens
 (Use this if the audience sees your 'note' side instead of the actual
 presentation)
-.\" TODO: and reset the clocks
+
 .SH SEE ALSO
 .BR /usr/share/doc/latex-beamer/beameruserguide.pdf.gz
 from the 

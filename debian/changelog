@@ -1,3 +1,9 @@
+dspdfviewer (1.0) testing; urgency=low
+
+  * The software is stable and works well on my primary system.
+
+ -- Danny Edel <mail@danny-edel.de>  Thu, 15 Nov 2012 14:01:42 +0100
+
 dspdfviewer (0.4) testing; urgency=low
 
   * Changed compat to 0.7 so it can compile with ubuntu 
