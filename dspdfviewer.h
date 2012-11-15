@@ -11,7 +11,7 @@ class DSPDFViewer: public QObject
 {
   
 private:
-  QTimer	oneSecondTimer;
+  QTimer	clockDisplayTimer;
   QTime 	slideStart;
   QTime		presentationStart;
   bool		presentationClocksRunning=false;

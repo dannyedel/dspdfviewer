@@ -42,9 +42,10 @@ DSPDFViewer::DSPDFViewer(QString filename, bool splitMode): pdfDocument(
   connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
   
   renderPage();
-  connect( &oneSecondTimer, SIGNAL(timeout()), &secondaryWindow, SLOT(refreshClocks()));
+  connect( &clockDisplayTimer, SIGNAL(timeout()), &secondaryWindow, SLOT(refreshClocks()));
   secondaryWindow.refreshClocks();
-  oneSecondTimer.start(1000);
+  clockDisplayTimer.setInterval(250);
+  clockDisplayTimer.start();
   readyToRender= true;
 }
 
@@ -236,12 +237,15 @@ void DSPDFViewer::resetSlideClock()
 {
   /* Always resets the slide clock. */
   slideStart.start();
-  oneSecondTimer.start();
   if ( ! presentationClocksRunning ) {
     /* If this starts a presentation, also reset the presentation clock. */
     presentationStart.start();
     presentationClocksRunning=true;
   }
+  /* Refresh display times immediately */
+  secondaryWindow.refreshClocks();
+  /* and make sure they'll get refreshed a second later aswell. */
+  clockDisplayTimer.start();
 }
 
 
