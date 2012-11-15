@@ -28,7 +28,7 @@
 #include "renderedpage.h"
 #include "pdfrenderfactory.h"
 
-#include "ui_form.h"
+#include "ui_pdfviewerwindow.h"
 
 class DSPDFViewer;
 /** Shared base class for both windows (primary and secondary)
@@ -38,8 +38,8 @@ class PDFViewerWindow : public QWidget, private Ui::Form
 {
   Q_OBJECT
 private:
-  unsigned int m_monitor;
   DSPDFViewer* m_dspdfviewer;
+  unsigned int m_monitor;
   QImage currentImage;
   
   bool informationLineVisible;
@@ -53,13 +53,13 @@ private:
   int currentPageNumber;
   bool correntImageRendered;
   PagePart myPart;
-
+  
 public:
   /** Standard constructor
    * @param monitor monitor to start on (usually 0 for primary)
    * @param dspdfviewer Pointer to the application (to handle next/prev commands)
    */
-    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart);
+    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine);
     
     /** Sets the monitor to display this window on
      * Automatically calls reposition
@@ -108,7 +108,8 @@ public:
 public slots:
   void renderedPageIncoming( QSharedPointer<RenderedPage> renderedPage);
   void renderedThumbnailIncoming( QSharedPointer<RenderedPage> renderedThumbnail);
-    
+  
+  void resizeEvent(QResizeEvent* resizeEvent);
 };
 
 #endif // PDFVIEWERWINDOW_H

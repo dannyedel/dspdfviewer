@@ -11,14 +11,13 @@ class DSPDFViewer: public QObject
 {
   
 private:
+  bool readyToRender=false;
+  
   QSharedPointer< Poppler::Document > pdfDocument;
+  PdfRenderFactory renderFactory;
+  unsigned int m_pagenumber;
   PDFViewerWindow audienceWindow;
   PDFViewerWindow secondaryWindow;
-  
-  
-private:
-  unsigned int m_pagenumber;
-  PdfRenderFactory renderFactory;
   
 public:
   static const QSize thumbnailSize;
@@ -60,6 +59,8 @@ public:
     void swapScreens();
     
     void exit();
+    
+    bool isReadyToRender();
     
     PdfRenderFactory* theFactory();
 };

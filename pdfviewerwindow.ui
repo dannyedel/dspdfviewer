@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>865</width>
-    <height>606</height>
+    <width>523</width>
+    <height>465</height>
    </rect>
   </property>
   <property name="palette">
@@ -452,88 +452,18 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-     <widget class="QWidget" name="imageAreaWidget">
+     <widget class="QLabel" name="imageLabel">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>863</width>
-        <height>504</height>
+        <width>521</width>
+        <height>363</height>
        </rect>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <property name="margin">
-        <number>0</number>
-       </property>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QWidget" name="verticalWidget" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <property name="margin">
-           <number>0</number>
-          </property>
-          <item>
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="imageLabel">
-            <property name="text">
-             <string>The actual image goes here.</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+      <property name="text">
+       <string>The actual image goes here.</string>
+      </property>
      </widget>
     </widget>
    </item>
@@ -562,7 +492,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>863</width>
+        <width>521</width>
         <height>98</height>
        </rect>
       </property>

@@ -40,7 +40,9 @@ unsigned int PDFViewerWindow::getMonitor() const
   return m_monitor;
 }
 
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part): QWidget(),
+PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part, bool showInformationLine): 
+  QWidget(),
+  m_dspdfviewer(nullptr),
   m_monitor(monitor), myPart(part)
 {
 #ifdef USE_OLD_PROGRAMMATIC_LAYOUT
@@ -86,6 +88,8 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part): QWidget()
 #else /* New, ui-based layout */
   setupUi(this);
 #endif
+  if ( !showInformationLine )
+    hideInformationLine();
   reposition();
 }
 
@@ -113,7 +117,10 @@ void PDFViewerWindow::displayImage(QImage image)
 {
   currentImage= image;
   imageLabel->setText("");
+  imageLabel->resize( image.size() );
   imageLabel->setPixmap(QPixmap::fromImage(image));
+  //imageArea->setWidgetResizable(true);
+  
   /*
   if ( geometry().size() != getTargetImageSize() )
     reposition();
@@ -189,7 +196,7 @@ QSize PDFViewerWindow::getTargetImageSize() const
   }
   return screenSize;
 #else
-  return imageAreaWidget->geometry().size();
+  return imageArea->geometry().size();
 #endif
 }
 
@@ -205,16 +212,21 @@ void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
 	break;
       default: /* any other button */
 	/* do nothing */
-	;
+	break;
     }
 }
 
 void PDFViewerWindow::hideInformationLine()
 {
   informationLineVisible=false;
+#ifdef USE_OLD_PROGRAMMATIC_LAYOUT
   for( QLabel*l : thumbnailLabels) {
     l->hide();
   }
+#else
+  this->thumbnailArea->hide();
+  this->thumbnailAreaWidget->hide();
+#endif
 }
 
 bool PDFViewerWindow::isInformationLineVisible() const
@@ -225,25 +237,44 @@ bool PDFViewerWindow::isInformationLineVisible() const
 void PDFViewerWindow::showInformationLine()
 {
   informationLineVisible=true;
+#ifdef USE_OLD_PROGRAMMATIC_LAYOUT
   for( QLabel*l : thumbnailLabels) {
     l->show();
   }
+#else
+  this->thumbnailArea->show();
+  this->thumbnailAreaWidget->show();
+#endif
 }
 
 void PDFViewerWindow::addThumbnail(int pageNumber, QImage thumbnail)
 {
+  if ( hasThumbnailForPage(pageNumber) )
+    return;
   thumbnails.insert(pageNumber, thumbnail);
   QLabel*p = new QLabel(this);
   p->setPixmap(QPixmap::fromImage(thumbnail));
-  thumbnailLabels.insert(pageNumber, p);
-  
+
   /* Simple way: insert at the end */
   QList<int> keys = thumbnailLabels.keys();
   if ( keys.isEmpty() || keys.last() < pageNumber ) {
+    qDebug() << "Adding thumbnail for page" << pageNumber;
+    thumbnailLabels.insert(pageNumber, p);
     thumbnailAreaWidget->layout()->addWidget(p);
     return;
   }
-
+  
+  /* Insert at correct place */
+  thumbnailLabels.insert(pageNumber,p);
+  qDebug() << "Re-ordering thumbnails to display page" << pageNumber;
+  
+  /* Re-Order all thumbnails */
+  for( auto wid: thumbnailAreaWidget->layout()->children() ) {
+    thumbnailAreaWidget->layout()->removeWidget( dynamic_cast<QWidget*>(wid) );
+  }
+  for( auto wid: thumbnailLabels ) {
+    thumbnailAreaWidget->layout()->addWidget(wid);
+  }
 #if 0
   if ( thumbnailLabels.keys()
   for( int i=0; i< thumbnailLabels.size(); ++i) {
@@ -309,8 +340,7 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
     return; // This is not our part
     
   // There is an image incoming that might fit.
-  this->imageLabel->setText("");
-  this->imageLabel->setPixmap( QPixmap::fromImage( renderedPage->getImage() ) );
+  displayImage(renderedPage->getImage());
   
   // It was even the right size! Yeah!
   if ( renderedPage->getIdentifier().requestedPageSize() == getTargetImageSize() ) {
@@ -362,6 +392,21 @@ PagePart PDFViewerWindow::getMyPagePart() const
   return myPart;
 }
 
+void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
+{
+  QWidget::resizeEvent(resizeEvent);
+  qDebug() << "Resize event" << resizeEvent;
+  if ( m_dspdfviewer ) { 
+      qDebug() << "resized from" << resizeEvent->oldSize() << "to" << resizeEvent->size();
+      if ( m_dspdfviewer->isReadyToRender() ) {
+	qDebug() << "Viewer is ready to render, requesting rendering";
+	m_dspdfviewer->renderPage();
+      }
+  }
+  else {
+    qDebug() << "m_dspdfviewer not ready, cant render yet";
+  }
+}
 
 
 #include "pdfviewerwindow.moc"

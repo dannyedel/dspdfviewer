@@ -16,17 +16,18 @@
 DSPDFViewer::DSPDFViewer(QString filename, bool splitMode): pdfDocument(
   Poppler::Document::load(filename)
 ),
- audienceWindow(0,  splitMode? PagePart::LeftHalf : PagePart::FullPage),
- secondaryWindow(1, splitMode? PagePart::RightHalf: PagePart::FullPage),
+ renderFactory(filename),
  m_pagenumber(0),
- renderFactory(filename)
+ audienceWindow(0,  splitMode? PagePart::LeftHalf : PagePart::FullPage, false),
+ secondaryWindow(1, splitMode? PagePart::RightHalf: PagePart::FullPage, true)
 {
+  qDebug() << "Starting constructor" ;
   audienceWindow.setViewer(this);
   secondaryWindow.setViewer(this);
+  
   audienceWindow.showLoadingScreen(0);
   secondaryWindow.showLoadingScreen(0);
-  secondaryWindow.showInformationLine();
-  // secondaryWindow.hideInformationLine();
+  
   if ( ! pdfDocument  || pdfDocument->isLocked() )
   {
     /// FIXME: Error message
@@ -41,6 +42,7 @@ DSPDFViewer::DSPDFViewer(QString filename, bool splitMode): pdfDocument(
   connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
   
   renderPage();
+  readyToRender= true;
 }
 
 
@@ -178,6 +180,10 @@ unsigned int DSPDFViewer::numberOfPages() {
 	return pdfDocument->numPages() ;
 }
 
+bool DSPDFViewer::isReadyToRender()
+{
+  return readyToRender;
+}
 
 
 #include "dspdfviewer.moc"
