@@ -49,6 +49,8 @@ void PdfRenderFactory::thumbnailThreadFinishedRendering(QSharedPointer<RenderedP
     renderedThumbnails.insert(pageNumber, new RenderedPage(*renderedPage));
     currentlyRenderingThumbnails.remove(pageNumber);
   }
+  
+  emit thumbnailRendered(renderedPage);
 }
 
 QSharedPointer<Poppler::Document> PdfRenderFactory::fetchDocument()

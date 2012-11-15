@@ -90,6 +90,8 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part, bool showI
 #endif
   if ( !showInformationLine )
     hideInformationLine();
+  else
+    this->showInformationLine();
   reposition();
 }
 
@@ -106,7 +108,14 @@ void PDFViewerWindow::reposition()
   | Qt::FramelessWindowHint
   );
   this->showFullScreen();
-  this->activateWindow();
+  /* Note: The focus should be on the primary window, because at least 
+   * Gnome draws the primary window's border onto the secondary.
+   * 
+   * I dont mind the border on my helper screen, but the
+   * audience shouldnt see it.
+   */
+  if ( !informationLineVisible )
+    this->activateWindow();
 //  this->resize( 100, 100 );
  // this->move(rect.topLeft());
   //this->showFullScreen();
@@ -250,35 +259,6 @@ void PDFViewerWindow::addThumbnail(int pageNumber, QImage thumbnail)
   if ( hasThumbnailForPage(pageNumber) )
     return;
   thumbnails.insert(pageNumber, thumbnail);
-  QLabel*p = new QLabel(this);
-  p->setPixmap(QPixmap::fromImage(thumbnail));
-
-  /* Simple way: insert at the end */
-  QList<int> keys = thumbnailLabels.keys();
-  if ( keys.isEmpty() || keys.last() < pageNumber ) {
-    qDebug() << "Adding thumbnail for page" << pageNumber;
-    thumbnailLabels.insert(pageNumber, p);
-    thumbnailAreaWidget->layout()->addWidget(p);
-    return;
-  }
-  
-  /* Insert at correct place */
-  thumbnailLabels.insert(pageNumber,p);
-  qDebug() << "Re-ordering thumbnails to display page" << pageNumber;
-  
-  /* Re-Order all thumbnails */
-  for( auto wid: thumbnailAreaWidget->layout()->children() ) {
-    thumbnailAreaWidget->layout()->removeWidget( dynamic_cast<QWidget*>(wid) );
-  }
-  for( auto wid: thumbnailLabels ) {
-    thumbnailAreaWidget->layout()->addWidget(wid);
-  }
-#if 0
-  if ( thumbnailLabels.keys()
-  for( int i=0; i< thumbnailLabels.size(); ++i) {
-    if ( thumbnailLabels.
-  }
-#endif
 }
 
 void PDFViewerWindow::renderThumbnails(int currentPage)
@@ -311,10 +291,26 @@ void PDFViewerWindow::renderThumbnails(int currentPage)
     }
   }
 #else
-  /** Scroll to thumbnail's label */
-  QLabel* l = thumbnailLabels.value(currentPage);
-  if ( l )
-    thumbnailArea->ensureWidgetVisible(l);
+  if ( hasThumbnailForPage(currentPage-1) )
+  {
+    previousThumbnail->setText("");
+    previousThumbnail->setPixmap( QPixmap::fromImage(thumbnails[currentPage-1]) );
+  } else {
+    previousThumbnail->setPixmap( QPixmap() );
+  }
+  if ( hasThumbnailForPage(currentPage) ) {
+    currentThumbnail->setText("");
+    currentThumbnail->setPixmap( QPixmap::fromImage(thumbnails[currentPage]));
+  }
+  else {
+    currentThumbnail->setPixmap(QPixmap());
+  }
+  if ( hasThumbnailForPage(currentPage+1) ) {
+    nextThumbnail->setText("");
+    nextThumbnail->setPixmap( QPixmap::fromImage( thumbnails[currentPage+1] ));
+  } else {
+    nextThumbnail->setPixmap(QPixmap());
+  }
 #endif
 
 }
@@ -361,6 +357,7 @@ void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
 
 void PDFViewerWindow::renderedThumbnailIncoming(QSharedPointer< RenderedPage > renderedThumbnail)
 {
+  qDebug() << "Thumbnail incoming: " << renderedThumbnail->getPageNumber();
   /* If a thumbnail for the page we're waiting for is incoming and we have no page at all, its better than nothing */
   if ( renderedThumbnail->getPageNumber() == currentPageNumber
     && currentImage.isNull() )
@@ -410,9 +407,9 @@ void PDFViewerWindow::refreshClocks()
 {
   if ( ! m_dspdfviewer )
     return;
-  wallClock->setText( m_dspdfviewer->wallClock() );
+  wallClock->setText( m_dspdfviewer->wallClock());
   slideClock->setText(m_dspdfviewer->slideClock() );
-  presentationClock->setText(m_dspdfviewer->presentationClock());
+  presentationClock->setText(QString("Total\n%1").arg(m_dspdfviewer->presentationClock()));
 }
 
 

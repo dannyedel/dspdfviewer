@@ -426,9 +426,12 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>DS PDF Viewer</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="margin">
     <number>0</number>
    </property>
@@ -436,6 +439,9 @@
     <widget class="QScrollArea" name="imageArea">
      <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
      </property>
      <property name="lineWidth">
       <number>0</number>
@@ -447,7 +453,7 @@
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
      <property name="widgetResizable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -457,12 +463,15 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>975</width>
-        <height>392</height>
+        <width>977</width>
+        <height>400</height>
        </rect>
       </property>
       <property name="text">
        <string>The actual image goes here.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>
@@ -489,6 +498,9 @@
         <property name="text">
          <string>09:12:34</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
       <item>
@@ -501,6 +513,9 @@
         </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
         </property>
         <property name="lineWidth">
          <number>0</number>
@@ -519,26 +534,46 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>473</width>
-           <height>98</height>
+           <width>475</width>
+           <height>100</height>
           </rect>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout">
+         <layout class="QGridLayout" name="gridLayout">
+          <property name="verticalSpacing">
+           <number>0</number>
+          </property>
           <property name="margin">
            <number>0</number>
           </property>
-          <item>
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+          <item row="0" column="2">
+           <widget class="QLabel" name="nextThumbnail">
+            <property name="text">
+             <string>Next Page</string>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>478</width>
-              <height>20</height>
-             </size>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-           </spacer>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="currentThumbnail">
+            <property name="text">
+             <string>Current Page</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="previousThumbnail">
+            <property name="text">
+             <string>Previous Page</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -552,7 +587,11 @@
          </font>
         </property>
         <property name="text">
-         <string>00:00:00</string>
+         <string>Total
+00:00:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -573,10 +612,12 @@
         <property name="text">
          <string>00:00</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
      </layout>
-     <zorder>horizontalSpacer_3</zorder>
      <zorder>thumbnailArea</zorder>
      <zorder>presentationClock</zorder>
      <zorder>wallClock</zorder>
