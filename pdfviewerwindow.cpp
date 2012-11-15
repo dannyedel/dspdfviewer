@@ -165,9 +165,11 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
     switch( e->key() )
     {
       case Qt::Key_F12:
+      case Qt::Key_S: //Swap
 	m_dspdfviewer->swapScreens();
 	break;
       case Qt::Key_Escape:
+      case Qt::Key_Q: //quit
 	m_dspdfviewer->exit();
 	break;
       case Qt::Key_Space:
@@ -176,15 +178,20 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
       case Qt::Key_PageDown:
       case Qt::Key_Down:
       case Qt::Key_Right:
+      case Qt::Key_F: // Forward
+      case Qt::Key_N: // Next
 	m_dspdfviewer->goForward();
 	break;
       case Qt::Key_PageUp:
       case Qt::Key_Up:
       case Qt::Key_Left:
       case Qt::Key_Backspace:
+      case Qt::Key_B: // Back
+      case Qt::Key_P: //Previous
 	m_dspdfviewer->goBackward();
 	break;
       case Qt::Key_Home:
+      case Qt::Key_H: //Home
 	m_dspdfviewer->goToStartAndResetClocks();
 	break;
     }
