@@ -25,6 +25,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QMap>
+#include <QTimer>
 #include "renderedpage.h"
 #include "pdfrenderfactory.h"
 
@@ -110,6 +111,8 @@ public slots:
   void renderedThumbnailIncoming( QSharedPointer<RenderedPage> renderedThumbnail);
   
   void resizeEvent(QResizeEvent* resizeEvent);
+  
+  void refreshClocks();
 };
 
 #endif // PDFVIEWERWINDOW_H

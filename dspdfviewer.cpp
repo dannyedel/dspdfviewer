@@ -42,6 +42,9 @@ DSPDFViewer::DSPDFViewer(QString filename, bool splitMode): pdfDocument(
   connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
   
   renderPage();
+  connect( &oneSecondTimer, SIGNAL(timeout()), &secondaryWindow, SLOT(refreshClocks()));
+  secondaryWindow.refreshClocks();
+  oneSecondTimer.start(1000);
   readyToRender= true;
 }
 
@@ -52,11 +55,13 @@ DSPDFViewer::~DSPDFViewer()
 
 void DSPDFViewer::goBackward()
 {
+  resetSlideClock();
   gotoPage(pageNumber()-1);
 }
 
 void DSPDFViewer::goForward()
 {
+  resetSlideClock();
   gotoPage(pageNumber()+1);
 }
 
@@ -183,6 +188,60 @@ unsigned int DSPDFViewer::numberOfPages() {
 bool DSPDFViewer::isReadyToRender()
 {
   return readyToRender;
+}
+
+void DSPDFViewer::goToStartAndResetClocks()
+{
+  presentationClocksRunning=false;
+  gotoPage(0);
+}
+
+QString DSPDFViewer::presentationClock()
+{
+  if ( ! presentationClocksRunning )
+    return timeToString(0);
+  return timeToString(presentationStart.elapsed());
+}
+
+QString DSPDFViewer::wallClock()
+{
+  return timeToString( QTime::currentTime() );
+}
+
+QString DSPDFViewer::slideClock()
+{
+  if ( ! presentationClocksRunning )
+    return timeToString(0);
+  return timeToString( slideStart.elapsed() );
+}
+
+QString DSPDFViewer::timeToString(QTime time)
+{
+  return time.toString("HH:mm:ss");
+}
+
+QString DSPDFViewer::timeToString(int milliseconds)
+{
+  int seconds = milliseconds / 1000;
+  int minutes = seconds / 60;
+  int hours = minutes / 60;
+  seconds%=60;
+  minutes%=60;
+  QString s;
+  s.sprintf("%2d:%02d:%02d", hours, minutes, seconds);
+  return s;
+}
+
+void DSPDFViewer::resetSlideClock()
+{
+  /* Always resets the slide clock. */
+  slideStart.start();
+  oneSecondTimer.start();
+  if ( ! presentationClocksRunning ) {
+    /* If this starts a presentation, also reset the presentation clock. */
+    presentationStart.start();
+    presentationClocksRunning=true;
+  }
 }
 
 

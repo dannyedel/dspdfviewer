@@ -11,6 +11,12 @@ class DSPDFViewer: public QObject
 {
   
 private:
+  QTimer	oneSecondTimer;
+  QTime 	slideStart;
+  QTime		presentationStart;
+  bool		presentationClocksRunning=false;
+
+private:
   bool readyToRender=false;
   
   QSharedPointer< Poppler::Document > pdfDocument;
@@ -18,12 +24,17 @@ private:
   unsigned int m_pagenumber;
   PDFViewerWindow audienceWindow;
   PDFViewerWindow secondaryWindow;
-  
+
+
 public:
   static const QSize thumbnailSize;
   
 private:
   QImage renderForTarget( QSharedPointer<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf=false);
+  
+  QString timeToString(QTime time);
+  QString timeToString(int milliseconds);
+  void	resetSlideClock();
   
 Q_OBJECT
 public:
@@ -62,7 +73,13 @@ public:
     
     bool isReadyToRender();
     
+    void goToStartAndResetClocks();
+    
     PdfRenderFactory* theFactory();
+    
+    QString wallClock();
+    QString slideClock();
+    QString presentationClock();
 };
 
 #endif // dspdfviewer_H

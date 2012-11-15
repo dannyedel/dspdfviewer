@@ -176,7 +176,7 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
 	m_dspdfviewer->goBackward();
 	break;
       case Qt::Key_Home:
-	m_dspdfviewer->gotoPage(0);
+	m_dspdfviewer->goToStartAndResetClocks();
 	break;
     }
 }
@@ -224,8 +224,7 @@ void PDFViewerWindow::hideInformationLine()
     l->hide();
   }
 #else
-  this->thumbnailArea->hide();
-  this->thumbnailAreaWidget->hide();
+  this->bottomArea->hide();
 #endif
 }
 
@@ -242,8 +241,7 @@ void PDFViewerWindow::showInformationLine()
     l->show();
   }
 #else
-  this->thumbnailArea->show();
-  this->thumbnailAreaWidget->show();
+  this->bottomArea->show();
 #endif
 }
 
@@ -406,6 +404,15 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
   else {
     qDebug() << "m_dspdfviewer not ready, cant render yet";
   }
+}
+
+void PDFViewerWindow::refreshClocks()
+{
+  if ( ! m_dspdfviewer )
+    return;
+  wallClock->setText( m_dspdfviewer->wallClock() );
+  slideClock->setText(m_dspdfviewer->slideClock() );
+  presentationClock->setText(m_dspdfviewer->presentationClock());
 }
 
 
