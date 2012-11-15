@@ -1,3 +1,9 @@
+dspdfviewer (1.1) testing; urgency=low
+
+  * Added more keyboard shortcuts for people with F12 already bound
+
+ -- Danny Edel <mail@danny-edel.de>  Thu, 15 Nov 2012 15:51:44 +0100
+
 dspdfviewer (1.0) testing; urgency=low
 
   * The software is stable and works well on my primary system.
