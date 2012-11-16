@@ -6,7 +6,7 @@ Build-Depends:
 # For now I depend on g++-4.6 or higher because of c++11-features
 # FIXME: If there's any dependency that says "Any c++11-compiler"
 # use that.
- g++-4.6 | g++ (>= 4:4.6),
+ g++-4.6 | g++-4.7 | g++-4.8 ,
 # Rest of deps:
 # A Debhelper with cmake support
 # (otherwise it will not see the CMakeLists.txt and just build
