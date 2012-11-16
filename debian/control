@@ -2,7 +2,21 @@ Source: dspdfviewer
 Section: text
 Priority: extra
 Maintainer: Danny Edel <mail@danny-edel.de>
-Build-Depends: debhelper (>= 7.3.0), cmake, libpoppler-qt4-dev, hardening-wrapper
+Build-Depends:
+# For now I depend on g++-4.6 or higher because of c++11-features
+# FIXME: If there's any dependency that says "Any c++11-compiler"
+# use that.
+ g++-4.6 | g++ (>= 4.6),
+# Rest of deps:
+# A Debhelper with cmake support
+# (otherwise it will not see the CMakeLists.txt and just build
+# a package with a manpage...
+ debhelper (>= 7.3.0), cmake,
+# the poppler-library for PDF decoding
+ libpoppler-qt4-dev,
+# And the hardening-wrapper because lintian told me to make the build
+# safer.
+ hardening-wrapper
 Standards-Version: 3.9.3
 Vcs-Git: git://github.com/dannyedel/dspdfviewer.git
 Vcs-Browser: https://github.com/dannyedel/dspdfviewer
