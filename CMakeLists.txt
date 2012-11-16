@@ -1,8 +1,10 @@
 project(dspdfviewer)
 cmake_minimum_required(VERSION 2.6)
 find_package(Qt4 REQUIRED)
+find_package(Boost COMPONENTS program_options REQUIRED)
 
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${Boost_INCLUDE_DIR})
 
 add_definitions(-ggdb)
 
@@ -42,12 +44,12 @@ else()
   add_definitions(-DQT_NO_DEBUG_OUTPUT)
 endif()
 
-set(dspdfviewer_SRCS renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
+set(dspdfviewer_SRCS runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
 qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 qt4_automoc(${dspdfviewer_SRCS})
 add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
-target_link_libraries(dspdfviewer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} poppler-qt4)
+target_link_libraries(dspdfviewer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${Boost_LIBRARIES} poppler-qt4)
 
 install(TARGETS	dspdfviewer
 	RUNTIME DESTINATION bin)

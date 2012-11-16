@@ -38,7 +38,7 @@ private:
   
 Q_OBJECT
 public:
-    DSPDFViewer(QString filename, bool splitMode=true);
+    DSPDFViewer(QString filename, bool fullPageMode=false);
     virtual ~DSPDFViewer();
     
     /** (re-)Renders the current page on both monitors
