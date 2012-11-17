@@ -87,31 +87,20 @@ QImage DSPDFViewer::renderForTarget(QSharedPointer< Poppler::Page > page, QSize 
 
 void DSPDFViewer::renderPage()
 {
-#if 0
-for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
-  {
-    if ( ! secondaryWindow.hasThumbnailForPage(i) )
-    {
-      QSharedPointer<Poppler::Page> page( pdfDocument->page(i) );
-      if ( page ) {
-	QImage thumbnail = renderForTarget(page, thumbnailSize, false);
-	secondaryWindow.addThumbnail(i, thumbnail);
-      }
-    }
-  }
-  secondaryWindow.renderThumbnails(m_pagenumber);
-#endif /* 0 */
-
   qDebug() << "Requesting rendering of page " << m_pagenumber;
   audienceWindow.showLoadingScreen(m_pagenumber);
   secondaryWindow.showLoadingScreen(m_pagenumber);
-  theFactory()->requestThumbnailRendering(m_pagenumber);
+  if ( runtimeConfiguration.showThumbnails() ) {
+    theFactory()->requestThumbnailRendering(m_pagenumber);
+  }
   theFactory()->requestPageRendering(m_pagenumber, audienceWindow);
   theFactory()->requestPageRendering(m_pagenumber, secondaryWindow);
   
   /** Pre-Render next 10 pages **/
   for ( unsigned i=m_pagenumber; i<m_pagenumber+10 && i < numberOfPages() ; i++) {
-    theFactory()->requestThumbnailRendering(i);
+    if ( runtimeConfiguration.showThumbnails() ) {
+      theFactory()->requestThumbnailRendering(i);
+    }
     theFactory()->requestPageRendering(i, audienceWindow);
     theFactory()->requestPageRendering(i, secondaryWindow);
   }
@@ -119,7 +108,9 @@ for( unsigned int i=std::max(3u, m_pagenumber)-3; i<m_pagenumber+6; i++)
   /** Request previous 3 pages **/
   
   for ( unsigned i= std::max(m_pagenumber,3u)-3; i<m_pagenumber; i++) {
-    theFactory()->requestThumbnailRendering(i);
+    if ( runtimeConfiguration.showThumbnails() ) {
+      theFactory()->requestThumbnailRendering(i);
+    }
     theFactory()->requestPageRendering(i, audienceWindow);
     theFactory()->requestPageRendering(i, secondaryWindow);
   }
