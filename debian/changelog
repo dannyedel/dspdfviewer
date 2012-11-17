@@ -1,3 +1,15 @@
+dspdfviewer (1.2) testing; urgency=low
+
+  * Muted debug output in release builds
+  * Correctly depend on debhelper with cmake support
+  * Changed latex-beamer relation to suggests
+  * Switched to using boost::program_options
+  * Second screen's layout variable
+  * No unnecessary thumbnail calculation
+  * The pre-rendering is configurable
+
+ -- Danny Edel <mail@danny-edel.de>  Sat, 17 Nov 2012 13:26:59 +0100
+
 dspdfviewer (1.1) testing; urgency=low
 
   * Added more keyboard shortcuts for people with F12 already bound
