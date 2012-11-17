@@ -48,6 +48,17 @@ class RuntimeConfiguration
   
   /** complete path to the PDF file */
   std::string m_filePath;
+  
+  /** Make sure that so many previous pages are pre-rendered
+   * (Probably wont make sense until you can jump to slide
+   * n without visiting 0..(n-1) first, but once PDF hyperlinks
+   * are enabled, this will be quite useful.
+   */
+  unsigned m_prerenderPreviousPages;
+  
+  /** Make sure so many next pages are pre-rendered
+   */
+  unsigned m_prerenderNextPages;
 public:
   
   /** fill the variables based on the config file and the C-style arguments to main()
@@ -73,6 +84,9 @@ public:
   bool showThumbnails() const;
   bool showPresentationClock() const;
   bool showSlideClock() const;
+  
+  unsigned prerenderPreviousPages() const;
+  unsigned prerenderNextPages() const;
 };
 
 #endif // RUNTIMECONFIGURATION_H

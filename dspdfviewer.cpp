@@ -96,8 +96,8 @@ void DSPDFViewer::renderPage()
   theFactory()->requestPageRendering(m_pagenumber, audienceWindow);
   theFactory()->requestPageRendering(m_pagenumber, secondaryWindow);
   
-  /** Pre-Render next 10 pages **/
-  for ( unsigned i=m_pagenumber; i<m_pagenumber+10 && i < numberOfPages() ; i++) {
+  /** Pre-Render next pages **/
+  for ( unsigned i=m_pagenumber; i<m_pagenumber+runtimeConfiguration.prerenderNextPages() && i < numberOfPages() ; i++) {
     if ( runtimeConfiguration.showThumbnails() ) {
       theFactory()->requestThumbnailRendering(i);
     }
@@ -105,9 +105,10 @@ void DSPDFViewer::renderPage()
     theFactory()->requestPageRendering(i, secondaryWindow);
   }
   
-  /** Request previous 3 pages **/
+  /** Pre-Render previous pages **/
   
-  for ( unsigned i= std::max(m_pagenumber,3u)-3; i<m_pagenumber; i++) {
+  for ( unsigned i= std::max(m_pagenumber,runtimeConfiguration.prerenderPreviousPages())-runtimeConfiguration.prerenderPreviousPages();
+       i<m_pagenumber; i++) {
     if ( runtimeConfiguration.showThumbnails() ) {
       theFactory()->requestThumbnailRendering(i);
     }

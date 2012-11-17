@@ -37,6 +37,16 @@ void RuntimeConfiguration::parse(int argc, char** argv)
   global.add_options()
     ("full-page,f", //value<bool>(&m_useFullPage)->default_value(false)->implicit_value(true),
       "Display the full slide on both screens (useful for PDFs created by presentation software other than latex-beamer)")
+    ("prerender-previous-pages",
+     value<unsigned>(&m_prerenderPreviousPages)->default_value(3),
+     "Pre-render the preceding arg slides\n"
+     "NOTE: If you set this to zero, you might not get a thumbnail for the previous slide unless it was loaded already."
+    )
+    ("prerender-next-pages",
+     value<unsigned>(&m_prerenderNextPages)->default_value(10),
+     "Pre-render the next arg slides\n"
+     "NOTE: If you set this to zero, you might not get a thumbnail for the next slide unless it was loaded already."
+     )
     ;
   options_description secondscreen("Options affecting the second screen");
   secondscreen.add_options()
@@ -131,4 +141,14 @@ bool RuntimeConfiguration::showWallClock() const
 {
   return m_showWallClock;
 }
+
+unsigned int RuntimeConfiguration::prerenderNextPages() const
+{
+  return m_prerenderNextPages;
+}
+unsigned int RuntimeConfiguration::prerenderPreviousPages() const
+{
+  return m_prerenderPreviousPages;
+}
+
 

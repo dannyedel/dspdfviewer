@@ -284,7 +284,6 @@ void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
 
 void PDFViewerWindow::renderedThumbnailIncoming(QSharedPointer< RenderedPage > renderedThumbnail)
 {
-  qDebug() << "Thumbnail incoming: " << renderedThumbnail->getPageNumber();
   /* If a thumbnail for the page we're waiting for is incoming and we have no page at all, its better than nothing */
   if ( renderedThumbnail->getPageNumber() == currentPageNumber
     && currentImage.isNull() )
@@ -319,7 +318,7 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
   QWidget::resizeEvent(resizeEvent);
   qDebug() << "Resize event" << resizeEvent;
   if ( m_dspdfviewer ) { 
-      qDebug() << "resized from" << resizeEvent->oldSize() << "to" << resizeEvent->size();
+      qDebug() << "Resized from" << resizeEvent->oldSize() << "to" << resizeEvent->size();
       if ( m_dspdfviewer->isReadyToRender() ) {
 	qDebug() << "Viewer is ready to render, requesting rendering";
 	m_dspdfviewer->renderPage();
