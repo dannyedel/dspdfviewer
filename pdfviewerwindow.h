@@ -28,6 +28,7 @@
 #include <QTimer>
 #include "renderedpage.h"
 #include "pdfrenderfactory.h"
+#include "runtimeconfiguration.h"
 
 #include "ui_pdfviewerwindow.h"
 
@@ -60,7 +61,7 @@ public:
    * @param monitor monitor to start on (usually 0 for primary)
    * @param dspdfviewer Pointer to the application (to handle next/prev commands)
    */
-    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine);
+    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r);
     
     /** Sets the monitor to display this window on
      * Automatically calls reposition

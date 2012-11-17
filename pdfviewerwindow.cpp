@@ -40,58 +40,27 @@ unsigned int PDFViewerWindow::getMonitor() const
   return m_monitor;
 }
 
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part, bool showInformationLine): 
+PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part, bool showInformationLine, const RuntimeConfiguration& r): 
   QWidget(),
   m_dspdfviewer(nullptr),
   m_monitor(monitor), myPart(part)
 {
-#ifdef USE_OLD_PROGRAMMATIC_LAYOUT
-  this->setContentsMargins(0,0,0,0);
-  outerlayout = new QVBoxLayout();
-  this->setLayout(outerlayout);
-  innerlayout = new QHBoxLayout();
-  
-  informationLineLayout = new QHBoxLayout();
-  
-  outerlayout->addStretch();
-  outerlayout->addLayout(innerlayout);
-  outerlayout->addStretch();
-  outerlayout->addLayout(informationLineLayout);
-  
-  innerlayout->addStretch();
-  innerlayout->addWidget(&imageLabel);
-  innerlayout->addStretch();
-  
-  outerlayout->setSpacing(0);
-  outerlayout->setContentsMargins(0,0,0,0);
-  
-  innerlayout->setSpacing(0);
-  innerlayout->setContentsMargins(0,0,0,0);
-  
-//  informationLineLayout->setSpacing(10);
-  informationLineLayout->addStretch();
-  for ( int i=0; i<10; i++)
-  {
-    if ( i == 3 || i == 4 )
-      informationLineLayout->addStretch();
-    QLabel* l= new QLabel();
-    thumbnailLabels.insert(i, l);
-    informationLineLayout->addWidget(l);
-  }
-  informationLineLayout->addStretch();
-  
-  hideInformationLine();
-  
-  QPalette pal = palette();
-  pal.setColor(backgroundRole(), Qt::black);
-  setPalette(pal);
-#else /* New, ui-based layout */
   setupUi(this);
-#endif
-  if ( !showInformationLine )
+  if ( !showInformationLine || ! r.showPresenterArea()) {
+    /* If the information line is disabled because we're the primary screen,
+     * or the user explicitly said so, disable it completely.
+     */
     hideInformationLine();
-  else
+  }
+  else {
+    /* Enable the information line, but control visibility of the components as requested by the user.
+     */
     this->showInformationLine();
+    this->wallClock->setVisible(r.showWallClock());
+    this->thumbnailArea->setVisible(r.showThumbnails());
+    this->slideClock->setVisible(r.showSlideClock());
+    this->presentationClock->setVisible(r.showPresentationClock());
+  }
   reposition();
 }
 
@@ -204,16 +173,7 @@ void PDFViewerWindow::setViewer(DSPDFViewer* v)
 
 QSize PDFViewerWindow::getTargetImageSize() const
 {
-#ifdef USE_OLD_PROGRAMMATIC_LAYOUT
-  QSize screenSize = QApplication::desktop()->screenGeometry(getMonitor()).size();
-  if ( isInformationLineVisible() )
-  {
-    screenSize.setHeight( screenSize.height() - informationLineLayout->geometry().height() );
-  }
-  return screenSize;
-#else
   return imageArea->geometry().size();
-#endif
 }
 
 void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
@@ -235,13 +195,7 @@ void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
 void PDFViewerWindow::hideInformationLine()
 {
   informationLineVisible=false;
-#ifdef USE_OLD_PROGRAMMATIC_LAYOUT
-  for( QLabel*l : thumbnailLabels) {
-    l->hide();
-  }
-#else
   this->bottomArea->hide();
-#endif
 }
 
 bool PDFViewerWindow::isInformationLineVisible() const
@@ -252,13 +206,7 @@ bool PDFViewerWindow::isInformationLineVisible() const
 void PDFViewerWindow::showInformationLine()
 {
   informationLineVisible=true;
-#ifdef USE_OLD_PROGRAMMATIC_LAYOUT
-  for( QLabel*l : thumbnailLabels) {
-    l->show();
-  }
-#else
   this->bottomArea->show();
-#endif
 }
 
 void PDFViewerWindow::addThumbnail(int pageNumber, QImage thumbnail)
@@ -272,32 +220,6 @@ void PDFViewerWindow::renderThumbnails(int currentPage)
 {
   if ( !isInformationLineVisible() )
     return;
-#ifdef USE_OLD_PROGRAMMATIC_LAYOUT
-  /* clear all current thumbnails */
-  for( QLabel* p: thumbnailLabels )
-  {
-    p->setPixmap(QPixmap());
-  }
-  /* render up to three previous pages */
-  for( int page=currentPage-3, i=0; page<currentPage; page++, i++) {
-    if ( thumbnails.contains(page) )
-    {
-      thumbnailLabels[i]->setPixmap( QPixmap::fromImage(thumbnails[page] ));
-    }
-  }
-  /* Render current page */
-  if ( thumbnails.contains(currentPage) )
-  {
-    thumbnailLabels[3]->setPixmap(QPixmap::fromImage(thumbnails[currentPage] ));
-  }
-  /* render up to 6 next pages */
-  for( int page=currentPage+1, i=4; i<10; page++, i++) {
-    if ( thumbnails.contains(page) )
-    {
-      thumbnailLabels[i]->setPixmap(QPixmap::fromImage(thumbnails[page]));
-    }
-  }
-#else
   if ( hasThumbnailForPage(currentPage-1) )
   {
     previousThumbnail->setText("");
@@ -318,8 +240,6 @@ void PDFViewerWindow::renderThumbnails(int currentPage)
   } else {
     nextThumbnail->setPixmap(QPixmap());
   }
-#endif
-
 }
 bool PDFViewerWindow::hasThumbnailForPage(int pageNumber) const
 {

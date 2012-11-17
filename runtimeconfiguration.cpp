@@ -27,12 +27,36 @@ using namespace boost::program_options;
 
 void RuntimeConfiguration::parse(int argc, char** argv)
 {
-  options_description desc("Allowed options");
+  options_description generic("Generic options");
   
-  desc.add_options()
+  generic.add_options()
+    ("help,h", "Print help message")
+    ;
+  
+  options_description global("Options affecting program behaviour");
+  global.add_options()
     ("full-page,f", //value<bool>(&m_useFullPage)->default_value(false)->implicit_value(true),
       "Display the full slide on both screens (useful for PDFs created by presentation software other than latex-beamer)")
-    ("help,h", "Print help message")
+    ;
+  options_description secondscreen("Options affecting the second screen");
+  secondscreen.add_options()
+    ("presenter-area,a",
+     value<bool>(&m_showPresenterArea)->default_value(true),
+     "Shows or hides the complete \"presenter area\" on the second screen, giving you a full-screen note page.\n"
+     "NOTE: Whatever you say on -t, -w, -s or -p doesnt matter if you set this to false."
+    )
+    ("thumbnails,t",
+     value<bool>(&m_showThumbnails)->default_value(true),
+     "Show thumbnails of previous, current and next slide")
+    ("wall-clock,w",
+     value<bool>(&m_showWallClock)->default_value(true),
+     "Show the wall clock")
+    ("presentation-clock,p",
+     value<bool>(&m_showPresentationClock)->default_value(true),
+     "Show the presentation clock")
+    ("slide-clock,s",
+     value<bool>(&m_showSlideClock)->default_value(true),
+     "Show the slide clock")
     ;
   
   options_description hidden("Hidden options");
@@ -42,8 +66,18 @@ void RuntimeConfiguration::parse(int argc, char** argv)
   positional_options_description p;
   p.add("pdf-file", 1);
    
+  options_description help;
+  help.add(generic).add(global).add(secondscreen);
+  
+  
+  
   options_description commandLineOptions;
-  commandLineOptions.add(desc).add(hidden);
+  commandLineOptions.add(help).add(hidden);
+  
+  options_description configFileOptions;
+  configFileOptions.add(global).add(secondscreen);
+  
+  /// TODO Parse config file
   
   variables_map vm;
   store( command_line_parser(argc,argv).options(commandLineOptions).positional(p).run(), vm);
@@ -51,13 +85,12 @@ void RuntimeConfiguration::parse(int argc, char** argv)
   
   if ( vm.count("help")) {
     cout << "Usage: " << argv[0] << " [options] pdf-file" << endl;
-    cout << endl;
-    cout << desc << endl;
+    cout << help << endl;
     exit(1);
   }
   
   if ( 0 == vm.count("pdf-file") ) {
-    throw std::runtime_error("You did not specify a PDF-File on the command line");
+    throw std::runtime_error("You did not specify a PDF-File to display");
   }
   
   m_useFullPage = ( 0 < vm.count("full-page") );
@@ -78,4 +111,24 @@ bool RuntimeConfiguration::useFullPage() const
   return m_useFullPage;
 }
 
+bool RuntimeConfiguration::showPresentationClock() const
+{
+  return m_showPresentationClock;
+}
+bool RuntimeConfiguration::showPresenterArea() const
+{
+  return m_showPresenterArea;
+}
+bool RuntimeConfiguration::showSlideClock() const
+{
+  return m_showSlideClock;
+}
+bool RuntimeConfiguration::showThumbnails() const
+{
+  return m_showThumbnails;
+}
+bool RuntimeConfiguration::showWallClock() const
+{
+  return m_showWallClock;
+}
 

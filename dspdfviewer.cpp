@@ -13,15 +13,16 @@
 #include <QDebug>
 #include <stdexcept>
 
-DSPDFViewer::DSPDFViewer(QString filename, bool fullPageMode): 
+DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r): 
+	runtimeConfiguration(r),
 	presentationClocksRunning(false),
 	readyToRender(false),
-	pdfDocument(Poppler::Document::load(filename))
+	pdfDocument(Poppler::Document::load(r.filePathQString()))
 	,
- renderFactory(filename),
+ renderFactory(r.filePathQString()),
  m_pagenumber(0),
- audienceWindow(0,  fullPageMode? PagePart::FullPage : PagePart::LeftHalf , false),
- secondaryWindow(1, fullPageMode? PagePart::FullPage : PagePart::RightHalf, true )
+ audienceWindow(0,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r),
+ secondaryWindow(1, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true, r )
 {
   qDebug() << "Starting constructor" ;
   audienceWindow.setViewer(this);

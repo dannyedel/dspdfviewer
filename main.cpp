@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 		
 		rc.parse(argc, argv);
 		
-		DSPDFViewer foo( rc.filePathQString(), rc.useFullPage());
+		DSPDFViewer foo( rc );
 		
 		return app.exec();
 	} catch ( std::exception& e ) {

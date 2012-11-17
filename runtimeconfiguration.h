@@ -29,11 +29,31 @@ class RuntimeConfiguration
    */
   bool	m_useFullPage;
   
+  /** Show presenter area
+   */
+  bool m_showPresenterArea;
+  
+  /** Show the wall clock
+   */
+  bool m_showWallClock;
+  
+  /** Show the thumbnails of previous, this and next slide */
+  bool m_showThumbnails;
+  
+  /** Show the total presentation time **/
+  bool m_showPresentationClock;
+  
+  /** Show the current slide time **/
+  bool m_showSlideClock;
+  
   /** complete path to the PDF file */
   std::string m_filePath;
 public:
   
-  /** fill the variables based on the C-style arguments to main()
+  /** fill the variables based on the config file and the C-style arguments to main()
+   * 
+   * Note: Reads the config file before command-line arguments.
+   * Command-line overrides config.
    * 
    * Note: Might call exit() if a terminating option like --help
    * or --version was called.
@@ -47,6 +67,12 @@ public:
   QString filePathQString() const;
   
   std::string filePath() const;
+  
+  bool showPresenterArea() const;
+  bool showWallClock() const;
+  bool showThumbnails() const;
+  bool showPresentationClock() const;
+  bool showSlideClock() const;
 };
 
 #endif // RUNTIMECONFIGURATION_H

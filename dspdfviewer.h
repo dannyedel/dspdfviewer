@@ -6,10 +6,13 @@
 
 #include "pdfviewerwindow.h"
 #include "pdfrenderfactory.h"
+#include "runtimeconfiguration.h"
 
 class DSPDFViewer: public QObject
 {
-  
+private:
+  const RuntimeConfiguration runtimeConfiguration;
+
 private:
   QTimer	clockDisplayTimer;
   QTime 	slideStart;
@@ -24,6 +27,7 @@ private:
   unsigned int m_pagenumber;
   PDFViewerWindow audienceWindow;
   PDFViewerWindow secondaryWindow;
+  
 
 
 public:
@@ -38,7 +42,7 @@ private:
   
 Q_OBJECT
 public:
-    DSPDFViewer(QString filename, bool fullPageMode=false);
+    DSPDFViewer(const RuntimeConfiguration& r);
     virtual ~DSPDFViewer();
     
     /** (re-)Renders the current page on both monitors
