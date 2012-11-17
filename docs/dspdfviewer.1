@@ -57,17 +57,53 @@ start the clock, but still display the title slide, just press "previous"
 This program follows the usual GNU command line syntax, with long
 options starting with two dashes ('-').
 A summary of options is included below.
+
+.TP
+.B \-h, \-\-help
+Show summary of options.
+
 .TP
 .B \-f, \-\-full-page
 Use the presentation program with a standard PDF, that is display the full page
 on the primary AND secondary monitor. The secondary screen still contains timers
-and thumbnails to help you with your presentation.
-.\".TP
-.\".B \-h, \-\-help
-.\"Show summary of options.
-.\".TP
-.\".B \-v, \-\-version
-.\"Show version of program.
+and thumbnails to help you with your presentation, unless you disable them using
+the options below.
+
+.TP
+.B \-\-prerender-previous-pages <n>
+When jumping to slide m, also pre-render the slides (m-n)..(m-1) (default 3)
+
+Note: If you set this to zero, you will not get a thumbnail for the previous page
+rendered before you have visited it.
+
+.TP
+.B \-\-prerender-next-pages <n>
+When jumping to slide m, also pre-render the slides (m+1)..(m+n) (default 10)
+
+Note: If you set this to zero, you will not get a thumbnail for the next page
+rendered before you have visited it.
+
+.TP
+.B \-a <bool>, \-\-presenter-area <bool>
+Show (true, 1) or hide (false, 0) the presenter's area on the second screen.
+If this is set to zero, the following options will have no effect.
+
+.TP
+.B \-t <bool>, \-\-thumbnails <bool>
+Show (true, 1) or hide (false, 0) the thumbnails on the second screen.
+
+.TP
+.B \-w <bool>, \-\-wall\-clock <bool>
+Show (true, 1) or hide (false, 0) the wall clock on the second screen.
+
+.TP
+.B \-p <bool>, \-\-presentation\-clock <bool>
+Show (true, 1) or hide (false, 0) the presentation clock on the second screen.
+
+.TP
+.B \-s <bool>, \-\-slide\-clock <bool>
+Show (true, 1) or hide (false, 0) the slide clock on the second screen.
+
 .SH CONTROLS
 You can use the following controls while
 .B dspdfviewer
