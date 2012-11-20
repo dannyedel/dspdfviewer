@@ -1,3 +1,9 @@
+dspdfviewer (1.3) testing; urgency=low
+
+  * Updated the manpage to reflect the new options
+
+ -- Danny Edel <mail@danny-edel.de>  Tue, 20 Nov 2012 14:50:29 +0100
+
 dspdfviewer (1.2) testing; urgency=low
 
   * Muted debug output in release builds
