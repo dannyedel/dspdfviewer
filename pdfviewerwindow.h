@@ -49,9 +49,6 @@ private:
   QHBoxLayout* innerlayout;
   QHBoxLayout* informationLineLayout;
   
-  QMap<int, QImage> thumbnails;
-  QMap<int, QLabel*> thumbnailLabels;
-  
   int currentPageNumber;
   bool correntImageRendered;
   PagePart myPart;
@@ -100,10 +97,6 @@ public:
     bool isInformationLineVisible() const;
     
     void addThumbnail(int pageNumber, QImage thumbnail);
-    
-    void renderThumbnails(int currentPage);
-    
-    bool hasThumbnailForPage(int pageNumber) const;
     
     void showLoadingScreen(int pageNumberToWaitFor);
     

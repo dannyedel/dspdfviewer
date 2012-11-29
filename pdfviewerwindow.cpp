@@ -211,39 +211,12 @@ void PDFViewerWindow::showInformationLine()
 
 void PDFViewerWindow::addThumbnail(int pageNumber, QImage thumbnail)
 {
-  if ( hasThumbnailForPage(pageNumber) )
-    return;
-  thumbnails.insert(pageNumber, thumbnail);
-}
-
-void PDFViewerWindow::renderThumbnails(int currentPage)
-{
-  if ( !isInformationLineVisible() )
-    return;
-  if ( hasThumbnailForPage(currentPage-1) )
-  {
-    previousThumbnail->setText("");
-    previousThumbnail->setPixmap( QPixmap::fromImage(thumbnails[currentPage-1]) );
-  } else {
-    previousThumbnail->setPixmap( QPixmap() );
-  }
-  if ( hasThumbnailForPage(currentPage) ) {
-    currentThumbnail->setText("");
-    currentThumbnail->setPixmap( QPixmap::fromImage(thumbnails[currentPage]));
-  }
-  else {
-    currentThumbnail->setPixmap(QPixmap());
-  }
-  if ( hasThumbnailForPage(currentPage+1) ) {
-    nextThumbnail->setText("");
-    nextThumbnail->setPixmap( QPixmap::fromImage( thumbnails[currentPage+1] ));
-  } else {
-    nextThumbnail->setPixmap(QPixmap());
-  }
-}
-bool PDFViewerWindow::hasThumbnailForPage(int pageNumber) const
-{
-  return thumbnails.contains(pageNumber);
+  if ( pageNumber == currentPageNumber-1)
+    previousThumbnail->setPixmap(QPixmap::fromImage(thumbnail));
+  else if ( pageNumber == currentPageNumber )
+    currentThumbnail -> setPixmap(QPixmap::fromImage(thumbnail));
+  else if ( pageNumber == currentPageNumber+1 )
+    nextThumbnail->setPixmap(QPixmap::fromImage(thumbnail));
 }
 
 
@@ -278,6 +251,12 @@ void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
   this->currentImage = QImage();
   imageLabel->setPixmap(QPixmap());
   imageLabel->setText(QString("Loading page number %1").arg(pageNumberToWaitFor) );
+  
+  /** Clear Thumbnails, they will come back in soon */
+  previousThumbnail->setPixmap( QPixmap() );
+  currentThumbnail->setPixmap( QPixmap() );
+  nextThumbnail->setPixmap( QPixmap() );
+  
 }
 
 
@@ -305,7 +284,6 @@ void PDFViewerWindow::renderedThumbnailIncoming(QSharedPointer< RenderedPage > r
   }
   
   addThumbnail(renderedThumbnail->getPageNumber(), renderedThumbnail->getImage());
-  renderThumbnails(currentPageNumber);
 }
 
 PagePart PDFViewerWindow::getMyPagePart() const
