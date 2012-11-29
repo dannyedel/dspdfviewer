@@ -49,6 +49,13 @@ class RuntimeConfiguration
   /** complete path to the PDF file */
   std::string m_filePath;
   
+  /** Single-Display mode
+   * 
+   * If True, there is only the audience display, the presenter's screen will remain hidden
+   * Probably most useful with -f
+   */
+  bool m_useSecondScreen;
+  
   /** Make sure that so many previous pages are pre-rendered
    * (Probably wont make sense until you can jump to slide
    * n without visiting 0..(n-1) first, but once PDF hyperlinks
@@ -87,6 +94,8 @@ public:
   
   unsigned prerenderPreviousPages() const;
   unsigned prerenderNextPages() const;
+  
+  bool useSecondScreen() const;
 };
 
 #endif // RUNTIMECONFIGURATION_H

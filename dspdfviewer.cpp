@@ -22,11 +22,15 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
  renderFactory(r.filePathQString()),
  m_pagenumber(0),
  audienceWindow(0,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r),
- secondaryWindow(1, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true, r )
+ secondaryWindow(1, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true, r, r.useSecondScreen() )
 {
   qDebug() << "Starting constructor" ;
   audienceWindow.setViewer(this);
   secondaryWindow.setViewer(this);
+  
+  if ( ! r.useSecondScreen() ) {
+    secondaryWindow.hide();
+  }
   
   audienceWindow.showLoadingScreen(0);
   secondaryWindow.showLoadingScreen(0);
@@ -38,11 +42,16 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   }
   setHighQuality(true);
   
+  qDebug() << "Connecting audience window";
   connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
-  connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
-  
   connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
-  connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
+  
+  if ( r.useSecondScreen() )
+  {
+    qDebug() << "Connecting secondary window";
+    connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
+    connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
+  }
   
   renderPage();
   connect( &clockDisplayTimer, SIGNAL(timeout()), &secondaryWindow, SLOT(refreshClocks()));
@@ -94,7 +103,10 @@ void DSPDFViewer::renderPage()
     theFactory()->requestThumbnailRendering(m_pagenumber);
   }
   theFactory()->requestPageRendering(m_pagenumber, audienceWindow);
-  theFactory()->requestPageRendering(m_pagenumber, secondaryWindow);
+  
+  if ( runtimeConfiguration.useSecondScreen() ) {
+    theFactory()->requestPageRendering(m_pagenumber, secondaryWindow);
+  }
   
   /** Pre-Render next pages **/
   for ( unsigned i=m_pagenumber; i<m_pagenumber+runtimeConfiguration.prerenderNextPages() && i < numberOfPages() ; i++) {
@@ -102,7 +114,9 @@ void DSPDFViewer::renderPage()
       theFactory()->requestThumbnailRendering(i);
     }
     theFactory()->requestPageRendering(i, audienceWindow);
-    theFactory()->requestPageRendering(i, secondaryWindow);
+    if ( runtimeConfiguration.useSecondScreen() ) {
+      theFactory()->requestPageRendering(i, secondaryWindow);
+    }
   }
   
   /** Pre-Render previous pages **/
@@ -113,7 +127,9 @@ void DSPDFViewer::renderPage()
       theFactory()->requestThumbnailRendering(i);
     }
     theFactory()->requestPageRendering(i, audienceWindow);
-    theFactory()->requestPageRendering(i, secondaryWindow);
+    if ( runtimeConfiguration.useSecondScreen() ) {
+      theFactory()->requestPageRendering(i, secondaryWindow);
+    }
   }
   
 }

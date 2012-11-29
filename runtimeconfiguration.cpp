@@ -50,6 +50,13 @@ void RuntimeConfiguration::parse(int argc, char** argv)
     ;
   options_description secondscreen("Options affecting the second screen");
   secondscreen.add_options()
+    ("use-second-screen,u",
+     value<bool>(&m_useSecondScreen)->default_value(true),
+     "Use the second screen. If you only have one monitor and just want to use this application as a fast, pre-caching PDF viewer"
+     " you might want to say 0 here.\n"
+     "NOTE: Whatever you say on -a, -t, -w, -s or -p doesn't matter if you set this to false.\n"
+     "NOTE: You might want to say -f if you set this to false."
+    )
     ("presenter-area,a",
      value<bool>(&m_showPresenterArea)->default_value(true),
      "Shows or hides the complete \"presenter area\" on the second screen, giving you a full-screen note page.\n"
@@ -104,6 +111,20 @@ void RuntimeConfiguration::parse(int argc, char** argv)
   }
   
   m_useFullPage = ( 0 < vm.count("full-page") );
+  
+  /** Implied options */
+  if ( ! m_useSecondScreen ) {
+    /* If we dont use a second screen, there's no point in using the presenter area */
+    m_showPresenterArea = false;
+  }
+  if ( ! m_showPresenterArea ) {
+    /* If the presenter area is hidden, disable all clocks and the thumbnails */
+    m_showPresentationClock = false;
+    m_showWallClock = false;
+    m_showSlideClock = false;
+    /* This option will effectively disable rendering of thumbnails */
+    m_showThumbnails = false;
+  }
 }
 
 string RuntimeConfiguration::filePath() const
@@ -151,4 +172,8 @@ unsigned int RuntimeConfiguration::prerenderPreviousPages() const
   return m_prerenderPreviousPages;
 }
 
+bool RuntimeConfiguration::useSecondScreen() const
+{
+  return m_useSecondScreen;
+}
 

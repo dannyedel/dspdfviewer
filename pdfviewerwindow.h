@@ -40,6 +40,7 @@ class PDFViewerWindow : public QWidget, private Ui::Form
 {
   Q_OBJECT
 private:
+  bool	m_enabled;
   DSPDFViewer* m_dspdfviewer;
   unsigned int m_monitor;
   QImage currentImage;
@@ -53,12 +54,24 @@ private:
   bool correntImageRendered;
   PagePart myPart;
   
+  /** Display this image
+    */
+  void displayImage(QImage image);
+    
+  virtual void wheelEvent(QWheelEvent* e);
+  
+  virtual void keyPressEvent(QKeyEvent* e);
+  
+  virtual void mousePressEvent(QMouseEvent* e);
+  
+  void addThumbnail(int pageNumber, QImage thumbnail);
+    
 public:
   /** Standard constructor
    * @param monitor monitor to start on (usually 0 for primary)
    * @param dspdfviewer Pointer to the application (to handle next/prev commands)
    */
-    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r);
+    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, bool enabled=true);
     
     /** Sets the monitor to display this window on
      * Automatically calls reposition
@@ -73,30 +86,17 @@ public:
      */
     void reposition();
     
-    /** Display this image
-     */
-    void displayImage(QImage image);
-    
-    virtual void wheelEvent(QWheelEvent* e);
-    
-    virtual void keyPressEvent(QKeyEvent* e);
-    
-    virtual void mousePressEvent(QMouseEvent* e);
-    
     void setViewer(DSPDFViewer* v);
     
     QSize getTargetImageSize() const;
     
     PagePart getMyPagePart() const;
     
-        
     void showInformationLine();
     
     void hideInformationLine();
     
     bool isInformationLineVisible() const;
-    
-    void addThumbnail(int pageNumber, QImage thumbnail);
     
     void showLoadingScreen(int pageNumberToWaitFor);
     

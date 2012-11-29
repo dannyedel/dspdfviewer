@@ -40,11 +40,14 @@ unsigned int PDFViewerWindow::getMonitor() const
   return m_monitor;
 }
 
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part, bool showInformationLine, const RuntimeConfiguration& r): 
+PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, bool enabled): 
   QWidget(),
+  m_enabled(enabled),
   m_dspdfviewer(nullptr),
-  m_monitor(monitor), myPart(part)
+  m_monitor(monitor), myPart(myPart)
 {
+  if ( ! enabled )
+    return;
   setupUi(this);
   if ( !showInformationLine || ! r.showPresenterArea()) {
     /* If the information line is disabled because we're the primary screen,
@@ -68,6 +71,8 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart part, bool showI
 
 void PDFViewerWindow::reposition()
 {
+  if ( ! m_enabled )
+    return;
   this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
   this->showNormal();
   QRect rect = QApplication::desktop()->screenGeometry(getMonitor());
@@ -194,6 +199,8 @@ void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
 
 void PDFViewerWindow::hideInformationLine()
 {
+  if ( ! m_enabled )
+    return;
   informationLineVisible=false;
   this->bottomArea->hide();
 }
@@ -205,6 +212,8 @@ bool PDFViewerWindow::isInformationLineVisible() const
 
 void PDFViewerWindow::showInformationLine()
 {
+  if ( ! m_enabled )
+    return;
   informationLineVisible=true;
   this->bottomArea->show();
 }
@@ -223,6 +232,8 @@ void PDFViewerWindow::addThumbnail(int pageNumber, QImage thumbnail)
 
 void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > renderedPage)
 {
+  if ( ! m_enabled )
+    return;
   // If we are not waiting for an image, ignore incoming answers.
   if ( correntImageRendered )
     return;
@@ -244,6 +255,9 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
 
 void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
 {
+  if ( !m_enabled )
+    return;    
+
   /// FIXME Loading image
   
   this->currentPageNumber = pageNumberToWaitFor;
@@ -263,6 +277,9 @@ void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
 
 void PDFViewerWindow::renderedThumbnailIncoming(QSharedPointer< RenderedPage > renderedThumbnail)
 {
+  if ( !m_enabled )
+    return;
+  
   /* If a thumbnail for the page we're waiting for is incoming and we have no page at all, its better than nothing */
   if ( renderedThumbnail->getPageNumber() == currentPageNumber
     && currentImage.isNull() )
@@ -293,6 +310,9 @@ PagePart PDFViewerWindow::getMyPagePart() const
 
 void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
 {
+  if ( !m_enabled )
+    return;
+  
   QWidget::resizeEvent(resizeEvent);
   qDebug() << "Resize event" << resizeEvent;
   if ( m_dspdfviewer ) { 
@@ -310,6 +330,8 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
 void PDFViewerWindow::refreshClocks()
 {
   if ( ! m_dspdfviewer )
+    return;
+  if ( !m_enabled)
     return;
   wallClock->setText( m_dspdfviewer->wallClock());
   slideClock->setText(m_dspdfviewer->slideClock() );
