@@ -43,7 +43,10 @@ unsigned int PDFViewerWindow::getMonitor() const
 PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, bool enabled): 
   QWidget(),
   m_enabled(enabled),
-  m_monitor(monitor), myPart(myPart)
+  m_monitor(monitor),
+  minimumPageNumber(0),
+  maximumPageNumber(65535),
+  myPart(myPart)
 {
   if ( ! enabled )
     return;

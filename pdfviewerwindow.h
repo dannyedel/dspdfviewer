@@ -40,8 +40,8 @@ private:
   bool informationLineVisible;
   
   uint currentPageNumber;
-  uint minimumPageNumber = 0;
-  uint maximumPageNumber = 65535;
+  uint minimumPageNumber;
+  uint maximumPageNumber;
   bool correntImageRendered;
   PagePart myPart;
   
