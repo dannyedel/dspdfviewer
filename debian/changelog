@@ -1,3 +1,11 @@
+dspdfviewer (1.5) testing; urgency=low
+
+  * Cleaner, signal/slot based inter-object-communication
+  * New Feature: Jump to page number
+  * Documentation (man-page) updated
+
+ -- Danny Edel <mail@danny-edel.de>  Thu, 06 Dec 2012 15:56:59 +0100
+
 dspdfviewer (1.4) testing; urgency=low
 
   * Fixed possible memory eater
