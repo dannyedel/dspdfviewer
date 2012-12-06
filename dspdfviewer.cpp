@@ -94,7 +94,8 @@ DSPDFViewer::~DSPDFViewer()
 void DSPDFViewer::goBackward()
 {
   resetSlideClock();
-  gotoPage(pageNumber()-1);
+  if ( pageNumber() > 0 )
+    gotoPage(pageNumber()-1);
 }
 
 void DSPDFViewer::goForward()
