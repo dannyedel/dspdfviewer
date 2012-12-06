@@ -25,8 +25,6 @@
 #include <QThreadPool>
 #include <stdexcept>
 
-#include "hacks_for_lucid.h"
-
 
 static const QSize ThumbnailSize(200,100);
 

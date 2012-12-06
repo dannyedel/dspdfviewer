@@ -28,7 +28,7 @@ ifeq ($(CODENAME),lucid)
 export CC=gcc-4.6
 export CXX=g++-4.6
 export LD=ld-4.6
-CXXFLAGS:=$(CXXFLAGS) -DHACKS_FOR_LUCID
+# CXXFLAGS:=$(CXXFLAGS) -DHACKS_FOR_LUCID
 endif
 
 %:
