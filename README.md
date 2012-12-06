@@ -19,7 +19,14 @@ instructions on how to add the repository. These packages are built by myself.
 ### Ubuntu
 
 For Ubuntu Oneiric (11.04) and newer, there are two PPAs configured:
-A "daily" repository 
+A "daily" repository and a "release" repository. Use the daily builds only 
+if you want to help in development (test bugs in the latest git revision),
+otherwise stick to the "release" PPA:
+
+1. Daily
+   https://launchpad.net/~dannyedel/+archive/dspdfviewer-daily
+2. Release
+   https://code.launchpad.net/~dannyedel/+archive/dspdfviewer
 
 ## Installing from source
 
