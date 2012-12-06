@@ -1,3 +1,9 @@
+dspdfviewer (1.6) testing; urgency=low
+
+  * Compatibility fix for Ubuntu oneiric+precise
+
+ -- Danny Edel <mail@danny-edel.de>  Thu, 06 Dec 2012 17:33:05 +0100
+
 dspdfviewer (1.5) testing; urgency=low
 
   * Cleaner, signal/slot based inter-object-communication
