@@ -36,7 +36,7 @@ QList< QSharedPointer< Poppler::Link > > RenderedPage::getLinks() const
   return theLinks;
 }
 
-int RenderedPage::getPageNumber() const
+unsigned RenderedPage::getPageNumber() const
 {
   return getIdentifier().pageNumber();
 }
@@ -47,7 +47,7 @@ PagePart RenderedPage::getPart() const
   return getIdentifier().pagePart();
 }
 
-RenderedPage::RenderedPage(QImage img, QList< QSharedPointer< Poppler::Link > > links, PagePart whichPart, int pageNum)
+RenderedPage::RenderedPage(QImage img, QList< QSharedPointer< Poppler::Link > > links, PagePart whichPart, unsigned pageNum)
 : theRenderedImage(img), theLinks(links), theIdentifier(pageNum, whichPart, img.size())
 {
 

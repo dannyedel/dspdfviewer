@@ -39,7 +39,9 @@ private:
   
   bool informationLineVisible;
   
-  int currentPageNumber;
+  uint currentPageNumber;
+  uint minimumPageNumber = 0;
+  uint maximumPageNumber = 65535;
   bool correntImageRendered;
   PagePart myPart;
   
@@ -53,12 +55,14 @@ private:
   
   virtual void mousePressEvent(QMouseEvent* e);
   
-  void addThumbnail(int pageNumber, QImage thumbnail);
+  void addThumbnail(uint pageNumber, QImage thumbnail);
   
   
   QString timeToString(QTime time) const;
   QString timeToString(int milliseconds) const;
-
+  
+  void changePageNumberDialog();
+  
 public:
   /** Standard constructor
    * @param monitor monitor to start on (usually 0 for primary)
@@ -100,6 +104,8 @@ public slots:
   void updateWallClock(const QTime& wallClock);
   void updateSlideClock(const QTime& slideClock);
   void updatePresentationClock(const QTime& presentationClock);
+  
+  void setPageNumberLimits(uint minimumPageNumber, uint maximumPageNumber);
   
   signals:
     void nextPageRequested();

@@ -55,6 +55,9 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   if ( r.useSecondScreen() )
   {
     qDebug() << "Connecting secondary window";
+    
+    secondaryWindow.setPageNumberLimits(0, numberOfPages()-1);
+    
     connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
     connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
 
@@ -164,6 +167,8 @@ void DSPDFViewer::gotoPage(unsigned int pageNumber)
   {
     m_pagenumber = pageNumber;
     renderPage();
+  } else {
+    qWarning() << "Requested page number" << pageNumber << "which is out of range! Ignoring request.";
   }
 }
 

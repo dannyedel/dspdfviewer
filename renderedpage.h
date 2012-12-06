@@ -32,12 +32,12 @@ private:
   RenderingIdentifier theIdentifier;
 public:
   
-  RenderedPage(QImage img, QList<QSharedPointer< Poppler::Link >> links, PagePart whichPart, int pageNum);
+  RenderedPage(QImage img, QList<QSharedPointer< Poppler::Link >> links, PagePart whichPart, unsigned pageNum);
   RenderedPage(QImage img, QList<QSharedPointer< Poppler::Link >> links, RenderingIdentifier identifier);
   QImage getImage() const;
   QList< QSharedPointer<Poppler::Link> > getLinks() const;
   PagePart getPart() const;
-  int getPageNumber() const;
+  uint getPageNumber() const;
   RenderingIdentifier getIdentifier() const;
 };
 

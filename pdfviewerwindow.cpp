@@ -24,6 +24,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QInputDialog>
 
 void PDFViewerWindow::setMonitor(const unsigned int monitor)
 {
@@ -130,6 +131,9 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
     
     switch( e->key() )
     {
+      case Qt::Key_G:
+	changePageNumberDialog();
+	break;
       case Qt::Key_F12:
       case Qt::Key_S: //Swap
 	emit screenSwapRequested();
@@ -206,7 +210,7 @@ void PDFViewerWindow::showInformationLine()
   this->bottomArea->show();
 }
 
-void PDFViewerWindow::addThumbnail(int pageNumber, QImage thumbnail)
+void PDFViewerWindow::addThumbnail(uint pageNumber, QImage thumbnail)
 {
   if ( pageNumber == currentPageNumber-1)
     previousThumbnail->setPixmap(QPixmap::fromImage(thumbnail));
@@ -335,6 +339,34 @@ void PDFViewerWindow::updateWallClock(const QTime& wallClock)
   this->wallClock->setText(timeToString(wallClock));
 }
 
+void PDFViewerWindow::changePageNumberDialog()
+{
+  bool ok;
+  int targetPageNumber = QInputDialog::getInt(this,
+	/* Window Caption */ tr("Select page"),
+	/* Input field */ tr("Jump to page number:"),
+	/* Starting number. Note the +1 because internally, we count zero-based. */
+	currentPageNumber+1,
+	/* minimum value */
+	minimumPageNumber+1,
+	/* maximum value */
+	maximumPageNumber+1,
+	/* Step */
+	1,
+	/* Did the user accept? */
+	&ok);
+  targetPageNumber-=1; // Convert to internal numbering scheme
+  if ( ok )
+  {
+    emit pageRequested(targetPageNumber);
+  }
+}
+
+void PDFViewerWindow::setPageNumberLimits(uint minimumPageNumber, uint maximumPageNumber)
+{
+  this->minimumPageNumber = minimumPageNumber;
+  this->maximumPageNumber = maximumPageNumber;
+}
 
 
 
