@@ -1,6 +1,12 @@
+# I like to call my build directory build.
 build/
+
+#common editor swap files
 *~
 *.kate-swp
+*.swp
+
+#kdevelop local configuration
 .kdev4
 
 #Debian build system creates those directories:
