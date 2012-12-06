@@ -39,6 +39,9 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   setHighQuality(true);
   
   qDebug() << "Connecting audience window";
+  
+  audienceWindow.setPageNumberLimits(0, numberOfPages()-1);
+  
   connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
   connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
   
