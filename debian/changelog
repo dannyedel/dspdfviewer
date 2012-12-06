@@ -1,3 +1,12 @@
+dspdfviewer (1.7) testing; urgency=low
+
+  * Readme converted to markdown
+  * Removed the previous page error
+  * Audience window's goto function respects number of pages
+  * Timers fixed
+
+ -- Danny Edel <mail@danny-edel.de>  Thu, 06 Dec 2012 19:15:06 +0100
+
 dspdfviewer (1.6) testing; urgency=low
 
   * Compatibility fix for Ubuntu oneiric+precise
