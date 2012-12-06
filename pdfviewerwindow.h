@@ -41,14 +41,10 @@ class PDFViewerWindow : public QWidget, private Ui::Form
   Q_OBJECT
 private:
   bool	m_enabled;
-  DSPDFViewer* m_dspdfviewer;
   unsigned int m_monitor;
   QImage currentImage;
   
   bool informationLineVisible;
-  QVBoxLayout* outerlayout;
-  QHBoxLayout* innerlayout;
-  QHBoxLayout* informationLineLayout;
   
   int currentPageNumber;
   bool correntImageRendered;
@@ -86,8 +82,6 @@ public:
      */
     void reposition();
     
-    void setViewer(DSPDFViewer* v);
-    
     QSize getTargetImageSize() const;
     
     PagePart getMyPagePart() const;
@@ -106,7 +100,19 @@ public slots:
   
   void resizeEvent(QResizeEvent* resizeEvent);
   
-  void refreshClocks();
+  void refreshClocks(const DSPDFViewer& theViewer);
+  
+  signals:
+    void nextPageRequested();
+    void previousPageRequested();
+    void pageRequested(unsigned requestedPageNumber);
+    void restartRequested();
+    
+    void screenSwapRequested();
+    
+    void rerenderRequested();
+    
+    void quitRequested();
 };
 
 #endif // PDFVIEWERWINDOW_H

@@ -43,7 +43,6 @@ unsigned int PDFViewerWindow::getMonitor() const
 PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, bool enabled): 
   QWidget(),
   m_enabled(enabled),
-  m_dspdfviewer(nullptr),
   m_monitor(monitor), myPart(myPart)
 {
   if ( ! enabled )
@@ -113,19 +112,16 @@ void PDFViewerWindow::displayImage(QImage image)
 
 void PDFViewerWindow::wheelEvent(QWheelEvent* e)
 {
-    QWidget::wheelEvent(e);
-    
-    if ( ! m_dspdfviewer )
-      return;
+    // QWidget::wheelEvent(e);
     
     if ( e->delta() > 0 )
     {
       qDebug() << "Back";
-      m_dspdfviewer->goBackward();
+      emit previousPageRequested();
     }
     else{
       qDebug() << "Next";
-      m_dspdfviewer->goForward();
+      emit nextPageRequested();
     }
 }
 
@@ -133,18 +129,15 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
 {
     QWidget::keyPressEvent(e);
     
-    if ( ! m_dspdfviewer )
-      return;
-    
     switch( e->key() )
     {
       case Qt::Key_F12:
       case Qt::Key_S: //Swap
-	m_dspdfviewer->swapScreens();
+	emit screenSwapRequested();
 	break;
       case Qt::Key_Escape:
       case Qt::Key_Q: //quit
-	m_dspdfviewer->exit();
+	emit quitRequested();
 	break;
       case Qt::Key_Space:
       case Qt::Key_Enter:
@@ -154,7 +147,7 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
       case Qt::Key_Right:
       case Qt::Key_F: // Forward
       case Qt::Key_N: // Next
-	m_dspdfviewer->goForward();
+	emit nextPageRequested();
 	break;
       case Qt::Key_PageUp:
       case Qt::Key_Up:
@@ -162,19 +155,15 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
       case Qt::Key_Backspace:
       case Qt::Key_B: // Back
       case Qt::Key_P: //Previous
-	m_dspdfviewer->goBackward();
+	emit previousPageRequested();
 	break;
       case Qt::Key_Home:
       case Qt::Key_H: //Home
-	m_dspdfviewer->goToStartAndResetClocks();
+	emit restartRequested();
 	break;
     }
 }
 
-void PDFViewerWindow::setViewer(DSPDFViewer* v)
-{
-  m_dspdfviewer = v;
-}
 
 QSize PDFViewerWindow::getTargetImageSize() const
 {
@@ -183,13 +172,13 @@ QSize PDFViewerWindow::getTargetImageSize() const
 
 void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
 {
-    QWidget::mousePressEvent(e);
+    // QWidget::mousePressEvent(e);
     switch (e->button()) {
       case Qt::LeftButton:
-	m_dspdfviewer->goForward();
+	emit nextPageRequested();
 	break;
       case Qt::RightButton:
-	m_dspdfviewer->goBackward();
+	emit previousPageRequested();
 	break;
       default: /* any other button */
 	/* do nothing */
@@ -315,27 +304,17 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
   
   QWidget::resizeEvent(resizeEvent);
   qDebug() << "Resize event" << resizeEvent;
-  if ( m_dspdfviewer ) { 
-      qDebug() << "Resized from" << resizeEvent->oldSize() << "to" << resizeEvent->size();
-      if ( m_dspdfviewer->isReadyToRender() ) {
-	qDebug() << "Viewer is ready to render, requesting rendering";
-	m_dspdfviewer->renderPage();
-      }
-  }
-  else {
-    qDebug() << "m_dspdfviewer not ready, cant render yet";
-  }
+  qDebug() << "Resized from" << resizeEvent->oldSize() << "to" << resizeEvent->size() << ", requesting re-render.";
+  emit rerenderRequested();
 }
 
-void PDFViewerWindow::refreshClocks()
+void PDFViewerWindow::refreshClocks(const DSPDFViewer& theViewer)
 {
-  if ( ! m_dspdfviewer )
-    return;
   if ( !m_enabled)
     return;
-  wallClock->setText( m_dspdfviewer->wallClock());
-  slideClock->setText(m_dspdfviewer->slideClock() );
-  presentationClock->setText(QString("Total\n%1").arg(m_dspdfviewer->presentationClock()));
+  wallClock->setText( theViewer.wallClock());
+  slideClock->setText( theViewer.slideClock() );
+  presentationClock->setText(QString("Total\n%1").arg(theViewer.presentationClock()));
 }
 
 

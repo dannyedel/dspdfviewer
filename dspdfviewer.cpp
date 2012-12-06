@@ -25,8 +25,6 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
  secondaryWindow(1, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true, r, r.useSecondScreen() )
 {
   qDebug() << "Starting constructor" ;
-  audienceWindow.setViewer(this);
-  secondaryWindow.setViewer(this);
   
   if ( ! r.useSecondScreen() ) {
     secondaryWindow.hide();
@@ -46,16 +44,38 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
   connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
   
+  connect( &audienceWindow, SIGNAL(nextPageRequested()), this, SLOT(goForward()));
+  connect( &audienceWindow, SIGNAL(previousPageRequested()), this, SLOT(goBackward()));
+  connect( &audienceWindow, SIGNAL(pageRequested(uint)), this, SLOT(gotoPage(uint)));
+  
+  connect( &audienceWindow, SIGNAL(quitRequested()), this, SLOT(exit()));
+  connect( &audienceWindow, SIGNAL(rerenderRequested()), this, SLOT(renderPage()));
+  connect( &audienceWindow, SIGNAL(restartRequested()), this, SLOT(goToStartAndResetClocks()));
+  
+  connect( &audienceWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
+  
   if ( r.useSecondScreen() )
   {
     qDebug() << "Connecting secondary window";
     connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
     connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
+
+    connect( &secondaryWindow, SIGNAL(nextPageRequested()), this, SLOT(goForward()));
+    connect( &secondaryWindow, SIGNAL(previousPageRequested()), this, SLOT(goBackward()));
+    connect( &secondaryWindow, SIGNAL(pageRequested(uint)), this, SLOT(gotoPage(uint)));
+    
+    connect( &secondaryWindow, SIGNAL(quitRequested()), this, SLOT(exit()));
+    connect( &secondaryWindow, SIGNAL(rerenderRequested()), this, SLOT(renderPage()));
+    connect( &secondaryWindow, SIGNAL(restartRequested()), this, SLOT(goToStartAndResetClocks()));
+    
+    connect( &secondaryWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
+  
+
   }
   
   renderPage();
   connect( &clockDisplayTimer, SIGNAL(timeout()), &secondaryWindow, SLOT(refreshClocks()));
-  secondaryWindow.refreshClocks();
+  secondaryWindow.refreshClocks(*this);
   clockDisplayTimer.setInterval(250);
   clockDisplayTimer.start();
   readyToRender= true;
@@ -78,7 +98,7 @@ void DSPDFViewer::goForward()
   gotoPage(pageNumber()+1);
 }
 
-unsigned int DSPDFViewer::pageNumber()
+unsigned int DSPDFViewer::pageNumber() const
 {
   return m_pagenumber;
 }
@@ -183,7 +203,7 @@ PdfRenderFactory* DSPDFViewer::theFactory()
   return &renderFactory;
 }
 
-unsigned int DSPDFViewer::numberOfPages() {
+unsigned int DSPDFViewer::numberOfPages() const {
 	if ( pdfDocument->numPages() < 0 )
 	{
 		/* What the... ?! 
@@ -197,7 +217,7 @@ unsigned int DSPDFViewer::numberOfPages() {
 	return pdfDocument->numPages() ;
 }
 
-bool DSPDFViewer::isReadyToRender()
+bool DSPDFViewer::isReadyToRender() const
 {
   return readyToRender;
 }
@@ -208,31 +228,31 @@ void DSPDFViewer::goToStartAndResetClocks()
   gotoPage(0);
 }
 
-QString DSPDFViewer::presentationClock()
+QString DSPDFViewer::presentationClock() const
 {
   if ( ! presentationClocksRunning )
     return timeToString(0);
   return timeToString(presentationStart.elapsed());
 }
 
-QString DSPDFViewer::wallClock()
+QString DSPDFViewer::wallClock() const
 {
   return timeToString( QTime::currentTime() );
 }
 
-QString DSPDFViewer::slideClock()
+QString DSPDFViewer::slideClock() const
 {
   if ( ! presentationClocksRunning )
     return timeToString(0);
   return timeToString( slideStart.elapsed() );
 }
 
-QString DSPDFViewer::timeToString(QTime time)
+QString DSPDFViewer::timeToString(QTime time) const
 {
   return time.toString("HH:mm:ss");
 }
 
-QString DSPDFViewer::timeToString(int milliseconds)
+QString DSPDFViewer::timeToString(int milliseconds) const
 {
   int seconds = milliseconds / 1000;
   int minutes = seconds / 60;
@@ -254,7 +274,7 @@ void DSPDFViewer::resetSlideClock()
     presentationClocksRunning=true;
   }
   /* Refresh display times immediately */
-  secondaryWindow.refreshClocks();
+  secondaryWindow.refreshClocks(*this);
   /* and make sure they'll get refreshed a second later aswell. */
   clockDisplayTimer.start();
 }

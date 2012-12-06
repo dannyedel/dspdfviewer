@@ -36,8 +36,8 @@ public:
 private:
   QImage renderForTarget( QSharedPointer<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf=false);
   
-  QString timeToString(QTime time);
-  QString timeToString(int milliseconds);
+  QString timeToString(QTime time) const;
+  QString timeToString(int milliseconds) const;
   void	resetSlideClock();
   
 Q_OBJECT
@@ -45,6 +45,26 @@ public:
     DSPDFViewer(const RuntimeConfiguration& r);
     virtual ~DSPDFViewer();
     
+    
+    /** get current page number
+     */
+    unsigned int pageNumber() const;
+    
+    /** get page count
+     */
+    unsigned int numberOfPages() const;
+    
+    void setHighQuality(bool hq);
+    
+    bool isReadyToRender() const;
+    
+    PdfRenderFactory* theFactory();
+    
+    QString wallClock() const;
+    QString slideClock() const;
+    QString presentationClock() const;
+
+public slots:
     /** (re-)Renders the current page on both monitors
      */
     void renderPage();
@@ -52,17 +72,6 @@ public:
     /** goes to the specified page. Pages start at zero.
      */
     void gotoPage(unsigned int pageNumber);
-    
-    /** get current page number
-     */
-    unsigned int pageNumber();
-    
-    /** get page count
-     */
-    unsigned int numberOfPages();
-    
-    void setHighQuality(bool hq);
-    
     /** go Forward one page
      */
     void goForward();
@@ -71,19 +80,12 @@ public:
      */
     void goBackward();
     
+    void goToStartAndResetClocks();
+    
     void swapScreens();
     
     void exit();
-    
-    bool isReadyToRender();
-    
-    void goToStartAndResetClocks();
-    
-    PdfRenderFactory* theFactory();
-    
-    QString wallClock();
-    QString slideClock();
-    QString presentationClock();
+
 };
 
 #endif // dspdfviewer_H
