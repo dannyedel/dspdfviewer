@@ -3,13 +3,12 @@ Section: text
 Priority: extra
 Maintainer: Danny Edel <mail@danny-edel.de>
 Build-Depends:
-# FIXME: If there's any dependency that says "A C++ Compiler
-# with C++11 Support" include that here.
-# Simply adding g++-4.7 to Build-depends does install it into
-# the build environment, but not use it to actually build,
-# since g++ is still referring to g++-$OLD_VERSION
-# (at least on launchpad's lucid systems)
- g++ (>= 4:4.7) | g++-4.7,
+# The project needs a c++11 compiler.
+# Its known to work with g++-4.6
+#
+# FIXME if there's a better, cleaner way to express
+# "This project needs a c++11 compiler" then specify it here
+ g++ (>= 4:4.6) | g++-4.6,
 #
 # Rest of deps:
 # A Debhelper with cmake support
