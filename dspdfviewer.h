@@ -2,6 +2,7 @@
 #define dspdfviewer_H
 
 #include <QObject>
+#include <QTimer>
 #include <poppler/qt4/poppler-qt4.h>
 
 #include "pdfviewerwindow.h"
@@ -10,18 +11,21 @@
 
 class DSPDFViewer: public QObject
 {
+  Q_OBJECT
+
 private:
   const RuntimeConfiguration runtimeConfiguration;
+  enum {
+    TIMER_UPDATE_INTERVAL=250
+  };
 
 private:
   QTimer	clockDisplayTimer;
   QTime 	slideStart;
   QTime		presentationStart;
-  bool		presentationClocksRunning;
+  bool		presentationClockRunning;
 
 private:
-  bool readyToRender;
-  
   QSharedPointer< Poppler::Document > pdfDocument;
   PdfRenderFactory renderFactory;
   unsigned int m_pagenumber;
@@ -40,7 +44,11 @@ private:
   QString timeToString(int milliseconds) const;
   void	resetSlideClock();
   
-Q_OBJECT
+  RenderingIdentifier toRenderIdent(unsigned int pageNumber, const PDFViewerWindow& window);
+  
+private slots:
+  void sendAllClockSignals() const;
+    
 public:
     DSPDFViewer(const RuntimeConfiguration& r);
     virtual ~DSPDFViewer();
@@ -60,9 +68,16 @@ public:
     
     PdfRenderFactory* theFactory();
     
-    QString wallClock() const;
-    QString slideClock() const;
-    QString presentationClock() const;
+    QTime wallClock() const;
+    QTime slideClock() const;
+    QTime presentationClock() const;
+    
+    QTime timeSince( const QTime& startPoint) const;
+
+signals:
+  void wallClockUpdate(const QTime& wallClock) const;
+  void slideClockUpdate(const QTime& slideClock) const;
+  void presentationClockUpdate(const QTime& presentationClock) const;
 
 public slots:
     /** (re-)Renders the current page on both monitors
@@ -85,7 +100,6 @@ public slots:
     void swapScreens();
     
     void exit();
-
 };
 
 #endif // dspdfviewer_H

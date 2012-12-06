@@ -15,8 +15,6 @@
 
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r): 
 	runtimeConfiguration(r),
-	presentationClocksRunning(false),
-	readyToRender(false),
 	pdfDocument(Poppler::Document::load(r.filePathQString()))
 	,
  renderFactory(r.filePathQString()),
@@ -69,16 +67,20 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
     connect( &secondaryWindow, SIGNAL(restartRequested()), this, SLOT(goToStartAndResetClocks()));
     
     connect( &secondaryWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
+    
+    connect( this, SIGNAL(presentationClockUpdate(QTime)), &secondaryWindow, SLOT(updatePresentationClock(QTime)));
+    connect( this, SIGNAL(slideClockUpdate(QTime)), &secondaryWindow, SLOT(updateSlideClock(QTime)));
+    connect( this, SIGNAL(wallClockUpdate(QTime)), &secondaryWindow, SLOT(updateWallClock(QTime)));
   
 
   }
   
   renderPage();
-  connect( &clockDisplayTimer, SIGNAL(timeout()), &secondaryWindow, SLOT(refreshClocks()));
-  secondaryWindow.refreshClocks(*this);
-  clockDisplayTimer.setInterval(250);
+  
+  clockDisplayTimer.setInterval(TIMER_UPDATE_INTERVAL);
   clockDisplayTimer.start();
-  readyToRender= true;
+  connect( &clockDisplayTimer, SIGNAL(timeout()), this, SLOT(sendAllClockSignals()));
+  sendAllClockSignals();
 }
 
 
@@ -122,10 +124,10 @@ void DSPDFViewer::renderPage()
   if ( runtimeConfiguration.showThumbnails() ) {
     theFactory()->requestThumbnailRendering(m_pagenumber);
   }
-  theFactory()->requestPageRendering(m_pagenumber, audienceWindow);
+  theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, audienceWindow));
   
   if ( runtimeConfiguration.useSecondScreen() ) {
-    theFactory()->requestPageRendering(m_pagenumber, secondaryWindow);
+    theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, secondaryWindow));
   }
   
   /** Pre-Render next pages **/
@@ -133,9 +135,9 @@ void DSPDFViewer::renderPage()
     if ( runtimeConfiguration.showThumbnails() ) {
       theFactory()->requestThumbnailRendering(i);
     }
-    theFactory()->requestPageRendering(i, audienceWindow);
+    theFactory()->requestPageRendering( toRenderIdent(i, audienceWindow));
     if ( runtimeConfiguration.useSecondScreen() ) {
-      theFactory()->requestPageRendering(i, secondaryWindow);
+      theFactory()->requestPageRendering( toRenderIdent(i, secondaryWindow));
     }
   }
   
@@ -146,9 +148,9 @@ void DSPDFViewer::renderPage()
     if ( runtimeConfiguration.showThumbnails() ) {
       theFactory()->requestThumbnailRendering(i);
     }
-    theFactory()->requestPageRendering(i, audienceWindow);
+    theFactory()->requestPageRendering(toRenderIdent(i, audienceWindow));
     if ( runtimeConfiguration.useSecondScreen() ) {
-      theFactory()->requestPageRendering(i, secondaryWindow);
+      theFactory()->requestPageRendering(toRenderIdent(i, secondaryWindow));
     }
   }
   
@@ -217,66 +219,66 @@ unsigned int DSPDFViewer::numberOfPages() const {
 	return pdfDocument->numPages() ;
 }
 
-bool DSPDFViewer::isReadyToRender() const
-{
-  return readyToRender;
-}
-
 void DSPDFViewer::goToStartAndResetClocks()
 {
-  presentationClocksRunning=false;
+  clockDisplayTimer.stop();
+  
   gotoPage(0);
 }
 
-QString DSPDFViewer::presentationClock() const
+QTime DSPDFViewer::presentationClock() const
 {
-  if ( ! presentationClocksRunning )
-    return timeToString(0);
-  return timeToString(presentationStart.elapsed());
+  if ( ! presentationClockRunning )
+    return QTime();
+  return timeSince(presentationStart);
 }
 
-QString DSPDFViewer::wallClock() const
+QTime DSPDFViewer::wallClock() const
 {
-  return timeToString( QTime::currentTime() );
+  return QTime::currentTime();
 }
 
-QString DSPDFViewer::slideClock() const
+QTime DSPDFViewer::slideClock() const
 {
-  if ( ! presentationClocksRunning )
-    return timeToString(0);
-  return timeToString( slideStart.elapsed() );
-}
-
-QString DSPDFViewer::timeToString(QTime time) const
-{
-  return time.toString("HH:mm:ss");
-}
-
-QString DSPDFViewer::timeToString(int milliseconds) const
-{
-  int seconds = milliseconds / 1000;
-  int minutes = seconds / 60;
-  int hours = minutes / 60;
-  seconds%=60;
-  minutes%=60;
-  QString s;
-  s.sprintf("%2d:%02d:%02d", hours, minutes, seconds);
-  return s;
+  if ( ! presentationClockRunning )
+    return QTime();
+  return timeSince( slideStart );
 }
 
 void DSPDFViewer::resetSlideClock()
 {
   /* Always resets the slide clock. */
   slideStart.start();
-  if ( ! presentationClocksRunning ) {
+  if ( ! presentationClockRunning ) {
     /* If this starts a presentation, also reset the presentation clock. */
     presentationStart.start();
-    presentationClocksRunning=true;
   }
-  /* Refresh display times immediately */
-  secondaryWindow.refreshClocks(*this);
   /* and make sure they'll get refreshed a second later aswell. */
-  clockDisplayTimer.start();
+  slideStart.start();
+  
+  /* Refresh display times immediately */
+  sendAllClockSignals();
+}
+
+void DSPDFViewer::sendAllClockSignals() const
+{
+  emit wallClockUpdate(wallClock());
+  emit slideClockUpdate(slideClock());
+  emit presentationClockUpdate(presentationClock());
+}
+
+QTime DSPDFViewer::timeSince(const QTime& startPoint) const
+{
+  QTime result;
+  result.addMSecs(startPoint.msecsTo( QTime::currentTime() ));
+  return result;
+}
+
+RenderingIdentifier DSPDFViewer::toRenderIdent(unsigned int pageNumber, const PDFViewerWindow& window)
+{
+  return
+  RenderingIdentifier ( pageNumber, window.getMyPagePart(), window.getTargetImageSize());
+  
 }
 
 

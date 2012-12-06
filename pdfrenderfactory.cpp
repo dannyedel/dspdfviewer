@@ -19,7 +19,6 @@
 
 #include "pdfrenderfactory.h"
 #include "renderthread.h"
-#include "pdfviewerwindow.h"
 
 #include <QMutexLocker>
 #include <QThreadPool>
@@ -69,29 +68,28 @@ PdfRenderFactory::PdfRenderFactory(QString filename): QObject(), documentFilenam
   fetchDocument();
 }
 
-void PdfRenderFactory::requestPageRendering(int pageNumber, const PDFViewerWindow& targetWindow)
+void PdfRenderFactory::requestPageRendering(const RenderingIdentifier& renderingIdentifier)
 {
   QMutexLocker lock(&mutex);
   
-  RenderingIdentifier r( pageNumber, targetWindow.getMyPagePart(), targetWindow.getTargetImageSize() );
-  if ( renderedPages.contains(r) )
+  if ( renderedPages.contains(renderingIdentifier) )
   {
     /* Page is ready. Take a copy and lets go. */
-    QSharedPointer<RenderedPage> page( new RenderedPage( * renderedPages.object(r) ));
+    QSharedPointer<RenderedPage> page( new RenderedPage( * renderedPages.object(renderingIdentifier) ));
     emit pageRendered(page);
     return;
   }
   /* Page was not in cache. Check if its currently in the render stage. */
-  if ( currentlyRenderingPages.contains(r) )
+  if ( currentlyRenderingPages.contains(renderingIdentifier) )
   {
     /* Page is already rendering, so there is nothing to do. */
     return;
   }
   /* Nobody is working on the page right now. Lets create it. */
   
-  RenderThread* t = new RenderThread( fetchDocument(), r );
+  RenderThread* t = new RenderThread( fetchDocument(), renderingIdentifier );
   connect(t, SIGNAL(renderingFinished(QSharedPointer<RenderedPage>)), this, SLOT(pageThreadFinishedRendering(QSharedPointer<RenderedPage>)));
-  currentlyRenderingPages.insert(r);
+  currentlyRenderingPages.insert(renderingIdentifier);
   QThreadPool::globalInstance()->start(t);
   
 }

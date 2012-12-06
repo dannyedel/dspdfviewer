@@ -18,7 +18,6 @@
 
 
 #include "pdfviewerwindow.h"
-#include "dspdfviewer.h"
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QHBoxLayout>
@@ -308,14 +307,35 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
   emit rerenderRequested();
 }
 
-void PDFViewerWindow::refreshClocks(const DSPDFViewer& theViewer)
+QString PDFViewerWindow::timeToString(QTime time) const
 {
-  if ( !m_enabled)
-    return;
-  wallClock->setText( theViewer.wallClock());
-  slideClock->setText( theViewer.slideClock() );
-  presentationClock->setText(QString("Total\n%1").arg(theViewer.presentationClock()));
+  return time.toString("HH:mm:ss");
 }
+
+QString PDFViewerWindow::timeToString(int milliseconds) const
+{
+  QTime time;
+  time.addMSecs(milliseconds);
+  return timeToString(time);
+}
+
+
+void PDFViewerWindow::updatePresentationClock(const QTime& presentationClock)
+{
+  this->presentationClock->setText( QString("Total\n%1").arg(timeToString(presentationClock)));
+}
+
+void PDFViewerWindow::updateSlideClock(const QTime& slideClock)
+{
+  this->slideClock->setText(timeToString(slideClock) );
+}
+
+void PDFViewerWindow::updateWallClock(const QTime& wallClock)
+{
+  this->wallClock->setText(timeToString(wallClock));
+}
+
+
 
 
 #include "pdfviewerwindow.moc"

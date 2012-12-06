@@ -20,19 +20,12 @@
 #ifndef PDFVIEWERWINDOW_H
 #define PDFVIEWERWINDOW_H
 
-#include <qwidget.h>
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QMap>
-#include <QTimer>
 #include "renderedpage.h"
 #include "pdfrenderfactory.h"
 #include "runtimeconfiguration.h"
 
 #include "ui_pdfviewerwindow.h"
 
-class DSPDFViewer;
 /** Shared base class for both windows (primary and secondary)
  * 
  */
@@ -61,7 +54,11 @@ private:
   virtual void mousePressEvent(QMouseEvent* e);
   
   void addThumbnail(int pageNumber, QImage thumbnail);
-    
+  
+  
+  QString timeToString(QTime time) const;
+  QString timeToString(int milliseconds) const;
+
 public:
   /** Standard constructor
    * @param monitor monitor to start on (usually 0 for primary)
@@ -100,7 +97,9 @@ public slots:
   
   void resizeEvent(QResizeEvent* resizeEvent);
   
-  void refreshClocks(const DSPDFViewer& theViewer);
+  void updateWallClock(const QTime& wallClock);
+  void updateSlideClock(const QTime& slideClock);
+  void updatePresentationClock(const QTime& presentationClock);
   
   signals:
     void nextPageRequested();
