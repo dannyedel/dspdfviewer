@@ -230,15 +230,15 @@ unsigned int DSPDFViewer::numberOfPages() const {
 
 void DSPDFViewer::goToStartAndResetClocks()
 {
-  clockDisplayTimer.stop();
-  
+  presentationClockRunning=false;
+  sendAllClockSignals();
   gotoPage(0);
 }
 
 QTime DSPDFViewer::presentationClock() const
 {
   if ( ! presentationClockRunning )
-    return QTime();
+    return QTime(0,0);
   return timeSince(presentationStart);
 }
 
@@ -250,7 +250,7 @@ QTime DSPDFViewer::wallClock() const
 QTime DSPDFViewer::slideClock() const
 {
   if ( ! presentationClockRunning )
-    return QTime();
+    return QTime(0,0);
   return timeSince( slideStart );
 }
 
@@ -265,6 +265,8 @@ void DSPDFViewer::resetSlideClock()
   /* and make sure they'll get refreshed a second later aswell. */
   slideStart.start();
   
+  presentationClockRunning=true;
+  
   /* Refresh display times immediately */
   sendAllClockSignals();
 }
@@ -278,8 +280,8 @@ void DSPDFViewer::sendAllClockSignals() const
 
 QTime DSPDFViewer::timeSince(const QTime& startPoint) const
 {
-  QTime result;
-  result.addMSecs(startPoint.msecsTo( QTime::currentTime() ));
+  QTime result(0,0);
+  result = result.addMSecs(startPoint.elapsed());
   return result;
 }
 
