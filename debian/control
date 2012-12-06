@@ -9,6 +9,7 @@ Build-Depends:
 # the build environment, but not use it to actually build,
 # since g++ is still referring to g++-$OLD_VERSION
 # (at least on launchpad's lucid systems)
+ g++ (>= 4:4.7) | g++-4.7,
 #
 # Rest of deps:
 # A Debhelper with cmake support

@@ -18,5 +18,18 @@ CFLAGS:=$(shell dpkg-buildflags --get CFLAGS) $(CPPFLAGS)
 CXXFLAGS:=$(shell dpkg-buildflags --get CXXFLAGS) $(CPPFLAGS)
 LDFLAGS:=$(shell dpkg-buildflags --get LDFLAGS)
 
+# Hacks for ubuntu lucid
+CODENAME=$(shell lsb_release --codename --short)
+
+# If we compile on ubuntu lucid, g++ wont be aliased to
+# g++-4.7 even though we pulled from the ppa (by build-depends)
+# so we need to force the compiler
+ifeq ($(CODENAME),lucid)
+export CC=gcc-4.7
+export CXX=g++-4.7
+export LD=ld-4.7
+CXXFLAGS:=$(CXXFLAGS) -DHACKS_FOR_LUCID
+endif
+
 %:
 	dh $@ 

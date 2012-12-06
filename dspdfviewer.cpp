@@ -13,6 +13,8 @@
 #include <QDebug>
 #include <stdexcept>
 
+#include "hacks_for_lucid.h"
+
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r): 
 	runtimeConfiguration(r),
 	presentationClocksRunning(false),
