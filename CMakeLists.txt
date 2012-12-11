@@ -63,6 +63,37 @@ else()
   add_definitions(-DQT_NO_DEBUG_OUTPUT)
 endif()
 
+if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
+  # Not-Empty version given on the command line
+  message(STATUS "Using the version number ${DSPDFVIEWER_VERSION} specified on the command line.")
+else()
+  # We dont have a version number given by the build system.
+  # Try to figure it out first by asking git (only works for in-tree source builds)
+  execute_process(COMMAND git describe
+    OUTPUT_VARIABLE GIT_DESCRIBE_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+  if( NOT "${GIT_DESCRIBE_VERSION}" MATCHES "^$" )
+    message(STATUS "Using version number ${GIT_DESCRIBE_VERSION} as defined by git-describe.")
+    set(DSPDFVIEWER_VERSION ${GIT_DESCRIBE_VERSION})
+  else()
+    # get the first changelog line (containing a version number in parentheses) into DEBIANVERSION
+    file(STRINGS debian/changelog DEBIANVERSION LIMIT_COUNT 1 REGEX "\\(([0-9.])*\\)")
+    # reduce the variable to only the first "version-number-ish" thing
+    string(REGEX MATCH "([0-9.])+" DEBIANVERSION ${DEBIANVERSION} )
+    if ( NOT ${DEBIANVERSION} MATCHES "^$" )
+      message(STATUS "Using version number ${DEBIANVERSION} as parsed from debian/changelog's first entry.")
+      set(DSPDFVIEWER_VERSION ${DEBIANVERSION})
+    else()
+      # Try to infer the version number from the debian/changelog source file
+      message(WARNING "Could not determine the version number of the program. Please pass -DDSPDFVIEWER_VERSION=1.2.3.4.5 to the cmake command.")
+    endif()
+  endif()
+endif()
+
+if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
+  add_definitions(-DDSPDFVIEWER_VERSION=${DSPDFVIEWER_VERSION})
+endif()
+
+
 set(dspdfviewer_SRCS runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
 qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})

@@ -23,6 +23,11 @@
 #include <boost/program_options.hpp>
 #include <iostream>
 
+#ifndef DSPDFVIEWER_VERSION
+#warning DSPDFVIEWER_VERSION was not set by the build system!
+#define DSPDFVIEWER_VERSION "UNKNOWN"
+#endif
+
 using namespace std;
 using namespace boost::program_options;
 
@@ -32,6 +37,7 @@ void RuntimeConfiguration::parse(int argc, char** argv)
   
   generic.add_options()
     ("help,h", "Print help message")
+    ("version,v", "Print version statement")
     ;
   
   options_description global("Options affecting program behaviour");
@@ -101,9 +107,18 @@ void RuntimeConfiguration::parse(int argc, char** argv)
   store( command_line_parser(argc,argv).options(commandLineOptions).positional(p).run(), vm);
   notify(vm);
   
-  if ( vm.count("help")) {
-    cout << "Usage: " << argv[0] << " [options] pdf-file" << endl;
-    cout << help << endl;
+  if ( vm.count("version") || vm.count("help") ) {
+    cout << "dspdfviewer version " << DSPDFVIEWER_VERSION << endl;
+    cout << "Written by Danny Edel" << endl;
+    cout << endl;
+    cout << "Copyright (C) 2012 Danny Edel." << endl
+	 << "This is free software; see the source for copying conditions.  There is NO" << endl
+	 << "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << endl;
+    if ( vm.count("help")) {
+      cout << endl;
+      cout << "Usage: " << argv[0] << " [options] pdf-file" << endl;
+      cout << help << endl;
+    }
     exit(1);
   }
   
