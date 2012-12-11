@@ -1,3 +1,10 @@
+dspdfviewer (1.8) testing; urgency=low
+
+  * Pressing forward on last page doesnt trigger a warning
+  * Changed License to GPL-v2+. This should fix #2
+
+ -- Danny Edel <mail@danny-edel.de>  Tue, 11 Dec 2012 12:54:22 +0100
+
 dspdfviewer (1.7) testing; urgency=low
 
   * Readme converted to markdown
