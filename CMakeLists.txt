@@ -90,7 +90,7 @@ else()
 endif()
 
 if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
-  add_definitions(-DDSPDFVIEWER_VERSION=${DSPDFVIEWER_VERSION})
+  add_definitions(-DDSPDFVIEWER_VERSION="${DSPDFVIEWER_VERSION}")
 endif()
 
 
