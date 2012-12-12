@@ -6,7 +6,8 @@ Build-Depends: g++ (>= 4:4.6),
  debhelper (>= 7.3.0), cmake,
  libpoppler-qt4-dev,
  libboost-program-options-dev,
- hardening-wrapper
+ hardening-wrapper,
+ lsb-release
 # The project needs a c++11 compiler.
 # Its known to work with g++ 4.6 and up
 #
@@ -30,6 +31,10 @@ Build-Depends: g++ (>= 4:4.6),
 # - hardening-wrapper
 # And the hardening-wrapper because lintian told me to make the build
 # safer.
+#
+# - lsb-release
+# This is needed for the switch in the debian/rules file checking
+# against lucid
 Standards-Version: 3.9.3
 Vcs-Git: git://github.com/dannyedel/dspdfviewer.git
 Vcs-Browser: https://github.com/dannyedel/dspdfviewer
