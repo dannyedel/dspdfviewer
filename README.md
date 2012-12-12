@@ -78,5 +78,3 @@ You will need a C++11 compiler and the cmake build system.
 6. (install)
    make install
    (optional)
-
-Notes: CMake doesn't yet install the manpage.
