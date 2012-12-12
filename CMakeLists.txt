@@ -103,3 +103,6 @@ target_link_libraries(dspdfviewer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${Boo
 
 install(TARGETS	dspdfviewer
 	RUNTIME DESTINATION bin)
+
+install(FILES docs/dspdfviewer.1
+	DESTINATION share/man/man1)
