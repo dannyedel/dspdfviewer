@@ -346,20 +346,27 @@ void PDFViewerWindow::updateWallClock(const QTime& wallClock)
 void PDFViewerWindow::changePageNumberDialog()
 {
   bool ok;
+  /* While PDF counts zero-based, users probably think that the first
+   * page is called "1".
+   */
+  uint displayMinNumber = minimumPageNumber+1;
+  uint displayMaxNumber = maximumPageNumber+1;
+  uint displayCurNumber = currentPageNumber+1;
   int targetPageNumber = QInputDialog::getInt(this,
 	/* Window Caption */ tr("Select page"),
-	/* Input field */ tr("Jump to page number:"),
-	/* Starting number. Note the +1 because internally, we count zero-based. */
-	currentPageNumber+1,
+	/* Input field caption */
+	QString(tr("Jump to page number (%1-%2):")).arg(displayMinNumber).arg(displayMaxNumber),
+	/* Starting number. */
+	displayCurNumber,
 	/* minimum value */
-	minimumPageNumber+1,
+	displayMinNumber,
 	/* maximum value */
-	maximumPageNumber+1,
+	displayMaxNumber,
 	/* Step */
 	1,
 	/* Did the user accept? */
 	&ok);
-  targetPageNumber-=1; // Convert to internal numbering scheme
+  targetPageNumber-=1; // Convert back to zero-based numbering scheme
   if ( ok )
   {
     emit pageRequested(targetPageNumber);
