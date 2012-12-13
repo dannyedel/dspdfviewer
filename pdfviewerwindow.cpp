@@ -245,6 +245,7 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
   
   // It was even the right size! Yeah!
   if ( renderedPage->getIdentifier().requestedPageSize() == getTargetImageSize() ) {
+    this->parseLinks(renderedPage->getLinks());
     this->correntImageRendered= true;
   }
 }
@@ -379,6 +380,41 @@ void PDFViewerWindow::setPageNumberLimits(uint minimumPageNumber, uint maximumPa
   this->maximumPageNumber = maximumPageNumber;
 }
 
+
+void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
+{
+  QList< HyperlinkArea* > linkAreas;
+  for( AdjustedLink const & link: links ) {
+    const QRectF& rect = link.linkArea();
+    if ( rect.isNull() ) {
+      qWarning() << "Null Link Area not supported yet.";
+      continue;
+    }
+    using LinkType = Poppler::Link::LinkType;
+    const LinkType& type = link.link()->linkType();
+    qDebug() << "Link Received! " ;
+    qDebug() << "Link Area: " << link.linkArea();
+    if ( type == LinkType::Goto ) {
+      // type is Goto. Bind it to imageLabel
+      const Poppler::LinkGoto& linkGoto = dynamic_cast<const Poppler::LinkGoto&>( * link.link() );
+      if( linkGoto.isExternal() ) {
+	qWarning() << "External links are not supported yet.";
+	continue;
+      }
+      HyperlinkArea* linkArea = new HyperlinkArea(imageLabel, linkGoto);
+      linkAreas.append(linkArea);
+    }
+    else {
+      qWarning() << "Types other than Goto are not supported yet.";
+      continue;
+    }
+  }
+  // Schedule all old links for deletion
+  for( HyperlinkArea* hla: this->linkAreas)
+    hla->deleteLater();
+  // Add the new list
+  this->linkAreas = linkAreas;
+}
 
 
 #include "pdfviewerwindow.moc"

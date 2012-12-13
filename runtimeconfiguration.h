@@ -50,6 +50,9 @@ class RuntimeConfiguration
   /** complete path to the PDF file */
   std::string m_filePath;
   
+  /** Support PDF Hyperlinks**/
+  bool m_hyperlinkSupport;
+  
   /** Single-Display mode
    * 
    * If True, there is only the audience display, the presenter's screen will remain hidden

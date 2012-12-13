@@ -54,6 +54,10 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
      "Pre-render the next arg slides\n"
      "NOTE: If you set this to zero, you might not get a thumbnail for the next slide unless it was loaded already."
      )
+    ("hyperlink-support,l",
+     value<bool>(&m_hyperlinkSupport)->default_value(false),
+     "Support PDF Hyperlinks\n"
+     "NOTE: If you set this to yes, watch where you put your mouse cursor / presenter")
     ;
   options_description secondscreen("Options affecting the second screen");
   secondscreen.add_options()

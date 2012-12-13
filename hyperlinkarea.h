@@ -18,31 +18,20 @@
 */
 
 
-#ifndef RENDEREDPAGE_H
-#define RENDEREDPAGE_H
-#include <qimage.h>
+#ifndef HYPERLINKAREA_H
+#define HYPERLINKAREA_H
+
+#include <QLabel>
 #include <poppler/qt4/poppler-qt4.h>
-#include "pagepart.h"
-#include "renderingidentifier.h"
+
 #include "adjustedlink.h"
 
-class RenderedPage
+class HyperlinkArea : public QLabel
 {
-private:
-  QImage theRenderedImage;
-  QList< AdjustedLink > theLinks;
-  RenderingIdentifier theIdentifier;
+  /** FIXME Exception class */
+  struct WrongLinkType{};
 public:
-  
-  RenderedPage(QImage img, QList<AdjustedLink> links, PagePart whichPart, unsigned pageNum);
-  RenderedPage(QImage img, QList<AdjustedLink> links, RenderingIdentifier identifier);
-  QImage getImage() const;
-  QList< AdjustedLink > getLinks() const;
-  PagePart getPart() const;
-  uint getPageNumber() const;
-  RenderingIdentifier getIdentifier() const;
+  HyperlinkArea(QLabel* imageLabel, const AdjustedLink& gotoLink);
 };
 
-Q_DECLARE_METATYPE(QSharedPointer<RenderedPage>)
-
-#endif // RENDEREDPAGE_H
+#endif // HYPERLINKAREA_H

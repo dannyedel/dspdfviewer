@@ -24,6 +24,7 @@
 #include "renderedpage.h"
 #include "pdfrenderfactory.h"
 #include "runtimeconfiguration.h"
+#include "hyperlinkarea.h"
 
 #include "ui_pdfviewerwindow.h"
 
@@ -63,6 +64,9 @@ private:
   QString timeToString(int milliseconds) const;
   
   void changePageNumberDialog();
+  
+  void parseLinks( QList< AdjustedLink > links);
+  QList< HyperlinkArea* > linkAreas;
   
 public:
   /** Standard constructor
