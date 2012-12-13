@@ -79,7 +79,7 @@ public:
    * 
    * Note: Might throw exceptions if not parsable.
    */
-  void parse(int argc, char** argv);
+  RuntimeConfiguration(int argc, char** argv);
   
   bool useFullPage() const;
   

@@ -31,7 +31,7 @@
 using namespace std;
 using namespace boost::program_options;
 
-void RuntimeConfiguration::parse(int argc, char** argv)
+RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
 {
   options_description generic("Generic options");
   

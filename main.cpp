@@ -27,7 +27,6 @@
 
 int main(int argc, char** argv)
 {
-	RuntimeConfiguration rc;
 	QApplication app(argc, argv);
 	/* If anything goes wrong, try to display the exception to the user.
 	 * Its the least i can do.
@@ -37,8 +36,7 @@ int main(int argc, char** argv)
 		* using Qt's event/callback system
 		*/
 		qRegisterMetaType< QSharedPointer<RenderedPage> >("QSharedPointer<RenderedPage>");
-		
-		rc.parse(argc, argv);
+		RuntimeConfiguration rc(argc, argv);
 		
 		DSPDFViewer foo( rc );
 		
