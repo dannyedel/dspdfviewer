@@ -397,7 +397,8 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
 	qWarning() << "External links are not supported yet.";
 	continue;
       }
-      HyperlinkArea* linkArea = new HyperlinkArea(imageLabel, linkGoto);
+      HyperlinkArea* linkArea = new HyperlinkArea(imageLabel, link);
+      connect( linkArea, SIGNAL(gotoPageRequested(uint)), this, SLOT(linkClicked(uint)) );
       linkAreas.append(linkArea);
     }
     else {
@@ -411,6 +412,13 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
   // Add the new list
   this->linkAreas = linkAreas;
 }
+
+void PDFViewerWindow::linkClicked(uint targetNumber)
+{
+  qDebug() << "Hyperlink detected";
+  emit pageRequested(targetNumber);
+}
+
 
 
 #include "pdfviewerwindow.moc"

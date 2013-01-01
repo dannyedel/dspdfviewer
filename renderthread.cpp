@@ -48,8 +48,12 @@ void RenderThread::run()
   for( Poppler::Link* link: m_page->links() )
   {
     QSharedPointer<Poppler::Link> ptrLink(link);
-    AdjustedLink al(renderMe, ptrLink);
-    links.append(al);
+    try{
+      AdjustedLink al(renderMe, ptrLink);
+      links.append(al);
+    } catch( AdjustedLink::OutsidePage & e) {
+      // no-op
+    }
   }
   QSharedPointer<RenderedPage> renderResult(new RenderedPage( renderImage, links, renderMe ));
   qDebug() << "RenderThread for " << renderMe << " successful, image has size " << renderResult->getImage().size();

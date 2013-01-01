@@ -24,17 +24,22 @@
 #include <QSharedPointer>
 #include <poppler/qt4/poppler-link.h>
 
+#include <stdexcept>
+
 /** Link that is adjusted to a rendered page.
  * This includes failing to construct if it is completely outside the scope.
  */
 class AdjustedLink
 {
+public:
   /** Exception class */
-  struct OutsidePage{};
+  struct OutsidePage: public std::runtime_error {
+    OutsidePage();
+  };
   
   /** Exception class */
   struct UnsupportedLinkType{};
-public:
+  
   AdjustedLink(const RenderingIdentifier& renderIdent, QSharedPointer<Poppler::Link> link);
   
   /** Returns the link area as floating point in the range 0..1 **/
@@ -42,6 +47,9 @@ public:
   
   /** Returns the link area, but scaled to the given QRectangle **/
   QRect linkArea(const QRect& rect) const;
+  
+  /** Target page number */
+  uint targetPageNumber() const;
   
   /** Returns a shared pointer to the Poppler link
    */
@@ -52,6 +60,9 @@ public:
   
 private:
   QSharedPointer<Poppler::Link> m_link;
+  RenderingIdentifier ri;
+  
+  Poppler::LinkGoto const& lgt() const;
 };
 
 

@@ -123,6 +123,9 @@ public slots:
     void rerenderRequested();
     
     void quitRequested();
+    
+private slots:
+  void linkClicked(uint targetNumber);
 };
 
 #endif // PDFVIEWERWINDOW_H

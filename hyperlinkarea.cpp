@@ -22,7 +22,7 @@
 #include <stdexcept>
 #include <QDebug>
 
-HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLabel()
+HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLabel(), targetPage(link.targetPageNumber())
 {
   if ( link.linkType() != Poppler::Link::Goto )
     throw WrongLinkType();
@@ -42,13 +42,32 @@ HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLab
   setParent(imageLabel);
   setGeometry(mySize);
   
-  setAutoFillBackground(true);
+  /*
+   setAutoFillBackground(true);
   QPalette pal = palette();
   pal.setColor(QPalette::Window, QColor(Qt::black) );
   setPalette(pal);
   
-  setText( QString("%1").arg(link.link()->destination().pageNumber()) );
+  */
+  
+  // setText( QString("%1 @ +%2,%3").arg(targetPage).arg( link.linkArea().right() ). arg(link.linkArea().top())  );
+  
   show();
+  
+  
+  setCursor( Qt::PointingHandCursor );
+  
   
   qDebug() << "Added an hyperlink to" << text() << "at" << geometry();
 }
+
+
+void HyperlinkArea::mousePressEvent(QMouseEvent* ev)
+{
+  qDebug() << "Hyperlink clicked" << ev << "Target page" << targetPage;
+  
+  emit gotoPageRequested(targetPage);
+}
+
+
+#include "hyperlinkarea.moc"

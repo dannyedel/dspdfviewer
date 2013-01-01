@@ -20,3 +20,72 @@
 
 #include "adjustedlink.h"
 
+#include <stdexcept>
+
+QSharedPointer< Poppler::Link > AdjustedLink::link() const
+{
+  return m_link;
+}
+
+QRectF AdjustedLink::linkArea() const
+{
+  QRectF const& orig( link()->linkArea() );
+  QRectF retval( link()->linkArea() );
+  switch(ri.pagePart()) {
+    case PagePart::FullPage:
+      break;
+    case PagePart::LeftHalf:
+      if ( retval.left() > 0.5 ) {
+	return QRectF();
+      }
+      retval.setLeft( orig.left() * 2.0 );
+      retval.setWidth( orig.width() * 2.0 );
+      break;
+    case PagePart::RightHalf:
+      if ( retval.right() < 0.5 ) {
+	// no part of the rectangle is in our page
+	return QRectF();
+      }
+      retval.setLeft( (orig.left() - 0.5) * 2.0 );
+      retval.setWidth( orig.width() * 2.0 );
+      break;
+  }
+  
+  if ( retval.height() < 0 ) {
+    retval.setHeight( -retval.height() );
+    retval.moveTop( retval.top() - retval.height());
+  }
+  
+  return retval;
+  
+}
+
+Poppler::Link::LinkType AdjustedLink::linkType() const
+{
+  return link()->linkType();
+}
+
+
+AdjustedLink::AdjustedLink(const RenderingIdentifier& renderIdent, QSharedPointer< Poppler::Link > link)
+:  m_link(link), ri(renderIdent)
+{
+  if ( linkArea().isNull() )
+    throw OutsidePage();
+}
+
+
+AdjustedLink::OutsidePage::OutsidePage(): runtime_error("This link is not inside the current page part")
+{
+}
+
+
+uint AdjustedLink::targetPageNumber() const
+{
+  return lgt().destination().pageNumber() -1;
+}
+
+
+Poppler::LinkGoto const& AdjustedLink::lgt() const
+{
+  return dynamic_cast<Poppler::LinkGoto const&>( *m_link );
+}

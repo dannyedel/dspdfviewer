@@ -28,10 +28,21 @@
 
 class HyperlinkArea : public QLabel
 {
+  Q_OBJECT
+  
   /** FIXME Exception class */
   struct WrongLinkType{};
+  
+  uint targetPage;
 public:
   HyperlinkArea(QLabel* imageLabel, const AdjustedLink& gotoLink);
+  
+  virtual void mousePressEvent(QMouseEvent* ev) override;
+  
+  signals:
+    void gotoPageRequested(uint targetPage);
+    
+    
 };
 
 #endif // HYPERLINKAREA_H
