@@ -80,10 +80,6 @@ void PDFViewerWindow::reposition()
   this->showNormal();
   QRect rect = QApplication::desktop()->screenGeometry(getMonitor());
   move(rect.topLeft());
-  setFixedSize(rect.size());
-  this->setWindowFlags( windowFlags()
-  | Qt::FramelessWindowHint
-  );
   this->showFullScreen();
   /* Note: The focus should be on the primary window, because at least 
    * Gnome draws the primary window's border onto the secondary.
