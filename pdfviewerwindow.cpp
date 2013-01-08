@@ -76,8 +76,6 @@ void PDFViewerWindow::reposition()
 {
   if ( ! m_enabled )
     return;
-  this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
-  this->showNormal();
   QRect rect = QApplication::desktop()->screenGeometry(getMonitor());
   move(rect.topLeft());
   this->showFullScreen();
