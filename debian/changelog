@@ -1,3 +1,16 @@
+dspdfviewer (1.9) testing; urgency=low
+
+  * The software can print its own version number when called with --version
+  * The manpage is now installed by cmake
+  * README changed
+  * rewrote dependencies for compiling under ubuntu
+  * The "goto" dialog (G Button) now displays the range
+  * RuntimeConfigurations parse moved to constructor
+  * Simplified the "make window fullscreen" method, fixing it under openbox
+  * Removed unnecessary window flag manipulation
+
+ -- Danny Edel <mail@danny-edel.de>  Wed, 23 Jan 2013 12:36:10 +0100
+
 dspdfviewer (1.8) testing; urgency=low
 
   * Pressing forward on last page doesnt trigger a warning
