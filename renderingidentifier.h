@@ -28,20 +28,25 @@
 class RenderingIdentifier
 {
 private:
-  int thePageNumber;
+  unsigned thePageNumber;
   PagePart thePagePart;
   QSize theRequestedPageSize;
   
 public:
-  RenderingIdentifier(int pagenum, PagePart pagepart, QSize requestedPageSize);
-  int pageNumber() const;
+  RenderingIdentifier(unsigned pagenum, PagePart pagepart, QSize requestedPageSize);
+  unsigned pageNumber() const;
   PagePart pagePart() const;
   QSize requestedPageSize() const;
   
   bool operator == (const RenderingIdentifier& other) const;
   
+#if 0
   /** Cast to a string that is usable as a hash identifier **/
   operator QString() const;
+#endif
 };
+
+/** Hashes this object to something useable in the cache */
+uint qHash(const RenderingIdentifier& ri);
 
 #endif // RENDERINGIDENTIFIER_H

@@ -21,13 +21,14 @@
 #include "renderutils.h"
 
 #include <QDebug>
+#include <QApplication>
 #include <stdexcept>
 
 QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize targetSize, PagePart whichPart)
 {
   if ( ! page )
   {
-    throw std::runtime_error( QString("RenderUtils::renderPagePart called with null page. Target size was %1x%2").
+    throw std::runtime_error( QApplication::translate("RenderUtils", "RenderUtils::renderPagePart called with null page. Target size was %1x%2").
       arg(targetSize.width()).arg(targetSize.height()).toStdString() );
   }
   

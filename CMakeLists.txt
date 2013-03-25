@@ -94,12 +94,29 @@ if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
   add_definitions(-DDSPDFVIEWER_VERSION="${DSPDFVIEWER_VERSION}")
 endif()
 
+set(TRANSLATIONFILES
+	dspdfviewer_de.ts
+)
+set(UIFILES
+	pdfviewerwindow.ui
+)
 
 set(dspdfviewer_SRCS runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
-qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
+qt4_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
+
+
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+option(UpdateTranslations "Do you want to update the .ts files (WARNING: make clean will eat them!)" OFF)
+
+if( ${UpdateTranslations} )
+	qt4_create_translation(TRANSLATIONS ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
+else()
+	qt4_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
+endif()
 qt4_automoc(${dspdfviewer_SRCS})
-add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
+
+add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
 target_link_libraries(dspdfviewer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${Boost_LIBRARIES} poppler-qt4)
 
 install(TARGETS	dspdfviewer

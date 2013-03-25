@@ -96,7 +96,6 @@ void PDFViewerWindow::reposition()
 void PDFViewerWindow::displayImage(QImage image)
 {
   currentImage= image;
-  imageLabel->setText("");
   imageLabel->resize( image.size() );
   imageLabel->setPixmap(QPixmap::fromImage(image));
   //imageArea->setWidgetResizable(true);
@@ -254,7 +253,7 @@ void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
   this->correntImageRendered = false;  
   this->currentImage = QImage();
   imageLabel->setPixmap(QPixmap());
-  imageLabel->setText(QString("Loading page number %1").arg(pageNumberToWaitFor) );
+  imageLabel->setText(tr("Loading page number %1").arg(pageNumberToWaitFor) );
   
   /** Clear Thumbnails, they will come back in soon */
   previousThumbnail->setPixmap( QPixmap() );
@@ -311,7 +310,7 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
 
 QString PDFViewerWindow::timeToString(QTime time) const
 {
-  return time.toString("HH:mm:ss");
+  return time.toString( tr("HH:mm:ss", "This is used by QTime::toString. See its documentation before changing this.") );
 }
 
 QString PDFViewerWindow::timeToString(int milliseconds) const
@@ -324,7 +323,7 @@ QString PDFViewerWindow::timeToString(int milliseconds) const
 
 void PDFViewerWindow::updatePresentationClock(const QTime& presentationClock)
 {
-  this->presentationClock->setText( QString("Total\n%1").arg(timeToString(presentationClock)));
+  this->presentationClock->setText( tr("Total\n%1").arg(timeToString(presentationClock)));
 }
 
 void PDFViewerWindow::updateSlideClock(const QTime& slideClock)
@@ -349,7 +348,7 @@ void PDFViewerWindow::changePageNumberDialog()
   int targetPageNumber = QInputDialog::getInt(this,
 	/* Window Caption */ tr("Select page"),
 	/* Input field caption */
-	QString(tr("Jump to page number (%1-%2):")).arg(displayMinNumber).arg(displayMaxNumber),
+	tr("Jump to page number (%1-%2):").arg(displayMinNumber).arg(displayMaxNumber),
 	/* Starting number. */
 	displayCurNumber,
 	/* minimum value */

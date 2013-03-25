@@ -19,6 +19,8 @@
 
 
 #include "renderingidentifier.h"
+#include <QApplication>
+#include <QHash>
 
 bool RenderingIdentifier::operator==(const RenderingIdentifier& other) const
 {
@@ -28,13 +30,14 @@ bool RenderingIdentifier::operator==(const RenderingIdentifier& other) const
     && theRequestedPageSize == other.theRequestedPageSize;
 }
 
+#if 0
 RenderingIdentifier::operator QString() const
 {
-  QString s("page%1_%2_size%3x%4");
+  QString s( "page%1_%2_size%3x%4" ) ;
   QString partId;
   switch( pagePart() ) {
     case PagePart::LeftHalf:
-      partId="LeftHalf";
+      partId= "LeftHalf";
       break;
     case PagePart::RightHalf:
       partId="RightHalf";
@@ -45,8 +48,9 @@ RenderingIdentifier::operator QString() const
   }
   return s.arg(pageNumber()).arg(partId).arg(requestedPageSize().width()).arg(requestedPageSize().height());
 }
+#endif
 
-int RenderingIdentifier::pageNumber() const
+unsigned RenderingIdentifier::pageNumber() const
 {
   return thePageNumber;
 }
@@ -61,11 +65,16 @@ QSize RenderingIdentifier::requestedPageSize() const
   return theRequestedPageSize;
 }
 
-RenderingIdentifier::RenderingIdentifier(int pagenum, PagePart pagepart, QSize pagesize):
+RenderingIdentifier::RenderingIdentifier(unsigned pagenum, PagePart pagepart, QSize pagesize):
   thePageNumber(pagenum), thePagePart(pagepart), theRequestedPageSize(pagesize)
 {
   
 }
 
+
+uint qHash(const RenderingIdentifier& ri)
+{
+  return qHash(ri.pageNumber()) ^ qHash(ri.requestedPageSize().height()) ^ qHash(ri.requestedPageSize().width());
+}
 
 

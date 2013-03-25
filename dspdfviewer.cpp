@@ -42,7 +42,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
  audienceWindow(0,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r),
  secondaryWindow(1, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true, r, r.useSecondScreen() )
 {
-  qDebug() << "Starting constructor" ;
+  qDebug() << tr("Starting constructor") ;
   
   if ( ! r.useSecondScreen() ) {
     secondaryWindow.hide();
@@ -54,11 +54,11 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   if ( ! pdfDocument  || pdfDocument->isLocked() )
   {
     /// FIXME: Error message
-    throw std::runtime_error("I was not able to open the PDF document. Sorry.");
+    throw std::runtime_error( tr("I was not able to open the PDF document. Sorry.").toStdString() );
   }
   setHighQuality(true);
   
-  qDebug() << "Connecting audience window";
+  qDebug() << tr("Connecting audience window");
   
   audienceWindow.setPageNumberLimits(0, numberOfPages()-1);
   
@@ -77,7 +77,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   
   if ( r.useSecondScreen() )
   {
-    qDebug() << "Connecting secondary window";
+    qDebug() << tr("Connecting secondary window");
     
     secondaryWindow.setPageNumberLimits(0, numberOfPages()-1);
     
@@ -146,7 +146,7 @@ QImage DSPDFViewer::renderForTarget(QSharedPointer< Poppler::Page > page, QSize 
 
 void DSPDFViewer::renderPage()
 {
-  qDebug() << "Requesting rendering of page " << m_pagenumber;
+  qDebug() << tr("Requesting rendering of page %1").arg(m_pagenumber);
   audienceWindow.showLoadingScreen(m_pagenumber);
   secondaryWindow.showLoadingScreen(m_pagenumber);
   if ( runtimeConfiguration.showThumbnails() ) {
@@ -193,7 +193,7 @@ void DSPDFViewer::gotoPage(unsigned int pageNumber)
     m_pagenumber = pageNumber;
     renderPage();
   } else {
-    qWarning() << "Requested page number" << pageNumber << "which is out of range! Ignoring request.";
+    qWarning() << tr("Requested page number %1 which is out of range! Ignoring request.").arg(pageNumber);
   }
 }
 

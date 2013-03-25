@@ -32,11 +32,11 @@ RenderThread::RenderThread(QSharedPointer< Poppler::Document > theDocument, Rend
 
 void RenderThread::run()
 {
-  qDebug() << "RenderThread for " << renderMe << " started";
+  qDebug() << "RenderThread for " << renderMe.pageNumber() << renderMe.requestedPageSize() << " started";
   QImage renderImage = RenderUtils::renderPagePart(m_page, renderMe.requestedPageSize(), renderMe.pagePart());
   if ( renderImage.isNull() )
   {
-    qDebug() << "RenderThread for " << renderMe << " failed";
+    qDebug() << "RenderThread for " << renderMe.pageNumber() << renderMe.requestedPageSize() << " failed";
     QSharedPointer<RenderingIdentifier> ri( new RenderingIdentifier(renderMe) );
     emit renderingFailed(ri);
     return;
@@ -50,7 +50,7 @@ void RenderThread::run()
     links.append(ptrLink);
   }
   QSharedPointer<RenderedPage> renderResult(new RenderedPage( renderImage, links, renderMe ));
-  qDebug() << "RenderThread for " << renderMe << " successful, image has size " << renderResult->getImage().size();
+  qDebug() << "RenderThread for " << renderMe.pageNumber() << renderMe.requestedPageSize() << " successful, image has size " << renderResult->getImage().size();
   emit renderingFinished(renderResult);
 }
 
