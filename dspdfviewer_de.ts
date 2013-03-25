@@ -83,30 +83,30 @@
 <context>
     <name>PDFViewerWindow</name>
     <message>
-        <location filename="pdfviewerwindow.cpp" line="256"/>
+        <location filename="pdfviewerwindow.cpp" line="257"/>
         <source>Loading page number %1</source>
         <translation>Lade Seite Nummer %1</translation>
     </message>
     <message>
-        <location filename="pdfviewerwindow.cpp" line="313"/>
+        <location filename="pdfviewerwindow.cpp" line="314"/>
         <source>HH:mm:ss</source>
         <comment>This is used by QTime::toString. See its documentation before changing this.</comment>
         <translation>HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="pdfviewerwindow.cpp" line="326"/>
+        <location filename="pdfviewerwindow.cpp" line="327"/>
         <source>Total
 %1</source>
         <translation>Total
 %1</translation>
     </message>
     <message>
-        <location filename="pdfviewerwindow.cpp" line="349"/>
+        <location filename="pdfviewerwindow.cpp" line="350"/>
         <source>Select page</source>
         <translation>Seite auswählen</translation>
     </message>
     <message>
-        <location filename="pdfviewerwindow.cpp" line="351"/>
+        <location filename="pdfviewerwindow.cpp" line="352"/>
         <source>Jump to page number (%1-%2):</source>
         <translation>Springe zu Seite Nummer (%1-%2):</translation>
     </message>
@@ -114,7 +114,7 @@
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="main.cpp" line="52"/>
+        <location filename="main.cpp" line="54"/>
         <source>Dual-Screen PDF Viewer has encountered an error and cannot continue</source>
         <translation>Zweibildschirm PDF-Betrachter hat einen Fehler festgestellt und kann nicht weiter ausgeführt werden</translation>
     </message>
