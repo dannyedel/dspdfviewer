@@ -70,6 +70,7 @@ else()
   # We dont have a version number given by the build system.
   # Try to figure it out first by asking git (only works for in-tree source builds)
   execute_process(COMMAND git describe
+	  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     OUTPUT_VARIABLE GIT_DESCRIBE_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
   if( NOT "${GIT_DESCRIBE_VERSION}" MATCHES "^$" )
     message(STATUS "Using version number ${GIT_DESCRIBE_VERSION} as defined by git-describe.")
