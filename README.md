@@ -33,9 +33,9 @@ http://danny-edel.de/deb/
 If you open the link with a web browser, there are some copy-and-paste
 instructions on how to add the repository. These packages are built by myself.
 
-### Ubuntu 11.04 or newer
+### Ubuntu 12.04 LTS (Precise Pangolin) or newer
 
-For Ubuntu Oneiric (11.04) and newer, there are two PPAs configured:
+For Ubuntu, there are two PPAs configured:
 A "daily" repository and a "release" repository. Use the daily builds only 
 if you want to help in development (test bugs in the latest git revision),
 otherwise stick to the "release" PPA:
@@ -43,7 +43,17 @@ otherwise stick to the "release" PPA:
 1. Daily
    https://launchpad.net/~dannyedel/+archive/dspdfviewer-daily
 2. Release
-   https://code.launchpad.net/~dannyedel/+archive/dspdfviewer
+   https://launchpad.net/~dannyedel/+archive/dspdfviewer
+
+### Ubuntu 10.04 LTS (Lucid Lynx)
+If you're using ubuntu 10.04 LTS, please use the following repositories instead
+of the above:
+
+1. Daily
+   https://launchpad.net/~dannyedel/+archive/dspdfviewer-daily-lucid
+2. Release
+   https://launchpad.net/~dannyedel/+archive/dspdfviewer-lucid 
+
 
 ## Installing from source
 
