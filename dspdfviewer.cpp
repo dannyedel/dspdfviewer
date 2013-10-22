@@ -39,8 +39,8 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 	,
  renderFactory(r.filePathQString()),
  m_pagenumber(0),
- audienceWindow(0,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r),
- secondaryWindow(1, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true, r, r.useSecondScreen() )
+ audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r),
+ secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true, r, r.useSecondScreen() )
 {
   qDebug() << "Starting constructor" ;
   
