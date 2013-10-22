@@ -77,11 +77,15 @@ else()
     message(STATUS "Using version number ${GIT_DESCRIBE_VERSION} as defined by git-describe.")
     set(DSPDFVIEWER_VERSION ${GIT_DESCRIBE_VERSION})
   else()
-    # get the first changelog line (containing a version number in parentheses) into DEBIANVERSION
-    file(STRINGS debian/changelog DEBIANVERSION LIMIT_COUNT 1 REGEX "\\(([0-9.])*\\)")
-    # reduce the variable to only the first "version-number-ish" thing
-    string(REGEX MATCH "([0-9.])+" DEBIANVERSION ${DEBIANVERSION} )
-    if ( NOT ${DEBIANVERSION} MATCHES "^$" )
+	# use the standard utility dpkg-parsechangelog to get the version number
+	execute_process(COMMAND dpkg-parsechangelog
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		OUTPUT_VARIABLE DEBIANCHANGELOG OUTPUT_STRIP_TRAILING_WHITESPACE)
+	# grep for the line with "Version: "
+	string(REGEX MATCH "Version: [^ \r\n\t]*" DEBIANVERSION "${DEBIANCHANGELOG}")
+	# strip "Version: "
+	string(REPLACE "Version: " "" DEBIANVERSION "${DEBIANVERSION}")
+    if ( NOT "${DEBIANVERSION}" MATCHES "^$" )
       message(STATUS "Using version number ${DEBIANVERSION} as parsed from debian/changelog's first entry.")
       set(DSPDFVIEWER_VERSION ${DEBIANVERSION})
     else()
