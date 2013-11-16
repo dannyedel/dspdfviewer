@@ -35,6 +35,7 @@
 
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r): 
 	runtimeConfiguration(r),
+ presentationClockRunning(false),
 	pdfDocument(Poppler::Document::load(r.filePathQString()))
 	,
  renderFactory(r.filePathQString()),
