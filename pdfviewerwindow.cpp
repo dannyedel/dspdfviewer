@@ -41,7 +41,7 @@ unsigned int PDFViewerWindow::getMonitor() const
   return m_monitor;
 }
 
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, bool enabled): 
+PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const QString& windowRole, bool enabled): 
   QWidget(),
   m_enabled(enabled),
   m_monitor(monitor),
@@ -52,6 +52,8 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool sho
   if ( ! enabled )
     return;
   setupUi(this);
+  setWindowRole(windowRole);
+  setWindowTitle(QString("DS PDF Viewer - %1").arg(windowRole).replace('_', ' ') );
   if ( !showInformationLine || ! r.showPresenterArea()) {
     /* If the information line is disabled because we're the primary screen,
      * or the user explicitly said so, disable it completely.

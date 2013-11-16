@@ -39,14 +39,15 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 	,
  renderFactory(r.filePathQString()),
  m_pagenumber(0),
- audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r),
- secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true, r, r.useSecondScreen() )
+ audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r, "Audience_Window"),
+ secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true,  r, "Secondary_Window", r.useSecondScreen() )
 {
   qDebug() << "Starting constructor" ;
   
   if ( ! r.useSecondScreen() ) {
     secondaryWindow.hide();
   }
+  
   
   audienceWindow.showLoadingScreen(0);
   secondaryWindow.showLoadingScreen(0);
