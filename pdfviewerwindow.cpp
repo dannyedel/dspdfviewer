@@ -321,7 +321,7 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
   emit rerenderRequested();
 }
 
-QString PDFViewerWindow::timeToString(QTime time) const
+QString PDFViewerWindow::timeToString(const QTime & time) const
 {
   return time.toString("HH:mm:ss");
 }

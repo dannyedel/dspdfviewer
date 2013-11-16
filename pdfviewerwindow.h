@@ -60,7 +60,7 @@ private:
   void addThumbnail(uint pageNumber, QImage thumbnail);
   
   
-  QString timeToString(QTime time) const;
+  QString timeToString(const QTime& time) const;
   QString timeToString(int milliseconds) const;
   
   void changePageNumberDialog();
