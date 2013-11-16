@@ -45,6 +45,7 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool sho
   QWidget(),
   m_enabled(enabled),
   m_monitor(monitor),
+  blank(false),
   minimumPageNumber(0),
   maximumPageNumber(65535),
   myPart(myPart)
@@ -100,9 +101,13 @@ void PDFViewerWindow::reposition()
 
 void PDFViewerWindow::displayImage(QImage image)
 {
-  currentImage= image;
   imageLabel->setText("");
   imageLabel->resize( image.size() );
+  if ( blank ) {
+    // If we're supposed to display a blank image, leave it at this state.
+    return;
+  }
+  currentImage= image;
   imageLabel->setPixmap(QPixmap::fromImage(image));
   //imageArea->setWidgetResizable(true);
   
@@ -159,9 +164,11 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
       case Qt::Key_Up:
       case Qt::Key_Left:
       case Qt::Key_Backspace:
-      case Qt::Key_B: // Back
       case Qt::Key_P: //Previous
 	emit previousPageRequested();
+	break;
+      case Qt::Key_B:
+	emit blankToggleRequested();
 	break;
       case Qt::Key_Home:
       case Qt::Key_H: //Home
@@ -376,6 +383,25 @@ void PDFViewerWindow::setPageNumberLimits(uint minimumPageNumber, uint maximumPa
 {
   this->minimumPageNumber = minimumPageNumber;
   this->maximumPageNumber = maximumPageNumber;
+}
+
+void PDFViewerWindow::setBlank(const bool blank)
+{
+  if ( this->blank == blank)
+    return;
+  /* State changes. request re-render */
+  this->blank = blank;
+  qDebug() << "Changing blank state to" << blank;
+  if ( blank ) {
+    imageLabel->clear();
+  } else {
+    emit rerenderRequested();
+  }
+}
+
+bool PDFViewerWindow::isBlank() const
+{
+  return blank;
 }
 
 

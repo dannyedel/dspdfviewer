@@ -93,6 +93,8 @@ public:
     QTime presentationClock() const;
     
     QTime timeSince( const QTime& startPoint) const;
+    
+    bool isAudienceScreenBlank() const;
 
 signals:
   void wallClockUpdate(const QTime& wallClock) const;
@@ -118,6 +120,10 @@ public slots:
     void goToStartAndResetClocks();
     
     void swapScreens();
+    
+    void toggleAudienceScreenBlank();
+    void setAudienceScreenBlank();
+    void setAudienceScreenVisible();
     
     void exit();
 };

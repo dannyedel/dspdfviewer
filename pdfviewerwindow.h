@@ -37,6 +37,7 @@ private:
   bool	m_enabled;
   unsigned int m_monitor;
   QImage currentImage;
+  bool blank;
   
   bool informationLineVisible;
   
@@ -94,6 +95,8 @@ public:
     
     bool isInformationLineVisible() const;
     
+    bool isBlank() const;
+    
     void showLoadingScreen(int pageNumberToWaitFor);
     
 public slots:
@@ -108,6 +111,8 @@ public slots:
   
   void setPageNumberLimits(uint minimumPageNumber, uint maximumPageNumber);
   
+  void setBlank(const bool blank);
+  
   signals:
     void nextPageRequested();
     void previousPageRequested();
@@ -119,6 +124,8 @@ public slots:
     void rerenderRequested();
     
     void quitRequested();
+    
+    void blankToggleRequested();
 };
 
 #endif // PDFVIEWERWINDOW_H

@@ -76,6 +76,8 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   
   connect( &audienceWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
   
+  connect( &audienceWindow, SIGNAL(blankToggleRequested()), this, SLOT(toggleAudienceScreenBlank()));
+  
   if ( r.useSecondScreen() )
   {
     qDebug() << "Connecting secondary window";
@@ -94,6 +96,8 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
     connect( &secondaryWindow, SIGNAL(restartRequested()), this, SLOT(goToStartAndResetClocks()));
     
     connect( &secondaryWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
+
+    connect( &secondaryWindow, SIGNAL(blankToggleRequested()), this, SLOT(toggleAudienceScreenBlank()));
     
     connect( this, SIGNAL(presentationClockUpdate(QTime)), &secondaryWindow, SLOT(updatePresentationClock(QTime)));
     connect( this, SIGNAL(slideClockUpdate(QTime)), &secondaryWindow, SLOT(updateSlideClock(QTime)));
@@ -313,6 +317,33 @@ RenderingIdentifier DSPDFViewer::toRenderIdent(unsigned int pageNumber, const PD
   RenderingIdentifier ( pageNumber, window.getMyPagePart(), window.getTargetImageSize());
   
 }
+
+bool DSPDFViewer::isAudienceScreenBlank() const
+{
+  return audienceWindow.isBlank();
+}
+
+void DSPDFViewer::setAudienceScreenBlank()
+{
+  audienceWindow.setBlank(true);
+}
+
+void DSPDFViewer::setAudienceScreenVisible()
+{
+  audienceWindow.setBlank(false);
+}
+
+void DSPDFViewer::toggleAudienceScreenBlank()
+{
+  if ( isAudienceScreenBlank() ) {
+    setAudienceScreenVisible();
+  } else {
+    setAudienceScreenBlank();
+  }
+}
+
+
+
 
 
 #include "dspdfviewer.moc"
