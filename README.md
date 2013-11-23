@@ -19,7 +19,9 @@ In-Program-Controls:
 
 Left/Right, Mouse Buttons or Mouse Wheel: Back/Forward
 
-S/F12: Swap screens (if you see the wall clock on the projector)
+S or F12: Swap screens (if you see the wall clock on the projector)
+
+B: blank/unblank audience screen
 
 Q/Esc: Quit
 
