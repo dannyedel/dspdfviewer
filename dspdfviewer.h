@@ -101,6 +101,18 @@ signals:
   void slideClockUpdate(const QTime& slideClock) const;
   void presentationClockUpdate(const QTime& presentationClock) const;
 
+public:
+    /**
+     * Re-read the PDF file from disk, throw if that's not possible.
+     *
+     * If this throws, the state of the application will not
+     * be changed in any way.
+     *
+     * This is not a slot because throwing in a Qt slot would be
+     * undefined behaviour.
+     */
+    void reloadPdf();
+
 public slots:
     /** (re-)Renders the current page on both monitors
      */
@@ -125,6 +137,11 @@ public slots:
     void setAudienceScreenBlank();
     void setAudienceScreenVisible();
     
+    /** try to re-read the PDF file from disk,
+     * swallowing errors if the file cannot be read.
+     */
+    void reloadPdfSwallowError();
+
     void exit();
 };
 

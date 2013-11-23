@@ -343,7 +343,33 @@ void DSPDFViewer::toggleAudienceScreenBlank()
   }
 }
 
+void DSPDFViewer::reloadPdf()
+{
+  // save a reference to the old pdf
+  QSharedPointer<Poppler::Document> oldPdf{ pdfDocument };
+  QSharedPointer<Poppler::Document> newPdf{ Poppler::Document::load( runtimeConfiguration.filePathQString()) };
+  if ( ! newPdf ) {
+    /// FIXME: Add a specific exception here,
+    throw std::runtime_error("Cannot re-read PDF");
+  }
+  // change "current" document to new one
+  pdfDocument = newPdf;
+  /// FIXME: Give the new PDF to the render factory,
+  /// FIXME: clearing the page cache and ignoring old threads
 
+  // trigger re-render
+  renderPage();
+}
+
+void DSPDFViewer::reloadPdfSwallowError()
+{
+  try {
+    reloadPdf();
+    ///FIXME: Catch specific exception here
+  } catch( std::runtime_error& e) {
+    qDebug() << "Re-render exception swallowed:" << e.what();
+  }
+}
 
 
 
