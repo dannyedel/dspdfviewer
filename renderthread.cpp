@@ -22,18 +22,18 @@
 #include "renderutils.h"
 #include <QDebug>
 
-RenderThread::RenderThread(QSharedPointer< Poppler::Document > theDocument, RenderingIdentifier renderIdent):
+RenderThread::RenderThread(PDFDocumentReference theDocument, RenderingIdentifier renderIdent):
   QObject(),
   QRunnable(),
-  m_document(theDocument), renderMe(renderIdent)
+  m_page( theDocument.page( renderIdent.pageNumber() ) ),
+  renderMe(renderIdent)
 {
-  m_page = QSharedPointer<Poppler::Page>( m_document->page(renderIdent.pageNumber()) );
 }
 
 void RenderThread::run()
 {
   qDebug() << "RenderThread for " << renderMe << " started";
-  QImage renderImage = RenderUtils::renderPagePart(m_page, renderMe.requestedPageSize(), renderMe.pagePart());
+  QImage renderImage = RenderUtils::renderPagePart(m_page.page, renderMe.requestedPageSize(), renderMe.pagePart());
   if ( renderImage.isNull() )
   {
     qDebug() << "RenderThread for " << renderMe << " failed";
@@ -44,7 +44,7 @@ void RenderThread::run()
   
   QList< QSharedPointer<Poppler::Link> > links;
 
-  for( Poppler::Link* link: m_page->links() )
+  for( Poppler::Link* link: m_page.page->links() )
   {
     QSharedPointer<Poppler::Link> ptrLink(link);
     links.append(ptrLink);

@@ -36,9 +36,7 @@
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r): 
 	runtimeConfiguration(r),
  presentationClockRunning(false),
-	pdfDocument(Poppler::Document::load(r.filePathQString()))
-	,
- renderFactory(r.filePathQString()),
+ renderFactory(r.filePathQString(), r.cachePDFToMemory()?PDFCacheOption::keepPDFinMemory:PDFCacheOption::rereadFromDisk ),
  m_pagenumber(0),
  audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r, "Audience_Window"),
  secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true,  r, "Secondary_Window", r.useSecondScreen() )
@@ -52,20 +50,21 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   
   audienceWindow.showLoadingScreen(0);
   secondaryWindow.showLoadingScreen(0);
-  
+
+#if 0 // FIXME Make sure exceptions on startup get handled correctly
   if ( ! pdfDocument  || pdfDocument->isLocked() )
   {
     /// FIXME: Error message
     throw std::runtime_error("I was not able to open the PDF document. Sorry.");
   }
-  setHighQuality(true);
-  
+#endif
   qDebug() << "Connecting audience window";
   
   audienceWindow.setPageNumberLimits(0, numberOfPages()-1);
   
   connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
   connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
+  connect( &renderFactory, SIGNAL(pdfFileRereadSuccesfully()), this, SLOT(renderPage()));
   
   connect( &audienceWindow, SIGNAL(nextPageRequested()), this, SLOT(goForward()));
   connect( &audienceWindow, SIGNAL(previousPageRequested()), this, SLOT(goBackward()));
@@ -153,6 +152,10 @@ QImage DSPDFViewer::renderForTarget(QSharedPointer< Poppler::Page > page, QSize 
 void DSPDFViewer::renderPage()
 {
   qDebug() << "Requesting rendering of page " << m_pagenumber;
+  if ( m_pagenumber >= numberOfPages() ) {
+    qDebug() << "Page number out of range, clamping to " << numberOfPages()-1;
+    m_pagenumber = numberOfPages()-1;
+  }
   audienceWindow.showLoadingScreen(m_pagenumber);
   secondaryWindow.showLoadingScreen(m_pagenumber);
   if ( runtimeConfiguration.showThumbnails() ) {
@@ -227,13 +230,6 @@ void DSPDFViewer::exit()
   secondaryWindow.close();
 }
 
-void DSPDFViewer::setHighQuality(bool hq)
-{
-  pdfDocument->setRenderHint(Poppler::Document::Antialiasing, hq);
-  pdfDocument->setRenderHint(Poppler::Document::TextAntialiasing, hq);
-  pdfDocument->setRenderHint(Poppler::Document::TextHinting, hq);
-}
-
 const QSize DSPDFViewer::thumbnailSize = QSize(200, 100);
 
 PdfRenderFactory* DSPDFViewer::theFactory()
@@ -242,7 +238,8 @@ PdfRenderFactory* DSPDFViewer::theFactory()
 }
 
 unsigned int DSPDFViewer::numberOfPages() const {
-	if ( pdfDocument->numPages() < 0 )
+  int pages = renderFactory.numberOfPages();
+	if ( pages < 0 )
 	{
 		/* What the... ?! 
 		 *
@@ -252,7 +249,7 @@ unsigned int DSPDFViewer::numberOfPages() const {
 		return 0;
 	}
 	/* numPages is non-negative and therefore safe to use. */
-	return pdfDocument->numPages() ;
+	return pages;
 }
 
 void DSPDFViewer::goToStartAndResetClocks()
@@ -340,34 +337,6 @@ void DSPDFViewer::toggleAudienceScreenBlank()
     setAudienceScreenVisible();
   } else {
     setAudienceScreenBlank();
-  }
-}
-
-void DSPDFViewer::reloadPdf()
-{
-  // save a reference to the old pdf
-  QSharedPointer<Poppler::Document> oldPdf{ pdfDocument };
-  QSharedPointer<Poppler::Document> newPdf{ Poppler::Document::load( runtimeConfiguration.filePathQString()) };
-  if ( ! newPdf ) {
-    /// FIXME: Add a specific exception here,
-    throw std::runtime_error("Cannot re-read PDF");
-  }
-  // change "current" document to new one
-  pdfDocument = newPdf;
-  /// FIXME: Give the new PDF to the render factory,
-  /// FIXME: clearing the page cache and ignoring old threads
-
-  // trigger re-render
-  renderPage();
-}
-
-void DSPDFViewer::reloadPdfSwallowError()
-{
-  try {
-    reloadPdf();
-    ///FIXME: Catch specific exception here
-  } catch( std::runtime_error& e) {
-    qDebug() << "Re-render exception swallowed:" << e.what();
   }
 }
 
