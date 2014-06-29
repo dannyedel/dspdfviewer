@@ -55,6 +55,14 @@ public:
    * effectively only updating the file contents buffer.
    */
   PDFDocumentReference& operator = (const PDFDocumentReference& rhs);
+  
+  /** Compares the references. Exact behaviour depends on the cache option:
+   * If we are memory-caching, this compares the ByteArrays (i.e. checks for
+   * identical files).
+   * 
+   * If we are not caching, it just checks for the same filename.
+   */
+  friend bool operator == (const PDFDocumentReference& lhs, const PDFDocumentReference& rhs);
 };
 
 #endif // PDFDOCUMENTREFERENCE_H

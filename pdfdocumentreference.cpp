@@ -67,3 +67,16 @@ PDFDocumentReference& PDFDocumentReference::operator=(const PDFDocumentReference
   return *this;
 }
 
+bool operator==(const PDFDocumentReference& lhs, const PDFDocumentReference& rhs)
+{
+  if ( lhs.cacheOption() != rhs.cacheOption() ) {
+    return false;
+  }
+  else if ( lhs.cacheOption() == PDFCacheOption::keepPDFinMemory ) {
+    return lhs.fileContents_ == rhs.fileContents_;
+  }
+  else {
+    return lhs.filename() == rhs.filename();
+  }
+}
+

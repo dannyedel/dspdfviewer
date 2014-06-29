@@ -61,6 +61,20 @@ void PdfRenderFactory::thumbnailThreadFinishedRendering(QSharedPointer<RenderedP
   emit thumbnailRendered(renderedPage);
 }
 
+void PdfRenderFactory::rewatchFile()
+{
+  if ( ! fileWatcher.files().contains( documentReference.filename() ) ) {
+    fileWatcher.addPath( documentReference.filename() );
+    // Check if it has been added (i.e. if it exists)
+    if ( fileWatcher.files().contains( documentReference.filename() ) ) {
+      // The file was created in the meantime. FileWatcher does not report this as a "change",
+      // So we have to check it manually.
+      fileOnDiskChanged(documentReference.filename());
+    }
+  }
+}
+
+
 
 PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption& cacheSetting): QObject(), documentReference(filename, cacheSetting), currentVersion(0),
 
@@ -69,11 +83,15 @@ PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption
   numberOfPages_(documentReference.popplerDocument()->numPages())
 {
   
-  // Initialize the file-watcher
-  fileWatcher.addPath(filename);
+  rewatchFile();
   
   // register the on-change function
   connect(&fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileOnDiskChanged(QString)));
+  
+  // Make sure it re-watches the file
+  fileWatcherRewatchTimer.setInterval(1000);
+  connect(&fileWatcherRewatchTimer, SIGNAL(timeout()), this, SLOT(rewatchFile()));
+  fileWatcherRewatchTimer.start();
 }
 
 void PdfRenderFactory::requestPageRendering(const RenderingIdentifier& originalIdentifier, QThread::Priority priority)
@@ -145,7 +163,6 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
   
   // Add path back in case it was modified via "move temporary onto filename",
   // which filewatcher treats as a remove and stops watching
-  fileWatcher.addPath(filename);
   
   try {
     emit pdfFileChanged();
@@ -157,6 +174,16 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
       
       // Create a new File Reference
       PDFDocumentReference newDoc(filename, documentReference.cacheOption());
+      
+      if ( documentReference.cacheOption() == PDFCacheOption::keepPDFinMemory ) {
+	// If we keep them in memory, a byte-by-byte compare should be resonably fast.
+	// If they are *identical*, we can skip the reloading.
+	
+	if( documentReference == newDoc ) {
+	  qDebug() << "The new document compares identical to the old one, not doing anything.";
+	  return;
+	}
+      }
       
       // Verify poppler can read this
       newDoc.popplerDocument();

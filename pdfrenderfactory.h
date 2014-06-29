@@ -26,6 +26,7 @@
 #include <QCache>
 #include <QThread>
 #include <QFileSystemWatcher>
+#include <QTimer>
 #include <qimage.h>
 #include <poppler/qt4/poppler-qt4.h>
 #include "renderedpage.h"
@@ -71,6 +72,7 @@ class PdfRenderFactory : public QObject
 private:
   PDFDocumentReference documentReference;
   QFileSystemWatcher fileWatcher;
+  QTimer fileWatcherRewatchTimer;
   
   QSet< RenderingIdentifier > currentlyRenderingPages;
   QSet < int > currentlyRenderingThumbnails;
@@ -115,6 +117,8 @@ signals:
   void pdfFileRereadSuccesfully();
   void pdfFileRereadFailed();
   
+  public slots:
+  void rewatchFile();
 };
 
 #endif // PDFRENDERFACTORY_H
