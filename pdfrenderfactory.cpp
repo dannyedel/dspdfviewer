@@ -76,7 +76,7 @@ PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption
   connect(&fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileOnDiskChanged(QString)));
 }
 
-void PdfRenderFactory::requestPageRendering(const RenderingIdentifier& originalIdentifier)
+void PdfRenderFactory::requestPageRendering(const RenderingIdentifier& originalIdentifier, QThread::Priority priority)
 {
   QMutexLocker lock(&mutex);
   
@@ -102,7 +102,7 @@ void PdfRenderFactory::requestPageRendering(const RenderingIdentifier& originalI
   RenderThread* t = new RenderThread( documentReference, renderingIdentifier );
   connect(t, SIGNAL(renderingFinished(QSharedPointer<RenderedPage>)), this, SLOT(pageThreadFinishedRendering(QSharedPointer<RenderedPage>)));
   currentlyRenderingPages.insert(renderingIdentifier);
-  QThreadPool::globalInstance()->start(t);
+  QThreadPool::globalInstance()->start(t, priority);
   
 }
 
@@ -131,7 +131,7 @@ void PdfRenderFactory::requestThumbnailRendering(int pageNumber)
   RenderThread* t = new RenderThread(documentReference, r);
   connect( t, SIGNAL(renderingFinished(QSharedPointer<RenderedPage>)), this, SLOT(thumbnailThreadFinishedRendering(QSharedPointer<RenderedPage>)));
   currentlyRenderingThumbnails.insert(pageNumber);
-  QThreadPool::globalInstance()->start(t);
+  QThreadPool::globalInstance()->start(t, QThread::Priority::LowestPriority);
 }
 
 void PdfRenderFactory::fileOnDiskChanged(const QString& filename)

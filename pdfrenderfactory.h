@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QMutex>
 #include <QCache>
+#include <QThread>
 #include <QFileSystemWatcher>
 #include <qimage.h>
 #include <poppler/qt4/poppler-qt4.h>
@@ -93,7 +94,10 @@ private:
 public:
   PdfRenderFactory( const QString& filename, const PDFCacheOption& cacheSetting );
   
-  void requestPageRendering( const RenderingIdentifier& renderingIdentifier);
+  /** Request a page rendering. Defaults to low priority (i.e. background rendering), please set High priority manually
+   * on the current page.
+   */
+  void requestPageRendering( const RenderingIdentifier& originalIdentifier, QThread::Priority priority = QThread::LowPriority);
   void requestThumbnailRendering( int pageNumber);
   
   int numberOfPages() const;

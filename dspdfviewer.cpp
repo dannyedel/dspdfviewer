@@ -161,10 +161,10 @@ void DSPDFViewer::renderPage()
   if ( runtimeConfiguration.showThumbnails() ) {
     theFactory()->requestThumbnailRendering(m_pagenumber);
   }
-  theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, audienceWindow));
+  theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, audienceWindow), QThread::HighestPriority);
   
   if ( runtimeConfiguration.useSecondScreen() ) {
-    theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, secondaryWindow));
+    theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, secondaryWindow), QThread::HighPriority);
   }
   
   /** Pre-Render next pages **/
