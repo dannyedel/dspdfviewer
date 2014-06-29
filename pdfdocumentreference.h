@@ -6,7 +6,7 @@
 #include <poppler/qt4/poppler-qt4.h>
 
 // forward-declare
-class PDFPageReference;
+struct PDFPageReference;
 
 /** Holds a reference to a PDF document.
  * 
