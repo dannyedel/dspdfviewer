@@ -168,6 +168,7 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
 	emit previousPageRequested();
 	break;
       case Qt::Key_B:
+      case Qt::Key_Period:
 	emit blankToggleRequested();
 	break;
       case Qt::Key_Home:
