@@ -21,7 +21,7 @@ Left/Right, Mouse Buttons or Mouse Wheel: Back/Forward
 
 S or F12: Swap screens (if you see the wall clock on the projector)
 
-B: blank/unblank audience screen
+B or . (period): blank/unblank audience screen
 
 Q/Esc: Quit
 
