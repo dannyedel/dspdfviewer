@@ -1,4 +1,5 @@
 language: cpp
 before_script:
  - sudo apt-get install git-buildpackage
-script: git-buildpackage -uc -us --git-ignore-branch
+ - DIST=wheezy git-pbuilder create
+script: git-buildpackage --git-pbuilder --git-dist=wheezy -uc -us --git-ignore-branch
