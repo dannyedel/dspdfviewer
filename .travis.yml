@@ -1,0 +1,2 @@
+language: cpp
+script: debuild -uc -us
