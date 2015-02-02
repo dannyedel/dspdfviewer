@@ -1,5 +1,5 @@
 language: cpp
 before_script:
  - sudo apt-get install git-buildpackage
- - git-pbuilder create
-script: git-buildpackage --git-pbuilder -uc -us --git-ignore-branch
+ - DIST=$(lsb_release -cs) git-pbuilder create
+script: git-buildpackage --git-dist=$(lsb_release -cs) --git-pbuilder -uc -us --git-ignore-branch
