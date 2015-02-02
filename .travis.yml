@@ -1,5 +1,5 @@
 language: cpp
 before_script:
  - sudo apt-get install git-buildpackage
- - DIST=wheezy git-pbuilder create --mirror=http://http.debian.net/debian
-script: git-buildpackage --git-pbuilder --git-dist=wheezy -uc -us --git-ignore-branch
+ - git-pbuilder create
+script: git-buildpackage --git-pbuilder -uc -us --git-ignore-branch
