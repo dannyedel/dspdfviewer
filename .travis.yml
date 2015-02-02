@@ -1,2 +1,5 @@
 language: cpp
+before_script:
+ - sudo apt-get install devscripts
+ - sudo mk-build-deps --install debian/control
 script: debuild -uc -us
