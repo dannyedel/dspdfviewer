@@ -1,4 +1,4 @@
 language: cpp
 before_script:
  - sudo apt-get install git-buildpackage
-script: git-buildpackage -uc -us
+script: git-buildpackage -uc -us --git-ignore-branch
