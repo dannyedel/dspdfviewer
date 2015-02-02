@@ -1,0 +1,5 @@
+language: cpp
+before_script:
+ - sudo apt-get install git-buildpackage
+ - DIST=$(lsb_release -cs) git-pbuilder create --components="main universe"
+script: git-buildpackage --git-dist=$(lsb_release -cs) --git-pbuilder -uc -us --git-ignore-branch
