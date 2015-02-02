@@ -1,5 +1,4 @@
 language: cpp
 before_script:
- - sudo apt-get install devscripts equivs
- - sudo mk-build-deps --install debian/control
-script: debuild -uc -us
+ - sudo apt-get install git-buildpackage
+script: git-buildpackage -uc -us
