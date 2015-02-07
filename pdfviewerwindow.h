@@ -113,6 +113,8 @@ public slots:
   
   void setBlank(const bool blank);
   
+  void setMyPagePart(const PagePart& newPagePart);
+
   signals:
     void nextPageRequested();
     void previousPageRequested();
@@ -124,6 +126,7 @@ public slots:
     void rerenderRequested();
     
     void quitRequested();
+    void secondScreenFunctionToggleRequested();
     
     void blankToggleRequested();
 };

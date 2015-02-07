@@ -77,6 +77,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   connect( &audienceWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
   
   connect( &audienceWindow, SIGNAL(blankToggleRequested()), this, SLOT(toggleAudienceScreenBlank()));
+  connect( &audienceWindow, SIGNAL(secondScreenFunctionToggleRequested()), this, SLOT(toggleSecondaryScreenFunction()));
   
   if ( r.useSecondScreen() )
   {
@@ -98,6 +99,8 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
     connect( &secondaryWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
 
     connect( &secondaryWindow, SIGNAL(blankToggleRequested()), this, SLOT(toggleAudienceScreenBlank()));
+    connect( &secondaryWindow, SIGNAL(secondScreenFunctionToggleRequested()), this, SLOT(toggleSecondaryScreenFunction()));
+
     
     connect( this, SIGNAL(presentationClockUpdate(QTime)), &secondaryWindow, SLOT(updatePresentationClock(QTime)));
     connect( this, SIGNAL(slideClockUpdate(QTime)), &secondaryWindow, SLOT(updateSlideClock(QTime)));
@@ -340,6 +343,22 @@ void DSPDFViewer::toggleAudienceScreenBlank()
   }
 }
 
+void DSPDFViewer::toggleSecondaryScreenFunction()
+{
+  qDebug() << "Swapping second screen";
+  switch ( secondaryWindow.getMyPagePart() ) {
+    case PagePart::FullPage:
+      // Nothing to do
+      break;
+    case PagePart::LeftHalf:
+      secondaryWindow.setMyPagePart(PagePart::RightHalf);
+      break;
+    case PagePart::RightHalf:
+      secondaryWindow.setMyPagePart(PagePart::LeftHalf);
+      break;
+  }
+  emit renderPage();
+}
 
 
 #include "dspdfviewer.moc"
