@@ -75,10 +75,7 @@ private:
   QTimer fileWatcherRewatchTimer;
   
   QSet< RenderingIdentifier > currentlyRenderingPages;
-  QSet < int > currentlyRenderingThumbnails;
-  
   QCache< RenderingIdentifier, RenderedPage> renderedPages;
-  QCache< int, RenderedPage > renderedThumbnails;
   
   mutable QMutex mutex;
   
@@ -100,18 +97,15 @@ public:
    * on the current page.
    */
   void requestPageRendering( const RenderingIdentifier& originalIdentifier, QThread::Priority priority = QThread::LowPriority);
-  void requestThumbnailRendering( int pageNumber);
   
   int numberOfPages() const;
   
 private slots:
   void fileOnDiskChanged(const QString& filename);
   void pageThreadFinishedRendering( QSharedPointer<RenderedPage> renderedPage );
-  void thumbnailThreadFinishedRendering( QSharedPointer<RenderedPage> renderedPage );
   
 signals:
   void pageRendered( QSharedPointer<RenderedPage> renderedPage);
-  void thumbnailRendered( QSharedPointer<RenderedPage> renderedThumbnail);
   
   void pdfFileChanged();
   void pdfFileRereadSuccesfully();

@@ -45,22 +45,6 @@ void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> 
   emit pageRendered(renderedPage);
 }
 
-void PdfRenderFactory::thumbnailThreadFinishedRendering(QSharedPointer<RenderedPage> renderedPage)
-{
-  {
-    QMutexLocker lock(&mutex);
-    // Ignore this incoming rendering if it was from an old version
-    if (renderedPage->getIdentifier().theVersion != currentVersion )
-      return;
-    
-    int pageNumber = renderedPage->getPageNumber();
-    renderedThumbnails.insert(pageNumber, new RenderedPage(*renderedPage));
-    currentlyRenderingThumbnails.remove(pageNumber);
-  }
-  
-  emit thumbnailRendered(renderedPage);
-}
-
 void PdfRenderFactory::rewatchFile()
 {
   if ( ! fileWatcher.files().contains( documentReference.filename() ) ) {
@@ -122,34 +106,6 @@ void PdfRenderFactory::requestPageRendering(const RenderingIdentifier& originalI
   currentlyRenderingPages.insert(renderingIdentifier);
   QThreadPool::globalInstance()->start(t, priority);
   
-}
-
-void PdfRenderFactory::requestThumbnailRendering(int pageNumber)
-{
-  QMutexLocker lock(&mutex);
-  
-  if ( renderedThumbnails.contains(pageNumber) )
-  {
-    /* Its ready. Take a copy and lets go. */
-    QSharedPointer<RenderedPage> thumb( new RenderedPage( * renderedThumbnails.object(pageNumber ) ));
-    emit thumbnailRendered(thumb);
-    return;
-  }
-  
-  if ( currentlyRenderingThumbnails.contains(pageNumber) )
-  {
-    /* Its in the rendering process, the signal will be emitted later. Nothing to do. */
-    return;
-  }
-  
-  /* We have to render it */
-  RenderingIdentifier r(pageNumber, PagePart::FullPage, ThumbnailSize);
-  r.theVersion = currentVersion;
-  
-  RenderThread* t = new RenderThread(documentReference, r);
-  connect( t, SIGNAL(renderingFinished(QSharedPointer<RenderedPage>)), this, SLOT(thumbnailThreadFinishedRendering(QSharedPointer<RenderedPage>)));
-  currentlyRenderingThumbnails.insert(pageNumber);
-  QThreadPool::globalInstance()->start(t, QThread::Priority::LowestPriority);
 }
 
 void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
@@ -215,12 +171,10 @@ void PdfRenderFactory::clearAllCaches()
   // No renders of the current version are taking place, incoming old renders
   // will be ignored.
   currentlyRenderingPages.clear();
-  currentlyRenderingThumbnails.clear();
   
   // Remove the caches. Since we use explicit copy semantics, its safe to empty
   // these.
   renderedPages.clear();
-  renderedThumbnails.clear(); 
   
 }
 

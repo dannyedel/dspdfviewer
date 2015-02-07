@@ -63,7 +63,6 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   audienceWindow.setPageNumberLimits(0, numberOfPages()-1);
   
   connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
-  connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
   connect( &renderFactory, SIGNAL(pdfFileRereadSuccesfully()), this, SLOT(renderPage()));
   
   connect( &audienceWindow, SIGNAL(nextPageRequested()), this, SLOT(goForward()));
@@ -86,7 +85,6 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
     secondaryWindow.setPageNumberLimits(0, numberOfPages()-1);
     
     connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
-    connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
 
     connect( &secondaryWindow, SIGNAL(nextPageRequested()), this, SLOT(goForward()));
     connect( &secondaryWindow, SIGNAL(previousPageRequested()), this, SLOT(goBackward()));
@@ -162,7 +160,7 @@ void DSPDFViewer::renderPage()
   audienceWindow.showLoadingScreen(m_pagenumber);
   secondaryWindow.showLoadingScreen(m_pagenumber);
   if ( runtimeConfiguration.showThumbnails() ) {
-    theFactory()->requestThumbnailRendering(m_pagenumber);
+    theFactory()->requestPageRendering( toThumbnailRenderIdent(m_pagenumber, secondaryWindow), QThread::LowPriority);
   }
   theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, audienceWindow), QThread::HighestPriority);
   
@@ -173,7 +171,7 @@ void DSPDFViewer::renderPage()
   /** Pre-Render next pages **/
   for ( unsigned i=m_pagenumber; i<m_pagenumber+runtimeConfiguration.prerenderNextPages() && i < numberOfPages() ; i++) {
     if ( runtimeConfiguration.showThumbnails() ) {
-      theFactory()->requestThumbnailRendering(i);
+      theFactory()->requestPageRendering( toThumbnailRenderIdent(i, secondaryWindow), QThread::LowPriority);
     }
     theFactory()->requestPageRendering( toRenderIdent(i, audienceWindow));
     if ( runtimeConfiguration.useSecondScreen() ) {
@@ -186,7 +184,7 @@ void DSPDFViewer::renderPage()
   for ( unsigned i= std::max(m_pagenumber,runtimeConfiguration.prerenderPreviousPages())-runtimeConfiguration.prerenderPreviousPages();
        i<m_pagenumber; i++) {
     if ( runtimeConfiguration.showThumbnails() ) {
-      theFactory()->requestThumbnailRendering(i);
+      theFactory()->requestPageRendering( toThumbnailRenderIdent(i, secondaryWindow), QThread::LowPriority);
     }
     theFactory()->requestPageRendering(toRenderIdent(i, audienceWindow));
     if ( runtimeConfiguration.useSecondScreen() ) {
@@ -318,6 +316,12 @@ RenderingIdentifier DSPDFViewer::toRenderIdent(unsigned int pageNumber, const PD
   RenderingIdentifier ( pageNumber, window.getMyPagePart(), window.getTargetImageSize());
   
 }
+
+RenderingIdentifier DSPDFViewer::toThumbnailRenderIdent(unsigned int pageNumber, const PDFViewerWindow& window)
+{
+  return RenderingIdentifier( pageNumber, PagePart::FullPage, window.getPreviewImageSize());
+}
+
 
 bool DSPDFViewer::isAudienceScreenBlank() const
 {
