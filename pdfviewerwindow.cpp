@@ -150,6 +150,9 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
       case Qt::Key_Q: //quit
 	emit quitRequested();
 	break;
+      case Qt::Key_T:
+	emit secondScreenFunctionToggleRequested();
+	break;
       case Qt::Key_Space:
       case Qt::Key_Enter:
       case Qt::Key_Return:
@@ -405,6 +408,10 @@ bool PDFViewerWindow::isBlank() const
   return blank;
 }
 
+void PDFViewerWindow::setMyPagePart(const PagePart& newPagePart)
+{
+  this->myPart = newPagePart;
+}
 
 
 #include "pdfviewerwindow.moc"

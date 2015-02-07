@@ -126,6 +126,8 @@ public slots:
     void setAudienceScreenBlank();
     void setAudienceScreenVisible();
     
+    void toggleSecondaryScreenFunction();
+
     void exit();
 };
 
