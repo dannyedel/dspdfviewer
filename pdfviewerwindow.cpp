@@ -26,6 +26,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <QInputDialog>
+#include <QMessageBox>
 
 void PDFViewerWindow::setMonitor(const unsigned int monitor)
 {
@@ -41,7 +42,7 @@ unsigned int PDFViewerWindow::getMonitor() const
   return m_monitor;
 }
 
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const QString& windowRole, bool enabled): 
+PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const QString& windowRole, bool enabled):
   QWidget(),
   m_enabled(enabled),
   m_monitor(monitor),
@@ -85,9 +86,9 @@ void PDFViewerWindow::reposition()
   move(rect.topLeft());
   resize( rect.size() );
   this->showFullScreen();
-  /* Note: The focus should be on the primary window, because at least 
+  /* Note: The focus should be on the primary window, because at least
    * Gnome draws the primary window's border onto the secondary.
-   * 
+   *
    * I dont mind the border on my helper screen, but the
    * audience shouldnt see it.
    */
@@ -110,7 +111,7 @@ void PDFViewerWindow::displayImage(QImage image)
   currentImage= image;
   imageLabel->setPixmap(QPixmap::fromImage(image));
   //imageArea->setWidgetResizable(true);
-  
+
   /*
   if ( geometry().size() != getTargetImageSize() )
     reposition();
@@ -121,7 +122,7 @@ void PDFViewerWindow::displayImage(QImage image)
 void PDFViewerWindow::wheelEvent(QWheelEvent* e)
 {
     // QWidget::wheelEvent(e);
-    
+
     if ( e->delta() > 0 )
     {
       qDebug() << "Back";
@@ -136,9 +137,13 @@ void PDFViewerWindow::wheelEvent(QWheelEvent* e)
 void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
 {
     QWidget::keyPressEvent(e);
-    
+
     switch( e->key() )
     {
+      case Qt::Key_F1:
+      case Qt::Key_Question: // Help
+	keybindingsPopup();
+	break;
       case Qt::Key_G:
 	changePageNumberDialog();
 	break;
@@ -243,16 +248,16 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
   // If we are not waiting for an image, ignore incoming answers.
   if ( correntImageRendered )
     return;
-  
+
   if ( renderedPage->getPageNumber() != this->currentPageNumber )
     return; // This page is not for us. Ignore it.
-    
+
   if ( renderedPage->getPart() != this->myPart )
     return; // This is not our part
-    
+
   // There is an image incoming that might fit.
   displayImage(renderedPage->getImage());
-  
+
   // It was even the right size! Yeah!
   if ( renderedPage->getIdentifier().requestedPageSize() == getTargetImageSize() ) {
     this->correntImageRendered= true;
@@ -262,21 +267,21 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
 void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
 {
   if ( !m_enabled )
-    return;    
+    return;
 
   /// FIXME Loading image
-  
+
   this->currentPageNumber = pageNumberToWaitFor;
-  this->correntImageRendered = false;  
+  this->correntImageRendered = false;
   this->currentImage = QImage();
   imageLabel->setPixmap(QPixmap());
   imageLabel->setText(QString("Loading page number %1").arg(pageNumberToWaitFor) );
-  
+
   /** Clear Thumbnails, they will come back in soon */
   previousThumbnail->setPixmap( QPixmap() );
   currentThumbnail->setPixmap( QPixmap() );
   nextThumbnail->setPixmap( QPixmap() );
-  
+
 }
 
 
@@ -285,7 +290,7 @@ void PDFViewerWindow::renderedThumbnailIncoming(QSharedPointer< RenderedPage > r
 {
   if ( !m_enabled )
     return;
-  
+
   /* If a thumbnail for the page we're waiting for is incoming and we have no page at all, its better than nothing */
   if ( renderedThumbnail->getPageNumber() == currentPageNumber
     && currentImage.isNull() )
@@ -305,7 +310,7 @@ void PDFViewerWindow::renderedThumbnailIncoming(QSharedPointer< RenderedPage > r
     }
     displayImage(myHalf);
   }
-  
+
   addThumbnail(renderedThumbnail->getPageNumber(), renderedThumbnail->getImage());
 }
 
@@ -318,7 +323,7 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
 {
   if ( !m_enabled )
     return;
-  
+
   QWidget::resizeEvent(resizeEvent);
   qDebug() << "Resize event" << resizeEvent;
   qDebug() << "Resized from" << resizeEvent->oldSize() << "to" << resizeEvent->size() << ", requesting re-render.";
@@ -351,6 +356,28 @@ void PDFViewerWindow::updateSlideClock(const QTime& slideClock)
 void PDFViewerWindow::updateWallClock(const QTime& wallClock)
 {
   this->wallClock->setText(timeToString(wallClock));
+}
+
+void PDFViewerWindow::keybindingsPopup()
+{
+  QMessageBox *popup   = new QMessageBox();
+  QString msg;
+  msg.append("<table>\n");
+  msg.append("<tr><th width=200 align=left>Key</th><th width=400 align=left>Action</th></tr>\n");
+  /* I skip some navigation bindings (they have to many alternatives) */
+  msg.append("<tr><td>N or Left/Down arrow</td><td>Next slide</td></tr>\n");
+  msg.append("<tr><td>P or Right/Up arrow</td><td>Previous slide</td></tr>\n");
+  msg.append("<tr><td>B or .</td><td>Blank/Unblank audience screen</td></tr>\n");
+  msg.append("<tr><td>G</td><td>Go to specific slide</td></tr>\n");
+  msg.append("<tr><td>H or Home</td><td>Go to first page and reset counters</td></tr>\n");
+  msg.append("<tr><td>Q or Esc</td><td>Quit</td></tr>\n");
+  msg.append("<tr><td>S or F12</td><td>Switch primary and secondary screens</td></tr>\n");
+  msg.append("<tr><td>T</td><td>Toggle between notes and slides in the secondary screen</td></tr>\n");
+  msg.append("<tr><td>? or F1</td><td>Show this help box</td></tr>\n");
+  msg.append("</table>");
+  popup->setWindowTitle(QString("Keybindings"));
+  popup->setText(msg);
+  popup->show();
 }
 
 void PDFViewerWindow::changePageNumberDialog()
@@ -415,5 +442,3 @@ void PDFViewerWindow::setMyPagePart(const PagePart& newPagePart)
 
 
 #include "pdfviewerwindow.moc"
-
-
