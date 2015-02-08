@@ -29,16 +29,16 @@
 class RenderThread: public QObject, public QRunnable
 {
   Q_OBJECT
-  
+
 private:
   const PDFPageReference m_page;
   RenderingIdentifier renderMe;
-  
+
 public:
   RenderThread( PDFDocumentReference theDocument, RenderingIdentifier renderIdent);
-  
+
   void run();
-  
+
   signals:
     void renderingFinished(QSharedPointer<RenderedPage> result);
     void renderingFailed(QSharedPointer<RenderingIdentifier> requestedRender);

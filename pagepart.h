@@ -23,7 +23,7 @@
 
 enum class PagePart
 {
-  
+
   FullPage,
   LeftHalf,
   RightHalf

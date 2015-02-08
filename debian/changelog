@@ -113,20 +113,20 @@ dspdfviewer (1.0) testing; urgency=low
 
 dspdfviewer (0.4) testing; urgency=low
 
-  * Changed compat to 0.7 so it can compile with ubuntu 
+  * Changed compat to 0.7 so it can compile with ubuntu
 
  -- Danny Edel <mail@danny-edel.de>  Wed, 14 Nov 2012 14:43:52 +0100
 
 dspdfviewer (0.3) testing; urgency=low
 
-  * Added GitHub links in the package file 
-  * Small INSTALL and README files 
+  * Added GitHub links in the package file
+  * Small INSTALL and README files
 
  -- Danny Edel <mail@danny-edel.de>  Wed, 14 Nov 2012 13:53:39 +0100
 
 dspdfviewer (0.2c) testing; urgency=low
 
-  * Changed release to testing 
+  * Changed release to testing
 
  -- Danny Edel <mail@danny-edel.de>  Wed, 14 Nov 2012 12:14:26 +0100
 

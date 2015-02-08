@@ -35,4 +35,4 @@ export LDFLAGS:=$(LDFLAGS) -static-libstdc++
 endif
 
 %:
-	dh $@ 
+	dh $@
