@@ -22,6 +22,7 @@
 
 #include <boost/program_options.hpp>
 #include <iostream>
+#include <fstream>
 
 #ifndef DSPDFVIEWER_VERSION
 #warning DSPDFVIEWER_VERSION was not set by the build system!
@@ -106,10 +107,16 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
   options_description configFileOptions;
   configFileOptions.add(global).add(secondscreen);
   
-  /// TODO Parse config file
-  
   variables_map vm;
   store( command_line_parser(argc,argv).options(commandLineOptions).positional(p).run(), vm);
+  QString configurationFileLocation = qgetenv("HOME").append("/.config/dspdfviewer.ini");
+  {
+    // See if the configuration file exists and is readable
+    std::ifstream cfile( configurationFileLocation.toStdString() );
+    if ( cfile.good() ) {
+      store( parse_config_file( cfile, configFileOptions), vm);
+    }
+  } // close input file
   notify(vm);
   
   if ( vm.count("version") || vm.count("help") ) {
