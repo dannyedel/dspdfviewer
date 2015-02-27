@@ -20,6 +20,7 @@
 
 #include "pdfrenderfactory.h"
 #include "renderthread.h"
+#include "sconnect.h"
 
 #include <QMutexLocker>
 #include <QThreadPool>
@@ -70,11 +71,11 @@ PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption
   rewatchFile();
 
   // register the on-change function
-  connect(&fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileOnDiskChanged(QString)));
+  sconnect(&fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileOnDiskChanged(QString)));
 
   // Make sure it re-watches the file
   fileWatcherRewatchTimer.setInterval(1000);
-  connect(&fileWatcherRewatchTimer, SIGNAL(timeout()), this, SLOT(rewatchFile()));
+  sconnect(&fileWatcherRewatchTimer, SIGNAL(timeout()), this, SLOT(rewatchFile()));
   fileWatcherRewatchTimer.start();
 }
 
@@ -102,7 +103,7 @@ void PdfRenderFactory::requestPageRendering(const RenderingIdentifier& originalI
   /* Nobody is working on the page right now. Lets create it. */
 
   RenderThread* t = new RenderThread( documentReference, renderingIdentifier );
-  connect(t, SIGNAL(renderingFinished(QSharedPointer<RenderedPage>)), this, SLOT(pageThreadFinishedRendering(QSharedPointer<RenderedPage>)));
+  sconnect(t, SIGNAL(renderingFinished(QSharedPointer<RenderedPage>)), this, SLOT(pageThreadFinishedRendering(QSharedPointer<RenderedPage>)));
   currentlyRenderingPages.insert(renderingIdentifier);
   QThreadPool::globalInstance()->start(t, priority);
 
