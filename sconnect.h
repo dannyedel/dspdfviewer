@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 /** secure connect:
  *
  * Quick and dirty hack to check QObject::connect()'s return value
