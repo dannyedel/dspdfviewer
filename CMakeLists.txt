@@ -22,6 +22,7 @@ cmake_minimum_required(VERSION 2.6)
 find_package(Qt4 REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED)
 find_library(POPPLER_LIBRARY poppler-qt4)
+set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
 
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${Boost_INCLUDE_DIR})
