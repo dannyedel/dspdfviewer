@@ -1,5 +1,5 @@
 language: cpp
 before_script:
- - sudo apt-get install git-buildpackage
- - DIST=$(lsb_release -cs) git-pbuilder create --components="main universe"
-script: git-buildpackage --git-dist=$(lsb_release -cs) --git-pbuilder -uc -us --git-ignore-branch
+ - sudo apt-get install devscripts equivs
+ - sudo mk-build-deps --install debian/control
+script: debuild -tc -uc -us
