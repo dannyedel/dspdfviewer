@@ -33,6 +33,30 @@
 #include "pdfcacheoption.h"
 #include "pdfdocumentreference.h"
 
+/** Priority hint to the render system.
+ * Values are ordered in increasing priority.
+ */
+enum class RenderPriority {
+	/* Pre-Render of presenter's screen
+	 * (lowest priority)
+	 */
+	PreRenderSecondary,
+
+	/* Pre-Render for the audience screen */
+	PreRenderAudience,
+
+	/* Thumbnails */
+	Thumbnail,
+
+	/* Current page, presenter's screen */
+	CurrentPageSecondary,
+
+	/* The page currently needed on audience screen
+	 * (highest priority)
+	 */
+	CurrentPageAudience
+};
+
 
 /** Factory for rendered pages
  *
@@ -63,6 +87,15 @@
  *
  * If the re-reading went well, the cache will be cleared and new page renders will use the new pdf
  * file.
+ *
+ *
+ * When switching pages, the recommended call order is
+ *
+ * 1. clearRenderPipeline()
+ * 2. setCurrentPage()
+ * 3. requestPageRendering() for the current page's views
+ * 4. requestPageRendering() for the the thumbnails
+ * 5. requestPageRendering() for the pre-render pages
  *
  */
 class PdfRenderFactory : public QObject
@@ -96,22 +129,36 @@ private:
 public:
   PdfRenderFactory( const QString& filename, const PDFCacheOption& cacheSetting );
 
-  /** Request a page rendering. Defaults to low priority (i.e. background rendering), please set High priority manually
-   * on the current page.
+  /** Request a page rendering.
+   *
+   * If you use setCurrentPage(), pages within the same priority class (i.e. Thumbnails)
+   * will be rendered according to their distance to the current page.
    */
-  void requestPageRendering( const RenderingIdentifier& originalIdentifier, QThread::Priority priority = QThread::LowPriority);
-  void requestThumbnailRendering( int pageNumber);
+  void requestPageRendering( const RenderingIdentifier& originalIdentifier, const RenderPriority& priorityHint );
 
-  int numberOfPages() const;
+  /** Sets the current page.
+   * If multiple pages in the same priority class are waiting,
+   * those closest to the current page will be rendered first.
+   */
+  void setCurrentPage(unsigned currentPage);
+
+	/** Returns number of pages */
+	int numberOfPages() const;
+
+	/** Clears the rendering pipeline.
+	 * Any pages already rendering will not be canceled.
+	 *
+	 * This is recommended to call when switching pages,
+	 * and re-order the pages with their correct priorities.
+	 */
+	void clearRenderPipeline();
 
 private slots:
   void fileOnDiskChanged(const QString& filename);
   void pageThreadFinishedRendering( QSharedPointer<RenderedPage> renderedPage );
-  void thumbnailThreadFinishedRendering( QSharedPointer<RenderedPage> renderedPage );
 
 signals:
   void pageRendered( QSharedPointer<RenderedPage> renderedPage);
-  void thumbnailRendered( QSharedPointer<RenderedPage> renderedThumbnail);
 
   void pdfFileChanged();
   void pdfFileRereadSuccesfully();

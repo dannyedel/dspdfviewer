@@ -162,22 +162,22 @@ void DSPDFViewer::renderPage()
   audienceWindow.showLoadingScreen(m_pagenumber);
   secondaryWindow.showLoadingScreen(m_pagenumber);
   if ( runtimeConfiguration.showThumbnails() ) {
-    theFactory()->requestThumbnailRendering(m_pagenumber);
+	  /** FIXME: Restore thumbnail rendering */
   }
-  theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, audienceWindow), QThread::HighestPriority);
+  theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, audienceWindow), RenderPriority::CurrentPageAudience);
 
   if ( runtimeConfiguration.useSecondScreen() ) {
-    theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, secondaryWindow), QThread::HighPriority);
+    theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, secondaryWindow), RenderPriority::CurrentPageSecondary);
   }
 
   /** Pre-Render next pages **/
   for ( unsigned i=m_pagenumber; i<m_pagenumber+runtimeConfiguration.prerenderNextPages() && i < numberOfPages() ; i++) {
     if ( runtimeConfiguration.showThumbnails() ) {
-      theFactory()->requestThumbnailRendering(i);
+		/** FIXME: Thumbnail **/
     }
-    theFactory()->requestPageRendering( toRenderIdent(i, audienceWindow));
+    theFactory()->requestPageRendering( toRenderIdent(i, audienceWindow), RenderPriority::PreRenderAudience );
     if ( runtimeConfiguration.useSecondScreen() ) {
-      theFactory()->requestPageRendering( toRenderIdent(i, secondaryWindow));
+      theFactory()->requestPageRendering( toRenderIdent(i, secondaryWindow), RenderPriority::PreRenderSecondary );
     }
   }
 
@@ -186,11 +186,11 @@ void DSPDFViewer::renderPage()
   for ( unsigned i= std::max(m_pagenumber,runtimeConfiguration.prerenderPreviousPages())-runtimeConfiguration.prerenderPreviousPages();
        i<m_pagenumber; i++) {
     if ( runtimeConfiguration.showThumbnails() ) {
-      theFactory()->requestThumbnailRendering(i);
+		/** FIXME: Thumbnails */
     }
-    theFactory()->requestPageRendering(toRenderIdent(i, audienceWindow));
+    theFactory()->requestPageRendering(toRenderIdent(i, audienceWindow), RenderPriority::PreRenderAudience );
     if ( runtimeConfiguration.useSecondScreen() ) {
-      theFactory()->requestPageRendering(toRenderIdent(i, secondaryWindow));
+      theFactory()->requestPageRendering(toRenderIdent(i, secondaryWindow), RenderPriority::PreRenderSecondary );
     }
   }
 
