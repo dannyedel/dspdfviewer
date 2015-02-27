@@ -151,6 +151,46 @@ QImage DSPDFViewer::renderForTarget(QSharedPointer< Poppler::Page > page, QSize 
 }
 
 
+void DSPDFViewer::askFactoryForPage(unsigned pageNumber) {
+	/* Request audience window rendering */
+	if ( pageNumber == m_pagenumber ) {
+		/* If current page, then spawn rendering immediatly */
+		theFactory()->requestPageRendering(
+			toRenderIdent(
+				pageNumber, audienceWindow),
+			RenderPriority::CurrentPageAudience);
+		/* If we're using two screens, render it aswell */
+		if ( runtimeConfiguration.useSecondScreen() ) {
+			theFactory()->requestPageRendering(
+				toRenderIdent(
+					pageNumber, secondaryWindow),
+			RenderPriority::CurrentPageSecondary);
+		}
+	}
+	if ( runtimeConfiguration.showThumbnails() ) {
+		/** FIXME THUMBNAILS
+		theFactory->requestPageRendering(
+			toRenderIdent(
+				pageNumber, thumbnailBlahFooBar), //FIXME
+			RenderPriority::Thumbnail);
+		*/
+	}
+	/* Request low-priority rendering if its not the current page */
+	if ( pageNumber != m_pagenumber ) {
+		theFactory()->requestPageRendering(
+			toRenderIdent(
+				pageNumber, audienceWindow),
+			RenderPriority::PreRenderAudience);
+		/* Second screen aswell */
+		if ( runtimeConfiguration.useSecondScreen() ) {
+			theFactory()->requestPageRendering(
+				toRenderIdent(
+					pageNumber, secondaryWindow),
+			RenderPriority::PreRenderSecondary);
+		}
+	}
+}
+
 void DSPDFViewer::renderPage()
 {
   qDebug() << "Requesting rendering of page " << m_pagenumber;
@@ -160,39 +200,20 @@ void DSPDFViewer::renderPage()
   }
   audienceWindow.showLoadingScreen(m_pagenumber);
   secondaryWindow.showLoadingScreen(m_pagenumber);
-  if ( runtimeConfiguration.showThumbnails() ) {
-	  /** FIXME: Restore thumbnail rendering */
-  }
-  theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, audienceWindow), RenderPriority::CurrentPageAudience);
 
-  if ( runtimeConfiguration.useSecondScreen() ) {
-    theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, secondaryWindow), RenderPriority::CurrentPageSecondary);
-  }
+	/* Load current page */
+	askFactoryForPage( m_pagenumber );
 
-  /** Pre-Render next pages **/
-  for ( unsigned i=m_pagenumber; i<m_pagenumber+runtimeConfiguration.prerenderNextPages() && i < numberOfPages() ; i++) {
-    if ( runtimeConfiguration.showThumbnails() ) {
-		/** FIXME: Thumbnail **/
-    }
-    theFactory()->requestPageRendering( toRenderIdent(i, audienceWindow), RenderPriority::PreRenderAudience );
-    if ( runtimeConfiguration.useSecondScreen() ) {
-      theFactory()->requestPageRendering( toRenderIdent(i, secondaryWindow), RenderPriority::PreRenderSecondary );
-    }
-  }
+	/** Pre-Render next pages **/
+	for ( unsigned i=m_pagenumber; i<m_pagenumber+runtimeConfiguration.prerenderNextPages() && i < numberOfPages() ; i++) {
+		askFactoryForPage(i);
+	}
 
-  /** Pre-Render previous pages **/
-
-  for ( unsigned i= std::max(m_pagenumber,runtimeConfiguration.prerenderPreviousPages())-runtimeConfiguration.prerenderPreviousPages();
+	/** Pre-Render previous pages **/
+	for ( unsigned i= std::max(m_pagenumber,runtimeConfiguration.prerenderPreviousPages())-runtimeConfiguration.prerenderPreviousPages();
        i<m_pagenumber; i++) {
-    if ( runtimeConfiguration.showThumbnails() ) {
-		/** FIXME: Thumbnails */
-    }
-    theFactory()->requestPageRendering(toRenderIdent(i, audienceWindow), RenderPriority::PreRenderAudience );
-    if ( runtimeConfiguration.useSecondScreen() ) {
-      theFactory()->requestPageRendering(toRenderIdent(i, secondaryWindow), RenderPriority::PreRenderSecondary );
-    }
-  }
-
+		askFactoryForPage(i);
+	}
 }
 
 

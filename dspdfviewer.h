@@ -67,6 +67,11 @@ private:
 
   RenderingIdentifier toRenderIdent(unsigned int pageNumber, const PDFViewerWindow& window);
 
+  /** Little helper function.
+   * Will request the rendering of the page from the factory
+   */
+  void askFactoryForPage(unsigned pageNumber);
+
 private slots:
   void sendAllClockSignals() const;
 
