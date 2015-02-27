@@ -253,8 +253,6 @@ void DSPDFViewer::exit()
   secondaryWindow.close();
 }
 
-const QSize DSPDFViewer::thumbnailSize = QSize(200, 100);
-
 PdfRenderFactory* DSPDFViewer::theFactory()
 {
   return &renderFactory;

@@ -108,10 +108,8 @@ private:
   QTimer fileWatcherRewatchTimer;
 
   QSet< RenderingIdentifier > currentlyRenderingPages;
-  QSet < int > currentlyRenderingThumbnails;
 
   QCache< RenderingIdentifier, RenderedPage> renderedPages;
-  QCache< int, RenderedPage > renderedThumbnails;
 
   mutable QMutex mutex;
 

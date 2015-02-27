@@ -27,9 +27,6 @@
 #include <stdexcept>
 #include <QDebug>
 
-
-static const QSize ThumbnailSize(200,100);
-
 void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> renderedPage)
 {
   {
@@ -177,13 +174,10 @@ void PdfRenderFactory::clearAllCaches()
   // No renders of the current version are taking place, incoming old renders
   // will be ignored.
   currentlyRenderingPages.clear();
-  currentlyRenderingThumbnails.clear();
 
   // Remove the caches. Since we use explicit copy semantics, its safe to empty
   // these.
   renderedPages.clear();
-  renderedThumbnails.clear();
-
 }
 
 int PdfRenderFactory::numberOfPages() const
