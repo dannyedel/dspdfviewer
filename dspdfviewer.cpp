@@ -64,7 +64,6 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   audienceWindow.setPageNumberLimits(0, numberOfPages()-1);
 
   sconnect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
-  sconnect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
   sconnect( &renderFactory, SIGNAL(pdfFileRereadSuccesfully()), this, SLOT(renderPage()));
 
   sconnect( &audienceWindow, SIGNAL(nextPageRequested()), this, SLOT(goForward()));
@@ -87,7 +86,6 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
     secondaryWindow.setPageNumberLimits(0, numberOfPages()-1);
 
     sconnect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
-    sconnect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
 
     sconnect( &secondaryWindow, SIGNAL(nextPageRequested()), this, SLOT(goForward()));
     sconnect( &secondaryWindow, SIGNAL(previousPageRequested()), this, SLOT(goBackward()));
