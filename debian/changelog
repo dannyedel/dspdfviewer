@@ -1,3 +1,11 @@
+dspdfviewer (1.12) sid; urgency=medium
+
+  * New feature: Toggle secondary screen's function (keybind T)
+  * New feature: Configuration file support
+  * New feature: Show keybindings (keybind F1 or ?)
+
+ -- Danny Edel <mail@danny-edel.de>  Thu, 23 Jul 2015 17:42:50 +0200
+
 dspdfviewer (1.11) stable; urgency=low
 
   * Spawn the audience window on "secondary" screen
