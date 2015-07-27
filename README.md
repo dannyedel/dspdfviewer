@@ -19,7 +19,9 @@ In-Program-Controls:
 
 Left/Right, Mouse Buttons or Mouse Wheel: Back/Forward
 
-S/F12: Swap screens (if you see the wall clock on the projector)
+S or F12: Swap screens (if you see the wall clock on the projector)
+
+B: blank/unblank audience screen
 
 Q/Esc: Quit
 
@@ -33,9 +35,9 @@ http://danny-edel.de/deb/
 If you open the link with a web browser, there are some copy-and-paste
 instructions on how to add the repository. These packages are built by myself.
 
-### Ubuntu 11.04 or newer
+### Ubuntu 12.04 LTS (Precise Pangolin) or newer
 
-For Ubuntu Oneiric (11.04) and newer, there are two PPAs configured:
+For Ubuntu, there are two PPAs configured:
 A "daily" repository and a "release" repository. Use the daily builds only 
 if you want to help in development (test bugs in the latest git revision),
 otherwise stick to the "release" PPA:
@@ -43,7 +45,17 @@ otherwise stick to the "release" PPA:
 1. Daily
    https://launchpad.net/~dannyedel/+archive/dspdfviewer-daily
 2. Release
-   https://code.launchpad.net/~dannyedel/+archive/dspdfviewer
+   https://launchpad.net/~dannyedel/+archive/dspdfviewer
+
+### Ubuntu 10.04 LTS (Lucid Lynx)
+If you're using ubuntu 10.04 LTS, please use the following repositories instead
+of the above:
+
+1. Daily
+   https://launchpad.net/~dannyedel/+archive/dspdfviewer-daily-lucid
+2. Release
+   https://launchpad.net/~dannyedel/+archive/dspdfviewer-lucid 
+
 
 ## Installing from source
 
@@ -78,3 +90,12 @@ You will need a C++11 compiler and the cmake build system.
 6. (install)
    make install
    (optional)
+
+### MacPorts
+If you use a mac with macports, it is very easy to set up a qt4 environment
+
+1. install macports
+2. port install poppler +qt4+quartz
+3. port install cmake
+
+then follow the normal build instructions

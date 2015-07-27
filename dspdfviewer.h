@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QFileSystemWatcher>
 #include <poppler/qt4/poppler-qt4.h>
 
 #include "pdfviewerwindow.h"
@@ -46,7 +47,7 @@ private:
   bool		presentationClockRunning;
 
 private:
-  QSharedPointer< Poppler::Document > pdfDocument;
+  QFileSystemWatcher documentFileWatcher;
   PdfRenderFactory renderFactory;
   unsigned int m_pagenumber;
   PDFViewerWindow audienceWindow;
@@ -93,6 +94,8 @@ public:
     QTime presentationClock() const;
     
     QTime timeSince( const QTime& startPoint) const;
+    
+    bool isAudienceScreenBlank() const;
 
 signals:
   void wallClockUpdate(const QTime& wallClock) const;
@@ -118,6 +121,10 @@ public slots:
     void goToStartAndResetClocks();
     
     void swapScreens();
+    
+    void toggleAudienceScreenBlank();
+    void setAudienceScreenBlank();
+    void setAudienceScreenVisible();
     
     void exit();
 };

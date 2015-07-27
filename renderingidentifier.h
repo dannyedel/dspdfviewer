@@ -33,6 +33,13 @@ private:
   QSize theRequestedPageSize;
   
 public:
+  // This field needs to be changed after construction, therefore public
+  /** The "version" of the file this render started at
+   * 
+   * This will be set and checked by PDFRenderFactory
+   */
+  quint64 theVersion;
+  
   RenderingIdentifier(int pagenum, PagePart pagepart, QSize requestedPageSize);
   int pageNumber() const;
   PagePart pagePart() const;

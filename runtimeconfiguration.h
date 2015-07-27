@@ -52,6 +52,9 @@ class RuntimeConfiguration
   
   /** Support PDF Hyperlinks**/
   bool m_hyperlinkSupport;
+
+  /** Shall the complete PDF be read into memory */
+  bool m_cacheToMemory;
   
   /** Single-Display mode
    * 
@@ -100,6 +103,8 @@ public:
   unsigned prerenderNextPages() const;
   
   bool useSecondScreen() const;
+  
+  bool cachePDFToMemory() const;
 };
 
 #endif // RUNTIMECONFIGURATION_H

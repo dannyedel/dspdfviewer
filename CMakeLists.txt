@@ -21,6 +21,7 @@ project(dspdfviewer)
 cmake_minimum_required(VERSION 2.6)
 find_package(Qt4 REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED)
+find_library(POPPLER_LIBRARY poppler-qt4)
 
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${Boost_INCLUDE_DIR})
@@ -76,11 +77,15 @@ else()
     message(STATUS "Using version number ${GIT_DESCRIBE_VERSION} as defined by git-describe.")
     set(DSPDFVIEWER_VERSION ${GIT_DESCRIBE_VERSION})
   else()
-    # get the first changelog line (containing a version number in parentheses) into DEBIANVERSION
-    file(STRINGS debian/changelog DEBIANVERSION LIMIT_COUNT 1 REGEX "\\(([0-9.])*\\)")
-    # reduce the variable to only the first "version-number-ish" thing
-    string(REGEX MATCH "([0-9.])+" DEBIANVERSION ${DEBIANVERSION} )
-    if ( NOT ${DEBIANVERSION} MATCHES "^$" )
+	# use the standard utility dpkg-parsechangelog to get the version number
+	execute_process(COMMAND dpkg-parsechangelog
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		OUTPUT_VARIABLE DEBIANCHANGELOG OUTPUT_STRIP_TRAILING_WHITESPACE)
+	# grep for the line with "Version: "
+	string(REGEX MATCH "Version: [^ \r\n\t]*" DEBIANVERSION "${DEBIANCHANGELOG}")
+	# strip "Version: "
+	string(REPLACE "Version: " "" DEBIANVERSION "${DEBIANVERSION}")
+    if ( NOT "${DEBIANVERSION}" MATCHES "^$" )
       message(STATUS "Using version number ${DEBIANVERSION} as parsed from debian/changelog's first entry.")
       set(DSPDFVIEWER_VERSION ${DEBIANVERSION})
     else()
@@ -95,13 +100,13 @@ if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
 endif()
 
 
-set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
+set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
 
 qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 qt4_automoc(${dspdfviewer_SRCS} )
 add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
-target_link_libraries(dspdfviewer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${Boost_LIBRARIES} poppler-qt4)
+target_link_libraries(dspdfviewer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${Boost_LIBRARIES} ${POPPLER_LIBRARY})
 
 install(TARGETS	dspdfviewer
 	RUNTIME DESTINATION bin)

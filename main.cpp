@@ -28,6 +28,8 @@
 int main(int argc, char** argv)
 {
 	QApplication app(argc, argv);
+	app.setApplicationName( "dspdfviewer" );
+	app.setApplicationVersion( DSPDFVIEWER_VERSION );
 	/* If anything goes wrong, try to display the exception to the user.
 	 * Its the least i can do.
 	 */

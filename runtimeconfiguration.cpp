@@ -58,6 +58,11 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
      value<bool>(&m_hyperlinkSupport)->default_value(false),
      "Support PDF Hyperlinks\n"
      "NOTE: If you set this to yes, watch where you put your mouse cursor / presenter")
+    ("cache-to-memory",
+     value<bool>(&m_cacheToMemory)->default_value(true),
+     "Cache the PDF file into memory\n"
+     "Useful if you are editing the PDF file with latex while using the presenter software."
+     )
     ;
   options_description secondscreen("Options affecting the second screen");
   secondscreen.add_options()
@@ -197,3 +202,7 @@ bool RuntimeConfiguration::useSecondScreen() const
   return m_useSecondScreen;
 }
 
+bool RuntimeConfiguration::cachePDFToMemory() const
+{
+  return m_cacheToMemory;
+}

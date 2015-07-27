@@ -1,3 +1,30 @@
+dspdfviewer (1.11) stable; urgency=low
+
+  * Spawn the audience window on "secondary" screen
+  * Different window titles for the two windows
+  * New feature: Blanking (hotkey b)
+  * Correctly initialize presentationClockRunning
+  * Manpage: Added a short section about booleans
+  * Automatically re-read PDF file on changes
+  * Add thread priorities, boosting the current page
+
+ -- Danny Edel <mail@danny-edel.de>  Sat, 12 Jul 2014 10:52:36 +0200
+
+dspdfviewer (1.10.1) stable; urgency=low
+
+  This is a bugfix release for 1.10.
+
+  [ Ben Bieker ]
+  * correctly find poppler library
+  * udpate readme for macports
+
+  [ Danny Edel ]
+  * Statically link libstdc++ on lucid
+  * README updated for Ubuntu locations
+  * Revert "Removed unnecessary window flag manipulation"
+
+ -- Danny Edel <mail@danny-edel.de>  Tue, 22 Oct 2013 18:08:37 +0200
+
 dspdfviewer (1.10) testing; urgency=low
 
   * Added a window resize to the proper screen size

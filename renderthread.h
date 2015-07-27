@@ -24,18 +24,18 @@
 #include <QRunnable>
 #include <QObject>
 #include "renderedpage.h"
+#include "pdfpagereference.h"
 
 class RenderThread: public QObject, public QRunnable
 {
   Q_OBJECT
   
 private:
-  QSharedPointer<Poppler::Document> m_document;
-  QSharedPointer<Poppler::Page> m_page;
+  const PDFPageReference m_page;
   RenderingIdentifier renderMe;
   
 public:
-  RenderThread( QSharedPointer< Poppler::Document > theDocument, RenderingIdentifier renderIdent);
+  RenderThread( PDFDocumentReference theDocument, RenderingIdentifier renderIdent);
   
   void run();
   
