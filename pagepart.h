@@ -21,7 +21,7 @@
 #ifndef PAGEPART_H
 #define PAGEPART_H
 
-enum class PagePart
+enum PagePart
 {
 
   FullPage,

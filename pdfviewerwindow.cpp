@@ -447,7 +447,7 @@ void PDFViewerWindow::setMyPagePart(const PagePart& newPagePart)
 void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
 {
   QList< HyperlinkArea* > linkAreas;
-  for( AdjustedLink const & link: links ) {
+  for each( AdjustedLink const & link in links ) {
     const QRectF& rect = link.linkArea();
     if ( rect.isNull() ) {
       qWarning() << "Null Link Area not supported yet.";
@@ -473,7 +473,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
     }
   }
   // Schedule all old links for deletion
-  for( HyperlinkArea* hla: this->linkAreas)
+  for each( HyperlinkArea* hla in this->linkAreas)
     hla->deleteLater();
   // Add the new list
   this->linkAreas = linkAreas;
