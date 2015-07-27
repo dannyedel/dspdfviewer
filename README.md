@@ -72,7 +72,7 @@ to run a command as root.
 4. (build)
    `debuild -tc`
 5. (install, **as root**)
-   debi
+   `debi`
 
 ### Other systems
 You will need a C++11 compiler and the cmake build system.
