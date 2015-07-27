@@ -56,9 +56,10 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
      "NOTE: If you set this to zero, you might not get a thumbnail for the next slide unless it was loaded already."
      )
     ("hyperlink-support,l",
-     value<bool>(&m_hyperlinkSupport)->default_value(false),
+     value<bool>(&m_hyperlinkSupport)->default_value(true),
      "Support PDF Hyperlinks\n"
-     "NOTE: If you set this to yes, watch where you put your mouse cursor / presenter")
+     "Follow hyperlinks when clicked (mouse pointer will change to a pointing hand) - set this to false if "
+     "you cannot reliably control your mouse pointer position and want to always go ahead one slide on click.")
     ("cache-to-memory",
      value<bool>(&m_cacheToMemory)->default_value(true),
      "Cache the PDF file into memory\n"
