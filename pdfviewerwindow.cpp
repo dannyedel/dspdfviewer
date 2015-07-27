@@ -47,6 +47,7 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool sho
   m_enabled(enabled),
   m_monitor(monitor),
   blank(false),
+  useHyperlinks(r.hyperlinkSupport()),
   minimumPageNumber(0),
   maximumPageNumber(65535),
   myPart(myPart)
@@ -260,6 +261,9 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
 
   // It was even the right size! Yeah!
   if ( renderedPage->getIdentifier().requestedPageSize() == getTargetImageSize() ) {
+    if ( this->useHyperlinks ) {
+      this->parseLinks(renderedPage->getLinks());
+    }
     this->correntImageRendered= true;
   }
 }
@@ -439,6 +443,48 @@ void PDFViewerWindow::setMyPagePart(const PagePart& newPagePart)
 {
   this->myPart = newPagePart;
 }
+
+void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
+{
+  QList< HyperlinkArea* > linkAreas;
+  for( AdjustedLink const & link: links ) {
+    const QRectF& rect = link.linkArea();
+    if ( rect.isNull() ) {
+      qWarning() << "Null Link Area not supported yet.";
+      continue;
+    }
+    const Poppler::Link::LinkType& type = link.link()->linkType();
+    qDebug() << "Link Received! " ;
+    qDebug() << "Link Area: " << link.linkArea();
+    if ( type == Poppler::Link::LinkType::Goto ) {
+      // type is Goto. Bind it to imageLabel
+      const Poppler::LinkGoto& linkGoto = dynamic_cast<const Poppler::LinkGoto&>( * link.link() );
+      if( linkGoto.isExternal() ) {
+	qWarning() << "External links are not supported yet.";
+	continue;
+      }
+      HyperlinkArea* linkArea = new HyperlinkArea(imageLabel, link);
+      connect( linkArea, SIGNAL(gotoPageRequested(uint)), this, SLOT(linkClicked(uint)) );
+      linkAreas.append(linkArea);
+    }
+    else {
+      qWarning() << "Types other than Goto are not supported yet.";
+      continue;
+    }
+  }
+  // Schedule all old links for deletion
+  for( HyperlinkArea* hla: this->linkAreas)
+    hla->deleteLater();
+  // Add the new list
+  this->linkAreas = linkAreas;
+}
+
+void PDFViewerWindow::linkClicked(uint targetNumber)
+{
+  qDebug() << "Hyperlink detected";
+  emit pageRequested(targetNumber);
+}
+
 
 
 #include "pdfviewerwindow.moc"

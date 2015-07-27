@@ -24,6 +24,7 @@
 #include "renderedpage.h"
 #include "pdfrenderfactory.h"
 #include "runtimeconfiguration.h"
+#include "hyperlinkarea.h"
 
 #include "ui_pdfviewerwindow.h"
 
@@ -38,6 +39,7 @@ private:
   unsigned int m_monitor;
   QImage currentImage;
   bool blank;
+  bool useHyperlinks;
 
   bool informationLineVisible;
 
@@ -66,6 +68,9 @@ private:
   void keybindingsPopup();
   void changePageNumberDialog();
 
+  void parseLinks( QList< AdjustedLink > links);
+  QList< HyperlinkArea* > linkAreas;
+  
 public:
   /** Standard constructor
    * @param monitor monitor to start on (usually 0 for primary)
@@ -130,6 +135,8 @@ public slots:
     void secondScreenFunctionToggleRequested();
 
     void blankToggleRequested();
+private slots:
+  void linkClicked(uint targetNumber);
 };
 
 #endif // PDFVIEWERWINDOW_H

@@ -101,10 +101,11 @@ if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
 endif()
 
 
-set(dspdfviewer_SRCS pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
+set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
+
 qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-qt4_automoc(${dspdfviewer_SRCS})
+qt4_automoc(${dspdfviewer_SRCS} )
 add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
 target_link_libraries(dspdfviewer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${Boost_LIBRARIES} ${POPPLER_LIBRARY})
 

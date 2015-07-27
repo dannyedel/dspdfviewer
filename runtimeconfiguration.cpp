@@ -55,6 +55,11 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
      "Pre-render the next arg slides\n"
      "NOTE: If you set this to zero, you might not get a thumbnail for the next slide unless it was loaded already."
      )
+    ("hyperlink-support,l",
+     value<bool>(&m_hyperlinkSupport)->default_value(true),
+     "Support PDF Hyperlinks\n"
+     "Follow hyperlinks when clicked (mouse pointer will change to a pointing hand) - set this to false if "
+     "you cannot reliably control your mouse pointer position and want to always go ahead one slide on click.")
     ("cache-to-memory",
      value<bool>(&m_cacheToMemory)->default_value(true),
      "Cache the PDF file into memory\n"
@@ -208,4 +213,9 @@ bool RuntimeConfiguration::useSecondScreen() const
 bool RuntimeConfiguration::cachePDFToMemory() const
 {
   return m_cacheToMemory;
+}
+
+bool RuntimeConfiguration::hyperlinkSupport() const
+{
+  return m_hyperlinkSupport;
 }

@@ -32,7 +32,7 @@ QImage RenderedPage::getImage() const
   return theRenderedImage;
 }
 
-QList< QSharedPointer< Poppler::Link > > RenderedPage::getLinks() const
+QList< AdjustedLink > RenderedPage::getLinks() const
 {
   return theLinks;
 }
@@ -48,13 +48,13 @@ PagePart RenderedPage::getPart() const
   return getIdentifier().pagePart();
 }
 
-RenderedPage::RenderedPage(QImage img, QList< QSharedPointer< Poppler::Link > > links, PagePart whichPart, unsigned pageNum)
+RenderedPage::RenderedPage(QImage img, QList< AdjustedLink > links, PagePart whichPart, unsigned pageNum)
 : theRenderedImage(img), theLinks(links), theIdentifier(pageNum, whichPart, img.size())
 {
 
 }
 
-RenderedPage::RenderedPage(QImage img, QList< QSharedPointer< Poppler::Link > > links, RenderingIdentifier identifier)
+RenderedPage::RenderedPage(QImage img, QList< AdjustedLink > links, RenderingIdentifier identifier)
 : theRenderedImage(img), theLinks(links), theIdentifier(identifier)
 {
 
