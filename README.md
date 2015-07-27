@@ -26,8 +26,8 @@ B or . (period): blank/unblank audience screen
 Q/Esc: Quit
 
 ## Installation from binaries
-### Debian wheezy/sid
-If you are using Debian wheezy or sid, you should be able to
+### Debian wheezy/jessie/sid
+If you are using Debian wheezy, jessie or sid, you should be able to
 get a binary from my repository:
 
 http://danny-edel.de/deb/
