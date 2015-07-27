@@ -450,11 +450,10 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
       qWarning() << "Null Link Area not supported yet.";
       continue;
     }
-    using LinkType = Poppler::Link::LinkType;
-    const LinkType& type = link.link()->linkType();
+    const Poppler::Link::LinkType& type = link.link()->linkType();
     qDebug() << "Link Received! " ;
     qDebug() << "Link Area: " << link.linkArea();
-    if ( type == LinkType::Goto ) {
+    if ( type == Poppler::Link::LinkType::Goto ) {
       // type is Goto. Bind it to imageLabel
       const Poppler::LinkGoto& linkGoto = dynamic_cast<const Poppler::LinkGoto&>( * link.link() );
       if( linkGoto.isExternal() ) {
