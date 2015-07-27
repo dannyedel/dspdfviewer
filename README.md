@@ -47,15 +47,6 @@ otherwise stick to the "release" PPA:
 2. Release
    https://launchpad.net/~dannyedel/+archive/dspdfviewer
 
-### Ubuntu 10.04 LTS (Lucid Lynx)
-If you're using ubuntu 10.04 LTS, please use the following repositories instead
-of the above:
-
-1. Daily
-   https://launchpad.net/~dannyedel/+archive/dspdfviewer-daily-lucid
-2. Release
-   https://launchpad.net/~dannyedel/+archive/dspdfviewer-lucid
-
 ### Arch Linux
 In the [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) there is
 a PKGBUILD for installing dspdfviewer from
