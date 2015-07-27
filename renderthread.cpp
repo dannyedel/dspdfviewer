@@ -42,7 +42,7 @@ void RenderThread::run()
     emit renderingFailed(ri);
     return;
   }
-  
+
   QList< AdjustedLink > links;
 
   for( Poppler::Link* link: m_page.page->links() )

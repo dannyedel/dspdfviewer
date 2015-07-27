@@ -22,6 +22,7 @@
 
 #include <boost/program_options.hpp>
 #include <iostream>
+#include <fstream>
 
 #ifndef DSPDFVIEWER_VERSION
 #warning DSPDFVIEWER_VERSION was not set by the build system!
@@ -34,12 +35,12 @@ using namespace boost::program_options;
 RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
 {
   options_description generic("Generic options");
-  
+
   generic.add_options()
     ("help,h", "Print help message")
     ("version,v", "Print version statement")
     ;
-  
+
   options_description global("Options affecting program behaviour");
   global.add_options()
     ("full-page,f", //value<bool>(&m_useFullPage)->default_value(false)->implicit_value(true),
@@ -91,31 +92,37 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
      value<bool>(&m_showSlideClock)->default_value(true),
      "Show the slide clock")
     ;
-  
+
   options_description hidden("Hidden options");
   hidden.add_options()
     ("pdf-file", value< string >(&m_filePath), "PDF File to display")
     ;
   positional_options_description p;
   p.add("pdf-file", 1);
-   
+
   options_description help;
   help.add(generic).add(global).add(secondscreen);
-  
-  
-  
+
+
+
   options_description commandLineOptions;
   commandLineOptions.add(help).add(hidden);
-  
+
   options_description configFileOptions;
   configFileOptions.add(global).add(secondscreen);
-  
-  /// TODO Parse config file
-  
+
   variables_map vm;
   store( command_line_parser(argc,argv).options(commandLineOptions).positional(p).run(), vm);
+  QString configurationFileLocation = qgetenv("HOME").append("/.config/dspdfviewer.ini");
+  {
+    // See if the configuration file exists and is readable
+    std::ifstream cfile( configurationFileLocation.toStdString() );
+    if ( cfile.good() ) {
+      store( parse_config_file( cfile, configFileOptions), vm);
+    }
+  } // close input file
   notify(vm);
-  
+
   if ( vm.count("version") || vm.count("help") ) {
     cout << "dspdfviewer version " << DSPDFVIEWER_VERSION << endl;
     cout << "Written by Danny Edel" << endl;
@@ -130,13 +137,13 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
     }
     exit(1);
   }
-  
+
   if ( 0 == vm.count("pdf-file") ) {
     throw std::runtime_error("You did not specify a PDF-File to display");
   }
-  
+
   m_useFullPage = ( 0 < vm.count("full-page") );
-  
+
   /** Implied options */
   if ( ! m_useSecondScreen ) {
     /* If we dont use a second screen, there's no point in using the presenter area */

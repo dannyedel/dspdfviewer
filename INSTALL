@@ -3,7 +3,7 @@ How to install the dspdfviewer
 
 1. Debian-based distributions
 =============================
- 
+
 
 1.1 Install ready-to-run binaries
 ---------------------------------
@@ -27,8 +27,25 @@ execute the following commands:
 debuild -tc # If it complains about missing build-deps, use apt-get install...
 su -c debi # Ubuntu guys try "sudo debi" instead
 
+2. Gentoo
+=========
 
-2. Other distributions
+1. Install from ebuild
+----------------------
+
+Two kinds of ebuilds are available for dspdfviewer: the git ebuild
+(with version number 9999), which downloads and installs the latest
+git version of dspdfviewer, and regular ebuilds with normal version
+numbers.
+
+To install, move the ebuilds in the "gentoo" subdirectory into an
+overlay (for more information on overlays, see [the gentoo manual][1])
+in the "app-text/dspdfviewer" directory. Then, unmask the version you
+want and run "emerge dspdfviewer".
+
+[1]: https://www.gentoo.org/proj/en/overlays/userguide.xml
+
+3. Other distributions
 ======================
 
 Since I use cmake as a build system, the following sequence should compile it.

@@ -21,7 +21,7 @@ Left/Right, Mouse Buttons or Mouse Wheel: Back/Forward
 
 S or F12: Swap screens (if you see the wall clock on the projector)
 
-B: blank/unblank audience screen
+B or . (period): blank/unblank audience screen
 
 Q/Esc: Quit
 
@@ -29,7 +29,7 @@ Q/Esc: Quit
 ### Debian wheezy/sid
 If you are using Debian wheezy or sid, you should be able to
 get a binary from my repository:
-  
+
 http://danny-edel.de/deb/
 
 If you open the link with a web browser, there are some copy-and-paste
@@ -38,7 +38,7 @@ instructions on how to add the repository. These packages are built by myself.
 ### Ubuntu 12.04 LTS (Precise Pangolin) or newer
 
 For Ubuntu, there are two PPAs configured:
-A "daily" repository and a "release" repository. Use the daily builds only 
+A "daily" repository and a "release" repository. Use the daily builds only
 if you want to help in development (test bugs in the latest git revision),
 otherwise stick to the "release" PPA:
 
@@ -54,7 +54,13 @@ of the above:
 1. Daily
    https://launchpad.net/~dannyedel/+archive/dspdfviewer-daily-lucid
 2. Release
-   https://launchpad.net/~dannyedel/+archive/dspdfviewer-lucid 
+   https://launchpad.net/~dannyedel/+archive/dspdfviewer-lucid
+
+### Arch Linux
+In the [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) there is
+a PKGBUILD for installing dspdfviewer from
+[latest release](https://aur.archlinux.org/packages/dspdfviewer/) or from
+[git](https://aur.archlinux.org/packages/dspdfviewer-git/).
 
 
 ## Installing from source

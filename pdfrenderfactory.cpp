@@ -32,16 +32,16 @@ static const QSize ThumbnailSize(200,100);
 void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> renderedPage)
 {
   {
-    QMutexLocker lock(&mutex);    
+    QMutexLocker lock(&mutex);
     const RenderingIdentifier ident( renderedPage->getIdentifier() );
     // Ignore this incoming rendering if it was from an old version
     if ( ident.theVersion != currentVersion )
       return;
-    
+
     renderedPages.insert(ident, new RenderedPage(*renderedPage));
     currentlyRenderingPages.remove(ident);
   }
-  
+
   emit pageRendered(renderedPage);
 }
 
@@ -52,12 +52,12 @@ void PdfRenderFactory::thumbnailThreadFinishedRendering(QSharedPointer<RenderedP
     // Ignore this incoming rendering if it was from an old version
     if (renderedPage->getIdentifier().theVersion != currentVersion )
       return;
-    
+
     int pageNumber = renderedPage->getPageNumber();
     renderedThumbnails.insert(pageNumber, new RenderedPage(*renderedPage));
     currentlyRenderingThumbnails.remove(pageNumber);
   }
-  
+
   emit thumbnailRendered(renderedPage);
 }
 
@@ -82,12 +82,12 @@ PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption
   // This will throw an error if the document is unreadable.
   numberOfPages_(documentReference.popplerDocument()->numPages())
 {
-  
+
   rewatchFile();
-  
+
   // register the on-change function
   connect(&fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileOnDiskChanged(QString)));
-  
+
   // Make sure it re-watches the file
   fileWatcherRewatchTimer.setInterval(1000);
   connect(&fileWatcherRewatchTimer, SIGNAL(timeout()), this, SLOT(rewatchFile()));
@@ -97,11 +97,11 @@ PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption
 void PdfRenderFactory::requestPageRendering(const RenderingIdentifier& originalIdentifier, QThread::Priority priority)
 {
   QMutexLocker lock(&mutex);
-  
+
   RenderingIdentifier renderingIdentifier(originalIdentifier);
-  
+
   renderingIdentifier.theVersion = currentVersion;
-  
+
   if ( renderedPages.contains(renderingIdentifier) )
   {
     /* Page is ready. Take a copy and lets go. */
@@ -116,18 +116,18 @@ void PdfRenderFactory::requestPageRendering(const RenderingIdentifier& originalI
     return;
   }
   /* Nobody is working on the page right now. Lets create it. */
-  
+
   RenderThread* t = new RenderThread( documentReference, renderingIdentifier );
   connect(t, SIGNAL(renderingFinished(QSharedPointer<RenderedPage>)), this, SLOT(pageThreadFinishedRendering(QSharedPointer<RenderedPage>)));
   currentlyRenderingPages.insert(renderingIdentifier);
   QThreadPool::globalInstance()->start(t, priority);
-  
+
 }
 
 void PdfRenderFactory::requestThumbnailRendering(int pageNumber)
 {
   QMutexLocker lock(&mutex);
-  
+
   if ( renderedThumbnails.contains(pageNumber) )
   {
     /* Its ready. Take a copy and lets go. */
@@ -135,17 +135,17 @@ void PdfRenderFactory::requestThumbnailRendering(int pageNumber)
     emit thumbnailRendered(thumb);
     return;
   }
-  
+
   if ( currentlyRenderingThumbnails.contains(pageNumber) )
   {
     /* Its in the rendering process, the signal will be emitted later. Nothing to do. */
     return;
   }
-  
+
   /* We have to render it */
   RenderingIdentifier r(pageNumber, PagePart::FullPage, ThumbnailSize);
   r.theVersion = currentVersion;
-  
+
   RenderThread* t = new RenderThread(documentReference, r);
   connect( t, SIGNAL(renderingFinished(QSharedPointer<RenderedPage>)), this, SLOT(thumbnailThreadFinishedRendering(QSharedPointer<RenderedPage>)));
   currentlyRenderingThumbnails.insert(pageNumber);
@@ -155,26 +155,26 @@ void PdfRenderFactory::requestThumbnailRendering(int pageNumber)
 void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
 {
   qDebug() << "File" << filename << "has changed on disk";
-  
+
   if ( filename != documentReference.filename() ) {
     qDebug() << "Ignoring that file.";
     return;
   }
-  
+
   // Add path back in case it was modified via "move temporary onto filename",
   // which filewatcher treats as a remove and stops watching
-  
+
   try {
     emit pdfFileChanged();
-  
+
     {
-  
+
       // Lock mutex
       QMutexLocker locker(&mutex);
-      
+
       // Create a new File Reference
       PDFDocumentReference newDoc(filename, documentReference.cacheOption());
-      
+
       if ( documentReference.cacheOption() == PDFCacheOption::keepPDFinMemory ) {
 	// If we keep them in memory, a byte-by-byte compare should be resonably fast.
 	// If they are *identical*, we can skip the reloading.
@@ -184,19 +184,19 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
 	  return;
 	}
       }
-      
+
       // Verify poppler can read this
       newDoc.popplerDocument();
-      
+
       // replace the current reference with the new one
       documentReference = newDoc;
-      
+
       numberOfPages_ = documentReference.popplerDocument()->numPages();
-      
+
       // clear the page cache
       clearAllCaches();
     }
-    
+
     emit pdfFileRereadSuccesfully();
   } catch( std::runtime_error& e) {
     qDebug() << "Unable to read the new reference. keeping the old one.";
@@ -206,22 +206,22 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
 
 void PdfRenderFactory::clearAllCaches()
 {
-  
+
   // Increment version, so that incoming "old" renders will get ignored
   /// TODO: Send a termination signal to these lingering threads
-  
+
   ++currentVersion;
-  
+
   // No renders of the current version are taking place, incoming old renders
   // will be ignored.
   currentlyRenderingPages.clear();
   currentlyRenderingThumbnails.clear();
-  
+
   // Remove the caches. Since we use explicit copy semantics, its safe to empty
   // these.
   renderedPages.clear();
-  renderedThumbnails.clear(); 
-  
+  renderedThumbnails.clear();
+
 }
 
 int PdfRenderFactory::numberOfPages() const

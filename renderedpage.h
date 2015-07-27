@@ -33,7 +33,7 @@ private:
   QList< AdjustedLink > theLinks;
   RenderingIdentifier theIdentifier;
 public:
-  
+
   RenderedPage(QImage img, QList<AdjustedLink> links, PagePart whichPart, unsigned pageNum);
   RenderedPage(QImage img, QList<AdjustedLink> links, RenderingIdentifier identifier);
   QImage getImage() const;
