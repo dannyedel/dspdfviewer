@@ -59,16 +59,20 @@ a PKGBUILD for installing dspdfviewer from
 ### Debian-based systems
 You need the "devscripts" debian package installed to build from source.
 
+Note: Depending on your system, you must either use
+`su -c 'command --arguments'` or `sudo command --arguments`
+to run a command as root.
+
 1. (once)
-   git clone git://github.com/dannyedel/dspdfviewer.git
+   `git clone git://github.com/dannyedel/dspdfviewer.git`
 2. (update)
-   cd dspdfviewer; git pull
-3. (build)
-   debuild -tc
-   (*note: this step will tell you about missing build-deps.*)
-4. (install)
-   su -c debi
-   (*or sudo debi, if you're ubuntu-ish*)
+   `cd dspdfviewer; git pull`
+3. (install build dependencies, **as root**)
+   `mk-build-deps --install --remove`
+4. (build)
+   `debuild -tc`
+5. (install, **as root**)
+   debi
 
 ### Other systems
 You will need a C++11 compiler and the cmake build system.
