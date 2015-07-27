@@ -47,6 +47,7 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool sho
   m_enabled(enabled),
   m_monitor(monitor),
   blank(false),
+  useHyperlinks(r.hyperlinkSupport()),
   minimumPageNumber(0),
   maximumPageNumber(65535),
   myPart(myPart)
@@ -260,7 +261,9 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
 
   // It was even the right size! Yeah!
   if ( renderedPage->getIdentifier().requestedPageSize() == getTargetImageSize() ) {
-    this->parseLinks(renderedPage->getLinks());
+    if ( this->useHyperlinks ) {
+      this->parseLinks(renderedPage->getLinks());
+    }
     this->correntImageRendered= true;
   }
 }

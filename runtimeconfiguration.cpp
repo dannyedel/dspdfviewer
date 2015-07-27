@@ -214,3 +214,8 @@ bool RuntimeConfiguration::cachePDFToMemory() const
 {
   return m_cacheToMemory;
 }
+
+bool RuntimeConfiguration::hyperlinkSupport() const
+{
+  return m_hyperlinkSupport;
+}

@@ -39,6 +39,7 @@ private:
   unsigned int m_monitor;
   QImage currentImage;
   bool blank;
+  bool useHyperlinks;
 
   bool informationLineVisible;
 

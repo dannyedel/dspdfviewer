@@ -105,6 +105,8 @@ public:
   bool useSecondScreen() const;
 
   bool cachePDFToMemory() const;
+
+  bool hyperlinkSupport() const;
 };
 
 #endif // RUNTIMECONFIGURATION_H
