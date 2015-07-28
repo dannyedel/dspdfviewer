@@ -57,7 +57,8 @@ a PKGBUILD for installing dspdfviewer from
 ## Installing from source
 
 ### Debian-based systems
-You need the "devscripts" debian package installed to build from source.
+You need the `devscripts` and `equivs` debian packages installed
+on your build system to easily build from source.
 
 Note: Depending on your system, you must either use
 `su -c 'command --arguments'` or `sudo command --arguments`
