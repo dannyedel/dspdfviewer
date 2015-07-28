@@ -33,7 +33,7 @@ RenderThread::RenderThread(PDFDocumentReference theDocument, RenderingIdentifier
 
 void RenderThread::run()
 {
-  qDebug() << "RenderThread for" << renderMe << "started";
+  DEBUGOUT << "RenderThread for" << renderMe << "started";
   QImage renderImage = RenderUtils::renderPagePart(m_page.page, renderMe.requestedPageSize(), renderMe.pagePart());
   if ( renderImage.isNull() )
   {
@@ -56,7 +56,7 @@ void RenderThread::run()
     }
   }
   QSharedPointer<RenderedPage> renderResult(new RenderedPage( renderImage, links, renderMe ));
-  qDebug() << "RenderThread for" << renderMe << "successful, image has size" << renderResult->getImage().size();
+  DEBUGOUT << "RenderThread for" << renderMe << "successful, image has size" << renderResult->getImage().size();
   emit renderingFinished(renderResult);
 }
 

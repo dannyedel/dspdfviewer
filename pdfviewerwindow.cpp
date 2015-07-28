@@ -126,11 +126,11 @@ void PDFViewerWindow::wheelEvent(QWheelEvent* e)
 
     if ( e->delta() > 0 )
     {
-      qDebug() << "Back";
+      DEBUGOUT << "Back";
       emit previousPageRequested();
     }
     else{
-      qDebug() << "Next";
+      DEBUGOUT << "Next";
       emit nextPageRequested();
     }
 }
@@ -329,8 +329,8 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
     return;
 
   QWidget::resizeEvent(resizeEvent);
-  qDebug() << "Resize event" << resizeEvent;
-  qDebug() << "Resized from" << resizeEvent->oldSize() << "to" << resizeEvent->size() << ", requesting re-render.";
+  DEBUGOUT << "Resize event" << resizeEvent;
+  DEBUGOUT << "Resized from" << resizeEvent->oldSize() << "to" << resizeEvent->size() << ", requesting re-render.";
   emit rerenderRequested();
 }
 
@@ -426,7 +426,7 @@ void PDFViewerWindow::setBlank(const bool blank)
     return;
   /* State changes. request re-render */
   this->blank = blank;
-  qDebug() << "Changing blank state to" << blank;
+  DEBUGOUT << "Changing blank state to" << blank;
   if ( blank ) {
     imageLabel->clear();
   } else {
@@ -454,8 +454,8 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
       continue;
     }
     const Poppler::Link::LinkType& type = link.link()->linkType();
-    qDebug() << "Link Received! " ;
-    qDebug() << "Link Area: " << link.linkArea();
+    DEBUGOUT << "Link Received! " ;
+    DEBUGOUT << "Link Area: " << link.linkArea();
     if ( type == Poppler::Link::LinkType::Goto ) {
       // type is Goto. Bind it to imageLabel
       const Poppler::LinkGoto& linkGoto = dynamic_cast<const Poppler::LinkGoto&>( * link.link() );
@@ -481,7 +481,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
 
 void PDFViewerWindow::linkClicked(uint targetNumber)
 {
-  qDebug() << "Hyperlink detected";
+  DEBUGOUT << "Hyperlink detected";
   emit pageRequested(targetNumber);
 }
 
