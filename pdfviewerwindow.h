@@ -93,7 +93,7 @@ public:
 
     QSize getTargetImageSize() const;
 
-    QSize getPreviewImageSize() const;
+    QSize getPreviewImageSize();
     
     PagePart getMyPagePart() const;
 

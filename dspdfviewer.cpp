@@ -318,9 +318,16 @@ RenderingIdentifier DSPDFViewer::toRenderIdent(unsigned int pageNumber, const PD
 
 }
 
-RenderingIdentifier DSPDFViewer::toThumbnailRenderIdent(unsigned int pageNumber, const PDFViewerWindow& window)
+RenderingIdentifier DSPDFViewer::toThumbnailRenderIdent(unsigned int pageNumber, PDFViewerWindow& window)
 {
-  return RenderingIdentifier( pageNumber, PagePart::FullPage, window.getPreviewImageSize());
+  QSize newSize = window.getPreviewImageSize();;
+  static QSize thumbnailSize;
+  if ( thumbnailSize != newSize ) {
+    DEBUGOUT << "Thumbnail size changed from" << thumbnailSize << "to" << newSize;
+	thumbnailSize=newSize;
+	renderPage();
+  }
+  return RenderingIdentifier( pageNumber, PagePart::FullPage, thumbnailSize);
 }
 
 

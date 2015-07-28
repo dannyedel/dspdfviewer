@@ -197,15 +197,21 @@ QSize PDFViewerWindow::getTargetImageSize() const
   return imageArea->geometry().size();
 }
 
-QSize PDFViewerWindow::getPreviewImageSize() const
+QSize PDFViewerWindow::getPreviewImageSize()
 {
-  QSize completeThumbnailArea = thumbnailArea->size();
+  QSize completeThumbnailArea = thumbnailArea->frameRect().size();
   DEBUGOUT << "Space for all thumbnails:" << completeThumbnailArea;
   /** FIXME Work needed:
    * since this space must fit three images, we divide horizontal size by three
    */
   QSize thirdThumbnailArea ( completeThumbnailArea.width()/3, completeThumbnailArea.height());
+  static QSize lastThumbnailSize = thirdThumbnailArea;
+  if ( lastThumbnailSize != thirdThumbnailArea ) {
+    lastThumbnailSize=thirdThumbnailArea;
+    emit rerenderRequested();
+  }
   DEBUGOUT << "Space for one thumbnail:" << thirdThumbnailArea;
+  
   return thirdThumbnailArea;
 }
 
