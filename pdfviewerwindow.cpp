@@ -450,8 +450,6 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
       continue;
     }
     const Poppler::Link::LinkType& type = link.link()->linkType();
-    DEBUGOUT << "Link Received! " ;
-    DEBUGOUT << "Link Area: " << link.linkArea();
     if ( type == Poppler::Link::LinkType::Goto ) {
       // type is Goto. Bind it to imageLabel
       const Poppler::LinkGoto& linkGoto = dynamic_cast<const Poppler::LinkGoto&>( * link.link() );
