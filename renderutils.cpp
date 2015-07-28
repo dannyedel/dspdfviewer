@@ -20,7 +20,7 @@
 
 #include "renderutils.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <stdexcept>
 
 QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize targetSize, PagePart whichPart)

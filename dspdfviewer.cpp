@@ -31,7 +31,7 @@
 #include <QDesktopWidget>
 #include <qlayout.h>
 
-#include <QDebug>
+#include "debug.h"
 #include <stdexcept>
 
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
@@ -42,7 +42,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
  audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r, "Audience_Window"),
  secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true,  r, "Secondary_Window", r.useSecondScreen() )
 {
-  qDebug() << "Starting constructor" ;
+  DEBUGOUT << "Starting constructor" ;
 
   if ( ! r.useSecondScreen() ) {
     secondaryWindow.hide();
@@ -59,7 +59,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
     throw std::runtime_error("I was not able to open the PDF document. Sorry.");
   }
 #endif
-  qDebug() << "Connecting audience window";
+  DEBUGOUT << "Connecting audience window";
 
   audienceWindow.setPageNumberLimits(0, numberOfPages()-1);
 
@@ -81,7 +81,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 
   if ( r.useSecondScreen() )
   {
-    qDebug() << "Connecting secondary window";
+    DEBUGOUT << "Connecting secondary window";
 
     secondaryWindow.setPageNumberLimits(0, numberOfPages()-1);
 
@@ -153,9 +153,9 @@ QImage DSPDFViewer::renderForTarget(QSharedPointer< Poppler::Page > page, QSize 
 
 void DSPDFViewer::renderPage()
 {
-  qDebug() << "Requesting rendering of page " << m_pagenumber;
+  DEBUGOUT << "Requesting rendering of page " << m_pagenumber;
   if ( m_pagenumber >= numberOfPages() ) {
-    qDebug() << "Page number out of range, clamping to " << numberOfPages()-1;
+    DEBUGOUT << "Page number out of range, clamping to " << numberOfPages()-1;
     m_pagenumber = numberOfPages()-1;
   }
   audienceWindow.showLoadingScreen(m_pagenumber);
@@ -350,7 +350,7 @@ void DSPDFViewer::toggleAudienceScreenBlank()
 
 void DSPDFViewer::toggleSecondaryScreenFunction()
 {
-  qDebug() << "Swapping second screen";
+  DEBUGOUT << "Swapping second screen";
   switch ( secondaryWindow.getMyPagePart() ) {
     case PagePart::FullPage:
       // Nothing to do

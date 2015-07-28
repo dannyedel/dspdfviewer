@@ -1,5 +1,7 @@
 #  Dual-Screen PDF Viewer for latex-beamer
 
+[![Build Status](https://travis-ci.org/dannyedel/dspdfviewer.svg?branch=master)](https://travis-ci.org/dannyedel/dspdfviewer)
+
 This is a simple viewer for latex-beamer presentations that are built
 with the **show notes on second screen** option of latex-beamer.
 
@@ -57,7 +59,8 @@ a PKGBUILD for installing dspdfviewer from
 ## Installing from source
 
 ### Debian-based systems
-You need the "devscripts" debian package installed to build from source.
+You need the `devscripts` and `equivs` debian packages installed
+on your build system to easily build from source.
 
 Note: Depending on your system, you must either use
 `su -c 'command --arguments'` or `sudo command --arguments`
