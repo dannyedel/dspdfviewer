@@ -19,7 +19,7 @@
 
 
 #include <QtGui/QApplication>
-#include <QDebug>
+#include "debug.h"
 #include "dspdfviewer.h"
 #include "runtimeconfiguration.h"
 #include <stdexcept>

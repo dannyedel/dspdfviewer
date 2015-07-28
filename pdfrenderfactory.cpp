@@ -24,7 +24,7 @@
 #include <QMutexLocker>
 #include <QThreadPool>
 #include <stdexcept>
-#include <QDebug>
+#include "debug.h"
 
 
 static const QSize ThumbnailSize(200,100);

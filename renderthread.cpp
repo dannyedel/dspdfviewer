@@ -21,7 +21,7 @@
 #include "renderthread.h"
 #include "renderutils.h"
 #include "adjustedlink.h"
-#include <QDebug>
+#include "debug.h"
 
 RenderThread::RenderThread(PDFDocumentReference theDocument, RenderingIdentifier renderIdent):
   QObject(),

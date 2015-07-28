@@ -30,7 +30,7 @@
 #include <QDesktopWidget>
 #include <qlayout.h>
 
-#include <QDebug>
+#include "debug.h"
 #include <stdexcept>
 
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):

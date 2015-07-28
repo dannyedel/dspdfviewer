@@ -3,7 +3,7 @@
 
 #include <stdexcept>
 #include <QFile>
-#include <QDebug>
+#include "debug.h"
 
 QSharedPointer< Poppler::Document > PDFDocumentReference::popplerDocument() const
 {

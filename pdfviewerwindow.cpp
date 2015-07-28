@@ -24,7 +24,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMouseEvent>
-#include <QDebug>
+#include "debug.h"
 #include <QInputDialog>
 #include <QMessageBox>
 

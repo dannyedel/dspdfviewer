@@ -20,7 +20,7 @@
 
 #include "hyperlinkarea.h"
 #include <stdexcept>
-#include <QDebug>
+#include "debug.h"
 
 HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLabel(), targetPage(link.targetPageNumber())
 {
