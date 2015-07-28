@@ -24,7 +24,7 @@ Please read the program's manual page for usage instructions. If you have
 dspdfviewer installed, the correct version should be available
 as `man dspdfviewer`. In addition, you can [read the manual online].
 
-[read the manual online]: {{site.baseurl}}manpage.html
+[read the manual online]: manpage.html
 
 If the manual doesn't answer your question, feel free to open a ticket in
 the [issues system] requesting help.
