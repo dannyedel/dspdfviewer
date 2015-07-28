@@ -73,7 +73,7 @@ to run a command as root.
 3. (install build dependencies, **as root**)
    `mk-build-deps --install --remove`
 4. (build)
-   `debuild -tc`
+   `debuild -tc -uc -us`
 5. (install, **as root**)
    `debi`
 
