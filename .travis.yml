@@ -1,6 +1,6 @@
 language: cpp
 install:
  - sudo apt-get update
- - sudo apt-get install devscripts equivs
+ - sudo apt-get install --no-install-recommends devscripts equivs
  - sudo mk-build-deps --install --remove
 script: debuild -tc -uc -us
