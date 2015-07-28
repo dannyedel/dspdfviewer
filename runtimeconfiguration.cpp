@@ -139,10 +139,6 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
     exit(1);
   }
 
-  if ( 0 == vm.count("pdf-file") ) {
-    throw std::runtime_error("You did not specify a PDF-File to display");
-  }
-
   m_useFullPage = ( 0 < vm.count("full-page") );
 
   /** Implied options */
@@ -162,12 +158,16 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
 
 string RuntimeConfiguration::filePath() const
 {
+  if ( m_filePath.empty() ) {
+    throw noFileNameException();
+  }
+
   return m_filePath;
 }
 
 QString RuntimeConfiguration::filePathQString() const
 {
-  return QString::fromStdString(m_filePath);
+  return QString::fromStdString( filePath() );
 }
 
 bool RuntimeConfiguration::useFullPage() const
@@ -218,4 +218,8 @@ bool RuntimeConfiguration::cachePDFToMemory() const
 bool RuntimeConfiguration::hyperlinkSupport() const
 {
   return m_hyperlinkSupport;
+}
+
+noFileNameException::noFileNameException():
+	logic_error("You did not specify a PDF-File to display.") {
 }

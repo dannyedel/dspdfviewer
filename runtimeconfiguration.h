@@ -22,6 +22,11 @@
 #define RUNTIMECONFIGURATION_H
 #include <string>
 #include <QString>
+#include <stdexcept>
+
+struct noFileNameException: public std::logic_error {
+	noFileNameException();
+};
 
 class RuntimeConfiguration
 {
@@ -92,6 +97,7 @@ public:
   QString filePathQString() const;
 
   std::string filePath() const;
+  void filePath(std::string newPath);
 
   bool showPresenterArea() const;
   bool showWallClock() const;
