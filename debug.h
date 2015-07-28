@@ -23,9 +23,9 @@
  */
 
 #define DEBUGOUT qDebug() << \
- QString("%1:%2 [%3]"). \
+ QString("%1:%2 [%3()]"). \
  arg(QFileInfo(__FILE__).fileName()). \
  arg(QString::number( __LINE__ )). \
- arg( Q_FUNC_INFO ) 
+ arg(__func__)
 
 #endif
