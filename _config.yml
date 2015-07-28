@@ -5,10 +5,6 @@ exclude:
 
 baseurl: "/dspdfviewer"
 
-redcloth:
-  hard_breaks: false
-  fold_lines: true
-
 defaults:
   -
     scope:
