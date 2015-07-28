@@ -264,8 +264,9 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
   if ( ! m_enabled )
     return;
   
-  // It might be a thumbnail
-  if ( renderedPage->getPart() == PagePart::FullPage
+  // It might be a thumbnail. If we're waiting for one, check if it would fit.
+  if ( isInformationLineVisible()
+    && renderedPage->getPart() == PagePart::FullPage
     && renderedPage->getIdentifier().requestedPageSize() == this->getPreviewImageSize() ) {
     this->addThumbnail(renderedPage->getPageNumber(), renderedPage->getImage());
   }
