@@ -41,10 +41,11 @@ unsigned int PDFViewerWindow::getMonitor() const
   return m_monitor;
 }
 
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, bool enabled): 
+PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const QString& windowRole, bool enabled): 
   QWidget(),
   m_enabled(enabled),
   m_monitor(monitor),
+  blank(false),
   minimumPageNumber(0),
   maximumPageNumber(65535),
   myPart(myPart)
@@ -52,6 +53,8 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool sho
   if ( ! enabled )
     return;
   setupUi(this);
+  setWindowRole(windowRole);
+  setWindowTitle(QString("DS PDF Viewer - %1").arg(windowRole).replace('_', ' ') );
   if ( !showInformationLine || ! r.showPresenterArea()) {
     /* If the information line is disabled because we're the primary screen,
      * or the user explicitly said so, disable it completely.
@@ -76,6 +79,8 @@ void PDFViewerWindow::reposition()
 {
   if ( ! m_enabled )
     return;
+  this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
+  this->showNormal();
   QRect rect = QApplication::desktop()->screenGeometry(getMonitor());
   move(rect.topLeft());
   resize( rect.size() );
@@ -96,8 +101,12 @@ void PDFViewerWindow::reposition()
 
 void PDFViewerWindow::displayImage(QImage image)
 {
-  currentImage= image;
   imageLabel->resize( image.size() );
+  if ( blank ) {
+    // If we're supposed to display a blank image, leave it at this state.
+    return;
+  }
+  currentImage= image;
   imageLabel->setPixmap(QPixmap::fromImage(image));
   //imageArea->setWidgetResizable(true);
   
@@ -154,9 +163,11 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
       case Qt::Key_Up:
       case Qt::Key_Left:
       case Qt::Key_Backspace:
-      case Qt::Key_B: // Back
       case Qt::Key_P: //Previous
 	emit previousPageRequested();
+	break;
+      case Qt::Key_B:
+	emit blankToggleRequested();
 	break;
       case Qt::Key_Home:
       case Qt::Key_H: //Home
@@ -309,7 +320,7 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
   emit rerenderRequested();
 }
 
-QString PDFViewerWindow::timeToString(QTime time) const
+QString PDFViewerWindow::timeToString(const QTime & time) const
 {
   return time.toString( tr("HH:mm:ss", "This is used by QTime::toString. See its documentation before changing this.") );
 }
@@ -371,6 +382,25 @@ void PDFViewerWindow::setPageNumberLimits(uint minimumPageNumber, uint maximumPa
 {
   this->minimumPageNumber = minimumPageNumber;
   this->maximumPageNumber = maximumPageNumber;
+}
+
+void PDFViewerWindow::setBlank(const bool blank)
+{
+  if ( this->blank == blank)
+    return;
+  /* State changes. request re-render */
+  this->blank = blank;
+  qDebug() << "Changing blank state to" << blank;
+  if ( blank ) {
+    imageLabel->clear();
+  } else {
+    emit rerenderRequested();
+  }
+}
+
+bool PDFViewerWindow::isBlank() const
+{
+  return blank;
 }
 
 

@@ -54,6 +54,11 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
      "Pre-render the next arg slides\n"
      "NOTE: If you set this to zero, you might not get a thumbnail for the next slide unless it was loaded already."
      )
+    ("cache-to-memory",
+     value<bool>(&m_cacheToMemory)->default_value(true),
+     "Cache the PDF file into memory\n"
+     "Useful if you are editing the PDF file with latex while using the presenter software."
+     )
     ;
   options_description secondscreen("Options affecting the second screen");
   secondscreen.add_options()
@@ -193,3 +198,7 @@ bool RuntimeConfiguration::useSecondScreen() const
   return m_useSecondScreen;
 }
 
+bool RuntimeConfiguration::cachePDFToMemory() const
+{
+  return m_cacheToMemory;
+}

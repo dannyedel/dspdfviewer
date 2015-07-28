@@ -29,6 +29,8 @@
 int main(int argc, char** argv)
 {
 	QApplication app(argc, argv);
+	app.setApplicationName( "dspdfviewer" );
+	app.setApplicationVersion( DSPDFVIEWER_VERSION );
 	QString locale = QLocale::system().name();
 	
 	qDebug() << QApplication::applicationDirPath();

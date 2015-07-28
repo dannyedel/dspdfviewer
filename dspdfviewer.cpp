@@ -35,12 +35,11 @@
 
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r): 
 	runtimeConfiguration(r),
-	pdfDocument(Poppler::Document::load(r.filePathQString()))
-	,
- renderFactory(r.filePathQString()),
+ presentationClockRunning(false),
+ renderFactory(r.filePathQString(), r.cachePDFToMemory()?PDFCacheOption::keepPDFinMemory:PDFCacheOption::rereadFromDisk ),
  m_pagenumber(0),
- audienceWindow(0,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r),
- secondaryWindow(1, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true, r, r.useSecondScreen() )
+ audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r, "Audience_Window"),
+ secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true,  r, "Secondary_Window", r.useSecondScreen() )
 {
   qDebug() << tr("Starting constructor") ;
   
@@ -48,22 +47,24 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
     secondaryWindow.hide();
   }
   
+  
   audienceWindow.showLoadingScreen(0);
   secondaryWindow.showLoadingScreen(0);
-  
+
+#if 0 // FIXME Make sure exceptions on startup get handled correctly
   if ( ! pdfDocument  || pdfDocument->isLocked() )
   {
     /// FIXME: Error message
     throw std::runtime_error( tr("I was not able to open the PDF document. Sorry.").toStdString() );
   }
-  setHighQuality(true);
-  
+#endif
   qDebug() << tr("Connecting audience window");
   
   audienceWindow.setPageNumberLimits(0, numberOfPages()-1);
   
   connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
   connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
+  connect( &renderFactory, SIGNAL(pdfFileRereadSuccesfully()), this, SLOT(renderPage()));
   
   connect( &audienceWindow, SIGNAL(nextPageRequested()), this, SLOT(goForward()));
   connect( &audienceWindow, SIGNAL(previousPageRequested()), this, SLOT(goBackward()));
@@ -74,6 +75,8 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   connect( &audienceWindow, SIGNAL(restartRequested()), this, SLOT(goToStartAndResetClocks()));
   
   connect( &audienceWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
+  
+  connect( &audienceWindow, SIGNAL(blankToggleRequested()), this, SLOT(toggleAudienceScreenBlank()));
   
   if ( r.useSecondScreen() )
   {
@@ -93,6 +96,8 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
     connect( &secondaryWindow, SIGNAL(restartRequested()), this, SLOT(goToStartAndResetClocks()));
     
     connect( &secondaryWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
+
+    connect( &secondaryWindow, SIGNAL(blankToggleRequested()), this, SLOT(toggleAudienceScreenBlank()));
     
     connect( this, SIGNAL(presentationClockUpdate(QTime)), &secondaryWindow, SLOT(updatePresentationClock(QTime)));
     connect( this, SIGNAL(slideClockUpdate(QTime)), &secondaryWindow, SLOT(updateSlideClock(QTime)));
@@ -147,15 +152,19 @@ QImage DSPDFViewer::renderForTarget(QSharedPointer< Poppler::Page > page, QSize 
 void DSPDFViewer::renderPage()
 {
   qDebug() << tr("Requesting rendering of page %1").arg(m_pagenumber);
+  if ( m_pagenumber >= numberOfPages() ) {
+    qDebug() << "Page number out of range, clamping to " << numberOfPages()-1;
+    m_pagenumber = numberOfPages()-1;
+  }
   audienceWindow.showLoadingScreen(m_pagenumber);
   secondaryWindow.showLoadingScreen(m_pagenumber);
   if ( runtimeConfiguration.showThumbnails() ) {
     theFactory()->requestThumbnailRendering(m_pagenumber);
   }
-  theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, audienceWindow));
+  theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, audienceWindow), QThread::HighestPriority);
   
   if ( runtimeConfiguration.useSecondScreen() ) {
-    theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, secondaryWindow));
+    theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, secondaryWindow), QThread::HighPriority);
   }
   
   /** Pre-Render next pages **/
@@ -221,13 +230,6 @@ void DSPDFViewer::exit()
   secondaryWindow.close();
 }
 
-void DSPDFViewer::setHighQuality(bool hq)
-{
-  pdfDocument->setRenderHint(Poppler::Document::Antialiasing, hq);
-  pdfDocument->setRenderHint(Poppler::Document::TextAntialiasing, hq);
-  pdfDocument->setRenderHint(Poppler::Document::TextHinting, hq);
-}
-
 const QSize DSPDFViewer::thumbnailSize = QSize(200, 100);
 
 PdfRenderFactory* DSPDFViewer::theFactory()
@@ -236,7 +238,8 @@ PdfRenderFactory* DSPDFViewer::theFactory()
 }
 
 unsigned int DSPDFViewer::numberOfPages() const {
-	if ( pdfDocument->numPages() < 0 )
+  int pages = renderFactory.numberOfPages();
+	if ( pages < 0 )
 	{
 		/* What the... ?! 
 		 *
@@ -246,7 +249,7 @@ unsigned int DSPDFViewer::numberOfPages() const {
 		return 0;
 	}
 	/* numPages is non-negative and therefore safe to use. */
-	return pdfDocument->numPages() ;
+	return pages;
 }
 
 void DSPDFViewer::goToStartAndResetClocks()
@@ -312,6 +315,31 @@ RenderingIdentifier DSPDFViewer::toRenderIdent(unsigned int pageNumber, const PD
   RenderingIdentifier ( pageNumber, window.getMyPagePart(), window.getTargetImageSize());
   
 }
+
+bool DSPDFViewer::isAudienceScreenBlank() const
+{
+  return audienceWindow.isBlank();
+}
+
+void DSPDFViewer::setAudienceScreenBlank()
+{
+  audienceWindow.setBlank(true);
+}
+
+void DSPDFViewer::setAudienceScreenVisible()
+{
+  audienceWindow.setBlank(false);
+}
+
+void DSPDFViewer::toggleAudienceScreenBlank()
+{
+  if ( isAudienceScreenBlank() ) {
+    setAudienceScreenVisible();
+  } else {
+    setAudienceScreenBlank();
+  }
+}
+
 
 
 #include "dspdfviewer.moc"

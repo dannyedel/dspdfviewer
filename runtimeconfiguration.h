@@ -50,6 +50,9 @@ class RuntimeConfiguration
   /** complete path to the PDF file */
   std::string m_filePath;
   
+  /** Shall the complete PDF be read into memory */
+  bool m_cacheToMemory;
+  
   /** Single-Display mode
    * 
    * If True, there is only the audience display, the presenter's screen will remain hidden
@@ -97,6 +100,8 @@ public:
   unsigned prerenderNextPages() const;
   
   bool useSecondScreen() const;
+  
+  bool cachePDFToMemory() const;
 };
 
 #endif // RUNTIMECONFIGURATION_H

@@ -37,6 +37,7 @@ private:
   bool	m_enabled;
   unsigned int m_monitor;
   QImage currentImage;
+  bool blank;
   
   bool informationLineVisible;
   
@@ -59,7 +60,7 @@ private:
   void addThumbnail(uint pageNumber, QImage thumbnail);
   
   
-  QString timeToString(QTime time) const;
+  QString timeToString(const QTime& time) const;
   QString timeToString(int milliseconds) const;
   
   void changePageNumberDialog();
@@ -69,7 +70,7 @@ public:
    * @param monitor monitor to start on (usually 0 for primary)
    * @param dspdfviewer Pointer to the application (to handle next/prev commands)
    */
-    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, bool enabled=true);
+    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const QString& windowRole, bool enabled=true);
     
     /** Sets the monitor to display this window on
      * Automatically calls reposition
@@ -94,6 +95,8 @@ public:
     
     bool isInformationLineVisible() const;
     
+    bool isBlank() const;
+    
     void showLoadingScreen(int pageNumberToWaitFor);
     
 public slots:
@@ -108,6 +111,8 @@ public slots:
   
   void setPageNumberLimits(uint minimumPageNumber, uint maximumPageNumber);
   
+  void setBlank(const bool blank);
+  
   signals:
     void nextPageRequested();
     void previousPageRequested();
@@ -119,6 +124,8 @@ public slots:
     void rerenderRequested();
     
     void quitRequested();
+    
+    void blankToggleRequested();
 };
 
 #endif // PDFVIEWERWINDOW_H

@@ -58,6 +58,9 @@ This program follows the usual GNU command line syntax, with long
 options starting with two dashes ('-').
 A summary of options is included below.
 
+Note for options of type <bool>: They take true, false, 0 or 1 as arguments.
+For example, \-\-use-second-screen false can be shortened to \-u0.
+
 .TP
 .B \-h, \-\-help
 Show summary of options.
@@ -123,8 +126,11 @@ is running:
 .B Left mouse button, Wheel down, Down Arrow, Right Arrow, Page Down, Return, N, F
 Go to next page
 .TP
-.B Right mouse button, Wheel up, Up Arrow, Left Arrow, Page Up, Backspace, P, B
+.B Right mouse button, Wheel up, Up Arrow, Left Arrow, Page Up, Backspace, P
 Go to previous page
+.TP
+.B B
+Toggle blanking of the audience screen
 .TP
 .B G
 Go to specific page (a number entry window will pop up)

@@ -35,6 +35,13 @@ private:
 public:
   RenderingIdentifier(unsigned pagenum, PagePart pagepart, QSize requestedPageSize);
   unsigned pageNumber() const;
+
+  /*
+   * 
+   * This will be set and checked by PDFRenderFactory
+   */
+  quint64 theVersion;
+  
   PagePart pagePart() const;
   QSize requestedPageSize() const;
   
