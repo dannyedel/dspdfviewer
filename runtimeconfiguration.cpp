@@ -220,6 +220,16 @@ bool RuntimeConfiguration::hyperlinkSupport() const
   return m_hyperlinkSupport;
 }
 
+void RuntimeConfiguration::filePath(const std::string& newPath )
+{
+	m_filePath = newPath;
+}
+
+bool RuntimeConfiguration::filePathDefined() const
+{
+	return ! m_filePath.empty();
+}
+
 noFileNameException::noFileNameException():
 	logic_error("You did not specify a PDF-File to display.") {
 }

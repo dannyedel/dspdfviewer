@@ -94,10 +94,12 @@ public:
 
   bool useFullPage() const;
 
+  bool filePathDefined() const;
+
   QString filePathQString() const;
 
   std::string filePath() const;
-  void filePath(std::string newPath);
+  void filePath(const std::string& newPath);
 
   bool showPresenterArea() const;
   bool showWallClock() const;
