@@ -221,9 +221,11 @@ bool RuntimeConfiguration::cachePDFToMemory() const
 {
   return m_cacheToMemory;
 }
+
 unsigned int RuntimeConfiguration::bottomPaneHeight() const
 {
   return m_bottomPaneHeightPercent;
+}
 
 bool RuntimeConfiguration::hyperlinkSupport() const
 {
