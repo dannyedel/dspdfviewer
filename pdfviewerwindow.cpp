@@ -200,11 +200,12 @@ QSize PDFViewerWindow::getTargetImageSize() const
 QSize PDFViewerWindow::getPreviewImageSize() const
 {
   QSize completeThumbnailArea = thumbnailArea->size();
-  DEBUGOUT << completeThumbnailArea;
+  DEBUGOUT << "Space for all thumbnails:" << completeThumbnailArea;
   /** FIXME Work needed:
    * since this space must fit three images, we divide horizontal size by three
    */
   QSize thirdThumbnailArea ( completeThumbnailArea.width()/3, completeThumbnailArea.height());
+  DEBUGOUT << "Space for one thumbnail:" << thirdThumbnailArea;
   return thirdThumbnailArea;
 }
 
