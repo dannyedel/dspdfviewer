@@ -3,6 +3,9 @@ layout: default
 ---
 # DS PDF Viewer
 
+WARNING: This documentation website is a work-in-progress. It's far from done
+and most links end in 404.
+
 ## What is dspdfviewer?
 dspdfviewer is a pre-rendering and caching (read: *fast*) full-screen pdf
 viewer specifically designed for latex-beamer presentations,
