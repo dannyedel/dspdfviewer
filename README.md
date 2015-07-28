@@ -1,5 +1,7 @@
 #  Dual-Screen PDF Viewer for latex-beamer
 
+[![Build Status](https://travis-ci.org/dannyedel/dspdfviewer.svg?branch=master)](https://travis-ci.org/dannyedel/dspdfviewer)
+
 This is a simple viewer for latex-beamer presentations that are built
 with the **show notes on second screen** option of latex-beamer.
 
