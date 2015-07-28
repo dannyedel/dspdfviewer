@@ -30,9 +30,6 @@ class RenderUtils
 {
 public:
   static QImage renderPagePart(QSharedPointer<Poppler::Page> page, QSize targetSize, PagePart whichPart);
-
-  /** Since only the static functions of this class are used, we do not need to construct instances */
-  RenderUtils() =delete;
 };
 
 #endif // RENDERUTILS_H

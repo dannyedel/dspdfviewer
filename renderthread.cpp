@@ -45,7 +45,7 @@ void RenderThread::run()
 
   QList< AdjustedLink > links;
 
-  for( Poppler::Link* link: m_page.page->links() )
+  for each( Poppler::Link* link in m_page.page->links() )
   {
     QSharedPointer<Poppler::Link> ptrLink(link);
     try{

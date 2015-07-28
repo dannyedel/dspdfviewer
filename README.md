@@ -53,6 +53,11 @@ a PKGBUILD for installing dspdfviewer from
 [latest release](https://aur.archlinux.org/packages/dspdfviewer/) or from
 [git](https://aur.archlinux.org/packages/dspdfviewer-git/).
 
+### Windows
+Use the application provided in bin directory. It was build using Visual Studio
+2010 Express, Boost 1.58.0, Poppler 0.22.0 and QT 4.8.6. Some of the required
+DLLs come from the GnuWin32 project.
+
 
 ## Installing from source
 
@@ -100,3 +105,20 @@ If you use a mac with macports, it is very easy to set up a qt4 environment
 3. port install cmake
 
 then follow the normal build instructions
+
+### Windows
+Building should be possible with lots of compilers. For Visual C++ 2010, first
+ensure you have built Boost and Poppler and installed Qt 4 and CMake.
+
+1. (once)
+   git clone https://github.com/projekter/dspdfviewer.git
+   Clone this fork, as it contains some changes that are necessary to support
+   VC++2010's "special skills" (ie lacking C++11 support).
+2. (update)
+   cd dspdfviewer; git pull
+3. cd build; cmake ..
+4. Open CMakeCache.txt and adjust the variables Boost_INCLUDE_DIR,
+   Boost_LIBRARY_DIR_RELEASE and Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE and
+   POPPLER_LIBRARY to point to the correct paths on your system.
+5. cmake ..
+6. Open dspdfviewer.sln in Visual Studio and build the solution.

@@ -1,7 +1,7 @@
 #ifndef PDFCACHEOPTION_H
 #define PDFCACHEOPTION_H
 
-enum class PDFCacheOption {
+enum PDFCacheOption {
   keepPDFinMemory,
   rereadFromDisk
 };
