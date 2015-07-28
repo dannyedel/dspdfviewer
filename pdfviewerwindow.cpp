@@ -230,17 +230,6 @@ void PDFViewerWindow::showInformationLine()
   this->bottomArea->show();
 }
 
-void PDFViewerWindow::addThumbnail(uint pageNumber, QImage thumbnail)
-{
-  if ( pageNumber == currentPageNumber-1)
-    previousThumbnail->setPixmap(QPixmap::fromImage(thumbnail));
-  else if ( pageNumber == currentPageNumber )
-    currentThumbnail -> setPixmap(QPixmap::fromImage(thumbnail));
-  else if ( pageNumber == currentPageNumber+1 )
-    nextThumbnail->setPixmap(QPixmap::fromImage(thumbnail));
-}
-
-
 
 void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > renderedPage)
 {
@@ -286,36 +275,6 @@ void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
   currentThumbnail->setPixmap( QPixmap() );
   nextThumbnail->setPixmap( QPixmap() );
 
-}
-
-
-
-void PDFViewerWindow::renderedThumbnailIncoming(QSharedPointer< RenderedPage > renderedThumbnail)
-{
-  if ( !m_enabled )
-    return;
-
-  /* If a thumbnail for the page we're waiting for is incoming and we have no page at all, its better than nothing */
-  if ( renderedThumbnail->getPageNumber() == currentPageNumber
-    && currentImage.isNull() )
-  {
-    QImage myHalf;
-    if ( myPart == PagePart::LeftHalf )
-    {
-      myHalf = renderedThumbnail->getImage().copy(0, 0, renderedThumbnail->getImage().width()/2, renderedThumbnail->getImage().height());
-    }
-    else if ( myPart == PagePart::RightHalf )
-    {
-      myHalf = renderedThumbnail->getImage().copy(renderedThumbnail->getImage().width()/2, 0, renderedThumbnail->getImage().width()/2, renderedThumbnail->getImage().height());
-    }
-    else if ( myPart == PagePart::FullPage )
-    {
-      myHalf = renderedThumbnail->getImage();
-    }
-    displayImage(myHalf);
-  }
-
-  addThumbnail(renderedThumbnail->getPageNumber(), renderedThumbnail->getImage());
 }
 
 PagePart PDFViewerWindow::getMyPagePart() const

@@ -107,7 +107,6 @@ public:
 
 public slots:
   void renderedPageIncoming( QSharedPointer<RenderedPage> renderedPage);
-  void renderedThumbnailIncoming( QSharedPointer<RenderedPage> renderedThumbnail);
 
   void resizeEvent(QResizeEvent* resizeEvent);
 
