@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>
+			{{ page.title }}
+			{% unless page.title %}
+				dspdfviewer
+			{% endunless %}
+		</title>
+		<base href="{{ site.baseurl | append:'/' | replace:'//','/' }}" />
+	</head>
+	<body>

@@ -1,0 +1,17 @@
+exclude:
+  - vendor
+  - Gemfile
+  - Makefile
+
+baseurl: "/dspdfviewer"
+
+redcloth:
+  hard_breaks: false
+  fold_lines: true
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
