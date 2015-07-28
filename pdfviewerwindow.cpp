@@ -27,6 +27,7 @@
 #include "debug.h"
 #include <QInputDialog>
 #include <QMessageBox>
+#include "sconnect.h"
 
 void PDFViewerWindow::setMonitor(const unsigned int monitor)
 {
@@ -457,7 +458,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
 	continue;
       }
       HyperlinkArea* linkArea = new HyperlinkArea(imageLabel, link);
-      connect( linkArea, SIGNAL(gotoPageRequested(uint)), this, SLOT(linkClicked(uint)) );
+      sconnect( linkArea, SIGNAL(gotoPageRequested(uint)), this, SLOT(linkClicked(uint)) );
       linkAreas.append(linkArea);
     }
     else {
