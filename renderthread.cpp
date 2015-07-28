@@ -20,6 +20,7 @@
 
 #include "renderthread.h"
 #include "renderutils.h"
+#include "adjustedlink.h"
 #include <QDebug>
 
 RenderThread::RenderThread(PDFDocumentReference theDocument, RenderingIdentifier renderIdent):
@@ -42,12 +43,17 @@ void RenderThread::run()
     return;
   }
 
-  QList< QSharedPointer<Poppler::Link> > links;
+  QList< AdjustedLink > links;
 
   for( Poppler::Link* link: m_page.page->links() )
   {
     QSharedPointer<Poppler::Link> ptrLink(link);
-    links.append(ptrLink);
+    try{
+      AdjustedLink al(renderMe, ptrLink);
+      links.append(al);
+    } catch( AdjustedLink::OutsidePage & e) {
+      // no-op
+    }
   }
   QSharedPointer<RenderedPage> renderResult(new RenderedPage( renderImage, links, renderMe ));
   qDebug() << "RenderThread for " << renderMe << " successful, image has size " << renderResult->getImage().size();

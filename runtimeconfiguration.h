@@ -50,6 +50,9 @@ class RuntimeConfiguration
   /** complete path to the PDF file */
   std::string m_filePath;
 
+  /** Support PDF Hyperlinks**/
+  bool m_hyperlinkSupport;
+
   /** Shall the complete PDF be read into memory */
   bool m_cacheToMemory;
 
@@ -109,6 +112,7 @@ public:
   bool cachePDFToMemory() const;
 
   unsigned bottomPaneHeight() const;
+  bool hyperlinkSupport() const;
 };
 
 #endif // RUNTIMECONFIGURATION_H

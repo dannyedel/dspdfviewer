@@ -26,8 +26,8 @@ B or . (period): blank/unblank audience screen
 Q/Esc: Quit
 
 ## Installation from binaries
-### Debian wheezy/sid
-If you are using Debian wheezy or sid, you should be able to
+### Debian wheezy/jessie/sid
+If you are using Debian wheezy, jessie or sid, you should be able to
 get a binary from my repository:
 
 http://danny-edel.de/deb/
@@ -47,15 +47,6 @@ otherwise stick to the "release" PPA:
 2. Release
    https://launchpad.net/~dannyedel/+archive/dspdfviewer
 
-### Ubuntu 10.04 LTS (Lucid Lynx)
-If you're using ubuntu 10.04 LTS, please use the following repositories instead
-of the above:
-
-1. Daily
-   https://launchpad.net/~dannyedel/+archive/dspdfviewer-daily-lucid
-2. Release
-   https://launchpad.net/~dannyedel/+archive/dspdfviewer-lucid
-
 ### Arch Linux
 In the [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) there is
 a PKGBUILD for installing dspdfviewer from
@@ -68,16 +59,20 @@ a PKGBUILD for installing dspdfviewer from
 ### Debian-based systems
 You need the "devscripts" debian package installed to build from source.
 
+Note: Depending on your system, you must either use
+`su -c 'command --arguments'` or `sudo command --arguments`
+to run a command as root.
+
 1. (once)
-   git clone git://github.com/dannyedel/dspdfviewer.git
+   `git clone git://github.com/dannyedel/dspdfviewer.git`
 2. (update)
-   cd dspdfviewer; git pull
-3. (build)
-   debuild -tc
-   (*note: this step will tell you about missing build-deps.*)
-4. (install)
-   su -c debi
-   (*or sudo debi, if you're ubuntu-ish*)
+   `cd dspdfviewer; git pull`
+3. (install build dependencies, **as root**)
+   `mk-build-deps --install --remove`
+4. (build)
+   `debuild -tc`
+5. (install, **as root**)
+   `debi`
 
 ### Other systems
 You will need a C++11 compiler and the cmake build system.
