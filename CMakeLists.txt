@@ -1,17 +1,17 @@
 # /*
 #     dspdfviewer - Dual Screen PDF Viewer for LaTeX-Beamer
 #     Copyright (C) 2012  Danny Edel <mail@danny-edel.de>
-# 
+#
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
 #     the Free Software Foundation; either version 2 of the License, or
 #     (at your option) any later version.
-# 
+#
 #     This program is distributed in the hope that it will be useful,
 #     but WITHOUT ANY WARRANTY; without even the implied warranty of
 #     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #     GNU General Public License for more details.
-# 
+#
 #     You should have received a copy of the GNU General Public License along
 #     with this program; if not, write to the Free Software Foundation, Inc.,
 #     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -22,6 +22,7 @@ cmake_minimum_required(VERSION 2.6)
 find_package(Qt4 REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED)
 find_library(POPPLER_LIBRARY poppler-qt4)
+set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
 
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${Boost_INCLUDE_DIR})
@@ -29,7 +30,7 @@ include_directories(${Boost_INCLUDE_DIR})
 add_definitions(-ggdb)
 
 # Use c++11 support.
-# found on 
+# found on
 # http://stackoverflow.com/questions/10984442/how-to-detect-c11-support-of-a-compiler-with-cmake
 if(CMAKE_COMPILER_IS_GNUCXX)
 	execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
@@ -40,7 +41,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 		message(WARNING "C++0x activated. If you get any errors update to a compiler which fully supports C++11")
 		add_definitions("-std=c++0x")
 	else ()
-		message(FATAL_ERROR "C++11 needed. Therefore a gcc compiler with a version higher than 4.3 is needed.")   
+		message(FATAL_ERROR "C++11 needed. Therefore a gcc compiler with a version higher than 4.3 is needed.")
 	endif()
 else()
 	# No GCC Compiler

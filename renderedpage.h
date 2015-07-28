@@ -32,7 +32,7 @@ private:
   QList< QSharedPointer<Poppler::Link> > theLinks;
   RenderingIdentifier theIdentifier;
 public:
-  
+
   RenderedPage(QImage img, QList<QSharedPointer< Poppler::Link >> links, PagePart whichPart, unsigned pageNum);
   RenderedPage(QImage img, QList<QSharedPointer< Poppler::Link >> links, RenderingIdentifier identifier);
   QImage getImage() const;
