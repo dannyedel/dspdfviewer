@@ -25,6 +25,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <QMessageBox>
+#include <QFileDialog>
 
 int main(int argc, char** argv)
 {
@@ -40,9 +41,13 @@ int main(int argc, char** argv)
 		*/
 		qRegisterMetaType< QSharedPointer<RenderedPage> >("QSharedPointer<RenderedPage>");
 		RuntimeConfiguration rc(argc, argv);
-		
+
+		if ( ! rc.filePathDefined() ) {
+			rc.filePath( QFileDialog::getOpenFileName(
+				nullptr, "Load PDF from disk", QString(), "PDF (*.pdf)" ).toStdString() );
+		}
+
 		DSPDFViewer foo( rc );
-		
 		return app.exec();
 	} catch ( std::exception& e ) {
 		QMessageBox errorMsg;

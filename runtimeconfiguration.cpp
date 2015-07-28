@@ -142,10 +142,6 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
     exit(1);
   }
 
-  if ( 0 == vm.count("pdf-file") ) {
-    throw std::runtime_error("You did not specify a PDF-File to display");
-  }
-
   if ( m_bottomPaneHeightPercent < 1 || m_bottomPaneHeightPercent > 99 ) {
     throw std::runtime_error("Invalid percent height specified");
   }
@@ -169,12 +165,16 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
 
 string RuntimeConfiguration::filePath() const
 {
+  if ( m_filePath.empty() ) {
+    throw noFileNameException();
+  }
+
   return m_filePath;
 }
 
 QString RuntimeConfiguration::filePathQString() const
 {
-  return QString::fromStdString(m_filePath);
+  return QString::fromStdString( filePath() );
 }
 
 bool RuntimeConfiguration::useFullPage() const
@@ -230,4 +230,18 @@ unsigned int RuntimeConfiguration::bottomPaneHeight() const
 bool RuntimeConfiguration::hyperlinkSupport() const
 {
   return m_hyperlinkSupport;
+}
+
+void RuntimeConfiguration::filePath(const std::string& newPath )
+{
+	m_filePath = newPath;
+}
+
+bool RuntimeConfiguration::filePathDefined() const
+{
+	return ! m_filePath.empty();
+}
+
+noFileNameException::noFileNameException():
+	logic_error("You did not specify a PDF-File to display.") {
 }
