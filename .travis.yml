@@ -1,5 +1,5 @@
 language: cpp
-before_script:
+install:
  - sudo apt-get update
  - sudo apt-get install devscripts equivs
  - sudo mk-build-deps --install --remove
