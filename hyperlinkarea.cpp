@@ -20,7 +20,7 @@
 
 #include "hyperlinkarea.h"
 #include <stdexcept>
-#include <QDebug>
+#include "debug.h"
 
 HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLabel(), targetPage(link.targetPageNumber())
 {
@@ -58,13 +58,13 @@ HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLab
   setCursor( Qt::PointingHandCursor );
   
   
-  qDebug() << "Added an hyperlink to" << text() << "at" << geometry();
+  DEBUGOUT << "Added an hyperlink to" << text() << "at" << geometry();
 }
 
 
 void HyperlinkArea::mousePressEvent(QMouseEvent* ev)
 {
-  qDebug() << "Hyperlink clicked" << ev << "Target page" << targetPage;
+  DEBUGOUT << "Hyperlink clicked" << ev << "Target page" << targetPage;
   
   emit gotoPageRequested(targetPage);
 }

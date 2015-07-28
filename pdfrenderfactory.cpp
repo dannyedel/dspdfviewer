@@ -24,7 +24,7 @@
 #include <QMutexLocker>
 #include <QThreadPool>
 #include <stdexcept>
-#include <QDebug>
+#include "debug.h"
 
 
 static const QSize ThumbnailSize(200,100);
@@ -154,10 +154,10 @@ void PdfRenderFactory::requestThumbnailRendering(int pageNumber)
 
 void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
 {
-  qDebug() << "File" << filename << "has changed on disk";
+  DEBUGOUT << "File" << filename << "has changed on disk";
 
   if ( filename != documentReference.filename() ) {
-    qDebug() << "Ignoring that file.";
+    DEBUGOUT << "Ignoring that file.";
     return;
   }
 
@@ -180,7 +180,7 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
 	// If they are *identical*, we can skip the reloading.
 	
 	if( documentReference == newDoc ) {
-	  qDebug() << "The new document compares identical to the old one, not doing anything.";
+	  DEBUGOUT << "The new document compares identical to the old one, not doing anything.";
 	  return;
 	}
       }
@@ -199,7 +199,7 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
 
     emit pdfFileRereadSuccesfully();
   } catch( std::runtime_error& e) {
-    qDebug() << "Unable to read the new reference. keeping the old one.";
+    DEBUGOUT << "Unable to read the new reference. keeping the old one.";
     emit pdfFileRereadFailed();
   }
 }

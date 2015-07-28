@@ -21,7 +21,7 @@
 #include "renderthread.h"
 #include "renderutils.h"
 #include "adjustedlink.h"
-#include <QDebug>
+#include "debug.h"
 
 RenderThread::RenderThread(PDFDocumentReference theDocument, RenderingIdentifier renderIdent):
   QObject(),
@@ -33,11 +33,11 @@ RenderThread::RenderThread(PDFDocumentReference theDocument, RenderingIdentifier
 
 void RenderThread::run()
 {
-  qDebug() << "RenderThread for " << renderMe << " started";
+  DEBUGOUT << "RenderThread for" << renderMe << "started";
   QImage renderImage = RenderUtils::renderPagePart(m_page.page, renderMe.requestedPageSize(), renderMe.pagePart());
   if ( renderImage.isNull() )
   {
-    qDebug() << "RenderThread for " << renderMe << " failed";
+    qWarning() << "RenderThread for" << renderMe << "failed";
     QSharedPointer<RenderingIdentifier> ri( new RenderingIdentifier(renderMe) );
     emit renderingFailed(ri);
     return;
@@ -56,7 +56,7 @@ void RenderThread::run()
     }
   }
   QSharedPointer<RenderedPage> renderResult(new RenderedPage( renderImage, links, renderMe ));
-  qDebug() << "RenderThread for " << renderMe << " successful, image has size " << renderResult->getImage().size();
+  DEBUGOUT << "RenderThread for" << renderMe << "successful, image has size" << renderResult->getImage().size();
   emit renderingFinished(renderResult);
 }
 

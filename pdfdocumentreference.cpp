@@ -3,19 +3,19 @@
 
 #include <stdexcept>
 #include <QFile>
-#include <QDebug>
+#include "debug.h"
 
 QSharedPointer< Poppler::Document > PDFDocumentReference::popplerDocument() const
 {
   QSharedPointer<Poppler::Document> m_document;
 
   if ( cacheOption() == PDFCacheOption::rereadFromDisk ) {
-    qDebug() << "Trying to build a Poppler::Document from file" << filename();
+    DEBUGOUT << "Trying to build a Poppler::Document from file" << filename();
     QSharedPointer<Poppler::Document> diskDocument( Poppler::Document::load(filename()) );
     m_document.swap(diskDocument);
   }
   else if ( cacheOption() == PDFCacheOption::keepPDFinMemory ) {
-    qDebug() << "Trying to build a document from" << fileContents_.size() << "byte memory cache";
+    DEBUGOUT << "Trying to build a document from" << fileContents_.size() << "byte memory cache";
     QSharedPointer<Poppler::Document> memoryDocument( Poppler::Document::loadFromData(fileContents_) );
     m_document.swap(memoryDocument);
   }
@@ -38,11 +38,11 @@ filename_(theFilename),
 cacheOption_(theCacheOption)
 {
   if ( cacheOption() == PDFCacheOption::keepPDFinMemory ) {
-    qDebug() << "Reading file into memory";
+    DEBUGOUT << "Reading file into memory";
     QFile file(filename());
     file.open(QIODevice::ReadOnly);
     fileContents_ = file.readAll();
-    qDebug() << fileContents_.size() << "bytes read";
+    DEBUGOUT << fileContents_.size() << "bytes read";
   }
 }
 const PDFCacheOption& PDFDocumentReference::cacheOption() const
