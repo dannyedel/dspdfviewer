@@ -28,7 +28,7 @@
 #include "ui_pdfviewerwindow.h"
 
 /** Shared base class for both windows (primary and secondary)
- * 
+ *
  */
 class PDFViewerWindow : public QWidget, private Ui::Form
 {
@@ -38,93 +38,97 @@ private:
   unsigned int m_monitor;
   QImage currentImage;
   bool blank;
-  
+
   bool informationLineVisible;
-  
+
   uint currentPageNumber;
   uint minimumPageNumber;
   uint maximumPageNumber;
   bool correntImageRendered;
   PagePart myPart;
-  
+
   /** Display this image
     */
   void displayImage(QImage image);
-    
+
   virtual void wheelEvent(QWheelEvent* e);
-  
+
   virtual void keyPressEvent(QKeyEvent* e);
-  
+
   virtual void mousePressEvent(QMouseEvent* e);
-  
+
   void addThumbnail(uint pageNumber, QImage thumbnail);
-  
-  
+
+
   QString timeToString(const QTime& time) const;
   QString timeToString(int milliseconds) const;
-  
+
+  void keybindingsPopup();
   void changePageNumberDialog();
-  
+
 public:
   /** Standard constructor
    * @param monitor monitor to start on (usually 0 for primary)
    * @param dspdfviewer Pointer to the application (to handle next/prev commands)
    */
     explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const QString& windowRole, bool enabled=true);
-    
+
     /** Sets the monitor to display this window on
      * Automatically calls reposition
      */
     void setMonitor(const unsigned int monitor);
-    
+
     /** Gets the current monitor setting
      */
     unsigned int getMonitor() const;
-    
+
     /** Reposition the window (for example after a monitor change)
      */
     void reposition();
-    
+
     QSize getTargetImageSize() const;
-    
+
     PagePart getMyPagePart() const;
-    
+
     void showInformationLine();
-    
+
     void hideInformationLine();
-    
+
     bool isInformationLineVisible() const;
-    
+
     bool isBlank() const;
-    
+
     void showLoadingScreen(int pageNumberToWaitFor);
-    
+
 public slots:
   void renderedPageIncoming( QSharedPointer<RenderedPage> renderedPage);
   void renderedThumbnailIncoming( QSharedPointer<RenderedPage> renderedThumbnail);
-  
+
   void resizeEvent(QResizeEvent* resizeEvent);
-  
+
   void updateWallClock(const QTime& wallClock);
   void updateSlideClock(const QTime& slideClock);
   void updatePresentationClock(const QTime& presentationClock);
-  
+
   void setPageNumberLimits(uint minimumPageNumber, uint maximumPageNumber);
-  
+
   void setBlank(const bool blank);
-  
+
+  void setMyPagePart(const PagePart& newPagePart);
+
   signals:
     void nextPageRequested();
     void previousPageRequested();
     void pageRequested(unsigned requestedPageNumber);
     void restartRequested();
-    
+
     void screenSwapRequested();
-    
+
     void rerenderRequested();
-    
+
     void quitRequested();
-    
+    void secondScreenFunctionToggleRequested();
+
     void blankToggleRequested();
 };
 

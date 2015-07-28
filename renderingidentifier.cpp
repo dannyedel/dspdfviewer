@@ -68,7 +68,7 @@ QSize RenderingIdentifier::requestedPageSize() const
 RenderingIdentifier::RenderingIdentifier(unsigned pagenum, PagePart pagepart, QSize pagesize):
   thePageNumber(pagenum), thePagePart(pagepart), theRequestedPageSize(pagesize)
 {
-  
+
 }
 
 

@@ -33,7 +33,7 @@
 #include <QDebug>
 #include <stdexcept>
 
-DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r): 
+DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 	runtimeConfiguration(r),
  presentationClockRunning(false),
  renderFactory(r.filePathQString(), r.cachePDFToMemory()?PDFCacheOption::keepPDFinMemory:PDFCacheOption::rereadFromDisk ),
@@ -42,12 +42,12 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
  secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true,  r, "Secondary_Window", r.useSecondScreen() )
 {
   qDebug() << tr("Starting constructor") ;
-  
+
   if ( ! r.useSecondScreen() ) {
     secondaryWindow.hide();
   }
-  
-  
+
+
   audienceWindow.showLoadingScreen(0);
   secondaryWindow.showLoadingScreen(0);
 
@@ -59,55 +59,58 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   }
 #endif
   qDebug() << tr("Connecting audience window");
-  
+
   audienceWindow.setPageNumberLimits(0, numberOfPages()-1);
-  
+
   connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
   connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &audienceWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
   connect( &renderFactory, SIGNAL(pdfFileRereadSuccesfully()), this, SLOT(renderPage()));
-  
+
   connect( &audienceWindow, SIGNAL(nextPageRequested()), this, SLOT(goForward()));
   connect( &audienceWindow, SIGNAL(previousPageRequested()), this, SLOT(goBackward()));
   connect( &audienceWindow, SIGNAL(pageRequested(uint)), this, SLOT(gotoPage(uint)));
-  
+
   connect( &audienceWindow, SIGNAL(quitRequested()), this, SLOT(exit()));
   connect( &audienceWindow, SIGNAL(rerenderRequested()), this, SLOT(renderPage()));
   connect( &audienceWindow, SIGNAL(restartRequested()), this, SLOT(goToStartAndResetClocks()));
-  
+
   connect( &audienceWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
-  
+
   connect( &audienceWindow, SIGNAL(blankToggleRequested()), this, SLOT(toggleAudienceScreenBlank()));
-  
+  connect( &audienceWindow, SIGNAL(secondScreenFunctionToggleRequested()), this, SLOT(toggleSecondaryScreenFunction()));
+
   if ( r.useSecondScreen() )
   {
     qDebug() << tr("Connecting secondary window");
-    
+
     secondaryWindow.setPageNumberLimits(0, numberOfPages()-1);
-    
+
     connect( &renderFactory, SIGNAL(pageRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedPageIncoming(QSharedPointer<RenderedPage>)));
     connect( &renderFactory, SIGNAL(thumbnailRendered(QSharedPointer<RenderedPage>)), &secondaryWindow, SLOT(renderedThumbnailIncoming(QSharedPointer<RenderedPage>)));
 
     connect( &secondaryWindow, SIGNAL(nextPageRequested()), this, SLOT(goForward()));
     connect( &secondaryWindow, SIGNAL(previousPageRequested()), this, SLOT(goBackward()));
     connect( &secondaryWindow, SIGNAL(pageRequested(uint)), this, SLOT(gotoPage(uint)));
-    
+
     connect( &secondaryWindow, SIGNAL(quitRequested()), this, SLOT(exit()));
     connect( &secondaryWindow, SIGNAL(rerenderRequested()), this, SLOT(renderPage()));
     connect( &secondaryWindow, SIGNAL(restartRequested()), this, SLOT(goToStartAndResetClocks()));
-    
+
     connect( &secondaryWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
 
     connect( &secondaryWindow, SIGNAL(blankToggleRequested()), this, SLOT(toggleAudienceScreenBlank()));
-    
+    connect( &secondaryWindow, SIGNAL(secondScreenFunctionToggleRequested()), this, SLOT(toggleSecondaryScreenFunction()));
+
+
     connect( this, SIGNAL(presentationClockUpdate(QTime)), &secondaryWindow, SLOT(updatePresentationClock(QTime)));
     connect( this, SIGNAL(slideClockUpdate(QTime)), &secondaryWindow, SLOT(updateSlideClock(QTime)));
     connect( this, SIGNAL(wallClockUpdate(QTime)), &secondaryWindow, SLOT(updateWallClock(QTime)));
-  
+
 
   }
-  
+
   renderPage();
-  
+
   clockDisplayTimer.setInterval(TIMER_UPDATE_INTERVAL);
   clockDisplayTimer.start();
   connect( &clockDisplayTimer, SIGNAL(timeout()), this, SLOT(sendAllClockSignals()));
@@ -140,7 +143,7 @@ unsigned int DSPDFViewer::pageNumber() const
 
 QImage DSPDFViewer::renderForTarget(QSharedPointer< Poppler::Page > page, QSize targetSize, bool onlyHalf, bool rightHalf)
 {
-  PagePart part( 
+  PagePart part(
     onlyHalf?
       ( rightHalf? PagePart::RightHalf : PagePart::LeftHalf )
       : PagePart::FullPage );
@@ -162,11 +165,11 @@ void DSPDFViewer::renderPage()
     theFactory()->requestThumbnailRendering(m_pagenumber);
   }
   theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, audienceWindow), QThread::HighestPriority);
-  
+
   if ( runtimeConfiguration.useSecondScreen() ) {
     theFactory()->requestPageRendering( toRenderIdent(m_pagenumber, secondaryWindow), QThread::HighPriority);
   }
-  
+
   /** Pre-Render next pages **/
   for ( unsigned i=m_pagenumber; i<m_pagenumber+runtimeConfiguration.prerenderNextPages() && i < numberOfPages() ; i++) {
     if ( runtimeConfiguration.showThumbnails() ) {
@@ -177,9 +180,9 @@ void DSPDFViewer::renderPage()
       theFactory()->requestPageRendering( toRenderIdent(i, secondaryWindow));
     }
   }
-  
+
   /** Pre-Render previous pages **/
-  
+
   for ( unsigned i= std::max(m_pagenumber,runtimeConfiguration.prerenderPreviousPages())-runtimeConfiguration.prerenderPreviousPages();
        i<m_pagenumber; i++) {
     if ( runtimeConfiguration.showThumbnails() ) {
@@ -190,13 +193,13 @@ void DSPDFViewer::renderPage()
       theFactory()->requestPageRendering(toRenderIdent(i, secondaryWindow));
     }
   }
-  
+
 }
 
 
 void DSPDFViewer::gotoPage(unsigned int pageNumber)
 {
-  if ( m_pagenumber != pageNumber 
+  if ( m_pagenumber != pageNumber
       && numberOfPages() > pageNumber )
   {
     m_pagenumber = pageNumber;
@@ -241,7 +244,7 @@ unsigned int DSPDFViewer::numberOfPages() const {
   int pages = renderFactory.numberOfPages();
 	if ( pages < 0 )
 	{
-		/* What the... ?! 
+		/* What the... ?!
 		 *
 		 * I return zero, so that any kind of loop that counts "for
 		 * all pages" will terminate immediately.
@@ -288,9 +291,9 @@ void DSPDFViewer::resetSlideClock()
   }
   /* and make sure they'll get refreshed a second later aswell. */
   slideStart.start();
-  
+
   presentationClockRunning=true;
-  
+
   /* Refresh display times immediately */
   sendAllClockSignals();
 }
@@ -313,7 +316,7 @@ RenderingIdentifier DSPDFViewer::toRenderIdent(unsigned int pageNumber, const PD
 {
   return
   RenderingIdentifier ( pageNumber, window.getMyPagePart(), window.getTargetImageSize());
-  
+
 }
 
 bool DSPDFViewer::isAudienceScreenBlank() const
@@ -340,6 +343,22 @@ void DSPDFViewer::toggleAudienceScreenBlank()
   }
 }
 
+void DSPDFViewer::toggleSecondaryScreenFunction()
+{
+  qDebug() << "Swapping second screen";
+  switch ( secondaryWindow.getMyPagePart() ) {
+    case PagePart::FullPage:
+      // Nothing to do
+      break;
+    case PagePart::LeftHalf:
+      secondaryWindow.setMyPagePart(PagePart::RightHalf);
+      break;
+    case PagePart::RightHalf:
+      secondaryWindow.setMyPagePart(PagePart::LeftHalf);
+      break;
+  }
+  emit renderPage();
+}
 
 
 #include "dspdfviewer.moc"

@@ -14,8 +14,8 @@ struct PDFPageReference
 {
   const QSharedPointer<Poppler::Document> document;
   const QSharedPointer<Poppler::Page> page;
-  
-  
+
+
   PDFPageReference( const PDFDocumentReference& documentReference, const unsigned int& pageNumber );
 };
 

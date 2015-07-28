@@ -8,7 +8,7 @@
 QSharedPointer< Poppler::Document > PDFDocumentReference::popplerDocument() const
 {
   QSharedPointer<Poppler::Document> m_document;
-  
+
   if ( cacheOption() == PDFCacheOption::rereadFromDisk ) {
     qDebug() << "Trying to build a Poppler::Document from file" << filename();
     QSharedPointer<Poppler::Document> diskDocument( Poppler::Document::load(filename()) );

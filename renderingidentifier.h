@@ -31,22 +31,22 @@ private:
   unsigned thePageNumber;
   PagePart thePagePart;
   QSize theRequestedPageSize;
-  
+
 public:
   RenderingIdentifier(unsigned pagenum, PagePart pagepart, QSize requestedPageSize);
   unsigned pageNumber() const;
 
   /*
-   * 
+   *
    * This will be set and checked by PDFRenderFactory
    */
   quint64 theVersion;
-  
+
   PagePart pagePart() const;
   QSize requestedPageSize() const;
-  
+
   bool operator == (const RenderingIdentifier& other) const;
-  
+
 #if 0
   /** Cast to a string that is usable as a hash identifier **/
   operator QString() const;
