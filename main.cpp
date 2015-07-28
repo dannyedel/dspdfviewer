@@ -23,6 +23,7 @@
 #include "dspdfviewer.h"
 #include "runtimeconfiguration.h"
 #include <stdexcept>
+#include <iostream>
 #include <QMessageBox>
 
 int main(int argc, char** argv)
@@ -45,6 +46,10 @@ int main(int argc, char** argv)
 		return app.exec();
 	} catch ( std::exception& e ) {
 		QMessageBox errorMsg;
+		std::cerr << "----- FATAL ERROR -----" << std::endl
+			<< "Dual-Screen PDF Viewer has encountered an error and cannot continue:" << std::endl
+			<< e.what() << std::endl;
+
 		errorMsg.setText("Dual-Screen PDF Viewer has encountered an error and cannot continue");
 		errorMsg.setInformativeText(e.what());
 		errorMsg.setDefaultButton(QMessageBox::Discard);
