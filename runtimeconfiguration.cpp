@@ -92,6 +92,9 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
     ("slide-clock,s",
      value<bool>(&m_showSlideClock)->default_value(true),
      "Show the slide clock")
+    ("bottom-pane-height,b",
+     value<unsigned>(&m_bottomPaneHeightPercent)->default_value(20),
+     "Percentage of second screen to use for the bottom pane")
     ;
 
   options_description hidden("Hidden options");
@@ -143,6 +146,10 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
     throw std::runtime_error("You did not specify a PDF-File to display");
   }
 
+  if ( m_bottomPaneHeightPercent < 1 || m_bottomPaneHeightPercent > 99 ) {
+    throw std::runtime_error("Invalid percent height specified");
+  }
+  
   m_useFullPage = ( 0 < vm.count("full-page") );
 
   /** Implied options */
@@ -213,6 +220,11 @@ bool RuntimeConfiguration::useSecondScreen() const
 bool RuntimeConfiguration::cachePDFToMemory() const
 {
   return m_cacheToMemory;
+}
+
+unsigned int RuntimeConfiguration::bottomPaneHeight() const
+{
+  return m_bottomPaneHeightPercent;
 }
 
 bool RuntimeConfiguration::hyperlinkSupport() const

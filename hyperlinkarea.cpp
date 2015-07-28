@@ -58,7 +58,7 @@ HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLab
   setCursor( Qt::PointingHandCursor );
   
   
-  DEBUGOUT << "Added an hyperlink to" << text() << "at" << geometry();
+  DEBUGOUT << "Added an hyperlink to" << link.targetPageNumber() << "at" << geometry();
 }
 
 

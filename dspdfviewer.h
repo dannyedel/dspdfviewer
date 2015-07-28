@@ -66,6 +66,7 @@ private:
   void	resetSlideClock();
 
   RenderingIdentifier toRenderIdent(unsigned int pageNumber, const PDFViewerWindow& window);
+  RenderingIdentifier toThumbnailRenderIdent(unsigned int pageNumber, PDFViewerWindow& window);
 
 private slots:
   void sendAllClockSignals() const;

@@ -73,6 +73,11 @@ class RuntimeConfiguration
   /** Make sure so many next pages are pre-rendered
    */
   unsigned m_prerenderNextPages;
+
+  /**
+   * Percentage of the second screen devoted to the bottom pane
+   */
+  unsigned m_bottomPaneHeightPercent;
 public:
 
   /** fill the variables based on the config file and the C-style arguments to main()
@@ -106,6 +111,7 @@ public:
 
   bool cachePDFToMemory() const;
 
+  unsigned bottomPaneHeight() const;
   bool hyperlinkSupport() const;
 };
 
