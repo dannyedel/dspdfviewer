@@ -7,7 +7,7 @@ You can choose if you want to install the bleeding-edge development version
 (may eat your firstborn, plain out crash, or do other unexpected things) or the
 last stable release.
 
-## Latest release
+## Stable release
 
 Note: At the time of writing, the current release is *v1.12*. You can check at
 https://github.com/dannyedel/dspdfviewer/releases
@@ -33,18 +33,41 @@ It will respect the usual DESTDIR parameter.
 You will need a c++11 compiler (for example `g++` or `clang`), `cmake`,
 the `boost` and `poppler-qt4` libraries installed.
 
-(once) Clone the current development branch and create a build directory.
+### Initial installation
 
-{% highlight bash %}
-git clone git://github.com/dannyedel/dspdfviewer.git
-cd dspdfviewer
-mkdir build
-cd build
-cmake ..
-make
-{% endhighlight %}
+1. (download sourcecode)
+   `git clone git://github.com/dannyedel/dspdfviewer.git`
+2. (enter directory)
+   `cd dspdfviewer`
+3. (make a build sub-directory)
+   `mkdir build ; cd build`
+4. (create Makefile)
+   `cmake ..`
+   (*note: this step should tell you about missing build-deps*)
+5. (build)
+   `make`
+6. (install)
+   <span class="root">`make install`</span>
+   (optional)
 
-From now on, you can pull updates with `git pull` and build with `make`.
-You can install with `make install` (this will require root permission).
-Note that there is *no* uninstallation, so please consider packaging
-the software using your distributions native packaging method.
+Be advised that there is *no* automatic uninstallation,
+so please consider packaging
+the software using your distribution's preferred packaging method.
+
+The `cmake` step accepts `--prefix=` and the generated
+`make install` accepts the `DESTDIR` setting, so your packager can
+redirect the files where it needs them.
+
+### Updating
+
+1. (enter directory)
+   `cd .../dspdfviewer/build/`
+2. (update from git)
+   `git pull`
+3. (build)
+   `make`
+4. (install system-wide)
+   <span class="root">`make install`</span>
+   (optional)
+
+Again, please use your distribution's preferred packaging wrapper around `make install`.
