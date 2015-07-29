@@ -8,8 +8,13 @@ body {
 }
 
 div.root code::before {
-	content: 'root command\A';
-	background-color: #faa;
+	content: 'root permission required\A';
+	font-style: italic;
+	font-size: 90%;
+	padding: 2px;
+	border: thin #888;
+	border-radius: 4px;
+	margin-left: 4em;
 	color: black;
 }
 
