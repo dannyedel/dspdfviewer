@@ -1,0 +1,5 @@
+sudo: false
+install:
+  - bundle install --path vendor/bundle
+script:
+  - bundle exec jekyll build
