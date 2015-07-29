@@ -28,7 +28,7 @@ This will be remedied *after* you install my keying *and* update package sources
 Apt will ask you if you want to continue without authentication. Right now, you must.
 
 <div class="root">
-{% highlight shell %}
+{% highlight bash %}
 # replace YOURDISTRIBUTION with wheezy, jessie or sid, depending on your system.
 echo 'deb http://danny-edel.de/deb YOURDISTRIBUTION main' >> /etc/apt/sources.list.d/danny-edel.list
 echo 'deb-src http://danny-edel.de/deb YOURDISTRIBUTION main' >> /etc/apt/sources.list.d/danny-edel.list
@@ -46,7 +46,7 @@ in development), you can install the daily debs that my jenkins generates and si
 Jenkins' packages are signed with gpg key [0x61E9E242].
 
 <div class="root">
-{% highlight shell %}
+{% highlight bash %}
 echo 'deb http://jenkins.danny-edel.de/jenkins-deb dspdfviewer-YOURDISTRIBUTION main' >> /etc/apt/sources.list.d/jenkins.list
 apt-key adv --keyserver hkp://hkps.pool.sks-keyservers.net --recv-keys 0xC86A1F0861E9E242
 apt-get update
@@ -75,7 +75,7 @@ If you prefer to install from source, please execute the following steps.
 Install `build-essential`, `git`, `devscripts` and `equivs`.
 
 <div class="root">
-{% highlight shell %}
+{% highlight bash %}
 apt-get install build-essential git devscripts equivs
 {% endhighlight %}
 </div>
@@ -85,7 +85,7 @@ As normal user, clone the git repository.
 If you want to build from a release tag (instead of current git)
 you can checkout that tag.
 
-{% highlight shell %}
+{% highlight bash %}
 git clone git://github.com/dannyedel/dspdfviewer.git
 cd dspdfviewer
 
@@ -97,20 +97,20 @@ As root, install build dependencies (You will most likely not have to repeat thi
 since build dependencies don't change often)
 
 <div class="root">
-{% highlight shell %}
+{% highlight bash %}
 #from within the dspdfviewer directory
 mk-build-deps --install --remove
 {% endhighlight %}
 </div>
 
 As normal user, build your package with debian automation
-{% highlight shell %}
+{% highlight bash %}
 debuild -tc -uc -us
 {% endhighlight %}
 
 As root, install the freshly-built package
 <div class="root">
-{% highlight shell %}
+{% highlight bash %}
 debi
 {% endhighlight %}
 </div>
