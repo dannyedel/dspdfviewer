@@ -28,7 +28,7 @@ This will be remedied *after* you install my keying *and* update package sources
 Apt will ask you if you want to continue without authentication. Right now, you must.
 
 
-{% highlight rootshell %}
+{% highlight shell %}
 # replace YOURDISTRIBUTION with wheezy, jessie or sid, depending on your system.
 echo 'deb http://danny-edel.de/deb YOURDISTRIBUTION main' >> /etc/apt/sources.list.d/danny-edel.list
 echo 'deb-src http://danny-edel.de/deb YOURDISTRIBUTION main' >> /etc/apt/sources.list.d/danny-edel.list
@@ -44,7 +44,7 @@ in development), you can install the daily debs that my jenkins generates and si
 
 Jenkins' packages are signed with gpg key [0x61E9E242].
 
-{% highlight rootshell %}
+{% highlight shell %}
 echo 'deb http://jenkins.danny-edel.de/jenkins-deb dspdfviewer-YOURDISTRIBUTION main' >> /etc/apt/sources.list.d/jenkins.list
 apt-key adv --keyserver hkp://hkps.pool.sks-keyservers.net --recv-keys 0xC86A1F0861E9E242
 apt-get update
@@ -71,7 +71,7 @@ If you prefer to install from source, please execute the following steps.
 
 Install `build-essential`, `git`, `devscripts` and `equivs`.
 
-{% highlight rootshell %}
+{% highlight shell %}
 apt-get install build-essential git devscripts equivs
 {% endhighlight %}
 
@@ -91,7 +91,7 @@ git checkout v1.12
 As root, install build dependencies (You will most likely not have to repeat this,
 since build dependencies don't change often)
 
-{% highlight rootshell %}
+{% highlight shell %}
 #from within the dspdfviewer directory
 mk-build-deps --install --remove
 {% endhighlight %}
@@ -102,7 +102,7 @@ debuild -tc -uc -us
 {% endhighlight %}
 
 As root, install the freshly-built package
-{% highlight rootshell %}
+{% highlight shell %}
 debi
 {% endhighlight %}
 
