@@ -1,10 +1,14 @@
 ---
 layout: default
+title: Dual-Screen PDF Viewer
 ---
-# DS PDF Viewer
 
-WARNING: This documentation website is a work-in-progress. It's far from done
-and most links end in 404.
+This website aims to provide some documentation for the dspdfviewer
+project. Its main purpose is to decouple installation instructions
+from the primary sourcecode tree.
+
+It is a work-in-progress, and accepting suggestions and help.
+Read further down on how to get involved.
 
 ## What is dspdfviewer?
 dspdfviewer is a pre-rendering and caching (read: *fast*) full-screen pdf
