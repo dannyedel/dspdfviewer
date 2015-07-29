@@ -1,5 +1,35 @@
----
----
 code {
 	white-space: pre;
+}
+
+body {
+	max-width: 60em;
+	margin: auto;
+}
+
+div.root code::before {
+	content: 'root command\A';
+	background-color: #faa;
+	color: black;
+}
+
+span.root code::before {
+	content: 'root';
+	background-color: #faa;
+	margin-right: 0.5em;
+	color: black;
+}
+
+p > code {
+	/* Mark Inline code with a little border
+	 */
+	background-color: #eee;
+	border: thin #888;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+
+.root pre {
+	background-color: #f8eeee;
 }
