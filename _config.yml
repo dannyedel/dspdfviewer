@@ -5,6 +5,10 @@ exclude:
 
 baseurl: "/dspdfviewer"
 
+redcarpet:
+  extensions:
+    - autolink
+
 # mimick github
 # changeable
 highlighter: pygments
