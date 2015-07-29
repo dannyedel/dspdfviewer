@@ -1,5 +1,14 @@
 {% include html_header.html %}
 
+{% if page.title %}
+<h1>{{page.title}}</h1>
+{% endif %}
+{% if page.url != "/index.html" %}
+	<a href="{{site.baseurl}}/">back to index</a>
+	{% comment %}
+		FIXME, this can be done a lot better...
+	{% endcomment %}
+{% endif %}
 {{content}}
 
 
