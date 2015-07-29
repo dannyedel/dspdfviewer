@@ -19,13 +19,15 @@ div.root code::before {
 }
 
 span.root code::before {
-	content: 'root';
+	content: 'as root';
+	font-style: italic;
+	font-size: 85%;
 	background-color: #faa;
 	margin-right: 0.5em;
 	color: black;
 }
 
-p > code {
+p > code, li > code, li > span.root > code {
 	/* Mark Inline code with a little border
 	 */
 	background-color: #eee;
