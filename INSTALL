@@ -1,58 +1,39 @@
 How to install the dspdfviewer
+==============================
 
 
-1. Debian-based distributions
-=============================
+
+System-specific installation instructions
+-----------------------------------------
+
+Please refer to the project's website for installation instructions,
+broken down by operating system.
+
+At least for Debian, Ubuntu, Gentoo, Arch, MacOS and Windows the website
+contains specific installation instructions. For some systems,
+ready-made binaries are provided.
+
+http://dspdfviewer.danny-edel.de
 
 
-1.1 Install ready-to-run binaries
----------------------------------
-If you use debian wheezy, you might want to use my public repository under
 
-http://danny-edel.de/deb
+Installation from source (generic cmake)
+----------------------------------------
+dspdfviewer requires the following build-time dependencies:
+  * cmake
+  * boost
+  * qt4
+  * poppler-qt4
 
-Instructions on how to use it are inside.
+From inside the source directory, execute the following steps:
 
+mkdir build
+cd build
+cmake ..
+make
+(as root) make install
 
-1.2 Compile it yourself
------------------------
-You're in luck. Its really easy. First, you want to install the "devscripts"
-package for debuild and debi:
-
-su -c "apt-get install devscripts"
-
-To build the software - assuming you're in the base directory - just
-execute the following commands:
-
-debuild -tc # If it complains about missing build-deps, use apt-get install...
-su -c debi # Ubuntu guys try "sudo debi" instead
-
-2. Gentoo
-=========
-
-1. Install from ebuild
-----------------------
-
-Two kinds of ebuilds are available for dspdfviewer: the git ebuild
-(with version number 9999), which downloads and installs the latest
-git version of dspdfviewer, and regular ebuilds with normal version
-numbers.
-
-To install, move the ebuilds in the "gentoo" subdirectory into an
-overlay (for more information on overlays, see [the gentoo manual][1])
-in the "app-text/dspdfviewer" directory. Then, unmask the version you
-want and run "emerge dspdfviewer".
-
-[1]: https://www.gentoo.org/proj/en/overlays/userguide.xml
-
-3. Other distributions
-======================
-
-Since I use cmake as a build system, the following sequence should compile it.
-
-mkdir /tmp/builddir
-cd /tmp/builddir
-cmake /path/to/the/downloaded/dspdfviewer-source
-make && make install
-
-
+Note that there is no make uninstall, so please redirect the make install
+step through your system's package management utility. The
+"cmake" step will respect --prefix= parameters, and "make install"
+will respect DESTDIR.
