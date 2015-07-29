@@ -4,9 +4,11 @@
 		<meta charset="UTF-8" />
 		<title>
 			{{ page.title }}
-			{% unless page.title %}
+			{% if page.title %}
+				[dspdfviewer]
+			{% else %}
 				dspdfviewer
-			{% endunless %}
+			{% endif %}
 		</title>
 		<base href="{{ site.baseurl | append:'/' | replace:'//','/' }}" />
 		<link rel="stylesheet" type="text/css" href="{{site.baseurl}}/css/styles.css" />
