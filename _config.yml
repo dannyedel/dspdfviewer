@@ -7,6 +7,7 @@ markdown: redcarpet
 redcarpet:
   extensions:
     - autolink
+    - with_toc_data
 
 # mimick github
 # changeable
