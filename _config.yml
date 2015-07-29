@@ -3,6 +3,7 @@ exclude:
   - Gemfile
   - Makefile
 
+markdown: redcarpet
 redcarpet:
   extensions:
     - autolink
