@@ -63,7 +63,7 @@ Both the [sourcecode] and [this website] are available to view and improve,
 and any  greatly appreciated!
 
 [sourcecode]: https://github.com/dannyedel/dspdfviewer
-[website]: https://github.com/dannyedel/dspdfviewer/tree/gh-pages
+[this website]: https://github.com/dannyedel/dspdfviewer/tree/gh-pages
 [pull request]: https://help.github.com/articles/using-pull-requests/
 
 ## Who built this program?
