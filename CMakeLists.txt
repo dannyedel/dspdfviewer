@@ -89,9 +89,12 @@ else()
     if ( NOT "${DEBIANVERSION}" MATCHES "^$" )
       message(STATUS "Using version number ${DEBIANVERSION} as parsed from debian/changelog's first entry.")
       set(DSPDFVIEWER_VERSION ${DEBIANVERSION})
+    # FIXME: Provide an else if checking directory name (if downloaded from github it will be named dspdfviewer-1.12)
     else()
       # Try to infer the version number from the debian/changelog source file
-      message(WARNING "Could not determine the version number of the program. Please pass -DDSPDFVIEWER_VERSION=1.2.3.4.5 to the cmake command.")
+      message(WARNING "Could not correctly determine the version number of the program. Please pass -DDSPDFVIEWER_VERSION=1.2.3.4.5 to the cmake command.")
+      # TODO Keep me updated!
+	  set(DSPDFVIEWER_VERSION "v1.13")
     endif()
   endif()
 endif()
