@@ -1,7 +1,7 @@
 sudo: false
 language: ruby
 rvm:
-  - 2.1.1
+  - 2
 bundler_args: --without development --jobs=3 --retry=3
 cache: bundler
 script:
