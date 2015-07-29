@@ -39,6 +39,7 @@ the `boost` and `poppler-qt4` libraries installed.
 git clone git://github.com/dannyedel/dspdfviewer.git
 cd dspdfviewer
 mkdir build
+cd build
 cmake ..
 make
 {% endhighlight %}
