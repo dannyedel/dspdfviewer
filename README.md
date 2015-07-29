@@ -35,4 +35,4 @@ detailed instructions, broken down by operating system.
 For generic from-source installation instructions, you can also consult
 the INSTALL file.
 
-[installation section]: http://dspdfviewer.danny-edel.de/#how-do-i-use-it?
+[installation section]: http://dspdfviewer.danny-edel.de/#how-do-i-install-it
