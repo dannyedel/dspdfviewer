@@ -1,3 +1,8 @@
+---
+title: Installation on Gentoo
+layout: default
+---
+
 Gentoo
 ======
 
