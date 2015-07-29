@@ -3,8 +3,6 @@ exclude:
   - Gemfile
   - Makefile
 
-baseurl: "/dspdfviewer"
-
 redcarpet:
   extensions:
     - autolink
