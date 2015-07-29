@@ -16,21 +16,5 @@ CFLAGS:=$(shell dpkg-buildflags --get CFLAGS)
 CXXFLAGS:=$(shell dpkg-buildflags --get CXXFLAGS)
 LDFLAGS:=$(shell dpkg-buildflags --get LDFLAGS)
 
-# Hacks for ubuntu lucid
-CODENAME=$(shell lsb_release --codename --short)
-
-# If we compile on ubuntu lucid, g++ wont be aliased to
-# g++-4.6 even though we pulled from the ppa (by build-depends)
-# so we need to force the compiler
-ifeq ($(CODENAME),lucid)
-export CC=gcc-4.6
-export CXX=g++-4.6
-export LD=ld-4.6
-# since we dont have the libstdc++ in a high enough version on lucid,
-# we statically link. Not optimal, yes. But it does work and
-# the user does not have to install it generally for every program.
-export LDFLAGS:=$(LDFLAGS) -static-libstdc++
-endif
-
 %:
 	dh $@
