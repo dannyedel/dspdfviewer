@@ -81,4 +81,4 @@ Since e-mails on the internet are everything but secure,
 please use my [gpg key] to send encrypted.
 
 [@dannyedel]: https://github.com/dannyedel
-[pgp key]: https://sks-keyservers.net/pks/lookup?op=get&search=0xF132F84C7183343C
+[gpg key]: https://sks-keyservers.net/pks/lookup?op=get&search=0xF132F84C7183343C
