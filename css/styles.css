@@ -38,3 +38,9 @@ p > code {
 .root pre {
 	background-color: #f8eeee;
 }
+
+/* Underline headers */
+
+h1, h2, h3 {
+	border-bottom: 1px solid #eee;
+}
