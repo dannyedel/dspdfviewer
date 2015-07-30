@@ -6,7 +6,6 @@ Build-Depends: g++ (>= 4:4.6),
  debhelper (>= 7.3.0), cmake,
  libpoppler-qt4-dev,
  libboost-program-options-dev,
- hardening-wrapper,
  lsb-release
 # The project needs a c++11 compiler.
 # Its known to work with g++ 4.6 and up
@@ -27,10 +26,6 @@ Build-Depends: g++ (>= 4:4.6),
 #
 # - libboost-program-options-dev
 # the boost program options to parse command line parameters
-#
-# - hardening-wrapper
-# And the hardening-wrapper because lintian told me to make the build
-# safer.
 #
 # - lsb-release
 # This is needed for the switch in the debian/rules file checking
