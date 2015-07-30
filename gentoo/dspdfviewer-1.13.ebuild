@@ -16,14 +16,3 @@ dev-qt/qtgui
 dev-libs/boost
 app-text/poppler[qt4]"
 DEPEND="${RDEPEND}"
-
-src_configure() {
-	local mycmakeargs=(
-		"-DDSPDFVIEWER_VERSION=${PV}"
-	)
-	cmake-utils_src_configure
-}
-
-src_compile() {
-	cmake-utils_src_compile
-}
