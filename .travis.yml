@@ -4,4 +4,9 @@ install:
  - sudo apt-get update
  - sudo apt-get install --no-install-recommends devscripts equivs
  - sudo mk-build-deps --install --remove
-script: debuild -tc -uc -us
+
+# test both fallback and debian specific build system
+
+script:
+ - ( TEMPDIR=$(mktemp -d) && git archive HEAD | tar -C $TEMPDIR -xv && mkdir "$TEMPDIR/build" && cd "$TEMPDIR/build" && cmake .. && make )
+ - debuild -tc -uc -us

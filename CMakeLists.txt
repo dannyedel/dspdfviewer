@@ -65,35 +65,47 @@ else()
   add_definitions(-DQT_NO_DEBUG_OUTPUT)
 endif()
 
-if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
-  # Not-Empty version given on the command line
-  message(STATUS "Using the version number ${DSPDFVIEWER_VERSION} specified on the command line.")
-else()
-  # We dont have a version number given by the build system.
-  # Try to figure it out first by asking git (only works for in-tree source builds)
-  execute_process(COMMAND git describe
-	  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_DESCRIBE_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
-  if( NOT "${GIT_DESCRIBE_VERSION}" MATCHES "^$" )
-    message(STATUS "Using version number ${GIT_DESCRIBE_VERSION} as defined by git-describe.")
-    set(DSPDFVIEWER_VERSION ${GIT_DESCRIBE_VERSION})
-  else()
-	# use the standard utility dpkg-parsechangelog to get the version number
-	execute_process(COMMAND dpkg-parsechangelog
+### Version-number inclusion logic.
+
+# Rationale: dspdfviewer --version should print something meaningful
+# Especially on builds from git, it should include the git revision.
+
+if( DSPDFVIEWER_VERSION )
+  # Not-Empty version given on the command line. This has absolute priority.
+  message(STATUS "Embedding the version number ${DSPDFVIEWER_VERSION} specified on the command line.")
+endif()
+
+if( NOT DSPDFVIEWER_VERSION AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git" )
+	# We don't have a version number yet, but
+	# this looks like a checkout from git.
+	# Ask "git describe" for a version number.
+	message(STATUS "Building from a git clone, using git describe for a version number.")
+	execute_process(COMMAND git describe
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-		OUTPUT_VARIABLE DEBIANCHANGELOG OUTPUT_STRIP_TRAILING_WHITESPACE)
-	# grep for the line with "Version: "
-	string(REGEX MATCH "Version: [^ \r\n\t]*" DEBIANVERSION "${DEBIANCHANGELOG}")
-	# strip "Version: "
-	string(REPLACE "Version: " "" DEBIANVERSION "${DEBIANVERSION}")
-    if ( NOT "${DEBIANVERSION}" MATCHES "^$" )
-      message(STATUS "Using version number ${DEBIANVERSION} as parsed from debian/changelog's first entry.")
-      set(DSPDFVIEWER_VERSION ${DEBIANVERSION})
-    else()
-      # Try to infer the version number from the debian/changelog source file
-      message(WARNING "Could not determine the version number of the program. Please pass -DDSPDFVIEWER_VERSION=1.2.3.4.5 to the cmake command.")
-    endif()
-  endif()
+		OUTPUT_VARIABLE GIT_DESCRIBE_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+	# Check if it gave something back
+	if( NOT "${GIT_DESCRIBE_VERSION}" MATCHES "^$" )
+		message(STATUS "Embedding version number ${GIT_DESCRIBE_VERSION} as defined by git-describe.")
+		set(DSPDFVIEWER_VERSION ${GIT_DESCRIBE_VERSION})
+	endif()
+endif()
+
+# Debian specific: Use dpkg-parsechangelog
+if( NOT DSPDFVIEWER_VERSION AND ENV{DEBIAN_PACKAGE_VERSION})
+	# This is useful if jenkins or launchpad compile the package.
+	set(DSPDFVIEWER_VERSION $ENV{DEBIAN_PACKAGE_VERSION})
+	message( STATUS "Embedding version number ${DSPDFVIEWER_VERSION} as provided by the debian build system.")
+endif()
+
+if( NOT DSPDFVIEWER_VERSION )
+	# We still don't know version number to embed.
+	# Use default
+
+	# TODO: Keep me updated!
+	set(DSPDFVIEWER_VERSION "1.13-rc0")
+	message(STATUS "Embedding version number ${DSPDFVIEWER_VERSION}. If you want to override this, "
+		"for example to embed the git revision you built from, please pass "
+		"-DDSPDFVIEWER_VERSION=1.2.3.4.5 to the cmake command.")
 endif()
 
 if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
