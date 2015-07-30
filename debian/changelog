@@ -1,3 +1,12 @@
+dspdfviewer (1.13) sid; urgency=medium
+
+  * New feature: PDF "go to page X" links support
+  * New feature: Configurable bottom pane height
+  * New feature: File-chooser window when started without command-line
+    parameter
+
+ -- Danny Edel <mail@danny-edel.de>  Thu, 30 Jul 2015 17:04:06 +0200
+
 dspdfviewer (1.12) sid; urgency=medium
 
   * New feature: Toggle secondary screen's function (keybind T)
