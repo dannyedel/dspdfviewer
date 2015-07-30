@@ -9,15 +9,18 @@
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 
+# enable hardening
+export DEB_BUILD_HARDENING=1
+
 # Make sure to NOT use any flags from environment and only use the standard
 # debian build flags.
 #
 # include CPPFLAGS in CFLAGS, this is a cmake workaround found on
 # https://wiki.debian.org/Hardening#Notes_for_packages_using_CMake
-CPPFLAGS:=$(shell dpkg-buildflags --get CPPFLAGS)
-CFLAGS:=$(shell dpkg-buildflags --get CFLAGS) $(CPPFLAGS)
-CXXFLAGS:=$(shell dpkg-buildflags --get CXXFLAGS) $(CPPFLAGS)
-LDFLAGS:=$(shell dpkg-buildflags --get LDFLAGS)
+export CPPFLAGS:=$(shell dpkg-buildflags --get CPPFLAGS)
+export CFLAGS:=$(shell dpkg-buildflags --get CFLAGS) $(CPPFLAGS)
+export CXXFLAGS:=$(shell dpkg-buildflags --get CXXFLAGS) $(CPPFLAGS)
+export LDFLAGS:=$(shell dpkg-buildflags --get LDFLAGS)
 
 %:
 	dh $@
