@@ -1,5 +1,5 @@
-<!-- Creator     : groff version 1.21 -->
-<!-- CreationDate: Tue Jul 28 21:05:55 2015 -->
+<!-- Creator     : groff version 1.22.3 -->
+<!-- CreationDate: Thu Jul 30 16:03:57 2015 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -25,7 +25,9 @@
 <a href="#DESCRIPTION">DESCRIPTION</a><br>
 <a href="#OPTIONS">OPTIONS</a><br>
 <a href="#CONTROLS">CONTROLS</a><br>
-<a href="#CONFIGURATION FILE">CONFIGURATION FILE</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#PRESENTER REMOTE CONTROLS">PRESENTER REMOTE CONTROLS</a><br>
+<a href="#BUGS">BUGS</a><br>
 <a href="#SEE ALSO">SEE ALSO</a><br>
 
 <hr>
@@ -46,23 +48,28 @@
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>dspdfviewer</b>
-[<i>options</i>] <i>filename</i></p>
+[<i>options</i>] <i>[filename]</i></p>
 
 <h2>DESCRIPTION
 <a name="DESCRIPTION"></a>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em">The Dual-Screen
-PDF viewer is intended for presentations created with the
-<b>latex-beamer</b> class. Its purpose is to display the
-left half of a page on the audience&rsquo;s screen (which
-will most commonly be a projector) and the right half on
-your &quot;private&quot; screen (think: the notebook you
-carried to the presentation site). The basic idea is that
-you will display personal notes and information to help you
-with your presentation on your personal screen, while the
-audience sees only the PDF they are supposed to see.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>dspdfviewer</b></i>
+is intended for presentations created with the
+<b>latex-beamer</b> class, specifically documents created
+with the show notes on second screen=right option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Its purpose is
+to display the left half of a page on the audience&rsquo;s
+screen (which will most commonly be a projector) and the
+right half on your &quot;private&quot; screen (think: the
+notebook you carried to the presentation site). The basic
+idea is that you will display personal notes and information
+to help you with your presentation on your personal screen,
+while the audience sees only the PDF they are supposed to
+see.</p>
 
 <p style="margin-left:11%; margin-top: 1em">On the
 secondary screen you will see three clocks: A &quot;wall
@@ -88,21 +95,50 @@ want to start the clock, but still display the title slide,
 just press &quot;previous&quot; (for example, Up Arrow or
 Right Mouse Button) on the title slide.</p>
 
+<p style="margin-left:11%; margin-top: 1em">If you want to
+reset the clocks to zero, press the &quot;Home&quot; button
+on the keybord.</p>
+
 <h2>OPTIONS
 <a name="OPTIONS"></a>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em">This program
-follows the usual GNU command line syntax, with long options
-starting with two dashes (&rsquo;-&rsquo;). A summary of
-options is included below.</p>
+<p style="margin-left:11%; margin-top: 1em">The exact
+behaviour of <b>dspdfviewer</b> is configurable using
+command-line parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unless
+otherwise noted, all command-line options can be written in
+a configuration file. See the <i>FILES</i> section for the
+location.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For the
+command-line parameters, this program follows the usual GNU
+command line syntax, with long options starting with two
+dashes (&rsquo;-&rsquo;). A summary of options is included
+below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you specify
+those in a configuration file, write one option per line,
+use the <i>long version without the two leading dashes</i>,
+followed by an equals sign and the desired value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+<b>bottom-pane-height=20</b> is a valid configuration
+line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If an option is
+specified in <b>both</b> the configuration file and the
+command-line, the command-line value takes precedence.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Note for
-options of type &lt;bool&gt;: They take true, false, 0 or 1
-as arguments. For example, &minus;&minus;use-second-screen
-false can be shortened to &minus;u0. <b><br>
-&minus;h, &minus;&minus;help</b></p>
+options of type <i>&lt;bool&gt;</i>: They take <b>true</b>,
+<b>false</b>, <b>0</b> or <b>1</b> as arguments. For
+example, <b>&minus;&minus;use-second-screen false</b> can be
+expressed as <b>&minus;&minus;use-second-screen 0</b> or
+shortened to <b>&minus;u0</b>. <b><br>
+&minus;h</b>, <b>&minus;&minus;help</b></p>
 
 <p style="margin-left:22%;">Show summary of options.</p>
 
@@ -110,20 +146,27 @@ false can be shortened to &minus;u0. <b><br>
 &minus;&minus;full-page</b></p>
 
 <p style="margin-left:22%;">Use the presentation program
-with a standard PDF, that is display the full page on the
-primary AND secondary monitor. The secondary screen still
-contains timers and thumbnails to help you with your
-presentation, unless you disable them using the options
+with a normal single-screen PDF, that is display the full
+page on both the primary and secondary monitor.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The secondary
+screen still contains timers and thumbnails to help you with
+your presentation, unless you disable them using the options
 below.</p>
 
 <p style="margin-left:11%;"><b>&minus;u,
-&minus;&minus;use-second-screen &lt;bool&gt;</b></p>
+&minus;&minus;use-second-screen</b> <i>&lt;bool&gt;</i></p>
 
 <p style="margin-left:22%;">Controls whether the program
-actually works as a dual-screen viewer. If you only have one
-screen, but still want to use the cache features, you can
-set this option to false. If the window ends up on the wrong
-display, you can still use the switch command (see
+actually works as a dual-screen viewer.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+true.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you only
+have one screen, but still want to use the cache features,
+you can set this option to false. If the window ends up on
+the wrong display, you can still use the switch command (see
 below).</p>
 
 <p style="margin-left:22%; margin-top: 1em">What comes out
@@ -133,15 +176,23 @@ while -u0 without -f still splits the page in half and
 outputs only the left frame.</p>
 
 <p style="margin-left:11%;"><b>&minus;l,
-&minus;&minus;hyperlink-support &lt;bool&gt;</b></p>
+&minus;&minus;hyperlink-support</b> <i>&lt;bool&gt;</i></p>
 
 <p style="margin-left:22%;">Controls whether the program
-makes PDF Hyperlinks clickable. If you set this to false,
-you won&rsquo;t have to worry about where your mouse is.</p>
+makes PDF Hyperlinks clickable.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+true.</p>
+
+<p style="margin-left:22%; margin-top: 1em">While it is
+normally desired to have clickable hyperlinks, if you cannot
+control the position of your pointer (if your remote control
+has only left-click and right-click) it might be safer to
+disable hyperlinks.</p>
 
 
-<p style="margin-left:11%;"><b>&minus;&minus;prerender-previous-pages
-&lt;n&gt;</b></p>
+<p style="margin-left:11%;"><b>&minus;&minus;prerender&minus;previous&minus;pages</b>
+<i>n</i></p>
 
 <p style="margin-left:22%;">When jumping to slide m, also
 pre-render the slides (m-n)..(m-1) (default 3)</p>
@@ -151,8 +202,8 @@ set this to zero, you will not get a thumbnail for the
 previous page rendered before you have visited it.</p>
 
 
-<p style="margin-left:11%;"><b>&minus;&minus;prerender-next-pages
-&lt;n&gt;</b></p>
+<p style="margin-left:11%;"><b>&minus;&minus;prerender&minus;next&minus;pages</b>
+<i>n</i></p>
 
 <p style="margin-left:22%;">When jumping to slide m, also
 pre-render the slides (m+1)..(m+n) (default 10)</p>
@@ -161,37 +212,49 @@ pre-render the slides (m+1)..(m+n) (default 10)</p>
 set this to zero, you will not get a thumbnail for the next
 page rendered before you have visited it.</p>
 
-<p style="margin-left:11%;"><b>&minus;a &lt;bool&gt;,
-&minus;&minus;presenter-area &lt;bool&gt;</b></p>
+<p style="margin-left:11%;"><b>&minus;a,
+&minus;&minus;presenter-area</b> <i>&lt;bool&gt;</i></p>
 
 <p style="margin-left:22%;">Show (true, 1) or hide (false,
 0) the presenter&rsquo;s area on the second screen. If this
 is set to zero, the following options will have no
 effect.</p>
 
-<p style="margin-left:11%;"><b>&minus;t &lt;bool&gt;,
-&minus;&minus;thumbnails &lt;bool&gt;</b></p>
+<p style="margin-left:11%;"><b>&minus;t,
+&minus;&minus;thumbnails</b> <i>&lt;bool&gt;</i></p>
 
 <p style="margin-left:22%;">Show (true, 1) or hide (false,
 0) the thumbnails on the second screen.</p>
 
-<p style="margin-left:11%;"><b>&minus;w &lt;bool&gt;,
-&minus;&minus;wall&minus;clock &lt;bool&gt;</b></p>
+<p style="margin-left:11%;"><b>&minus;w,
+&minus;&minus;wall&minus;clock</b> <i>&lt;bool&gt;</i></p>
 
 <p style="margin-left:22%;">Show (true, 1) or hide (false,
 0) the wall clock on the second screen.</p>
 
-<p style="margin-left:11%;"><b>&minus;p &lt;bool&gt;,
-&minus;&minus;presentation&minus;clock &lt;bool&gt;</b></p>
+<p style="margin-left:11%;"><b>&minus;p,
+&minus;&minus;presentation&minus;clock</b>
+<i>&lt;bool&gt;</i></p>
 
 <p style="margin-left:22%;">Show (true, 1) or hide (false,
 0) the presentation clock on the second screen.</p>
 
-<p style="margin-left:11%;"><b>&minus;s &lt;bool&gt;,
-&minus;&minus;slide&minus;clock &lt;bool&gt;</b></p>
+<p style="margin-left:11%;"><b>&minus;s,
+&minus;&minus;slide&minus;clock</b> <i>&lt;bool&gt;</i></p>
 
 <p style="margin-left:22%;">Show (true, 1) or hide (false,
 0) the slide clock on the second screen.</p>
+
+<p style="margin-left:11%;"><b>&minus;b,
+&minus;&minus;bottom&minus;pane&minus;height</b>
+<i>n</i></p>
+
+<p style="margin-left:22%;">Configure how large the
+presenter area on the second screen will be, unit is
+<i>percent of second screen&rsquo;s total height</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Default value
+20.</p>
 
 <h2>CONTROLS
 <a name="CONTROLS"></a>
@@ -199,103 +262,132 @@ effect.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">You can use the
-following controls while <b>dspdfviewer</b> is running:
-<b><br>
-Left mouse button, Wheel down, Down Arrow, Right Arrow, Page
-Down, <br>
-Return, N, F</b></p>
+following controls while <b>dspdfviewer</b> is running.</p>
 
-<p style="margin-left:22%;">Go to next page</p>
+<p style="margin-left:11%; margin-top: 1em">Note that
+mouse-clicks are subject to pointer position if the
+hyperlink support is enabled. If your mouse cursor changes
+to a hand, it will follow the link you are hovering on a
+click. <b><br>
+Keyboard: ?, F1</b></p>
 
-<p style="margin-left:11%;"><b>Right mouse button, Wheel
-up, Up Arrow, Left Arrow, Page Up, Backspace, <br>
-P</b></p>
+<p style="margin-left:22%;">Display quick-help (most
+important key bindings)</p>
 
-<p style="margin-left:22%;">Go to previous page</p>
+<p style="margin-left:11%;"><b>Keyboard: Spacebar, Page
+Down / Mouse: Left-Click, Wheel Down</b></p>
 
-<p style="margin-left:11%;"><b>B, . (period)</b></p>
+<p style="margin-left:22%;">Go one page forward</p>
+
+<p style="margin-left:22%; margin-top: 1em">Additional
+keyboard aliases: Down, Right, Return, Enter, N, F</p>
+
+<p style="margin-left:11%;"><b>Keyboard: Backspace, Page Up
+/ Mouse: Right-Click, Wheel Up</b></p>
+
+<p style="margin-left:22%;">Go one page backward</p>
+
+<p style="margin-left:22%; margin-top: 1em">Additional
+keyboard aliases: Up, Left, P</p>
+
+<p style="margin-left:11%;"><b>Keyboard: B, .
+(period)</b></p>
 
 <p style="margin-left:22%;">Toggle blanking of the audience
 screen</p>
 
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="11%"></td>
-<td width="1%">
+<p style="margin-left:11%;"><b>Keyboard: G</b></p>
 
+<p style="margin-left:22%;">Go to specific page (a number
+entry window will pop up)</p>
 
-<p><b>G</b></p></td>
-<td width="10%"></td>
-<td width="78%">
+<p style="margin-left:22%; margin-top: 1em">Note that the
+this counts PDF pages, so a single slide having 6 unmasking
+steps will be 7 PDF pages long, including the initial
+near-blank page.</p>
 
+<p style="margin-left:11%;"><b>Keyboard: Home, H</b></p>
 
-<p>Go to specific page (a number entry window will pop
-up)</p> </td></tr>
-</table>
+<p style="margin-left:22%;">Go to the first page and reset
+the clocks to zero.</p>
 
-<p style="margin-left:11%;"><b>Home (also called Pos 1 on
-some keyboards), H</b></p>
+<p style="margin-left:22%; margin-top: 1em">Use this if you
+want the clocks to stop at zero, use the G (goto) function
+to page 1 if you want to them to keep running.</p>
 
-<p style="margin-left:22%;">Go to first page and <b>reset
-the presentation and the slide clock to zero</b></p>
+<p style="margin-left:22%; margin-top: 1em">Note that the
+Home key may be called &quot;Pos 1&quot; on some
+keyboards.</p>
 
-<p style="margin-left:11%;"><b>Escape, Q</b></p>
+<p style="margin-left:11%;"><b>Keyboard: Escape, Q</b></p>
 
-<p style="margin-left:22%;">Quit viewer</p>
+<p style="margin-left:22%;">Quit <b>dspdfviewer</b>.</p>
 
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="11%"></td>
-<td width="9%">
+<p style="margin-left:11%;"><b>Keyboard: S, F12</b></p>
 
+<p style="margin-left:22%;">Switch primary and secondary
+screens</p>
 
-<p><b>S, F12</b></p></td>
-<td width="2%"></td>
-<td width="78%">
+<p style="margin-left:22%; margin-top: 1em">Use this if the
+audience sees your &rsquo;note&rsquo; side with the clocks
+and you see the actual presentation on your screen.</p>
 
+<p style="margin-left:22%; margin-top: 1em">If you just
+want to see the main presentation (for example, because the
+projector is behind you), use <b>T</b>.</p>
 
-<p>Switch primary and secondary screens (Use this if the
-audience sees your &rsquo;note&rsquo; side instead of the
-actual presentation)</p></td></tr>
-<tr valign="top" align="left">
-<td width="11%"></td>
-<td width="9%">
+<p style="margin-left:11%;"><b>Keyboard: T</b></p>
 
+<p style="margin-left:22%;">Switch secondary screen&rsquo;s
+function</p>
 
-<p><b>T</b></p></td>
-<td width="2%"></td>
-<td width="78%">
-
-
-<p>Switch secondary screen&rsquo;s function (Use this if
-you want to see the audience side on your screen, without
+<p style="margin-left:22%; margin-top: 1em">Use this if you
+want to see the audience side on your screen, without
 showing the notes to the audience. Pressing the button again
-will switch back to normal operation.)</p></td></tr>
-<tr valign="top" align="left">
-<td width="11%"></td>
-<td width="9%">
+will switch back to normal operation.</p>
 
-
-<p><b>?, F1</b></p></td>
-<td width="2%"></td>
-<td width="78%">
-
-
-<p>Show message box with the available keybindings.</p></td></tr>
-</table>
-
-<h2>CONFIGURATION FILE
-<a name="CONFIGURATION FILE"></a>
+<h2>FILES
+<a name="FILES"></a>
 </h2>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>~/.config/dspdfviewer.ini</b>
-You can specify all long command-line options (without
-leading &minus;&minus;) here, in a &quot;option=value&quot;
-format, one per line.</p>
+<p style="margin-left:11%; margin-top: 1em"><b>~/.config/dspdfviewer.ini</b></p>
+
+<p style="margin-left:22%;">You can specify all long
+command-line options (without leading &minus;&minus;) here,
+in a &quot;option=value&quot; format, one per line.</p>
+
+<h2>PRESENTER REMOTE CONTROLS
+<a name="PRESENTER REMOTE CONTROLS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Most (maybe not
+all) presenter remote controls technically act as a keyboard
+sending one of the keystrokes listed either in the main or
+additional keybindings. If your remote control does not work
+as intended, please file a bug report describing what
+keystrokes it generates when you press its buttons. If there
+is no conflict, a keybinding will be included in the next
+release.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">None currently
+known.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you find any
+bugs, the preferred way to report them is at the github
+issue tracker at
+https://github.com/dannyedel/dspdfviewer/issues.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As a fallback,
+you can send e-mail to mail@danny-edel.de with the word
+&quot;dspdfviewer&quot; in the subject line.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -303,13 +395,21 @@ format, one per line.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>/usr/share/doc/latex-beamer/beameruserguide.pdf.gz</b>
-from the <b>latex-beamer</b> package.</p>
+<p style="margin-left:11%; margin-top: 1em"><b>/usr/share/doc/latex-beamer/beameruserguide.pdf.gz</b></p>
 
-<p style="margin-left:11%; margin-top: 1em">Note: Use
+<p style="margin-left:22%;">from the <b>latex-beamer</b>
+package on how to create beamer presentations.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note: Use
 &quot;show notes on second screen=right&quot; because
 <b>dspdfviewer</b> assumes that the right half of the page
 is the notes.</p>
+
+
+<p style="margin-left:11%;"><b>http://dspdfviewer.danny-edel.de</b></p>
+
+<p style="margin-left:22%;">for installation instructions
+and new release announcements.</p>
 <hr>
 </body>
 </html>
