@@ -11,9 +11,12 @@ export DH_VERBOSE=1
 
 # Make sure to NOT use any flags from environment and only use the standard
 # debian build flags.
+#
+# include CPPFLAGS in CFLAGS, this is a cmake workaround found on
+# https://wiki.debian.org/Hardening#Notes_for_packages_using_CMake
 CPPFLAGS:=$(shell dpkg-buildflags --get CPPFLAGS)
-CFLAGS:=$(shell dpkg-buildflags --get CFLAGS)
-CXXFLAGS:=$(shell dpkg-buildflags --get CXXFLAGS)
+CFLAGS:=$(shell dpkg-buildflags --get CFLAGS) $(CPPFLAGS)
+CXXFLAGS:=$(shell dpkg-buildflags --get CXXFLAGS) $(CPPFLAGS)
 LDFLAGS:=$(shell dpkg-buildflags --get LDFLAGS)
 
 %:
