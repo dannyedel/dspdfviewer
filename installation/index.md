@@ -7,6 +7,16 @@ You can choose if you want to install the bleeding-edge development version
 (may eat your firstborn, plain out crash, or do other unexpected things) or the
 last stable release.
 
+## Verifying release checksums
+
+Especially if you're including the package in a distritbution, you should
+include some kind of checksum verification, based on the git tag I signed
+with my gpg key.
+
+Please read my [reproducing checksum] article for further details.
+
+[reproducing checksum]: http://blog.danny-edel.de/2015/05/31/reproducing-github-tarball-checksum/
+
 ## Stable release
 
 Note: At the time of writing, the current release is *v1.12*. You can check at
