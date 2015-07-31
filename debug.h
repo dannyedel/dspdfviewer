@@ -22,6 +22,10 @@
 /** Print filename / line / function info
  */
 
+#if defined(_MSC_VER)
+#define __func__ __FUNCTION__
+#endif
+
 #define DEBUGOUT qDebug() << \
  QString("%1:%2 [%3()]"). \
  arg(QFileInfo(__FILE__).fileName()). \

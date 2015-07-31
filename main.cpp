@@ -27,7 +27,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
-#ifdef _WIN32
+#if defined ( _WIN32 ) && defined ( NDEBUG )
 #pragma comment(linker, "/SUBSYSTEM:windows")
 #include <Windows.h>
 
