@@ -112,6 +112,9 @@ if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
   add_definitions(-DDSPDFVIEWER_VERSION="${DSPDFVIEWER_VERSION}")
 endif()
 
+if( I3WORKAROUND_SHELLCODE )
+	add_definitions(-DI3WORKAROUND_SHELLCODE="${I3WORKAROUND_SHELLCODE}")
+endif()
 
 set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
 

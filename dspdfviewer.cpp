@@ -52,6 +52,13 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   audienceWindow.showLoadingScreen(0);
   secondaryWindow.showLoadingScreen(0);
 
+	if ( runtimeConfiguration.i3workaround() ) {
+		const std::string shellcode = runtimeConfiguration.i3workaround_shellcode();
+		DEBUGOUT << "Running i3 workaround shellcode" << shellcode.c_str();
+		int rc = std::system( shellcode.c_str() );
+		DEBUGOUT << "Return code of i3-workaround was" << rc ;
+	}
+
 #if 0 // FIXME Make sure exceptions on startup get handled correctly
   if ( ! pdfDocument  || pdfDocument->isLocked() )
   {

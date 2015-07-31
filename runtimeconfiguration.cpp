@@ -29,6 +29,15 @@
 #define DSPDFVIEWER_VERSION "UNKNOWN"
 #endif
 
+#ifndef I3WORKAROUND_SHELLCODE
+/* This will get executed once both windows are created.
+ * You can override this by providing -DSHELLCODE_I3WORKAROUND="your shellcode"
+ * at the cmake step.
+ */
+#define I3WORKAROUND_SHELLCODE "i3-msg '[class=\"Dspdfviewer\" window_role=\"Audience_Window\"] move to output right'"
+#endif
+
+
 using namespace std;
 using namespace boost::program_options;
 
@@ -65,6 +74,14 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
      "Cache the PDF file into memory\n"
      "Useful if you are editing the PDF file with latex while using the presenter software."
      )
+    ("i3-workaround",
+     value<bool>(&m_i3workaround)->default_value(false),
+     "Use i3 specific workaround: Execute shellcode once both windows have been created."
+#ifndef NDEBUG
+     "\nDebug info: Shellcode is \n"
+     I3WORKAROUND_SHELLCODE
+#endif
+    )
     ;
   options_description secondscreen("Options affecting the second screen");
   secondscreen.add_options()
@@ -244,4 +261,14 @@ bool RuntimeConfiguration::filePathDefined() const
 
 noFileNameException::noFileNameException():
 	logic_error("You did not specify a PDF-File to display.") {
+}
+
+bool RuntimeConfiguration::i3workaround() const
+{
+	return m_i3workaround;
+}
+
+std::string RuntimeConfiguration::i3workaround_shellcode() const
+{
+	return std::string( I3WORKAROUND_SHELLCODE );
 }
