@@ -76,7 +76,16 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool sho
     this->slideClock->setVisible(r.showSlideClock());
     this->presentationClock->setVisible(r.showPresentationClock());
   }
-  reposition();
+	if ( showInformationLine && r.i3workaround() ) {
+		QApplication::flush(); // Make sure the window has been painted
+		// This is the second screen. It has now been created.
+		// so we should call the i3 shellcode now
+		const std::string shellcode = r.i3workaround_shellcode();
+		DEBUGOUT << "Running i3 workaround shellcode" << shellcode.c_str();
+		int rc = std::system( shellcode.c_str() );
+		DEBUGOUT << "Return code of i3-workaround was" << rc ;
+	}
+  reposition(); // This will fullscreen on its own
 }
 
 
