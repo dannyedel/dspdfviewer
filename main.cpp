@@ -27,8 +27,21 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
+#if defined ( _WIN32 ) && defined ( NDEBUG )
+#pragma comment(linker, "/SUBSYSTEM:windows")
+#include <Windows.h>
+
+int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
+{
+	int argc = __argc;
+	#define argv __argv
+
+#else
+
 int main(int argc, char** argv)
 {
+
+#endif
 	QApplication app(argc, argv);
 	app.setApplicationName( "dspdfviewer" );
 	app.setApplicationVersion( DSPDFVIEWER_VERSION );
