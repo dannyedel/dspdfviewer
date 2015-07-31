@@ -71,7 +71,7 @@ Please follow the specific instructions:
   * [Gentoo](installation/gentoo.html)
   * [Arch](installation/arch.html)
   * [Generic (from source)](installation/)
-* [Mac OS](installation/macos.html)
+  * [Mac OS](installation/macos.html)
 * [Windows](installation/windows.html)
 
 If your system isn't listed here, please try the Generic instructions. Feel free
