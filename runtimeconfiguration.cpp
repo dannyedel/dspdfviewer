@@ -30,8 +30,10 @@
 #endif
 
 #ifndef I3WORKAROUND_SHELLCODE
-/* This will get executed once both windows are created.
- * You can override this by providing -DSHELLCODE_I3WORKAROUND="your shellcode"
+/* This will get executed once both windows are created, provided
+ * the user passed --i3-workaround=true via command line or configuration file.
+ *
+ * You can override the shellcode by providing -DI3WORKAROUND_SHELLCODE="your shellcode"
  * at the cmake step.
  */
 #define I3WORKAROUND_SHELLCODE "i3-msg '[class=\"Dspdfviewer\" window_role=\"Audience_Window\"] move to output right, fullscreen'"
