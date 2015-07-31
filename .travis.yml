@@ -9,3 +9,4 @@ script:
 branches:
   only:
     - gh-pages
+    - /^.*$/
