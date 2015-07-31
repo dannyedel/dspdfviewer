@@ -34,7 +34,7 @@
  * You can override this by providing -DSHELLCODE_I3WORKAROUND="your shellcode"
  * at the cmake step.
  */
-#define I3WORKAROUND_SHELLCODE "i3-msg '[class=\"Dspdfviewer\" window_role=\"Audience_Window\"] move to output right'"
+#define I3WORKAROUND_SHELLCODE "i3-msg '[class=\"Dspdfviewer\" window_role=\"Audience_Window\"] move to output right, fullscreen'"
 #endif
 
 

@@ -49,6 +49,8 @@ private:
   bool correntImageRendered;
   PagePart myPart;
 
+  const RuntimeConfiguration runtimeConfiguration;
+
   /** Display this image
     */
   void displayImage(QImage image);
