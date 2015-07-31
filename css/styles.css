@@ -7,6 +7,14 @@ body {
 	margin: auto;
 }
 
+div.backlink {
+	float: right;
+}
+
+h1::after {
+	clear: right;
+}
+
 div.root code::before {
 	content: 'root permission required\A';
 	font-style: italic;
