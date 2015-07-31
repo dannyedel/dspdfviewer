@@ -41,7 +41,7 @@ apt-get install dspdfviewer
 
 ## Installation of daily debs, directly from git
 If you want to stay up-to-date from git (for example because you want to help test features
-in development), you can install the daily debs that my jenkins generates and signs for you.
+in development), you can install the daily debs that my [jenkins] generates and signs for you.
 
 Jenkins' packages are signed with gpg key [0x61E9E242].
 
@@ -54,6 +54,7 @@ apt-get install dspdfviewer
 {% endhighlight %}
 </div>
 
+[jenkins]: http://danny-edel.de/jenkins
 [0x61E9E242]: https://sks-keyservers.net/pks/lookup?op=get&search=0xC86A1F0861E9E242
 
 ### Upgrading
