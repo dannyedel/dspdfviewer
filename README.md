@@ -3,6 +3,7 @@ dspdfviewer website
 
 This is source of the documentation website for [dspdfviewer].
 
+[Github Pages] renders it to http://dspdfviewer.danny-edel.de
 
 How to contribute?
 ------------------
@@ -14,4 +15,5 @@ How to contribute?
 3. Commit your changes
 4. Pull-Request
 
+[Github Pages]: https://pages.github.com/
 [dspdfviewer]: https://github.com/dannyedel/dspdfviewer
