@@ -15,7 +15,7 @@ with my gpg key.
 
 Please read my [reproducing checksum] article for further details.
 
-[reproducing checksum]: http://blog.danny-edel.de/2015/05/31/reproducing-github-tarball-checksum/
+[reproducing checksum]: http://blog.danny-edel.de/2015/07/31/reproducing-github-tarball-checksum/
 
 ## Stable release
 
