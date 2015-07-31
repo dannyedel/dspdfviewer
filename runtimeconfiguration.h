@@ -68,6 +68,10 @@ class RuntimeConfiguration
    */
   bool m_useSecondScreen;
 
+  /** Workaround for i3 window manager active
+   */
+  bool m_i3workaround;
+
   /** Make sure that so many previous pages are pre-rendered
    * (Probably wont make sense until you can jump to slide
    * n without visiting 0..(n-1) first, but once PDF hyperlinks
@@ -121,6 +125,18 @@ public:
 
   unsigned bottomPaneHeight() const;
   bool hyperlinkSupport() const;
+
+  /* Use i3-workaround.
+   *
+   * In the future, this might auto-detect if we're running on i3.
+   */
+  bool i3workaround() const;
+
+  /* What shellcode to execute.
+   *
+   * This may be programatically generated in the future.
+   */
+  std::string i3workaround_shellcode() const;
 };
 
 #endif // RUNTIMECONFIGURATION_H

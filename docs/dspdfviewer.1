@@ -173,6 +173,15 @@ unit is \fIpercent of second screen's total height\fR.
 
 Default value 20.
 
+.TP
+.B \-\-i3\-workaround \fI<bool>\fR
+This tries to ask the i3 window manager (by calling the i3-msg command) to move
+the audience window to "the other screen".
+
+This is considered an experimental feature and disabled by default.
+Read the runtimeconfiguration.cpp source code for more info.
+
+
 .SH CONTROLS
 You can use the following controls while
 .B dspdfviewer

@@ -51,7 +51,8 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool sho
   useHyperlinks(r.hyperlinkSupport()),
   minimumPageNumber(0),
   maximumPageNumber(65535),
-  myPart(myPart)
+  myPart(myPart),
+  runtimeConfiguration(r)
 {
   if ( ! enabled )
     return;
@@ -76,7 +77,8 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool sho
     this->slideClock->setVisible(r.showSlideClock());
     this->presentationClock->setVisible(r.showPresentationClock());
   }
-  reposition();
+
+  reposition(); // This will fullscreen on its own
 }
 
 
@@ -333,6 +335,24 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
   QWidget::resizeEvent(resizeEvent);
   DEBUGOUT << "Resize event" << resizeEvent;
   DEBUGOUT << "Resized from" << resizeEvent->oldSize() << "to" << resizeEvent->size() << ", requesting re-render.";
+	static bool i3shellcode_executed = false;
+	if (
+		windowRole() == "Audience_Window" &&
+		runtimeConfiguration.i3workaround() &&
+		resizeEvent->spontaneous() &&
+		// i3 generates a spontaneous resize.
+		! i3shellcode_executed
+		// Make sure to do this only once
+		) {
+		QApplication::flush(); // Make sure the window has been painted
+		// This is the second screen. It has now been created.
+		// so we should call the i3 shellcode now
+		const std::string shellcode = runtimeConfiguration.i3workaround_shellcode();
+		DEBUGOUT << "Running i3 workaround shellcode" << shellcode.c_str();
+		int rc = std::system( shellcode.c_str() );
+		DEBUGOUT << "Return code of i3-workaround was" << rc ;
+		i3shellcode_executed=true;
+	}
   emit rerenderRequested();
 }
 
