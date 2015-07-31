@@ -2,6 +2,7 @@ exclude:
   - vendor
   - Gemfile
   - Makefile
+  - README.md
 
 markdown: redcarpet
 redcarpet:
