@@ -3,10 +3,9 @@ sudo: required
 install:
  - sudo apt-get update
  - sudo apt-get install --install-recommends sbuild
- - sudo mkdir /root/.gnupg
  - sudo sbuild-adduser $(whoami)
  - sudo sbuild-update --keygen
- - sudo sbuild-createchroot sid $(mktemp -d) http://httpredir.debian.org/debian
+ - sudo sbuild-createchroot --keyring '' sid $(mktemp -d) http://httpredir.debian.org/debian
 # This will create a sid chroot and try to build inside the chroot.
 script:
  - sudo sbuild
