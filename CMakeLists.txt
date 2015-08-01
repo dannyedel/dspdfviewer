@@ -65,6 +65,10 @@ else()
   add_definitions(-DQT_NO_DEBUG_OUTPUT)
 endif()
 
+if ( DISABLE_CXX11_ABI )
+	add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
+endif()
+
 ### Version-number inclusion logic.
 
 # Rationale: dspdfviewer --version should print something meaningful
