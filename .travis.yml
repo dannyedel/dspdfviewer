@@ -2,7 +2,7 @@ language: cpp
 sudo: required
 install:
  - sudo apt-get update
- - sudo apt-get install --no-install-recommends sbuild
+ - sudo apt-get install --install-recommends sbuild
  - sudo mkdir /root/.gnupg
  - sudo sbuild-adduser $(whoami)
  - sudo sbuild-update --keygen
