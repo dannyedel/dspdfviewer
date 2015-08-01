@@ -6,6 +6,7 @@ title: Dual-Screen PDF Viewer
 This website aims to provide some documentation for the dspdfviewer
 project. Its main purpose is to decouple installation instructions
 from the primary sourcecode tree.
+You can [inspect the sourcecode on github.][sourcecode]
 
 It is a work-in-progress, and accepting suggestions and help.
 Read further down on how to get involved.
