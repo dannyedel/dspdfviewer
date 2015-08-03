@@ -55,8 +55,10 @@ should be available as `man dspdfviewer`.
 
 In addition, you can [access the manpage online]. Note that the online version
 is generated from git and may contain commands not yet in your installation.
+You can also read the [release manpage] from version v1.13.
 
 [access the manpage online]: manpage.html
+[release manpage]: manpage-release.html
 
 If the manual doesn't answer your question, feel free to open a ticket in
 the [issues system] requesting help or clarification.
