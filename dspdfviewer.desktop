@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=DS PDF Viewer
+Comment=Dual-Screen PDF Viewer for LaTeX-Beamer presentations utilizing the "show notes on second screen" option
+Keywords=pdf;presentation;latex;beamer;notes;
+Exec=dspdfviewer %f
