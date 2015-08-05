@@ -27,8 +27,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${Boost_INCLUDE_DIR})
 
-add_definitions(-ggdb)
-
 # Use c++11 support.
 # found on
 # http://stackoverflow.com/questions/10984442/how-to-detect-c11-support-of-a-compiler-with-cmake
@@ -51,7 +49,7 @@ endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
 	#add some warnings
-	add_definitions(-Wall -Wextra -pedantic -Werror -ggdb -Wfatal-errors -Wold-style-cast -Woverloaded-virtual)
+	add_definitions(-Wall -Wextra -pedantic -Werror -Wfatal-errors -Wold-style-cast -Woverloaded-virtual)
 	#I like these for my code, but Qt doesnt compile with them
 	# add_definitions( -Weffc++ )
 	add_definitions(-Wno-effc++)
