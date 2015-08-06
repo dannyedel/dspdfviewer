@@ -138,6 +138,12 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
       cout << endl;
       cout << "Usage: " << argv[0] << " [options] pdf-file" << endl;
       cout << help << endl;
+      // Add a short primer about interactive controls
+      const std::string padding="\t";
+      cout << "Interactive Controls:" << endl
+           << padding << "Press F1 or ? during program execution to get a quick" << endl
+           << padding << "overview about available controls." << endl
+           << padding << "Please read the manpage (man dspdfviewer) for the full list." << endl;
     }
     exit(1);
   }
