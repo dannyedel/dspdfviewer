@@ -271,7 +271,13 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
 {
   if ( ! m_enabled )
     return;
-  
+
+  // If we're blank, don't do anything with incoming renders.
+  // Un-blanking will request a rerender.
+  if ( blank )
+    return;
+
+
   // It might be a thumbnail. If we're waiting for one, check if it would fit.
   if ( isInformationLineVisible()
     && renderedPage->getPart() == PagePart::FullPage
@@ -306,6 +312,10 @@ void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
 {
   if ( !m_enabled )
     return;
+  // If we're blanked, don't render anything.
+  if ( blank )
+    return;
+
 
   /// FIXME Loading image
 
