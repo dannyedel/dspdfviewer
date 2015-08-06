@@ -312,6 +312,10 @@ void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
 {
   if ( !m_enabled )
     return;
+  // If we're blanked, don't render anything.
+  if ( blank )
+    return;
+
 
   /// FIXME Loading image
 
