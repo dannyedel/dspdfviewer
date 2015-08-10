@@ -39,3 +39,13 @@ Description: Dual-Screen PDF Viewer for LaTeX-beamer
  information, like the time since you started the presentation
  and a "wall clock".
 
+Package: dspdfviewer-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: dspdfviewer (= ${binary:Version}), ${misc:Depends}
+Description: debugging symbols for dspdfviewer
+ dspdfviewer if a specialized PDF viewer for latex-beamer
+ presentations using the "shot notes on second screen" feature.
+ .
+ This package contains the debugging symbols for dspdfviewer.
