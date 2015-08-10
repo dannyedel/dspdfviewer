@@ -88,13 +88,6 @@ if( NOT DSPDFVIEWER_VERSION AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git" )
 	endif()
 endif()
 
-# Debian specific: Use dpkg-parsechangelog
-if( NOT DSPDFVIEWER_VERSION AND DEFINED ENV{DEBIAN_PACKAGE_VERSION})
-	# This is useful if jenkins or launchpad compile the package.
-	set(DSPDFVIEWER_VERSION $ENV{DEBIAN_PACKAGE_VERSION})
-	message( STATUS "Embedding version number ${DSPDFVIEWER_VERSION} as provided by the debian build system.")
-endif()
-
 if( NOT DSPDFVIEWER_VERSION )
 	# We still don't know version number to embed.
 	# Use default
