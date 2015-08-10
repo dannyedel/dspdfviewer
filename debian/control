@@ -7,35 +7,13 @@ Build-Depends: g++ (>= 4:4.6),
  libpoppler-qt4-dev,
  libboost-program-options-dev,
  lsb-release
-# The project needs a c++11 compiler.
-# Its known to work with g++ 4.6 and up
-#
-# FIXME if there's a better, cleaner way to express
-# "This project needs a c++11 compiler" then specify it here
-# This probably is not an issue until Debian switches away from
-# the GNU Compiler collection...
-#
-# Rest of deps:
-# - debhelper 7.3.0
-# A Debhelper with cmake support
-# (otherwise it will not see the CMakeLists.txt and just build
-# a package with a manpage...
-#
-# - libpoppler-qt4-dev
-# the poppler-library for PDF decoding
-#
-# - libboost-program-options-dev
-# the boost program options to parse command line parameters
-#
-# - lsb-release
-# This is needed for the switch in the debian/rules file checking
-# against lucid
+# Note that these dependencies are quite outdated
+# so that the same debian/ directory still compiles
+# on wheezy or precise.
 Standards-Version: 3.9.3
 Vcs-Git: git://github.com/dannyedel/dspdfviewer.git
 Vcs-Browser: https://github.com/dannyedel/dspdfviewer
-# Homepage: http://danny-edel.de/projects/dspdfviewer
-# NOTE: I have not written a homepage yet, but probably writing
-# the source code is more important.
+Homepage: http://dspdfviewer.danny-edel.de
 
 Package: dspdfviewer
 Architecture: any
