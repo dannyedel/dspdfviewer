@@ -1,1 +1,12 @@
+## Generate a "clean" tarball when calling git archive
+
+# Do not export dist-specific directories
 debian/ export-ignore
+gentoo/ export-ignore
+
+# Do not export git configuration files
+.gitattributes	export-ignore
+.gitignore	export-ignore
+
+# Also don't export travis' build script
+.travis.yml	export-ignore
