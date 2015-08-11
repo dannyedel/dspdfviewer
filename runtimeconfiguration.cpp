@@ -164,7 +164,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
            << padding << "overview about available controls." << endl
            << padding << "Please read the manpage (man dspdfviewer) for the full list." << endl;
     }
-    exit(1);
+    exit(0);
   }
 
   if ( m_bottomPaneHeightPercent < 1 || m_bottomPaneHeightPercent > 99 ) {
