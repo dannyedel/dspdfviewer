@@ -8,5 +8,5 @@ install:
 # test both fallback and debian specific build system
 
 script:
- - ( TEMPDIR=$(mktemp -d) && git archive HEAD | tar -C $TEMPDIR -xv && mkdir "$TEMPDIR/build" && cd "$TEMPDIR/build" && cmake .. && make && ./dspdfviewer --version)
+ - ( TEMPDIR=$(mktemp -d) && git archive HEAD | tar -C $TEMPDIR -xv && mkdir "$TEMPDIR/build" && cd "$TEMPDIR/build" && cmake .. && make && [ -x ./dspdfviewer ] )
  - debuild -tc -uc -us && dpkg-deb --contents ../dspdfviewer_*.deb && dpkg-deb --contents ../dspdfviewer-dbg_*.deb
