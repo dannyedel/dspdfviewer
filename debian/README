@@ -14,6 +14,7 @@ too much hassle.
 
 
 A proper debian package has already been included into debian sid
-and is maintained by me.
+and is maintained by me, please take a look at the "debian" branch
+in this repository (git://github.com/dannyedel/dspdfviewer.git).
 
  -- Danny Edel <mail@danny-edel.de>  Mon, 10 Aug 2015 22:44:02 +0200
