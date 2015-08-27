@@ -39,8 +39,8 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
  presentationClockRunning(false),
  renderFactory(r.filePathQString(), r.cachePDFToMemory()?PDFCacheOption::keepPDFinMemory:PDFCacheOption::rereadFromDisk ),
  m_pagenumber(0),
- audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r, "Audience_Window"),
- secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true,  r, "Secondary_Window", r.useSecondScreen() )
+ audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r, WindowRole::AudienceWindow),
+ secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true,  r, WindowRole::PresenterWindow, r.useSecondScreen() )
 {
   DEBUGOUT << "Starting constructor" ;
 
