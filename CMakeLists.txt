@@ -64,6 +64,11 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_definitions(-Werror -Weverything -pedantic -pedantic-errors)
 	# Disable c++98 compatibility warnings
 	add_definitions(-Wno-c++98-compat -Wno-c++98-compat-pedantic)
+	# Tell clang that the Qt Libraries are system libraries, in order to
+	# not output warnings for them.
+	foreach(lib IN LISTS QT_INCLUDES)
+		add_definitions(-isystem ${lib})
+	endforeach()
 else()
 	message(WARNING "Compiling with a Non-GNU compiler. A lot less warnings will be output, so more coding errors might go undetected.")
 endif()
