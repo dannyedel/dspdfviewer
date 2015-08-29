@@ -46,8 +46,10 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	message(STATUS "Clang++ detected.")
 	add_definitions("-std=c++11")
 else()
-	# No GCC Compiler
-	message(WARNING "You dont have a GNU compiler. I'll activate -std=c++11 in the hope it does exactly that.")
+	# Unknown Compiler
+	message(WARNING "You are using an unidentified and therefore unsupported compiler. "
+		" If this works for you, please report that to upstream and - if possible -"
+		" please send patches activating sensible compile flags on it.")
 	add_definitions(-std=c++11)
 endif()
 
