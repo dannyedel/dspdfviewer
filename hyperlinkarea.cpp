@@ -36,7 +36,7 @@ HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLab
   mySize.setTop(sizeWithinImageLabel.top() * pixmap->height());
   mySize.setLeft(sizeWithinImageLabel.left() * pixmap->width());
   
-  mySize.setHeight(abs(sizeWithinImageLabel.height() * pixmap->height()));
+  mySize.setHeight(std::abs(sizeWithinImageLabel.height() * pixmap->height()));
   mySize.setWidth(sizeWithinImageLabel.width() * pixmap->width()); 
   
   setParent(imageLabel);
