@@ -33,17 +33,23 @@ include_directories(${Boost_INCLUDE_DIR})
 if(CMAKE_COMPILER_IS_GNUCXX)
 	execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
 	if (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
-		message(STATUS "C++11 activated.")
+		message(STATUS "GNU GCC 4.7 or higher detected.")
 		add_definitions("-std=c++11")
 	elseif(GCC_VERSION VERSION_GREATER 4.3 OR GCC_VERSION VERSION_EQUAL 4.3)
-		message(WARNING "C++0x activated. If you get any errors update to a compiler which fully supports C++11")
+		message(WARNING "You are using an old version of gcc."
+			" Consider upgrading to a more recent version if you run into problems.")
 		add_definitions("-std=c++0x")
 	else ()
-		message(FATAL_ERROR "C++11 needed. Therefore a gcc compiler with a version higher than 4.3 is needed.")
+		message(FATAL_ERROR "C++11 needed. For GCC that means a version higher than 4.3 is needed.")
 	endif()
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	message(STATUS "Clang++ detected.")
+	add_definitions("-std=c++11")
 else()
-	# No GCC Compiler
-	message(WARNING "You dont have a GNU compiler. I'll activate -std=c++11 in the hope it does exactly that.")
+	# Unknown Compiler
+	message(WARNING "You are using an unidentified and therefore unsupported compiler. "
+		" If this works for you, please report that to upstream and - if possible -"
+		" please send patches activating sensible compile flags on it.")
 	add_definitions(-std=c++11)
 endif()
 
@@ -53,6 +59,18 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 	#I like these for my code, but Qt doesnt compile with them
 	# add_definitions( -Weffc++ )
 	add_definitions(-Wno-effc++)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	# Turn on a lot of warnings, hopefully helping with code quality.
+	add_definitions(-Weverything)
+	# FIXME: Re-activate -Werror once these are worked out of the source
+	# add_definitions(-Werror)
+	# Disable c++98 compatibility warnings
+	add_definitions(-Wno-c++98-compat -Wno-c++98-compat-pedantic)
+	# Tell clang that the Qt Libraries are system libraries, in order to
+	# not output warnings for them.
+	foreach(lib IN LISTS QT_INCLUDES)
+		add_definitions(-isystem ${lib})
+	endforeach()
 else()
 	message(WARNING "Compiling with a Non-GNU compiler. A lot less warnings will be output, so more coding errors might go undetected.")
 endif()
