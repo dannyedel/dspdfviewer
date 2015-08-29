@@ -59,6 +59,11 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 	#I like these for my code, but Qt doesnt compile with them
 	# add_definitions( -Weffc++ )
 	add_definitions(-Wno-effc++)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	# Turn on a lot of warnings, hopefully helping with code quality.
+	add_definitions(-Werror -Weverything -pedantic -pedantic-errors)
+	# Disable c++98 compatibility warnings
+	add_definitions(-Wno-c++98-compat -Wno-c++98-compat-pedantic)
 else()
 	message(WARNING "Compiling with a Non-GNU compiler. A lot less warnings will be output, so more coding errors might go undetected.")
 endif()
