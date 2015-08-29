@@ -40,8 +40,6 @@ private:
   unsigned int m_monitor;
   QImage currentImage;
   bool blank;
-  bool useHyperlinks;
-
   bool informationLineVisible;
 
   uint currentPageNumber;
@@ -50,7 +48,8 @@ private:
   bool correntImageRendered;
   PagePart myPart;
 
-  const RuntimeConfiguration runtimeConfiguration;
+  // Reference to the runtime configuration object.
+  const RuntimeConfiguration& runtimeConfiguration;
 
   /** Display this image
     */
