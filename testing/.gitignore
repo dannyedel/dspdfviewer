@@ -1,0 +1,8 @@
+# PDFLaTeX build results from the input TeX files
+*.aux
+*.log
+*.nav
+*.out
+*.pdf
+*.snm
+*.toc
