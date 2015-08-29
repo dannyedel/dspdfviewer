@@ -176,10 +176,40 @@ if( I3WORKAROUND_SHELLCODE )
 	add_definitions(-DI3WORKAROUND_SHELLCODE="${I3WORKAROUND_SHELLCODE}")
 endif()
 
-set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp windowrole.cpp main.cpp)
+set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp windowrole.cpp)
 
-add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
-target_link_libraries(dspdfviewer ${LIST_LIBRARIES})
+
+add_library(libdspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
+set_target_properties(libdspdfviewer PROPERTIES OUTPUT_NAME dspdfviewer)
+target_link_libraries(libdspdfviewer ${LIST_LIBRARIES})
+
+add_executable(dspdfviewer main) #${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
+target_link_libraries(dspdfviewer libdspdfviewer) # ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${Boost_LIBRARIES} ${POPPLER_LIBRARY})
+
+
+
+### Testing: Only works with debug builds and GNU Compilers
+if( CMAKE_BUILD_TYPE MATCHES "^Debug$" AND CMAKE_COMPILER_IS_GNUCXX)
+	message(STATUS "Enabling testing, using gcov coverage as helper")
+	add_definitions(-fprofile-arcs -ftest-coverage)
+	target_link_libraries(dspdfviewer gcov)
+
+	# Activate CMake testing
+	include(CTest)
+
+	# Compile the test driver(s) and example PDFs
+	add_subdirectory(testing)
+
+	# Execute all test drivers
+	#	add_test(
+	#	NAME swapScreensWithS
+	#	COMMAND testSwapScreensWithS
+	#	)
+endif()
+
+
+
+#### Installation
 
 install(TARGETS	dspdfviewer
 	RUNTIME DESTINATION bin)
