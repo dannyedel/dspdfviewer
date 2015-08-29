@@ -61,7 +61,9 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 	add_definitions(-Wno-effc++)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	# Turn on a lot of warnings, hopefully helping with code quality.
-	add_definitions(-Werror -Weverything -pedantic -pedantic-errors)
+	add_definitions(-Weverything)
+	# FIXME: Re-activate -Werror once these are worked out of the source
+	# add_definitions(-Werror)
 	# Disable c++98 compatibility warnings
 	add_definitions(-Wno-c++98-compat -Wno-c++98-compat-pedantic)
 	# Tell clang that the Qt Libraries are system libraries, in order to
