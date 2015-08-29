@@ -1,4 +1,7 @@
 language: cpp
+compiler:
+ - clang
+ - gcc
 sudo: required
 install:
  - sudo apt-get update
