@@ -5,7 +5,7 @@ set -ex
 if [ "$BUILDSYSTEM" = "debian" ] ; then
 	# Test debian native build system
 	echo "Building on debian, CC=$CC, CXX=$CXX"
-	debuild -tc -uc -us
+	debuild --preserve-envvar=CC --preserve-envvar=CXX -b -tc -uc -us
 	for i in ../dspdfviewer_*.deb ../dspdfviewer-dbg_*.deb ; do
 		dpkg-deb --info "$i"
 		dpkg-deb --contents "$i"
