@@ -25,6 +25,7 @@ else
 	# In any case, we're in $SOURCE/build now.
 	cmake "$CMAKE_PARAMETERS" ..
 	make
-	make test
-	ctest -T coverage
+	# Activate these later:
+	#make test
+	#ctest -T coverage
 fi
