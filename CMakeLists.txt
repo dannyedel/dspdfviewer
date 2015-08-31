@@ -19,6 +19,7 @@
 
 project(dspdfviewer)
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+include(FindPkgConfig)
 set(CMAKE_AUTOMOC "on")#
 set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
 
@@ -32,8 +33,11 @@ if(UseQtFive)
 	find_package(Qt5Core REQUIRED)
 	find_package(Qt5Gui REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
-	find_library(POPPLER NAMES poppler-qt5)
-	set(QtLibs ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
+	pkg_search_module(POPPLER REQUIRED poppler-qt5)
+	# add their include directories
+	list(APPEND LIST_INCLUDE_DIRS ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
+	# add their link flags
+	list(APPEND LIST_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
 	add_definitions(-DPOPPLER_QT5)
 	add_definitions(-fPIC)
 	qt5_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
@@ -41,17 +45,19 @@ else()
 	#qt4
 	message(STATUS "Using Qt4 and libpoppler-qt4")
 	find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
-	include_directories(${QT_INCLUDES})
-	set(QtLibs Qt4::QtGui)
-	find_library(POPPLER NAMES poppler-qt4)
+	pkg_search_module(POPPLER REQUIRED poppler-qt4)
+
+	list(APPEND LIST_INCLUDE_DIRS ${QT_INCLUDES})
+	list(APPEND LIST_LIBRARIES Qt4::QtGui)
 	qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
 endif()
 
-if( NOT POPPLER)
-	message(FATAL_ERROR "Poppler qt bindings not found")
-endif()
+# include/link poppler
+list(APPEND LIST_LIBRARIES ${POPPLER_LIBRARIES})
+list(APPEND LIST_INCLUDE_DIRS ${POPPLER_INCLUDE_DIRS})
 
-include_directories(${Boost_INCLUDE_DIR})
+list(APPEND LIST_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+list(APPEND LIST_LIBRARIES ${Boost_LIBRARIES})
 
 # Use c++11 support.
 # found on
@@ -85,9 +91,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 	#I like these for my code, but Qt doesnt compile with them
 	# add_definitions( -Weffc++ )
 	add_definitions(-Wno-effc++)
-	if( UseQtFive )
-		include_directories(${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
-	endif()
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	# Turn on a lot of warnings, hopefully helping with code quality.
 	add_definitions(-Weverything)
@@ -95,22 +98,17 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	# add_definitions(-Werror)
 	# Disable c++98 compatibility warnings
 	add_definitions(-Wno-c++98-compat -Wno-c++98-compat-pedantic)
-	# Tell clang that the Qt Libraries are system libraries, in order to
-	# not output warnings for them.
-	if( UseQtFive )
-		foreach(lib IN LISTS Qt5Core_INCLUDE_DIRS Qt5Gui_INCLUDE_DIRS Qt5Widgets_INCLUDE_DIRS)
-			add_definitions(-isystem ${lib})
-		endforeach()
-	else()
-		foreach(lib IN LISTS QT_INCLUDES)
-			add_definitions(-isystem ${lib})
-		endforeach()
-	endif()
 else()
 	message(WARNING "Compiling with a Non-GNU compiler. A lot less warnings will be output, so more coding errors might go undetected.")
-	if( UseQtFive )
-		include_directories(${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
-	endif()
+endif()
+
+if( CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" )
+	# Include using -isystem
+	foreach(lib IN LISTS LIST_INCLUDE_DIRS)
+		add_definitions(-isystem ${lib})
+	endforeach()
+else()
+	include_directories(${LIST_INCLUDE_DIRS})
 endif()
 
 if( "${CMAKE_BUILD_TYPE}" MATCHES "^Debug$" )
@@ -167,7 +165,7 @@ set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdf
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
-target_link_libraries(dspdfviewer ${QtLibs} ${Boost_LIBRARIES} ${POPPLER})
+target_link_libraries(dspdfviewer ${LIST_LIBRARIES})
 
 install(TARGETS	dspdfviewer
 	RUNTIME DESTINATION bin)
