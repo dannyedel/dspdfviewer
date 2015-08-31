@@ -24,7 +24,7 @@
 #include <QSharedPointer>
 #include "pagepart.h"
 #include <QImage>
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 
 class RenderUtils
 {

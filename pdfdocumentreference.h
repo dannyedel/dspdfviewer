@@ -3,7 +3,7 @@
 #include <QString>
 #include <QSharedPointer>
 #include "pdfcacheoption.h"
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 
 // forward-declare
 struct PDFPageReference;
