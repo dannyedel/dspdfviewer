@@ -18,10 +18,9 @@
 # */
 
 project(dspdfviewer)
-cmake_minimum_required(VERSION 2.6)
-set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 set(CMAKE_AUTOMOC "on")#
-set(CMAKE_AUTOUIC "on")
+set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
 
 find_package(Boost COMPONENTS program_options REQUIRED)
 
@@ -35,6 +34,7 @@ if(UseQtFive)
 	include_directories(${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
 	set(QtLibs ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
 	add_definitions(-fPIC)
+	qt5_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
 else()
 	#qt4
 	message(STATUS "Using Qt4 and libpoppler-qt4")
@@ -42,9 +42,10 @@ else()
 	include_directories(${QT_INCLUDES})
 	set(QtLibs Qt4::QtGui)
 	find_library(POPPLER NAMES poppler-qt4)
+	qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
 endif()
 
-if(POPPLER-NOTFOUND)
+if( NOT POPPLER)
 	message(FATAL_ERROR "Poppler qt bindings not found")
 endif()
 
@@ -152,7 +153,7 @@ set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdf
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
-target_link_libraries(dspdfviewer ${QtLibs} ${Boost_LIBRARIES} ${POPPLER_LIBRARY})
+target_link_libraries(dspdfviewer ${QtLibs} ${Boost_LIBRARIES} ${POPPLER})
 
 install(TARGETS	dspdfviewer
 	RUNTIME DESTINATION bin)
