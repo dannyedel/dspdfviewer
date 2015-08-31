@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Print commands as executed and fail on error
+set -ex
+if [ "$BUILDSYSTEM" = "debian" ] ; then
+	# Test debian native build system
+	echo "Building on debian, CC=$CC, CXX=$CXX"
+	debuild -tc -uc -us
+	for i in ../dspdfviewer_*.deb ../dspdfviewer-dbg_*.deb ; do
+		dpkg-deb --info "$i"
+		dpkg-deb --contents "$i"
+	done
+else
+	if [ "$BUILDSYSTEM" = "outside" ] ; then
+		# Test non-git non-debian build system
+		TEMPDIR=$(mktemp -d)
+		git archive HEAD | tar -C "$TEMPDIR" -xv
+		mkdir "$TEMPDIR/build"
+		cd "$TEMPDIR/build"
+	else
+		# Test inside-git build system
+		mkdir build
+		cd build
+	fi
+	# In any case, we're in $SOURCE/build now.
+	cmake "$CMAKE_PARAMETERS" ..
+	make
+	make test
+	ctest -T coverage
+fi
