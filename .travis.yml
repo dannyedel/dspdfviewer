@@ -10,6 +10,8 @@ env:
     - BUILDSYSTEM=outside
 matrix:
   fast_finish: true
+  allow_failures:
+    - compiler: clang
 install:
  - _travis/install_dependencies
 script:
