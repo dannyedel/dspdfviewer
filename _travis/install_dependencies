@@ -35,7 +35,11 @@ if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
 elif [ "$TRAVIS_OS_NAME" = "osx" ] ; then
 	# Travis recommends to run homebrew update
 	brew update
-	brew install poppler --with-qt5 || brew upgrade poppler --with-qt5
+	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
+		brew install poppler --with-qt5
+	else
+		brew install poppler --with-qt4
+	fi
 else
 	echo "Unknown Travis OS $TRAVIS_OS_NAME - exiting now"
 	exit 1
