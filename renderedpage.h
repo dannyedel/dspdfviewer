@@ -21,7 +21,7 @@
 #ifndef RENDEREDPAGE_H
 #define RENDEREDPAGE_H
 #include <qimage.h>
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 #include "pagepart.h"
 #include "renderingidentifier.h"
 #include "adjustedlink.h"

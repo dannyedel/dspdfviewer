@@ -1,15 +1,19 @@
 language: cpp
-compiler:
- - clang
- - gcc
 sudo: required
+compiler:
+    - clang
+    - gcc
+env:
+    - CMAKE_PARAMETERS="-DUseQtFive=ON"
+    - CMAKE_PARAMETERS="-DUseQtFive=OFF"
+    - BUILDSYSTEM=debian DEPSYSTEM=debian
+    - BUILDSYSTEM=outside
+matrix:
+  fast_finish: true
+  allow_failures:
+    - compiler: clang
+      env: CMAKE_PARAMETERS="-DUseQtFive=ON"
 install:
- - sudo apt-get update
- - sudo apt-get install --no-install-recommends devscripts equivs
- - sudo mk-build-deps --install --remove
-
-# test both fallback and debian specific build system
-
+ - _travis/install_dependencies
 script:
- - ( TEMPDIR=$(mktemp -d) && git archive HEAD | tar -C $TEMPDIR -xv && mkdir "$TEMPDIR/build" && cd "$TEMPDIR/build" && cmake .. && make && [ -x ./dspdfviewer ] )
- - debuild -tc -uc -us && dpkg-deb --contents ../dspdfviewer_*.deb && dpkg-deb --contents ../dspdfviewer-dbg_*.deb
+ - _travis/compile

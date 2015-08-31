@@ -28,7 +28,7 @@
 #include <QFileSystemWatcher>
 #include <QTimer>
 #include <qimage.h>
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 #include "renderedpage.h"
 #include "pdfcacheoption.h"
 #include "pdfdocumentreference.h"

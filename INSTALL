@@ -37,3 +37,12 @@ Note that there is no make uninstall, so please redirect the make install
 step through your system's package management utility. The
 "cmake" step will respect --prefix= parameters, and "make install"
 will respect DESTDIR.
+
+
+
+Compiling against qt5 and poppler-qt5
+-------------------------------------
+There is now experimental support for compiling against qt5/libpoppler-qt5.
+
+To try it out, substitute the "cmake" step above against
+  cmake -DUseQtFive=ON ..

@@ -22,7 +22,7 @@
 #define ADJUSTEDLINK_H
 #include "renderingidentifier.h"
 #include <QSharedPointer>
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 
 #include <stdexcept>
 

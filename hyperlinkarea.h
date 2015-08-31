@@ -22,7 +22,7 @@
 #define HYPERLINKAREA_H
 
 #include <QLabel>
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 
 #include "adjustedlink.h"
 

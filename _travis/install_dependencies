@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Exit in case of an error, and show the steps
+set -e
+
+install_via_aptget() {
+	echo "Calling apt-get to install $*"
+	sudo apt-get install "$@"
+}
+
+# Update list of available packages in any case
+if [ "$DEPSYSTEM" = "debian" ] ; then
+	echo "Calling apt-get update"
+	sudo apt-get update
+
+	install_via_aptget devscripts equivs
+
+	echo "Using mk-build-deps to resolve package depencencies"
+	sudo mk-build-deps --install --remove
+else
+	DEPS="libboost-program-options-dev"
+	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
+		echo "Adding dannyedel ppa"
+		sudo add-apt-repository ppa:dannyedel/libpoppler-qt5-backports -y
+		sudo add-apt-repository ppa:ubuntu-sdk-team/ppa -y
+		DEPS="${DEPS} libpoppler-qt5-dev qtbase5-dev"
+	else
+		DEPS="${DEPS} libpoppler-qt4-dev"
+	fi
+	echo "Calling apt-get update"
+	sudo apt-get update
+	install_via_aptget $DEPS
+fi
