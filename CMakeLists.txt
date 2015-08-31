@@ -40,7 +40,7 @@ else()
 	message(STATUS "Using Qt4 and libpoppler-qt4")
 	find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
 	include_directories(${QT_INCLUDES})
-	set(QtLibs ${QT_LIBRARIES})
+	set(QtLibs Qt4::QtGui)
 	find_library(POPPLER NAMES poppler-qt4)
 endif()
 
