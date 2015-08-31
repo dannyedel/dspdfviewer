@@ -29,7 +29,9 @@ option(UseQtFive "Build with Qt5 and libpoppler-qt5" OFF)
 if(UseQtFive)
 	#qt5
 	message(STATUS "Using Qt5 and libpoppler-qt5")
-	find_package(Qt5Core REQUIRED)
+	find_package(Qt5Core 5.1.1 REQUIRED)
+	# On lower versions, QTBUG-32100 prevents compilation at least on clang
+	# https://bugreports.qt.io/browse/QTBUG-32100
 	find_package(Qt5Gui REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
 	find_library(POPPLER NAMES poppler-qt5)
