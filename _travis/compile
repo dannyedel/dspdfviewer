@@ -25,6 +25,7 @@ else
 	# In any case, we're in $SOURCE/build now.
 	cmake "$CMAKE_PARAMETERS" ..
 	make
+	[ -x ./dspdfviewer ]
 	# Activate these later:
 	#make test
 	#ctest -T coverage
