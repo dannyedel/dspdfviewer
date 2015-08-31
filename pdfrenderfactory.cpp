@@ -186,5 +186,5 @@ int PdfRenderFactory::numberOfPages() const
 }
 
 
-#include "pdfrenderfactory.cpp.moc"
+#include "pdfrenderfactory.moc"
 

@@ -60,4 +60,4 @@ void RenderThread::run()
   emit renderingFinished(renderResult);
 }
 
-#include "renderthread.cpp.moc"
+#include "renderthread.moc"

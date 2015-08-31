@@ -23,10 +23,10 @@
 #include "renderingidentifier.h"
 #include "sconnect.h"
 
-#include <QtGui/QLabel>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QAction>
+#include <QLabel>
+#include <QMenu>
+#include <QMenuBar>
+#include <QAction>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <qlayout.h>
