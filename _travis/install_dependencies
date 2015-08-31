@@ -35,9 +35,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
 elif [ "$TRAVIS_OS_NAME" = "osx" ] ; then
 	# Travis recommends to run homebrew update
 	brew update
-	brew outdated boost || brew install boost
-	brew outdated qt5 || brew install qt5
-	brew outdated poppler || brew install poppler --with-qt5
+	brew install poppler --with-qt5 || brew upgrade poppler --with-qt5
 else
 	echo "Unknown Travis OS $TRAVIS_OS_NAME - exiting now"
 	exit 1
