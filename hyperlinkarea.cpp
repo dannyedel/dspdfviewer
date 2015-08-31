@@ -36,7 +36,21 @@ HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLab
   mySize.setTop(sizeWithinImageLabel.top() * pixmap->height());
   mySize.setLeft(sizeWithinImageLabel.left() * pixmap->width());
   
-  mySize.setHeight(std::abs(sizeWithinImageLabel.height() * pixmap->height()));
+  mySize.setHeight(
+		/** FIXME:
+		 * This little abs function causes lots of problems.
+		 * clang on linux complains it has to be called std::abs,
+		 * appleclang complains that std::abs doesn't exist.
+		 *
+		 * Replace with some rounding from boost.
+		 */
+#ifdef __APPLE__
+		abs
+#else
+		std::abs
+#endif
+
+		(sizeWithinImageLabel.height() * pixmap->height()));
   mySize.setWidth(sizeWithinImageLabel.width() * pixmap->width()); 
   
   setParent(imageLabel);
