@@ -19,7 +19,7 @@ if [ "$DEPSYSTEM" = "debian" ] ; then
 	sudo mk-build-deps --install --remove
 else
 	DEPS="libboost-program-options-dev"
-	if [ "$CMAKE_PARAMETERS" = "UseQtFive=ON" ] ; then
+	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
 		echo "Adding dannyedel ppa"
 		sudo add-apt-repository ppa:dannyedel/libpoppler-qt5-backports -y
 		DEPS="${DEPS} libpoppler-qt5-dev"
