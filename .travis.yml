@@ -1,13 +1,13 @@
 language: cpp
 sudo: required
 compiler:
- - clang
- - gcc
+    #- clang
+    - gcc
 env:
     - CMAKE_PARAMETERS="-DUseQtFive=ON"
-    - CMAKE_PARAMETERS="-DUseQtFive=OFF"
-    - BUILDSYSTEM=debian DEPSYSTEM=debian
-    - BUILDSYSTEM=outside
+    #- CMAKE_PARAMETERS="-DUseQtFive=OFF"
+    #- BUILDSYSTEM=debian DEPSYSTEM=debian
+    #- BUILDSYSTEM=outside
 matrix:
   fast_finish: true
 install:
