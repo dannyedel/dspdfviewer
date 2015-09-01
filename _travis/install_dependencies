@@ -8,26 +8,39 @@ install_via_aptget() {
 	sudo apt-get install "$@"
 }
 
-# Update list of available packages in any case
-if [ "$DEPSYSTEM" = "debian" ] ; then
-	echo "Calling apt-get update"
-	sudo apt-get update
+if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
+	# Update list of available packages in any case
+	if [ "$DEPSYSTEM" = "debian" ] ; then
+		echo "Calling apt-get update"
+		sudo apt-get update
 
-	install_via_aptget devscripts equivs
+		install_via_aptget devscripts equivs
 
-	echo "Using mk-build-deps to resolve package depencencies"
-	sudo mk-build-deps --install --remove
-else
-	DEPS="libboost-program-options-dev"
-	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
-		echo "Adding dannyedel ppa"
-		sudo add-apt-repository ppa:dannyedel/libpoppler-qt5-backports -y
-		sudo add-apt-repository ppa:ubuntu-sdk-team/ppa -y
-		DEPS="${DEPS} libpoppler-qt5-dev qtbase5-dev"
+		echo "Using mk-build-deps to resolve package depencencies"
+		sudo mk-build-deps --install --remove
 	else
-		DEPS="${DEPS} libpoppler-qt4-dev"
+		DEPS="libboost-program-options-dev"
+		if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
+			echo "Adding dannyedel ppa"
+			sudo add-apt-repository ppa:dannyedel/libpoppler-qt5-backports -y
+			sudo add-apt-repository ppa:ubuntu-sdk-team/ppa -y
+			DEPS="${DEPS} libpoppler-qt5-dev qtbase5-dev"
+		else
+			DEPS="${DEPS} libpoppler-qt4-dev"
+		fi
+		echo "Calling apt-get update"
+		sudo apt-get update
+		install_via_aptget $DEPS
 	fi
-	echo "Calling apt-get update"
-	sudo apt-get update
-	install_via_aptget $DEPS
+elif [ "$TRAVIS_OS_NAME" = "osx" ] ; then
+	# Travis recommends to run homebrew update
+	brew update
+	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
+		brew install poppler --with-qt5
+	else
+		brew install poppler --with-qt4
+	fi
+else
+	echo "Unknown Travis OS $TRAVIS_OS_NAME - exiting now"
+	exit 1
 fi

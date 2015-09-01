@@ -28,6 +28,7 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include "sconnect.h"
+#include <cstdlib>
 
 void PDFViewerWindow::setMonitor(const unsigned int monitor)
 {

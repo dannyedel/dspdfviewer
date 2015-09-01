@@ -1,5 +1,8 @@
 language: cpp
 sudo: required
+os:
+    - linux
+    - osx
 compiler:
     - clang
     - gcc
@@ -13,6 +16,15 @@ matrix:
   allow_failures:
     - compiler: clang
       env: CMAKE_PARAMETERS="-DUseQtFive=ON"
+  exclude:
+    - os: osx
+      env: CMAKE_PARAMETERS="-DUseQtFive=ON"
+    - os: osx
+      env: BUILDSYSTEM=debian DEPSYSTEM=debian
+    - os: osx
+      env: BUILDSYSTEM=outside
+    - os: osx
+      compiler: gcc
 install:
  - _travis/install_dependencies
 script:
