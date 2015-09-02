@@ -96,8 +96,16 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_definitions(-Weverything)
 	# FIXME: Re-activate -Werror once these are worked out of the source
 	# add_definitions(-Werror)
-	# Disable c++98 compatibility warnings
+
+	# Disable warnings irrelevant to the project:
+	#   c++98 compatibility warnings
 	add_definitions(-Wno-c++98-compat -Wno-c++98-compat-pedantic)
+	#   padding
+	add_definitions(-Wno-padded)
+	#   in release mode: Unrechable code / Macro expansion (these stem from QDEBUG)
+	if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" )
+		add_definitions(-Wno-unreachable-code -Wno-unreachable-code -Wno-disabled-macro-expansion)
+	endif()
 else()
 	message(WARNING "Compiling with a Non-GNU compiler. A lot less warnings will be output, so more coding errors might go undetected.")
 endif()
