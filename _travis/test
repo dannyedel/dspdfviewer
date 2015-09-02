@@ -5,6 +5,7 @@ if [ "$TRAVIS_OS_NAME" != "linux" ] ; then
 	echo "Work in progress"
 	[ -x ./dspdfviewer ]
 else
+	[ -x ./dspdfviewer ]
 	make test
 	ctest -T coverage
 fi

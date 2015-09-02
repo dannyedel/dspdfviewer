@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Exit in case of an error, and show the steps
-set -e
-
+set -ex
 install_via_aptget() {
 	echo "Calling apt-get to install $*"
 	sudo apt-get install "$@"
