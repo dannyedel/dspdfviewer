@@ -28,7 +28,7 @@
 class RenderingIdentifier
 {
 private:
-  int thePageNumber;
+  unsigned thePageNumber;
   PagePart thePagePart;
   QSize theRequestedPageSize;
 
@@ -40,7 +40,7 @@ public:
    */
   quint64 theVersion;
 
-  RenderingIdentifier(int pagenum, PagePart pagepart, QSize requestedPageSize);
+  RenderingIdentifier(unsigned pagenum, PagePart pagepart, QSize requestedPageSize);
   unsigned pageNumber() const;
   PagePart pagePart() const;
   QSize requestedPageSize() const;
