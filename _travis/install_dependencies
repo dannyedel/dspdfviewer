@@ -19,7 +19,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
 		echo "Using mk-build-deps to resolve package depencencies"
 		sudo mk-build-deps --install --remove
 	else
-		DEPS="libboost-program-options-dev"
+		DEPS="libboost-program-options-dev pkg-config"
 		if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
 			echo "Adding dannyedel ppa"
 			sudo add-apt-repository ppa:dannyedel/libpoppler-qt5-backports -y
