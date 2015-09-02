@@ -100,6 +100,9 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	# Disable warnings irrelevant to the project:
 	#   c++98 compatibility warnings
 	add_definitions(-Wno-c++98-compat -Wno-c++98-compat-pedantic)
+	#   FIXME: Weak vtables
+	#   Currently this warning triggers in exception classes
+	add_definitions(-Wno-error=weak-vtables)
 	#   padding
 	add_definitions(-Wno-padded)
 	#   in release mode: Unrechable code / Macro expansion (these stem from QDEBUG)
