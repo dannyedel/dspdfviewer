@@ -41,7 +41,7 @@ public:
   quint64 theVersion;
 
   RenderingIdentifier(int pagenum, PagePart pagepart, QSize requestedPageSize);
-  int pageNumber() const;
+  unsigned pageNumber() const;
   PagePart pagePart() const;
   QSize requestedPageSize() const;
 
