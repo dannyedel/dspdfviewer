@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-#if QT_NO_DEBUG_OUTPUT
+#ifdef QT_NO_DEBUG_OUTPUT
 
 /* Qt is defined to squelch debug output. Simply forward to
  * qDebug()'s definition.
