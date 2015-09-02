@@ -21,7 +21,10 @@
 #include "hyperlinkarea.h"
 #include <stdexcept>
 #include <cmath>
+#include <boost/math/special_functions/round.hpp>
 #include "debug.h"
+
+using boost::math::iround;
 
 HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLabel(), targetPage(link.targetPageNumber())
 {
@@ -34,11 +37,11 @@ HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLab
   
   QRectF sizeWithinImageLabel = link.linkArea();
   
-  mySize.setTop(sizeWithinImageLabel.top() * pixmap->height());
-  mySize.setLeft(sizeWithinImageLabel.left() * pixmap->width());
+  mySize.setTop( iround(sizeWithinImageLabel.top() * pixmap->height()) );
+  mySize.setLeft( iround(sizeWithinImageLabel.left() * pixmap->width()) );
   
-  mySize.setHeight(std::abs(sizeWithinImageLabel.height() * pixmap->height()));
-  mySize.setWidth(sizeWithinImageLabel.width() * pixmap->width()); 
+  mySize.setHeight(std::abs( iround(sizeWithinImageLabel.height() * pixmap->height())) );
+  mySize.setWidth( iround(sizeWithinImageLabel.width() * pixmap->width()) ); 
   
   setParent(imageLabel);
   setGeometry(mySize);
