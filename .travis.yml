@@ -10,9 +10,6 @@ env:
     - BUILDSYSTEM=outside
 matrix:
   fast_finish: true
-  allow_failures:
-    - compiler: clang
-      env: CMAKE_PARAMETERS="-DUseQtFive=ON"
 install:
  - _travis/install_dependencies
 script:
