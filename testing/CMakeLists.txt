@@ -1,20 +1,26 @@
-# Add static library containing test helper functions
+# CMakeLists for test executables
+option(RebuildTestPDFs "Rebuild PDFs used in the test suite from scratch. Requires pdflatex" OFF)
+
+
+# Test driver library for convenience linking.
 add_library(testhelp
 	testhelpers
 )
+# Link this helper library to dspdfviewer's functions
+target_link_libraries(testhelp libdspdfviewer)
+
 
 # Build the PDF before creating the test helper functions
-add_custom_command(TARGET testhelp PRE_BUILD
+add_custom_command(OUTPUT colored-rectangles.pdf
 	DEPENDS pdfs/colored-rectangles.tex
 	COMMAND pdflatex -interaction=nonstopmode ${CMAKE_CURRENT_SOURCE_DIR}/pdfs/colored-rectangles.tex >/dev/null
 	WORKING_DIRECTORY
 )
+add_custom_target(testpdfs DEPENDS colored-rectangles.pdf)
+add_dependencies(testhelp testpdfs)
 
-# Link this helper library to dspdfviewer's functions
-target_link_libraries(testhelp libdspdfviewer)
-
+# Allow the programs headers to be found using #include <...>
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../ )
-
 
 # Now add actual tests.
 add_executable(testrenderonepage testrenderonepage.cc)
