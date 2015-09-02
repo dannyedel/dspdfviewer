@@ -188,26 +188,16 @@ target_link_libraries(dspdfviewer libdspdfviewer) # ${QT_QTCORE_LIBRARY} ${QT_QT
 
 
 
-### Testing: Only works with debug builds and GNU Compilers
-if( CMAKE_BUILD_TYPE MATCHES "^Debug$" AND CMAKE_COMPILER_IS_GNUCXX)
-	message(STATUS "Enabling testing, using gcov coverage as helper")
+# Run unit tests regardless of debug/release
+include(CTest)
+add_subdirectory(testing)
+
+# coverage only works properly with gcc right now.
+if (CMAKE_COMPILER_IS_GNUCXX)
+	message(STATUS "Testing with gcc, using gcov as helper")
 	add_definitions(-fprofile-arcs -ftest-coverage)
-	target_link_libraries(dspdfviewer gcov)
-
-	# Activate CMake testing
-	include(CTest)
-
-	# Compile the test driver(s) and example PDFs
-	add_subdirectory(testing)
-
-	# Execute all test drivers
-	#	add_test(
-	#	NAME swapScreensWithS
-	#	COMMAND testSwapScreensWithS
-	#	)
+	target_link_libraries(libdspdfviewer gcov)
 endif()
-
-
 
 #### Installation
 

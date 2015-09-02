@@ -10,12 +10,11 @@ add_custom_command(TARGET testhelp PRE_BUILD
 	WORKING_DIRECTORY
 )
 
-# Link this helper library to dspdfviewer's functions and gcov library
-target_link_libraries(testhelp
-	libdspdfviewer gcov
-)
+# Link this helper library to dspdfviewer's functions
+target_link_libraries(testhelp libdspdfviewer)
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../ )
+
 
 # Now add actual tests.
 add_executable(testrenderonepage testrenderonepage.cc)
@@ -23,10 +22,6 @@ target_link_libraries(testrenderonepage testhelp)
 add_test(RenderOnePage testrenderonepage)
 
 
-
-
 add_executable(testswapscreen testswapscreen.cc)
 target_link_libraries(testswapscreen testhelp)
 #add_test(SwapScreenWithS testswapscreen)
-
-
