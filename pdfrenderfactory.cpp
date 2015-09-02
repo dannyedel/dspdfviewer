@@ -27,9 +27,6 @@
 #include <stdexcept>
 #include "debug.h"
 
-
-static const QSize ThumbnailSize(200,100);
-
 void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> renderedPage)
 {
   {
