@@ -155,7 +155,7 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
     }
 
     emit pdfFileRereadSuccesfully();
-  } catch( std::runtime_error& e) {
+  } catch( std::runtime_error& ) {
     DEBUGOUT << "Unable to read the new reference. keeping the old one.";
     emit pdfFileRereadFailed();
   }
