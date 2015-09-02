@@ -2,14 +2,13 @@ Source: dspdfviewer
 Section: text
 Priority: extra
 Maintainer: Danny Edel <mail@danny-edel.de>
-Build-Depends: g++ (>= 4:4.6),
- debhelper (>= 7.3.0), cmake,
- libpoppler-qt4-dev,
- libboost-program-options-dev,
- lsb-release
-# Note that these dependencies are quite outdated
-# so that the same debian/ directory still compiles
-# on wheezy or precise.
+Build-Depends: cmake,
+               debhelper (>= 7.3.0),
+               g++ (>= 4:4.6),
+               libboost-program-options-dev,
+               libpoppler-qt4-dev,
+               lsb-release,
+               pkg-config
 Standards-Version: 3.9.3
 Vcs-Git: git://github.com/dannyedel/dspdfviewer.git
 Vcs-Browser: https://github.com/dannyedel/dspdfviewer
@@ -17,7 +16,7 @@ Homepage: http://dspdfviewer.danny-edel.de
 
 Package: dspdfviewer
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Suggests: latex-beamer
 Description: Dual-Screen PDF Viewer for LaTeX-beamer
  This is a specialized PDF Viewing application custom-made for
