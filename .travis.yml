@@ -9,7 +9,7 @@ compiler:
 env:
     - CMAKE_PARAMETERS="-DUseQtFive=ON"
     - CMAKE_PARAMETERS="-DUseQtFive=OFF"
-    - BUILDSYSTEM=outside
+#    - BUILDSYSTEM=outside
 matrix:
   fast_finish: true
   allow_failures:
@@ -17,8 +17,6 @@ matrix:
   exclude:
     - os: osx
       env: CMAKE_PARAMETERS="-DUseQtFive=ON"
-    - os: osx
-      env: BUILDSYSTEM=outside
     - os: osx
       compiler: gcc
 install:
