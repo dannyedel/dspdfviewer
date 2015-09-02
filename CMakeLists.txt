@@ -27,6 +27,8 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 
 option(UseQtFive "Build with Qt5 and libpoppler-qt5" OFF)
 
+option(BuildTests "Build unit tests (this requires pdflatex)" ON)
+
 if(UseQtFive)
 	#qt5
 	message(STATUS "Using Qt5 and libpoppler-qt5")
@@ -187,16 +189,17 @@ add_executable(dspdfviewer main) #${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
 target_link_libraries(dspdfviewer libdspdfviewer) # ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${Boost_LIBRARIES} ${POPPLER_LIBRARY})
 
 
+if(BuildTests)
+	# Run unit tests regardless of debug/release
+	include(CTest)
+	add_subdirectory(testing)
 
-# Run unit tests regardless of debug/release
-include(CTest)
-add_subdirectory(testing)
-
-# coverage only works properly with gcc right now.
-if (CMAKE_COMPILER_IS_GNUCXX)
-	message(STATUS "Testing with gcc, using gcov as helper")
-	add_definitions(-fprofile-arcs -ftest-coverage)
-	target_link_libraries(libdspdfviewer gcov)
+	# coverage only works properly with gcc right now.
+	if (CMAKE_COMPILER_IS_GNUCXX)
+		message(STATUS "Testing with gcc, using gcov as helper")
+		add_definitions(-fprofile-arcs -ftest-coverage)
+		target_link_libraries(libdspdfviewer gcov)
+	endif()
 endif()
 
 #### Installation

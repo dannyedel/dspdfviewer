@@ -14,9 +14,9 @@ else
 	cd build
 fi
 # In any case, we're in $SOURCE/build now.
-cmake "$CMAKE_PARAMETERS" ..
+if [ "$TRAVIS_OS_NAME" != "linux" ] ; then
+	cmake "$CMAKE_PARAMETERS" -DBuildTests=OFF ..
+else
+	cmake "$CMAKE_PARAMETERS" ..
+fi
 make VERBOSE=1
-[ -x ./dspdfviewer ]
-# Activate these later:
-#make test
-#ctest -T coverage
