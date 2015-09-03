@@ -107,7 +107,7 @@ public:
 
     bool isBlank() const;
 
-    void showLoadingScreen(int pageNumberToWaitFor);
+    void showLoadingScreen(uint pageNumberToWaitFor);
 
 public slots:
   void renderedPageIncoming( QSharedPointer<RenderedPage> renderedPage);

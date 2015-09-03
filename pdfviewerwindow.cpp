@@ -29,6 +29,9 @@
 #include <QMessageBox>
 #include "sconnect.h"
 #include <cstdlib>
+#include <boost/numeric/conversion/cast.hpp>
+
+using boost::numeric_cast;
 
 void PDFViewerWindow::setMonitor(const unsigned int monitor)
 {
@@ -58,8 +61,8 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool sho
     return;
   setupUi(this);
   unsigned mainImageHeight=100-r.bottomPaneHeight();
-  verticalLayout->setStretch(0, mainImageHeight);
-  verticalLayout->setStretch(1, r.bottomPaneHeight());
+  verticalLayout->setStretch(0, numeric_cast<int>(mainImageHeight) );
+  verticalLayout->setStretch(1, numeric_cast<int>(r.bottomPaneHeight()) );
   setWindowRole(to_QString(wr));
   setWindowTitle(QString("DS PDF Viewer - %1").arg(windowRole()).replace('_', ' ') );
   if ( !showInformationLine || ! r.showPresenterArea()) {
@@ -89,7 +92,7 @@ void PDFViewerWindow::reposition()
     return;
   this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
   this->showNormal();
-  QRect rect = QApplication::desktop()->screenGeometry(getMonitor());
+  QRect rect = QApplication::desktop()->screenGeometry( numeric_cast<int>(getMonitor()) );
   move(rect.topLeft());
   resize( rect.size() );
   this->showFullScreen();
@@ -303,7 +306,7 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
   }
 }
 
-void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
+void PDFViewerWindow::showLoadingScreen(uint pageNumberToWaitFor)
 {
   if ( !m_enabled )
     return;
@@ -425,11 +428,11 @@ void PDFViewerWindow::changePageNumberDialog()
 	/* Input field caption */
 	QString(tr("Jump to page number (%1-%2):")).arg(displayMinNumber).arg(displayMaxNumber),
 	/* Starting number. */
-	displayCurNumber,
+	numeric_cast<int>(displayCurNumber),
 	/* minimum value */
-	displayMinNumber,
+	numeric_cast<int>(displayMinNumber),
 	/* maximum value */
-	displayMaxNumber,
+	numeric_cast<int>(displayMaxNumber),
 	/* Step */
 	1,
 	/* Did the user accept? */
@@ -437,7 +440,7 @@ void PDFViewerWindow::changePageNumberDialog()
   targetPageNumber-=1; // Convert back to zero-based numbering scheme
   if ( ok )
   {
-    emit pageRequested(targetPageNumber);
+    emit pageRequested(numeric_cast<uint>(targetPageNumber));
   }
 }
 
