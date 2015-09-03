@@ -221,17 +221,12 @@ QSize PDFViewerWindow::getPreviewImageSize()
 void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
 {
     // QWidget::mousePressEvent(e);
-    switch (e->button()) {
-      case Qt::LeftButton:
-	emit nextPageRequested();
-	break;
-      case Qt::RightButton:
-	emit previousPageRequested();
-	break;
-      default: /* any other button */
-	/* do nothing */
-	break;
-    }
+	if ( e->button() == Qt::LeftButton ) {
+		emit nextPageRequested();
+	} else if ( e->button() == Qt::RightButton ) {
+		emit previousPageRequested();
+	}
+	// Ignore other buttons.
 }
 
 void PDFViewerWindow::hideInformationLine()
