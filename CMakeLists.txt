@@ -59,6 +59,10 @@ list(APPEND LIST_INCLUDE_DIRS ${POPPLER_INCLUDE_DIRS})
 list(APPEND LIST_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 list(APPEND LIST_LIBRARIES ${Boost_LIBRARIES})
 
+# include current binary dir, for ui_pdfviewerwindow.h and the .moc files
+# Treat this like system headers because it's generated code
+list(APPEND LIST_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR})
+
 # Use c++11 support.
 # found on
 # http://stackoverflow.com/questions/10984442/how-to-detect-c11-support-of-a-compiler-with-cmake
@@ -174,7 +178,6 @@ endif()
 
 set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp windowrole.cpp main.cpp)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
 target_link_libraries(dspdfviewer ${LIST_LIBRARIES})
 
