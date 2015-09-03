@@ -29,6 +29,9 @@
 #include <QMessageBox>
 #include "sconnect.h"
 #include <cstdlib>
+#include <boost/numeric/conversion/cast.hpp>
+
+using boost::numeric_cast;
 
 void PDFViewerWindow::setMonitor(const unsigned int monitor)
 {
@@ -44,22 +47,22 @@ unsigned int PDFViewerWindow::getMonitor() const
   return m_monitor;
 }
 
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& wr, bool enabled):
+PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& wr, bool enabled):
   QWidget(),
   m_enabled(enabled),
   m_monitor(monitor),
   blank(false),
   minimumPageNumber(0),
   maximumPageNumber(65535),
-  myPart(myPart),
+  myPart(pagePart),
   runtimeConfiguration(r)
 {
   if ( ! enabled )
     return;
   setupUi(this);
   unsigned mainImageHeight=100-r.bottomPaneHeight();
-  verticalLayout->setStretch(0, mainImageHeight);
-  verticalLayout->setStretch(1, r.bottomPaneHeight());
+  verticalLayout->setStretch(0, numeric_cast<int>(mainImageHeight) );
+  verticalLayout->setStretch(1, numeric_cast<int>(r.bottomPaneHeight()) );
   setWindowRole(to_QString(wr));
   setWindowTitle(QString("DS PDF Viewer - %1").arg(windowRole()).replace('_', ' ') );
   if ( !showInformationLine || ! r.showPresenterArea()) {
@@ -89,7 +92,7 @@ void PDFViewerWindow::reposition()
     return;
   this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
   this->showNormal();
-  QRect rect = QApplication::desktop()->screenGeometry(getMonitor());
+  QRect rect = QApplication::desktop()->screenGeometry( numeric_cast<int>(getMonitor()) );
   move(rect.topLeft());
   resize( rect.size() );
   this->showFullScreen();
@@ -221,17 +224,12 @@ QSize PDFViewerWindow::getPreviewImageSize()
 void PDFViewerWindow::mousePressEvent(QMouseEvent* e)
 {
     // QWidget::mousePressEvent(e);
-    switch (e->button()) {
-      case Qt::LeftButton:
-	emit nextPageRequested();
-	break;
-      case Qt::RightButton:
-	emit previousPageRequested();
-	break;
-      default: /* any other button */
-	/* do nothing */
-	break;
-    }
+	if ( e->button() == Qt::LeftButton ) {
+		emit nextPageRequested();
+	} else if ( e->button() == Qt::RightButton ) {
+		emit previousPageRequested();
+	}
+	// Ignore other buttons.
 }
 
 void PDFViewerWindow::hideInformationLine()
@@ -308,7 +306,7 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
   }
 }
 
-void PDFViewerWindow::showLoadingScreen(int pageNumberToWaitFor)
+void PDFViewerWindow::showLoadingScreen(uint pageNumberToWaitFor)
 {
   if ( !m_enabled )
     return;
@@ -430,11 +428,11 @@ void PDFViewerWindow::changePageNumberDialog()
 	/* Input field caption */
 	QString(tr("Jump to page number (%1-%2):")).arg(displayMinNumber).arg(displayMaxNumber),
 	/* Starting number. */
-	displayCurNumber,
+	numeric_cast<int>(displayCurNumber),
 	/* minimum value */
-	displayMinNumber,
+	numeric_cast<int>(displayMinNumber),
 	/* maximum value */
-	displayMaxNumber,
+	numeric_cast<int>(displayMaxNumber),
 	/* Step */
 	1,
 	/* Did the user accept? */
@@ -442,22 +440,22 @@ void PDFViewerWindow::changePageNumberDialog()
   targetPageNumber-=1; // Convert back to zero-based numbering scheme
   if ( ok )
   {
-    emit pageRequested(targetPageNumber);
+    emit pageRequested(numeric_cast<uint>(targetPageNumber));
   }
 }
 
-void PDFViewerWindow::setPageNumberLimits(uint minimumPageNumber, uint maximumPageNumber)
+void PDFViewerWindow::setPageNumberLimits(uint minPageNumber, uint maxPageNumber)
 {
-  this->minimumPageNumber = minimumPageNumber;
-  this->maximumPageNumber = maximumPageNumber;
+  this->minimumPageNumber = minPageNumber;
+  this->maximumPageNumber = maxPageNumber;
 }
 
-void PDFViewerWindow::setBlank(const bool blank)
+void PDFViewerWindow::setBlank(const bool newBlank)
 {
-  if ( this->blank == blank)
+  if ( this->blank == newBlank)
     return;
   /* State changes. request re-render */
-  this->blank = blank;
+  this->blank = newBlank;
   DEBUGOUT << "Changing blank state to" << blank;
   if ( blank ) {
     imageLabel->clear();
@@ -478,7 +476,7 @@ void PDFViewerWindow::setMyPagePart(const PagePart& newPagePart)
 
 void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
 {
-  QList< HyperlinkArea* > linkAreas;
+  QList< HyperlinkArea* > newLinkAreas;
   for( AdjustedLink const & link: links ) {
     const QRectF& rect = link.linkArea();
     if ( rect.isNull() ) {
@@ -495,7 +493,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
       }
       HyperlinkArea* linkArea = new HyperlinkArea(imageLabel, link);
       sconnect( linkArea, SIGNAL(gotoPageRequested(uint)), this, SLOT(linkClicked(uint)) );
-      linkAreas.append(linkArea);
+      newLinkAreas.append(linkArea);
     }
     else {
       qWarning() << "Types other than Goto are not supported yet.";
@@ -506,7 +504,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
   for( HyperlinkArea* hla: this->linkAreas)
     hla->deleteLater();
   // Add the new list
-  this->linkAreas = linkAreas;
+  this->linkAreas = newLinkAreas;
 }
 
 void PDFViewerWindow::linkClicked(uint targetNumber)

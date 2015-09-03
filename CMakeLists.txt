@@ -59,6 +59,10 @@ list(APPEND LIST_INCLUDE_DIRS ${POPPLER_INCLUDE_DIRS})
 list(APPEND LIST_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 list(APPEND LIST_LIBRARIES ${Boost_LIBRARIES})
 
+# include current binary dir, for ui_pdfviewerwindow.h and the .moc files
+# Treat this like system headers because it's generated code
+list(APPEND LIST_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR})
+
 # Use c++11 support.
 # found on
 # http://stackoverflow.com/questions/10984442/how-to-detect-c11-support-of-a-compiler-with-cmake
@@ -95,9 +99,20 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	# Turn on a lot of warnings, hopefully helping with code quality.
 	add_definitions(-Weverything)
 	# FIXME: Re-activate -Werror once these are worked out of the source
-	# add_definitions(-Werror)
-	# Disable c++98 compatibility warnings
+	add_definitions(-Werror)
+
+	# Disable warnings irrelevant to the project:
+	#   c++98 compatibility warnings
 	add_definitions(-Wno-c++98-compat -Wno-c++98-compat-pedantic)
+	#   FIXME: Weak vtables
+	#   Currently this warning triggers in exception classes
+	add_definitions(-Wno-error=weak-vtables)
+	#   padding
+	add_definitions(-Wno-padded)
+	#   in release mode: Unrechable code / Macro expansion (these stem from QDEBUG)
+	if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" )
+		add_definitions(-Wno-unreachable-code -Wno-unreachable-code -Wno-disabled-macro-expansion)
+	endif()
 else()
 	message(WARNING "Compiling with a Non-GNU compiler. A lot less warnings will be output, so more coding errors might go undetected.")
 endif()
@@ -163,7 +178,6 @@ endif()
 
 set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp windowrole.cpp main.cpp)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
 target_link_libraries(dspdfviewer ${LIST_LIBRARIES})
 

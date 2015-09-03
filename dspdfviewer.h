@@ -55,9 +55,6 @@ private:
 
 
 
-public:
-  static const QSize thumbnailSize;
-
 private:
   QImage renderForTarget( QSharedPointer<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf=false);
 

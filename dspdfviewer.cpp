@@ -33,6 +33,9 @@
 
 #include "debug.h"
 #include <stdexcept>
+#include <boost/numeric/conversion/cast.hpp>
+
+using boost::numeric_cast;
 
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 	runtimeConfiguration(r),
@@ -232,8 +235,6 @@ void DSPDFViewer::exit()
   secondaryWindow.close();
 }
 
-const QSize DSPDFViewer::thumbnailSize = QSize(200, 100);
-
 PdfRenderFactory* DSPDFViewer::theFactory()
 {
   return &renderFactory;
@@ -241,17 +242,8 @@ PdfRenderFactory* DSPDFViewer::theFactory()
 
 unsigned int DSPDFViewer::numberOfPages() const {
   int pages = renderFactory.numberOfPages();
-	if ( pages < 0 )
-	{
-		/* What the... ?!
-		 *
-		 * I return zero, so that any kind of loop that counts "for
-		 * all pages" will terminate immediately.
-		 */
-		return 0;
-	}
-	/* numPages is non-negative and therefore safe to use. */
-	return pages;
+  // Numeric cast includes error handling.
+  return numeric_cast<uint>(pages);
 }
 
 void DSPDFViewer::goToStartAndResetClocks()
