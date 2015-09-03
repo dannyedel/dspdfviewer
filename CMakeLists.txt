@@ -95,7 +95,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	# Turn on a lot of warnings, hopefully helping with code quality.
 	add_definitions(-Weverything)
 	# FIXME: Re-activate -Werror once these are worked out of the source
-	# add_definitions(-Werror)
+	add_definitions(-Werror)
 
 	# Disable warnings irrelevant to the project:
 	#   c++98 compatibility warnings
