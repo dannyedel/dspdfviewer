@@ -45,7 +45,7 @@ private:
   uint currentPageNumber;
   uint minimumPageNumber;
   uint maximumPageNumber;
-  bool correntImageRendered;
+  bool correctImageRendered;
   PagePart myPart;
 
   // Reference to the runtime configuration object.

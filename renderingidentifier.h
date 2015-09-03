@@ -38,7 +38,7 @@ public:
    *
    * This will be set and checked by PDFRenderFactory
    */
-  quint64 theVersion;
+  quint64 theVersion = 1;
 
   RenderingIdentifier(unsigned pagenum, PagePart pagepart, QSize requestedPageSize);
   unsigned pageNumber() const;

@@ -51,11 +51,16 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool s
   QWidget(),
   m_enabled(enabled),
   m_monitor(monitor),
+  currentImage(),
   blank(false),
+  informationLineVisible(false),
+  currentPageNumber(0),
   minimumPageNumber(0),
   maximumPageNumber(65535),
+  correctImageRendered(false),
   myPart(pagePart),
-  runtimeConfiguration(r)
+  runtimeConfiguration(r),
+  linkAreas()
 {
   if ( ! enabled )
     return;
@@ -285,7 +290,7 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
   
 
   // If we are not waiting for an image, ignore incoming answers.
-  if ( correntImageRendered )
+  if ( correctImageRendered )
     return;
 
   if ( renderedPage->getPageNumber() != this->currentPageNumber )
@@ -302,7 +307,7 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
     if ( this->runtimeConfiguration.hyperlinkSupport() ) {
       this->parseLinks(renderedPage->getLinks());
     }
-    this->correntImageRendered= true;
+    this->correctImageRendered= true;
   }
 }
 
@@ -318,7 +323,7 @@ void PDFViewerWindow::showLoadingScreen(uint pageNumberToWaitFor)
   /// FIXME Loading image
 
   this->currentPageNumber = pageNumberToWaitFor;
-  this->correntImageRendered = false;
+  this->correctImageRendered = false;
   this->currentImage = QImage();
   imageLabel->setPixmap(QPixmap());
   imageLabel->setText(QString("Loading page number %1").arg(pageNumberToWaitFor) );

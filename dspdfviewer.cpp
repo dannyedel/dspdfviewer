@@ -39,7 +39,11 @@ using boost::numeric_cast;
 
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 	runtimeConfiguration(r),
- presentationClockRunning(false),
+	clockDisplayTimer(),
+	slideStart(),
+	presentationStart(),
+	presentationClockRunning(false),
+	documentFileWatcher(),
  renderFactory(r.filePathQString(), r.cachePDFToMemory()?PDFCacheOption::keepPDFinMemory:PDFCacheOption::rereadFromDisk ),
  m_pagenumber(0),
  audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r, WindowRole::AudienceWindow),

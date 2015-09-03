@@ -33,60 +33,60 @@ class RuntimeConfiguration
   /** Use the program to render a standard PDF (i.e. display
    * the full page on both sides)
    */
-  bool	m_useFullPage;
+  bool	m_useFullPage = false;
 
   /** Show presenter area
    */
-  bool m_showPresenterArea;
+  bool m_showPresenterArea = true;
 
   /** Show the wall clock
    */
-  bool m_showWallClock;
+  bool m_showWallClock = true;
 
   /** Show the thumbnails of previous, this and next slide */
-  bool m_showThumbnails;
+  bool m_showThumbnails = true;
 
   /** Show the total presentation time **/
-  bool m_showPresentationClock;
+  bool m_showPresentationClock = true;
 
   /** Show the current slide time **/
-  bool m_showSlideClock;
+  bool m_showSlideClock = true;
 
   /** complete path to the PDF file */
-  std::string m_filePath;
+  std::string m_filePath{};
 
   /** Support PDF Hyperlinks**/
-  bool m_hyperlinkSupport;
+  bool m_hyperlinkSupport = true;
 
   /** Shall the complete PDF be read into memory */
-  bool m_cacheToMemory;
+  bool m_cacheToMemory = true;
 
   /** Single-Display mode
    *
    * If True, there is only the audience display, the presenter's screen will remain hidden
    * Probably most useful with -f
    */
-  bool m_useSecondScreen;
+  bool m_useSecondScreen = true;
 
   /** Workaround for i3 window manager active
    */
-  bool m_i3workaround;
+  bool m_i3workaround = false;
 
   /** Make sure that so many previous pages are pre-rendered
    * (Probably wont make sense until you can jump to slide
    * n without visiting 0..(n-1) first, but once PDF hyperlinks
    * are enabled, this will be quite useful.
    */
-  unsigned m_prerenderPreviousPages;
+  unsigned m_prerenderPreviousPages = 3;
 
   /** Make sure so many next pages are pre-rendered
    */
-  unsigned m_prerenderNextPages;
+  unsigned m_prerenderNextPages = 10;
 
   /**
    * Percentage of the second screen devoted to the bottom pane
    */
-  unsigned m_bottomPaneHeightPercent;
+  unsigned m_bottomPaneHeightPercent = 20;
 public:
 
   /** fill the variables based on the config file and the C-style arguments to main()
