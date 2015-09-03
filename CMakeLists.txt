@@ -91,7 +91,7 @@ endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
 	#add some warnings
-	add_definitions(-Wall -Wextra -Wpedantic -Werror -Wfatal-errors -Wold-style-cast -Woverloaded-virtual)
+	add_definitions(-Wall -Wextra -pedantic -Werror -Wfatal-errors -Wold-style-cast -Woverloaded-virtual)
 	add_definitions(-Weffc++)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	# Turn on a lot of warnings, hopefully helping with code quality.
