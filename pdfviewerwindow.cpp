@@ -47,14 +47,14 @@ unsigned int PDFViewerWindow::getMonitor() const
   return m_monitor;
 }
 
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& wr, bool enabled):
+PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& wr, bool enabled):
   QWidget(),
   m_enabled(enabled),
   m_monitor(monitor),
   blank(false),
   minimumPageNumber(0),
   maximumPageNumber(65535),
-  myPart(myPart),
+  myPart(pagePart),
   runtimeConfiguration(r)
 {
   if ( ! enabled )
@@ -444,18 +444,18 @@ void PDFViewerWindow::changePageNumberDialog()
   }
 }
 
-void PDFViewerWindow::setPageNumberLimits(uint minimumPageNumber, uint maximumPageNumber)
+void PDFViewerWindow::setPageNumberLimits(uint minPageNumber, uint maxPageNumber)
 {
-  this->minimumPageNumber = minimumPageNumber;
-  this->maximumPageNumber = maximumPageNumber;
+  this->minimumPageNumber = minPageNumber;
+  this->maximumPageNumber = maxPageNumber;
 }
 
-void PDFViewerWindow::setBlank(const bool blank)
+void PDFViewerWindow::setBlank(const bool newBlank)
 {
-  if ( this->blank == blank)
+  if ( this->blank == newBlank)
     return;
   /* State changes. request re-render */
-  this->blank = blank;
+  this->blank = newBlank;
   DEBUGOUT << "Changing blank state to" << blank;
   if ( blank ) {
     imageLabel->clear();
@@ -476,7 +476,7 @@ void PDFViewerWindow::setMyPagePart(const PagePart& newPagePart)
 
 void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
 {
-  QList< HyperlinkArea* > linkAreas;
+  QList< HyperlinkArea* > newLinkAreas;
   for( AdjustedLink const & link: links ) {
     const QRectF& rect = link.linkArea();
     if ( rect.isNull() ) {
@@ -493,7 +493,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
       }
       HyperlinkArea* linkArea = new HyperlinkArea(imageLabel, link);
       sconnect( linkArea, SIGNAL(gotoPageRequested(uint)), this, SLOT(linkClicked(uint)) );
-      linkAreas.append(linkArea);
+      newLinkAreas.append(linkArea);
     }
     else {
       qWarning() << "Types other than Goto are not supported yet.";
@@ -504,7 +504,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
   for( HyperlinkArea* hla: this->linkAreas)
     hla->deleteLater();
   // Add the new list
-  this->linkAreas = linkAreas;
+  this->linkAreas = newLinkAreas;
 }
 
 void PDFViewerWindow::linkClicked(uint targetNumber)
