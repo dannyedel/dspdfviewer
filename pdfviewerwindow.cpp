@@ -49,20 +49,26 @@ unsigned int PDFViewerWindow::getMonitor() const
 
 PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& wr, bool enabled):
   QWidget(),
+  ui(),
   m_enabled(enabled),
   m_monitor(monitor),
+  currentImage(),
   blank(false),
+  informationLineVisible(false),
+  currentPageNumber(0),
   minimumPageNumber(0),
   maximumPageNumber(65535),
+  correctImageRendered(false),
   myPart(pagePart),
-  runtimeConfiguration(r)
+  runtimeConfiguration(r),
+  linkAreas()
 {
   if ( ! enabled )
     return;
-  setupUi(this);
+  ui.setupUi(this);
   unsigned mainImageHeight=100-r.bottomPaneHeight();
-  verticalLayout->setStretch(0, numeric_cast<int>(mainImageHeight) );
-  verticalLayout->setStretch(1, numeric_cast<int>(r.bottomPaneHeight()) );
+  ui.verticalLayout->setStretch(0, numeric_cast<int>(mainImageHeight) );
+  ui.verticalLayout->setStretch(1, numeric_cast<int>(r.bottomPaneHeight()) );
   setWindowRole(to_QString(wr));
   setWindowTitle(QString("DS PDF Viewer - %1").arg(windowRole()).replace('_', ' ') );
   if ( !showInformationLine || ! r.showPresenterArea()) {
@@ -75,10 +81,10 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool s
     /* Enable the information line, but control visibility of the components as requested by the user.
      */
     this->showInformationLine();
-    this->wallClock->setVisible(r.showWallClock());
-    this->thumbnailArea->setVisible(r.showThumbnails());
-    this->slideClock->setVisible(r.showSlideClock());
-    this->presentationClock->setVisible(r.showPresentationClock());
+    ui.wallClock->setVisible(r.showWallClock());
+    ui.thumbnailArea->setVisible(r.showThumbnails());
+    ui.slideClock->setVisible(r.showSlideClock());
+    ui.presentationClock->setVisible(r.showPresentationClock());
   }
 
   reposition(); // This will fullscreen on its own
@@ -112,14 +118,14 @@ void PDFViewerWindow::reposition()
 
 void PDFViewerWindow::displayImage(QImage image)
 {
-  imageLabel->setText("");
-  imageLabel->resize( image.size() );
+  ui.imageLabel->setText("");
+  ui.imageLabel->resize( image.size() );
   if ( blank ) {
     // If we're supposed to display a blank image, leave it at this state.
     return;
   }
   currentImage= image;
-  imageLabel->setPixmap(QPixmap::fromImage(image));
+  ui.imageLabel->setPixmap(QPixmap::fromImage(image));
   //imageArea->setWidgetResizable(true);
 
   /*
@@ -199,12 +205,12 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
 
 QSize PDFViewerWindow::getTargetImageSize() const
 {
-  return imageArea->geometry().size();
+  return ui.imageArea->geometry().size();
 }
 
 QSize PDFViewerWindow::getPreviewImageSize()
 {
-  QSize completeThumbnailArea = thumbnailArea->frameRect().size();
+  QSize completeThumbnailArea = ui.thumbnailArea->frameRect().size();
   DEBUGOUT << "Space for all thumbnails:" << completeThumbnailArea;
   /** FIXME Work needed:
    * since this space must fit three images, we divide horizontal size by three
@@ -237,7 +243,7 @@ void PDFViewerWindow::hideInformationLine()
   if ( ! m_enabled )
     return;
   informationLineVisible=false;
-  this->bottomArea->hide();
+  this->ui.bottomArea->hide();
 }
 
 bool PDFViewerWindow::isInformationLineVisible() const
@@ -250,17 +256,17 @@ void PDFViewerWindow::showInformationLine()
   if ( ! m_enabled )
     return;
   informationLineVisible=true;
-  this->bottomArea->show();
+  this->ui.bottomArea->show();
 }
 
 void PDFViewerWindow::addThumbnail(uint pageNumber, QImage thumbnail)
 {
   if ( pageNumber == currentPageNumber-1)
-    previousThumbnail->setPixmap(QPixmap::fromImage(thumbnail));
+    ui.previousThumbnail->setPixmap(QPixmap::fromImage(thumbnail));
   else if ( pageNumber == currentPageNumber )
-    currentThumbnail -> setPixmap(QPixmap::fromImage(thumbnail));
+    ui.currentThumbnail -> setPixmap(QPixmap::fromImage(thumbnail));
   else if ( pageNumber == currentPageNumber+1 )
-    nextThumbnail->setPixmap(QPixmap::fromImage(thumbnail));
+    ui.nextThumbnail->setPixmap(QPixmap::fromImage(thumbnail));
 }
 
 
@@ -285,7 +291,7 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
   
 
   // If we are not waiting for an image, ignore incoming answers.
-  if ( correntImageRendered )
+  if ( correctImageRendered )
     return;
 
   if ( renderedPage->getPageNumber() != this->currentPageNumber )
@@ -302,7 +308,7 @@ void PDFViewerWindow::renderedPageIncoming(QSharedPointer< RenderedPage > render
     if ( this->runtimeConfiguration.hyperlinkSupport() ) {
       this->parseLinks(renderedPage->getLinks());
     }
-    this->correntImageRendered= true;
+    this->correctImageRendered= true;
   }
 }
 
@@ -318,15 +324,15 @@ void PDFViewerWindow::showLoadingScreen(uint pageNumberToWaitFor)
   /// FIXME Loading image
 
   this->currentPageNumber = pageNumberToWaitFor;
-  this->correntImageRendered = false;
+  this->correctImageRendered = false;
   this->currentImage = QImage();
-  imageLabel->setPixmap(QPixmap());
-  imageLabel->setText(QString("Loading page number %1").arg(pageNumberToWaitFor) );
+  ui.imageLabel->setPixmap(QPixmap());
+  ui.imageLabel->setText(QString("Loading page number %1").arg(pageNumberToWaitFor) );
 
   /** Clear Thumbnails, they will come back in soon */
-  previousThumbnail->setPixmap( QPixmap() );
-  currentThumbnail->setPixmap( QPixmap() );
-  nextThumbnail->setPixmap( QPixmap() );
+  ui.previousThumbnail->setPixmap( QPixmap() );
+  ui.currentThumbnail->setPixmap( QPixmap() );
+  ui.nextThumbnail->setPixmap( QPixmap() );
 
 }
 
@@ -379,17 +385,17 @@ QString PDFViewerWindow::timeToString(int milliseconds) const
 
 void PDFViewerWindow::updatePresentationClock(const QTime& presentationClock)
 {
-  this->presentationClock->setText( QString("Total\n%1").arg(timeToString(presentationClock)));
+  ui.presentationClock->setText( QString("Total\n%1").arg(timeToString(presentationClock)));
 }
 
 void PDFViewerWindow::updateSlideClock(const QTime& slideClock)
 {
-  this->slideClock->setText(timeToString(slideClock) );
+  ui.slideClock->setText(timeToString(slideClock) );
 }
 
 void PDFViewerWindow::updateWallClock(const QTime& wallClock)
 {
-  this->wallClock->setText(timeToString(wallClock));
+  ui.wallClock->setText(timeToString(wallClock));
 }
 
 void PDFViewerWindow::keybindingsPopup()
@@ -458,7 +464,7 @@ void PDFViewerWindow::setBlank(const bool newBlank)
   this->blank = newBlank;
   DEBUGOUT << "Changing blank state to" << blank;
   if ( blank ) {
-    imageLabel->clear();
+    ui.imageLabel->clear();
   } else {
     emit rerenderRequested();
   }
@@ -491,7 +497,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
 	qWarning() << "External links are not supported yet.";
 	continue;
       }
-      HyperlinkArea* linkArea = new HyperlinkArea(imageLabel, link);
+      HyperlinkArea* linkArea = new HyperlinkArea(ui.imageLabel, link);
       sconnect( linkArea, SIGNAL(gotoPageRequested(uint)), this, SLOT(linkClicked(uint)) );
       newLinkAreas.append(linkArea);
     }

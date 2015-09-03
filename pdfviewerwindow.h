@@ -32,10 +32,11 @@
 /** Shared base class for both windows (primary and secondary)
  *
  */
-class PDFViewerWindow : public QWidget, private Ui::Form
+class PDFViewerWindow : public QWidget
 {
   Q_OBJECT
 private:
+  Ui::Form ui;
   bool	m_enabled;
   unsigned int m_monitor;
   QImage currentImage;
@@ -45,7 +46,7 @@ private:
   uint currentPageNumber;
   uint minimumPageNumber;
   uint maximumPageNumber;
-  bool correntImageRendered;
+  bool correctImageRendered;
   PagePart myPart;
 
   // Reference to the runtime configuration object.

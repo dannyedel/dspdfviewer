@@ -58,11 +58,18 @@ void PdfRenderFactory::rewatchFile()
 
 
 
-PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption& cacheSetting): QObject(), documentReference(filename, cacheSetting), currentVersion(0),
-
-  // Attempt to read the document to get the number of pages within.
-  // This will throw an error if the document is unreadable.
-  numberOfPages_(documentReference.popplerDocument()->numPages())
+PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption& cacheSetting):
+	QObject(),
+	documentReference(filename, cacheSetting),
+	fileWatcher(),
+	fileWatcherRewatchTimer(),
+	currentlyRenderingPages(),
+	renderedPages(),
+	mutex(),
+	currentVersion(0),
+	// Attempt to read the document to get the number of pages within.
+	// This will throw an error if the document is unreadable.
+	numberOfPages_(documentReference.popplerDocument()->numPages())
 {
 
   rewatchFile();
