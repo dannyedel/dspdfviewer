@@ -20,6 +20,7 @@
 #include <windowrole.h>
 
 #include <chrono>
+#include <iostream>
 
 namespace TestHelpers {
 	QString pdfFilename();
