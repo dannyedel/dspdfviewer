@@ -15,8 +15,8 @@ else
 fi
 # In any case, we're in $SOURCE/build now.
 if [ "$TRAVIS_OS_NAME" != "linux" ] ; then
-	cmake "$CMAKE_PARAMETERS" -DBuildTests=OFF ..
+	cmake "$CMAKE_PARAMETERS" -DDownloadTestPDF=ON ..
 else
-	cmake "$CMAKE_PARAMETERS" ..
+	cmake "$CMAKE_PARAMETERS" -DDownloadTestPDF=ON ..
 fi
 make VERBOSE=1
