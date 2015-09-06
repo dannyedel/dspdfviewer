@@ -53,11 +53,14 @@ namespace TestHelpers {
 	class RetCode {
 		public:
 			RetCode(const bool& b);
-			operator int ();
-			explicit operator bool();
+			operator int () const;
+			explicit operator bool() const;
+
 		private:
 			const bool b_;
 	};
+
+	RetCode operator && (const RetCode&, const RetCode&);
 
 	template <typename T>
 	RetCode expect( const T& expected, const T& actual );

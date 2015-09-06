@@ -15,12 +15,19 @@ TestHelpers::RetCode::RetCode(const bool& b):
 	b_(b) {
 }
 
-TestHelpers::RetCode::operator int() {
+TestHelpers::RetCode::operator int() const {
 	if ( b_ == true )
 		return 0;
 	return 1;
 }
 
-TestHelpers::RetCode::operator bool() {
+TestHelpers::RetCode::operator bool() const {
 	return b_;
+}
+
+TestHelpers::RetCode TestHelpers::operator && (const TestHelpers::RetCode& lhs, const TestHelpers::RetCode& rhs) {
+	if ( lhs )
+		if ( rhs )
+			return true;
+	return false;
 }
