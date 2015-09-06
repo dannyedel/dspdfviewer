@@ -36,8 +36,8 @@ QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize t
   }
 
   /* pagesize in points, (72 points is an inch) */
-  QSize pagesize = page->pageSize();
-  QSize fullsize = pagesize;
+  QSizeF pagesize = page->pageSizeF();
+  QSizeF fullsize = pagesize;
 
   if ( whichPart != PagePart::FullPage )
   {
