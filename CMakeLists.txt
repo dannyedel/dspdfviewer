@@ -23,11 +23,15 @@ include(FindPkgConfig)
 set(CMAKE_AUTOMOC "on")#
 set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
 
-find_package(Boost COMPONENTS program_options REQUIRED)
-
 option(UseQtFive "Build with Qt5 and libpoppler-qt5" OFF)
 
 option(BuildTests "Build unit tests (this requires pdflatex)" ON)
+
+if(BuildTests)
+	find_package(Boost COMPONENTS program_options unit_test_framework REQUIRED)
+else()
+	find_package(Boost COMPONENTS program_options REQUIRED)
+endif()
 
 if(UseQtFive)
 	#qt5

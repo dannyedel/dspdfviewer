@@ -1,7 +1,3 @@
-# CMakeLists for test executables
-option(RebuildTestPDFs "Rebuild PDFs used in the test suite from scratch. Requires pdflatex" OFF)
-
-
 # Test driver library for convenience linking.
 add_library(testhelp
 	testhelpers
@@ -23,11 +19,12 @@ add_dependencies(testhelp testpdfs)
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../ )
 
 # Now add actual tests.
-add_executable(testrenderonepage testrenderonepage.cc)
-target_link_libraries(testrenderonepage testhelp)
-add_test(RenderOnePage testrenderonepage)
+add_executable(testrunner
+	testrenderonepage.cc
+)
 
+target_link_libraries(testrunner testhelp)
 
-add_executable(testswapscreen testswapscreen.cc)
-target_link_libraries(testswapscreen testhelp)
-#add_test(SwapScreenWithS testswapscreen)
+add_test(NAME BoostTestRunner
+	COMMAND testrunner --report_level=detailed
+)

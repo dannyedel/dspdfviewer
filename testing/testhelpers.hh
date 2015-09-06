@@ -46,33 +46,7 @@ namespace TestHelpers {
 		QColor grabPixelColor( uint x, uint y);
 	};
 
-	/** Return code that can be auto-converted to int (to use as a return from main())
-	 *
-	 * or to bool (for use in if)
-	 */
-	class RetCode {
-		public:
-			RetCode(const bool& b);
-			operator int () const;
-			explicit operator bool() const;
-
-		private:
-			const bool b_;
-	};
-
-	RetCode operator && (const RetCode&, const RetCode&);
-
-	template <typename T>
-	RetCode expect( const T& expected, const T& actual );
-
-
-	/** Template implementations **/
-	template<typename T>
-	RetCode expect(const T& expected, const T& actual) {
-		if ( expected == actual ) {
-			return RetCode(true);
-		}
-		DEBUGOUT << "MISMATCH! Expected:" << expected << "vs. actual:" << actual;
-		return RetCode(false);
-	}
 }
+
+/** Print a QSize to a standard output stream */
+std::ostream& operator << (std::ostream& where, const QSize& what);

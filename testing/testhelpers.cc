@@ -11,23 +11,6 @@ QString TestHelpers::pdfFilename() {
 	return myDir.filePath(relativePart);
 }
 
-TestHelpers::RetCode::RetCode(const bool& b):
-	b_(b) {
-}
-
-TestHelpers::RetCode::operator int() const {
-	if ( b_ == true )
-		return 0;
-	return 1;
-}
-
-TestHelpers::RetCode::operator bool() const {
-	return b_;
-}
-
-TestHelpers::RetCode TestHelpers::operator && (const TestHelpers::RetCode& lhs, const TestHelpers::RetCode& rhs) {
-	if ( lhs )
-		if ( rhs )
-			return true;
-	return false;
+std::ostream& operator << (std::ostream& where, const QSize& what) {
+	return where << "QSize(" << what.width() << 'x' << what.height() << ')';
 }
