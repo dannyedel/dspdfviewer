@@ -10,3 +10,17 @@ QString TestHelpers::pdfFilename() {
 	}
 	return myDir.filePath(relativePart);
 }
+
+TestHelpers::RetCode::RetCode(const bool& b):
+	b_(b) {
+}
+
+TestHelpers::RetCode::operator int() {
+	if ( b_ == true )
+		return 0;
+	return 1;
+}
+
+TestHelpers::RetCode::operator bool() {
+	return b_;
+}
