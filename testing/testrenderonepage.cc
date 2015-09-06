@@ -21,13 +21,19 @@ BOOST_AUTO_TEST_CASE(render_one_page) {
 	BOOST_CHECK_EQUAL( QSize(1920,1080), right.size());
 	BOOST_CHECK_EQUAL( QSize(3840,1080), both.size());
 
+	/** Check pixels in the middle */
+	BOOST_CHECK_EQUAL( leftScreenColor, left.pixel(960,540));
+	BOOST_CHECK_EQUAL( rightScreenColor, right.pixel(960,540));
+	BOOST_CHECK_EQUAL( leftScreenColor, both.pixel(960,540));
+	BOOST_CHECK_EQUAL( rightScreenColor, both.pixel(2880,540));
+
 	/** Check all-the-way-left and all-the-way-right pixel colors */
-	BOOST_CHECK_EQUAL( leftScreenColor, left.pixel(0,500));
-	BOOST_CHECK_EQUAL( leftScreenColor, left.pixel(1919,500));
+	BOOST_CHECK_EQUAL( leftScreenColor, left.pixel(0,540));
+	BOOST_CHECK_EQUAL( leftScreenColor, left.pixel(1919,540));
 
-	BOOST_CHECK_EQUAL( rightScreenColor, right.pixel(0,500));
-	BOOST_CHECK_EQUAL( rightScreenColor, right.pixel(1919,500));
+	BOOST_CHECK_EQUAL( rightScreenColor, right.pixel(0,540));
+	BOOST_CHECK_EQUAL( rightScreenColor, right.pixel(1919,540));
 
-	BOOST_CHECK_EQUAL( leftScreenColor, both.pixel(0,500));
-	BOOST_CHECK_EQUAL( rightScreenColor, both.pixel(3839,500));
+	BOOST_CHECK_EQUAL( leftScreenColor, both.pixel(0,540));
+	BOOST_CHECK_EQUAL( rightScreenColor, both.pixel(3839,540));
 }
