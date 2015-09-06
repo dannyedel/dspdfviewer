@@ -65,8 +65,8 @@ QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize t
   /* Calculate x-offset */
   int x = 0;
   if ( whichPart == PagePart::RightHalf ) {
-    /* start at an offset of width() pixels to the right */
-    x = fullSizePixels.width()/2+1;
+    /* start at an offset of width() pixels to the right, rounding up */
+    x = (fullSizePixels.width()+1)/2;
   }
 
   /* render it */
