@@ -9,7 +9,7 @@ install_via_aptget() {
 
 if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
 	# Update list of available packages in any case
-	DEPS="libboost-program-options-dev pkg-config latex-beamer"
+	DEPS="libboost-program-options-dev libboost-test-dev pkg-config latex-beamer"
 	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
 		echo "Adding dannyedel ppa"
 		sudo add-apt-repository ppa:dannyedel/libpoppler-qt5-backports -y
