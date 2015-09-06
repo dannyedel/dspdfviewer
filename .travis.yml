@@ -9,11 +9,12 @@ compiler:
 env:
     - CMAKE_PARAMETERS="-DUseQtFive=ON"
     - CMAKE_PARAMETERS="-DUseQtFive=OFF"
-#    - BUILDSYSTEM=outside
 matrix:
   fast_finish: true
   allow_failures:
     - env: CMAKE_PARAMETERS="-DUseQtFive=ON"
+    - compiler: clang
+      os: linux
   exclude:
     - os: osx
       env: CMAKE_PARAMETERS="-DUseQtFive=ON"
