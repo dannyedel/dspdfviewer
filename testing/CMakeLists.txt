@@ -25,6 +25,14 @@ add_executable(testrunner
 
 target_link_libraries(testrunner testhelp)
 
+# Clang: Don't promote warnings to errors when building the test suite.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" )
+	set_target_properties(testrunner
+		PROPERTIES
+			COMPILE_FLAGS "-Wno-error"
+			)
+endif()
+
 add_test(NAME BoostTestRunner
 	COMMAND testrunner --report_level=detailed
 )
