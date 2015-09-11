@@ -18,16 +18,31 @@
 */
 
 
-#include <QtGui/QApplication>
-#include <QDebug>
+#include <QApplication>
+#include "debug.h"
 #include "dspdfviewer.h"
 #include "runtimeconfiguration.h"
 #include <stdexcept>
+#include <iostream>
 #include <QMessageBox>
+#include <QFileDialog>
 #include <QTranslator>
+
+#if defined ( _WIN32 ) && defined ( NDEBUG )
+#pragma comment(linker, "/SUBSYSTEM:windows")
+#include <Windows.h>
+
+int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
+{
+	int argc = __argc;
+	#define argv __argv
+
+#else
 
 int main(int argc, char** argv)
 {
+
+#endif
 	QApplication app(argc, argv);
 
 	app.setApplicationName( QString::fromAscii("dspdfviewer") );
@@ -48,11 +63,19 @@ int main(int argc, char** argv)
 		*/
 		qRegisterMetaType< QSharedPointer<RenderedPage> >("QSharedPointer<RenderedPage>");
 		RuntimeConfiguration rc(argc, argv);
-		
+
+		if ( ! rc.filePathDefined() ) {
+			rc.filePath( QFileDialog::getOpenFileName(
+				nullptr, app.tr("Load PDF from disk"), QString(), app.tr("PDF (*.pdf)") ).toStdString() );
+		}
+
 		DSPDFViewer foo( rc );
-		
 		return app.exec();
 	} catch ( std::exception& e ) {
+		std::cerr << "----- FATAL ERROR -----" << std::endl
+			<< "Dual-Screen PDF Viewer has encountered an error and cannot continue:" << std::endl
+			<< e.what() << std::endl;
+
 		QMessageBox errorMsg;
 		errorMsg.setText( app.tr("Dual-Screen PDF Viewer has encountered an error and cannot continue") );
 		errorMsg.setInformativeText( app.tr(e.what()) );

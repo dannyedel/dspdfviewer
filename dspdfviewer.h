@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QFileSystemWatcher>
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 
 #include "pdfviewerwindow.h"
 #include "pdfrenderfactory.h"
@@ -55,9 +55,6 @@ private:
 
 
 
-public:
-  static const QSize thumbnailSize;
-
 private:
   QImage renderForTarget( QSharedPointer<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf=false);
 
@@ -66,6 +63,7 @@ private:
   void	resetSlideClock();
 
   RenderingIdentifier toRenderIdent(unsigned int pageNumber, const PDFViewerWindow& window);
+  RenderingIdentifier toThumbnailRenderIdent(unsigned int pageNumber, PDFViewerWindow& window);
 
 private slots:
   void sendAllClockSignals() const;

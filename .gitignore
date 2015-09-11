@@ -15,3 +15,8 @@ obj-*/
 # Debian build system's log files.
 # Not really meant to be comitted.
 debian/*.log
+
+# Debian packages
+# for example left behind from a failed
+# mk-build-deps
+*.deb

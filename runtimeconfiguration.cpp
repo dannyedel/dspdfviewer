@@ -29,10 +29,35 @@
 #define DSPDFVIEWER_VERSION "UNKNOWN"
 #endif
 
+#ifndef I3WORKAROUND_SHELLCODE
+/* This will get executed once both windows are created, provided
+ * the user passed --i3-workaround=true via command line or configuration file.
+ *
+ * You can override the shellcode by providing -DI3WORKAROUND_SHELLCODE="your shellcode"
+ * at the cmake step.
+ */
+#define I3WORKAROUND_SHELLCODE "i3-msg '[class=\"Dspdfviewer\" window_role=\"Audience_Window\"] move to output right, fullscreen'"
+#endif
+
+
 using namespace std;
 using namespace boost::program_options;
 
-RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
+RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
+	m_useFullPage(false),
+	m_showPresenterArea(true),
+	m_showWallClock(true),
+	m_showThumbnails(true),
+	m_showPresentationClock(true),
+	m_showSlideClock(true),
+	m_filePath(),
+	m_hyperlinkSupport(true),
+	m_cacheToMemory(true),
+	m_useSecondScreen(true),
+	m_i3workaround(false),
+	m_prerenderPreviousPages(3),
+	m_prerenderNextPages(10),
+	m_bottomPaneHeightPercent(20)
 {
   options_description generic("Generic options");
 
@@ -55,11 +80,24 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
      "Pre-render the next arg slides\n"
      "NOTE: If you set this to zero, you might not get a thumbnail for the next slide unless it was loaded already."
      )
+    ("hyperlink-support,l",
+     value<bool>(&m_hyperlinkSupport)->default_value(true),
+     "Support PDF Hyperlinks\n"
+     "Follow hyperlinks when clicked (mouse pointer will change to a pointing hand) - set this to false if "
+     "you cannot reliably control your mouse pointer position and want to always go ahead one slide on click.")
     ("cache-to-memory",
      value<bool>(&m_cacheToMemory)->default_value(true),
      "Cache the PDF file into memory\n"
      "Useful if you are editing the PDF file with latex while using the presenter software."
      )
+    ("i3-workaround",
+     value<bool>(&m_i3workaround)->default_value(false),
+     "Use i3 specific workaround: Execute shellcode once both windows have been created."
+#ifndef NDEBUG
+     "\nDebug info: Shellcode is \n"
+     I3WORKAROUND_SHELLCODE
+#endif
+    )
     ;
   options_description secondscreen("Options affecting the second screen");
   secondscreen.add_options()
@@ -87,6 +125,9 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
     ("slide-clock,s",
      value<bool>(&m_showSlideClock)->default_value(true),
      "Show the slide clock")
+    ("bottom-pane-height,b",
+     value<unsigned>(&m_bottomPaneHeightPercent)->default_value(20),
+     "Percentage of second screen to use for the bottom pane")
     ;
 
   options_description hidden("Hidden options");
@@ -130,14 +171,20 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
       cout << endl;
       cout << "Usage: " << argv[0] << " [options] pdf-file" << endl;
       cout << help << endl;
+      // Add a short primer about interactive controls
+      const std::string padding="\t";
+      cout << "Interactive Controls:" << endl
+           << padding << "Press F1 or ? during program execution to get a quick" << endl
+           << padding << "overview about available controls." << endl
+           << padding << "Please read the manpage (man dspdfviewer) for the full list." << endl;
     }
-    exit(1);
+    exit(0);
   }
 
-  if ( 0 == vm.count("pdf-file") ) {
-    throw std::runtime_error("You did not specify a PDF-File to display");
+  if ( m_bottomPaneHeightPercent < 1 || m_bottomPaneHeightPercent > 99 ) {
+    throw std::runtime_error("Invalid percent height specified");
   }
-
+  
   m_useFullPage = ( 0 < vm.count("full-page") );
 
   /** Implied options */
@@ -157,12 +204,16 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
 
 string RuntimeConfiguration::filePath() const
 {
+  if ( m_filePath.empty() ) {
+    throw noFileNameException();
+  }
+
   return m_filePath;
 }
 
 QString RuntimeConfiguration::filePathQString() const
 {
-  return QString::fromStdString(m_filePath);
+  return QString::fromStdString( filePath() );
 }
 
 bool RuntimeConfiguration::useFullPage() const
@@ -208,4 +259,38 @@ bool RuntimeConfiguration::useSecondScreen() const
 bool RuntimeConfiguration::cachePDFToMemory() const
 {
   return m_cacheToMemory;
+}
+
+unsigned int RuntimeConfiguration::bottomPaneHeight() const
+{
+  return m_bottomPaneHeightPercent;
+}
+
+bool RuntimeConfiguration::hyperlinkSupport() const
+{
+  return m_hyperlinkSupport;
+}
+
+void RuntimeConfiguration::filePath(const std::string& newPath )
+{
+	m_filePath = newPath;
+}
+
+bool RuntimeConfiguration::filePathDefined() const
+{
+	return ! m_filePath.empty();
+}
+
+noFileNameException::noFileNameException():
+	logic_error("You did not specify a PDF-File to display.") {
+}
+
+bool RuntimeConfiguration::i3workaround() const
+{
+	return m_i3workaround;
+}
+
+std::string RuntimeConfiguration::i3workaround_shellcode() const
+{
+	return std::string( I3WORKAROUND_SHELLCODE );
 }

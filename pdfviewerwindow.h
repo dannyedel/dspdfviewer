@@ -24,28 +24,34 @@
 #include "renderedpage.h"
 #include "pdfrenderfactory.h"
 #include "runtimeconfiguration.h"
+#include "hyperlinkarea.h"
+#include "windowrole.h"
 
 #include "ui_pdfviewerwindow.h"
 
 /** Shared base class for both windows (primary and secondary)
  *
  */
-class PDFViewerWindow : public QWidget, private Ui::Form
+class PDFViewerWindow : public QWidget
 {
   Q_OBJECT
 private:
+  Ui::Form ui;
   bool	m_enabled;
   unsigned int m_monitor;
   QImage currentImage;
   bool blank;
-
   bool informationLineVisible;
 
   uint currentPageNumber;
   uint minimumPageNumber;
   uint maximumPageNumber;
-  bool correntImageRendered;
+  bool correctImageRendered;
   PagePart myPart;
+
+  const WindowRole windowRole;
+  // Reference to the runtime configuration object.
+  const RuntimeConfiguration& runtimeConfiguration;
 
   /** Display this image
     */
@@ -66,12 +72,14 @@ private:
   void keybindingsPopup();
   void changePageNumberDialog();
 
+  void parseLinks( QList< AdjustedLink > links);
+  QList< HyperlinkArea* > linkAreas;
+  
 public:
   /** Standard constructor
    * @param monitor monitor to start on (usually 0 for primary)
-   * @param dspdfviewer Pointer to the application (to handle next/prev commands)
    */
-    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const QString& windowRole, bool enabled=true);
+    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& windowRole, bool enabled=true);
 
     /** Sets the monitor to display this window on
      * Automatically calls reposition
@@ -88,6 +96,8 @@ public:
 
     QSize getTargetImageSize() const;
 
+    QSize getPreviewImageSize();
+    
     PagePart getMyPagePart() const;
 
     void showInformationLine();
@@ -98,11 +108,10 @@ public:
 
     bool isBlank() const;
 
-    void showLoadingScreen(int pageNumberToWaitFor);
+    void showLoadingScreen(uint pageNumberToWaitFor);
 
 public slots:
   void renderedPageIncoming( QSharedPointer<RenderedPage> renderedPage);
-  void renderedThumbnailIncoming( QSharedPointer<RenderedPage> renderedThumbnail);
 
   void resizeEvent(QResizeEvent* resizeEvent);
 
@@ -130,6 +139,8 @@ public slots:
     void secondScreenFunctionToggleRequested();
 
     void blankToggleRequested();
+private slots:
+  void linkClicked(uint targetNumber);
 };
 
 #endif // PDFVIEWERWINDOW_H

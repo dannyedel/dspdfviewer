@@ -20,9 +20,13 @@
 
 #include "renderutils.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QApplication>
 #include <stdexcept>
+
+#include <boost/math/special_functions/round.hpp>
+
+using boost::math::iround;
 
 QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize targetSize, PagePart whichPart)
 {
@@ -52,12 +56,12 @@ QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize t
 
   /* Calculate Page Size in pixels */
 
-  QSize fullSizePixels( dpi * fullsize.width() / 72.0,
-			dpi * fullsize.height() / 72.0);
+  QSize fullSizePixels( iround(dpi * fullsize.width() / 72.0),
+			iround(dpi * fullsize.height() / 72.0) );
 
   /* Calculate rendered image size */
-  QSize imageSizePixels(dpi * pagesize.width() / 72.0,
-		  dpi * pagesize.height() / 72.0 );
+  QSize imageSizePixels( iround(dpi * pagesize.width() / 72.0),
+		  iround( dpi * pagesize.height() / 72.0 ) );
 
   /* Calculate x-offset */
   int x = 0;

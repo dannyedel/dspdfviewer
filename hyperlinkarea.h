@@ -18,21 +18,31 @@
 */
 
 
-#ifndef RENDERUTILS_H
-#define RENDERUTILS_H
+#ifndef HYPERLINKAREA_H
+#define HYPERLINKAREA_H
 
-#include <QSharedPointer>
-#include "pagepart.h"
-#include <QImage>
+#include <QLabel>
 #include "poppler-qt.h"
 
-class RenderUtils
-{
-public:
-  static QImage renderPagePart(QSharedPointer<Poppler::Page> page, QSize targetSize, PagePart whichPart);
+#include "adjustedlink.h"
 
-  /** Since only the static functions of this class are used, we do not need to construct instances */
-  RenderUtils() =delete;
+class HyperlinkArea : public QLabel
+{
+  Q_OBJECT
+  
+  /** FIXME Exception class */
+  struct WrongLinkType{};
+  
+  uint targetPage;
+public:
+  HyperlinkArea(QLabel* imageLabel, const AdjustedLink& gotoLink);
+  
+  virtual void mousePressEvent(QMouseEvent* ev);
+  
+  signals:
+    void gotoPageRequested(uint targetPage);
+    
+    
 };
 
-#endif // RENDERUTILS_H
+#endif // HYPERLINKAREA_H

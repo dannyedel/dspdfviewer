@@ -18,16 +18,50 @@
 # */
 
 project(dspdfviewer)
-cmake_minimum_required(VERSION 2.6)
-find_package(Qt4 REQUIRED)
-find_package(Boost COMPONENTS program_options REQUIRED)
-find_library(POPPLER_LIBRARY poppler-qt4)
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+include(FindPkgConfig)
+set(CMAKE_AUTOMOC "on")#
 set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
 
-include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
-include_directories(${Boost_INCLUDE_DIR})
+find_package(Boost COMPONENTS program_options REQUIRED)
 
-add_definitions(-ggdb)
+option(UseQtFive "Build with Qt5 and libpoppler-qt5" OFF)
+
+if(UseQtFive)
+	#qt5
+	message(STATUS "Using Qt5 and libpoppler-qt5")
+	find_package(Qt5Core REQUIRED)
+	find_package(Qt5Gui REQUIRED)
+	find_package(Qt5Widgets REQUIRED)
+	pkg_search_module(POPPLER REQUIRED poppler-qt5)
+	# add their include directories
+	list(APPEND LIST_INCLUDE_DIRS ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
+	# add their link flags
+	list(APPEND LIST_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
+	add_definitions(-DPOPPLER_QT5)
+	add_definitions(-fPIC)
+	qt5_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
+else()
+	#qt4
+	message(STATUS "Using Qt4 and libpoppler-qt4")
+	find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
+	pkg_search_module(POPPLER REQUIRED poppler-qt4)
+
+	list(APPEND LIST_INCLUDE_DIRS ${QT_INCLUDES})
+	list(APPEND LIST_LIBRARIES Qt4::QtGui)
+	qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
+endif()
+
+# include/link poppler
+list(APPEND LIST_LIBRARIES ${POPPLER_LIBRARIES})
+list(APPEND LIST_INCLUDE_DIRS ${POPPLER_INCLUDE_DIRS})
+
+list(APPEND LIST_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+list(APPEND LIST_LIBRARIES ${Boost_LIBRARIES})
+
+# include current binary dir, for ui_pdfviewerwindow.h and the .moc files
+# Treat this like system headers because it's generated code
+list(APPEND LIST_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR})
 
 # Use c++11 support.
 # found on
@@ -35,28 +69,59 @@ add_definitions(-ggdb)
 if(CMAKE_COMPILER_IS_GNUCXX)
 	execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
 	if (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
-		message(STATUS "C++11 activated.")
+		message(STATUS "GNU GCC 4.7 or higher detected.")
 		add_definitions("-std=c++11")
 	elseif(GCC_VERSION VERSION_GREATER 4.3 OR GCC_VERSION VERSION_EQUAL 4.3)
-		message(WARNING "C++0x activated. If you get any errors update to a compiler which fully supports C++11")
+		message(WARNING "You are using an old version of gcc."
+			" Consider upgrading to a more recent version if you run into problems.")
 		add_definitions("-std=c++0x")
 	else ()
-		message(FATAL_ERROR "C++11 needed. Therefore a gcc compiler with a version higher than 4.3 is needed.")
+		message(FATAL_ERROR "C++11 needed. For GCC that means a version higher than 4.3 is needed.")
 	endif()
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	message(STATUS "Clang++ detected.")
+	add_definitions("-std=c++11")
 else()
-	# No GCC Compiler
-	message(WARNING "You dont have a GNU compiler. I'll activate -std=c++11 in the hope it does exactly that.")
+	# Unknown Compiler
+	message(WARNING "You are using an unidentified and therefore unsupported compiler. "
+		" If this works for you, please report that to upstream and - if possible -"
+		" please send patches activating sensible compile flags on it.")
 	add_definitions(-std=c++11)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
 	#add some warnings
-	add_definitions(-Wall -Wextra -pedantic -Werror -ggdb -Wfatal-errors -Wold-style-cast -Woverloaded-virtual)
-	#I like these for my code, but Qt doesnt compile with them
-	# add_definitions( -Weffc++ )
-	add_definitions(-Wno-effc++)
+	add_definitions(-Wall -Wextra -pedantic -Werror -Wfatal-errors -Wold-style-cast -Woverloaded-virtual)
+	add_definitions(-Weffc++)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	# Turn on a lot of warnings, hopefully helping with code quality.
+	add_definitions(-Weverything)
+	# FIXME: Re-activate -Werror once these are worked out of the source
+	add_definitions(-Werror)
+
+	# Disable warnings irrelevant to the project:
+	#   c++98 compatibility warnings
+	add_definitions(-Wno-c++98-compat -Wno-c++98-compat-pedantic)
+	#   FIXME: Weak vtables
+	#   Currently this warning triggers in exception classes
+	add_definitions(-Wno-error=weak-vtables)
+	#   padding
+	add_definitions(-Wno-padded)
+	#   in release mode: Unrechable code / Macro expansion (these stem from QDEBUG)
+	if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" )
+		add_definitions(-Wno-unreachable-code -Wno-unreachable-code -Wno-disabled-macro-expansion)
+	endif()
 else()
 	message(WARNING "Compiling with a Non-GNU compiler. A lot less warnings will be output, so more coding errors might go undetected.")
+endif()
+
+if( CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" )
+	# Include using -isystem
+	foreach(lib IN LISTS LIST_INCLUDE_DIRS)
+		add_definitions(-isystem ${lib})
+	endforeach()
+else()
+	include_directories(${LIST_INCLUDE_DIRS})
 endif()
 
 if( "${CMAKE_BUILD_TYPE}" MATCHES "^Debug$" )
@@ -65,40 +130,51 @@ else()
   add_definitions(-DQT_NO_DEBUG_OUTPUT)
 endif()
 
-if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
-  # Not-Empty version given on the command line
-  message(STATUS "Using the version number ${DSPDFVIEWER_VERSION} specified on the command line.")
-else()
-  # We dont have a version number given by the build system.
-  # Try to figure it out first by asking git (only works for in-tree source builds)
-  execute_process(COMMAND git describe
-	  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_DESCRIBE_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
-  if( NOT "${GIT_DESCRIBE_VERSION}" MATCHES "^$" )
-    message(STATUS "Using version number ${GIT_DESCRIBE_VERSION} as defined by git-describe.")
-    set(DSPDFVIEWER_VERSION ${GIT_DESCRIBE_VERSION})
-  else()
-	# use the standard utility dpkg-parsechangelog to get the version number
-	execute_process(COMMAND dpkg-parsechangelog
+### Version-number inclusion logic.
+
+# Rationale: dspdfviewer --version should print something meaningful
+# Especially on builds from git, it should include the git revision.
+
+if( DSPDFVIEWER_VERSION )
+  # Not-Empty version given on the command line. This has absolute priority.
+  message(STATUS "Embedding the version number ${DSPDFVIEWER_VERSION} specified on the command line.")
+endif()
+
+if( NOT DSPDFVIEWER_VERSION AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git" )
+	# We don't have a version number yet, but
+	# this looks like a checkout from git.
+	# Ask "git describe" for a version number.
+	message(STATUS "Building from a git clone, using git describe for a version number.")
+	execute_process(COMMAND git describe
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-		OUTPUT_VARIABLE DEBIANCHANGELOG OUTPUT_STRIP_TRAILING_WHITESPACE)
-	# grep for the line with "Version: "
-	string(REGEX MATCH "Version: [^ \r\n\t]*" DEBIANVERSION "${DEBIANCHANGELOG}")
-	# strip "Version: "
-	string(REPLACE "Version: " "" DEBIANVERSION "${DEBIANVERSION}")
-    if ( NOT "${DEBIANVERSION}" MATCHES "^$" )
-      message(STATUS "Using version number ${DEBIANVERSION} as parsed from debian/changelog's first entry.")
-      set(DSPDFVIEWER_VERSION ${DEBIANVERSION})
-    else()
-      # Try to infer the version number from the debian/changelog source file
-      message(WARNING "Could not determine the version number of the program. Please pass -DDSPDFVIEWER_VERSION=1.2.3.4.5 to the cmake command.")
-    endif()
-  endif()
+		OUTPUT_VARIABLE GIT_DESCRIBE_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+	# Check if it gave something back
+	if( NOT "${GIT_DESCRIBE_VERSION}" MATCHES "^$" )
+		message(STATUS "Embedding version number ${GIT_DESCRIBE_VERSION} as defined by git-describe.")
+		set(DSPDFVIEWER_VERSION ${GIT_DESCRIBE_VERSION})
+	endif()
+endif()
+
+if( NOT DSPDFVIEWER_VERSION )
+	# We still don't know version number to embed.
+	# Use default
+
+	# TODO: Keep me updated!
+	set(DSPDFVIEWER_VERSION "1.14-unreleased")
+	message(STATUS "Embedding version number ${DSPDFVIEWER_VERSION}. If you want to override this, "
+		"for example to embed the git revision you built from, please pass "
+		"-DDSPDFVIEWER_VERSION=1.2.3.4.5 to the cmake command.")
 endif()
 
 if( NOT "${DSPDFVIEWER_VERSION}" MATCHES "^$" )
   add_definitions(-DDSPDFVIEWER_VERSION="${DSPDFVIEWER_VERSION}")
 endif()
+
+if( I3WORKAROUND_SHELLCODE )
+	add_definitions(-DI3WORKAROUND_SHELLCODE="${I3WORKAROUND_SHELLCODE}")
+endif()
+
+set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp windowrole.cpp main.cpp)
 
 set(TRANSLATIONFILES
 	dspdfviewer_de.ts
@@ -110,11 +186,9 @@ set(UIFILES
 # This helps with translation, since it disables QString(const char*)
 add_definitions(-DQT_NO_CAST_FROM_ASCII)
 
-set(dspdfviewer_SRCS pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
 qt4_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
 
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 option(UpdateTranslations "Do you want to update the .ts files (WARNING: make clean will eat them!)" OFF)
 
@@ -123,13 +197,15 @@ if( UpdateTranslations )
 else()
 	qt4_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
 endif()
-qt4_automoc(${dspdfviewer_SRCS})
 
 add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
-target_link_libraries(dspdfviewer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${Boost_LIBRARIES} ${POPPLER_LIBRARY})
+target_link_libraries(dspdfviewer ${LIST_LIBRARIES})
 
 install(TARGETS	dspdfviewer
 	RUNTIME DESTINATION bin)
 
 install(FILES docs/dspdfviewer.1
 	DESTINATION share/man/man1)
+
+install(FILES dspdfviewer.desktop
+	DESTINATION share/applications)

@@ -20,7 +20,8 @@
 
 #include "renderthread.h"
 #include "renderutils.h"
-#include <QDebug>
+#include "adjustedlink.h"
+#include "debug.h"
 
 RenderThread::RenderThread(PDFDocumentReference theDocument, RenderingIdentifier renderIdent):
   QObject(),
@@ -32,26 +33,31 @@ RenderThread::RenderThread(PDFDocumentReference theDocument, RenderingIdentifier
 
 void RenderThread::run()
 {
-  qDebug() << "RenderThread for " << renderMe.pageNumber() << renderMe.requestedPageSize() << " started";
+  DEBUGOUT << "RenderThread for " << renderMe.pageNumber() << renderMe.requestedPageSize() << " started";
   QImage renderImage = RenderUtils::renderPagePart(m_page.page, renderMe.requestedPageSize(), renderMe.pagePart());
   if ( renderImage.isNull() )
   {
-    qDebug() << "RenderThread for " << renderMe.pageNumber() << renderMe.requestedPageSize() << " failed";
+    qWarning() << "RenderThread for " << renderMe.pageNumber() << renderMe.requestedPageSize() << " failed";
     QSharedPointer<RenderingIdentifier> ri( new RenderingIdentifier(renderMe) );
     emit renderingFailed(ri);
     return;
   }
 
-  QList< QSharedPointer<Poppler::Link> > links;
+  QList< AdjustedLink > links;
 
   for( Poppler::Link* link: m_page.page->links() )
   {
     QSharedPointer<Poppler::Link> ptrLink(link);
-    links.append(ptrLink);
+    try{
+      AdjustedLink al(renderMe, ptrLink);
+      links.append(al);
+    } catch( AdjustedLink::OutsidePage &) {
+      // no-op
+    }
   }
   QSharedPointer<RenderedPage> renderResult(new RenderedPage( renderImage, links, renderMe ));
-  qDebug() << "RenderThread for " << renderMe.pageNumber() << renderMe.requestedPageSize() << " successful, image has size " << renderResult->getImage().size();
+  DEBUGOUT << "RenderThread for " << renderMe.pageNumber() << renderMe.requestedPageSize() << " successful, image has size " << renderResult->getImage().size();
   emit renderingFinished(renderResult);
 }
 
-#include "renderthread.cpp.moc"
+#include "renderthread.moc"

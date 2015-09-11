@@ -4,7 +4,7 @@
 .\" First parameter, NAME, should be all caps
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
-.TH DSPDFVIEWER 1 "November 15, 2012"
+.TH DSPDFVIEWER 1 "July 30, 2015"
 .\" Please adjust this date whenever revising the manpage.
 .\"
 .\" Some roff macros, for reference:
@@ -21,12 +21,17 @@
 dspdfviewer \- Dual-Screen PDF Viewer
 .SH SYNOPSIS
 .B dspdfviewer
-.RI [ options ] " filename"
+.RI [ options ] " [filename]"
 .br
 .SH DESCRIPTION
-The Dual-Screen PDF viewer is intended for presentations created with the
+.B dspdfviewer
+is intended for presentations created with the
 .B latex-beamer
-class. Its purpose is to display the left half of a page on the audience's screen
+class, specifically documents created with the
+.RI "show notes on second screen=right"
+option.
+
+Its purpose is to display the left half of a page on the audience's screen
 (which will most commonly be a projector) and the right half on your "private"
 screen (think: the notebook you carried to the presentation site).
 The basic idea is that you will display personal notes and information to
@@ -48,125 +53,255 @@ even arrives.
 Once you use the next/previous slide commands, the clock starts. If you want to
 start the clock, but still display the title slide, just press "previous"
 (for example, Up Arrow or Right Mouse Button) on the title slide.
+
+If you want to reset the clocks to zero, press the "Home" button on the keybord.
+
 .\" .PP
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
 .\" \fI<whatever>\fP escape sequences to invode bold face and italics,
 .\" respectively.
 .\"\fBdspdfviewer\fP is a program that...
 .SH OPTIONS
-This program follows the usual GNU command line syntax, with long
+The exact behaviour of \fBdspdfviewer\fR
+is configurable using command-line parameters.
+
+Unless otherwise noted, all command-line options can be written
+in a configuration file. See the \fIFILES\fR section for the
+location.
+
+For the command-line parameters,
+this program follows the usual GNU command line syntax, with long
 options starting with two dashes ('-').
 A summary of options is included below.
 
-Note for options of type <bool>: They take true, false, 0 or 1 as arguments.
-For example, \-\-use-second-screen false can be shortened to \-u0.
+If you specify those in a configuration file, write one
+option per line, use the
+\fIlong version without the two leading dashes\fR,
+followed by an equals sign and the desired value.
+
+For example, \fBbottom-pane-height=20\fR is a valid
+configuration line.
+
+If an option is specified in \fBboth\fR the configuration file
+and the command-line, the command-line value takes precedence.
+
+Note for options of type \fI<bool>\fR: They take
+\fBtrue\fR, \fBfalse\fR, \fB0\fR or \fB1\fR as arguments.
+For example, \fB\-\-use-second-screen false\fR can be
+expressed as \fB\-\-use-second-screen 0\fR or shortened
+to \fB\-u0\fR.
 
 .TP
-.B \-h, \-\-help
+.BR \-h ", " \-\-help
 Show summary of options.
 
 .TP
 .B \-f, \-\-full-page
-Use the presentation program with a standard PDF, that is display the full page
-on the primary AND secondary monitor. The secondary screen still contains timers
-and thumbnails to help you with your presentation, unless you disable them using
+Use the presentation program with a normal single-screen PDF,
+that is display the full page on both the primary and secondary monitor.
+
+The secondary screen still contains timers and thumbnails
+to help you with your presentation, unless you disable them using
 the options below.
 
+
 .TP
-.B \-u, \-\-use-second-screen <bool>
+.B \-u, \-\-use-second-screen \fI<bool>\fR
 Controls whether the program actually works as a dual-screen viewer.
+
+The default is true.
+
 If you only have one screen, but still want to use the cache features, you can set
 this option to false. If the window ends up on the wrong display, you can still use
 the switch command (see below).
 
-What comes out on the primary screen depends on whether you use the -f Option: -u0 -f
-results in a simple full-screen PDF viewer, while -u0 without -f still splits the page
+What comes out on the primary screen depends on whether you use the \-f Option: \-u0 \-f
+results in a simple full-screen PDF viewer, while \-u0 without \-f still splits the page
 in half and outputs only the left frame.
 
+
 .TP
-.B \-\-prerender-previous-pages <n>
+.B \-l, \-\-hyperlink-support \fI<bool>\fR
+Controls whether the program makes PDF Hyperlinks clickable.
+
+The default is true.
+
+While it is normally desired to have clickable hyperlinks, if you cannot
+control the position of your pointer (if your remote control has only
+left-click and right-click) it might be safer to disable hyperlinks.
+
+
+.TP
+.B \-\-prerender\-previous\-pages \fIn\fR
 When jumping to slide m, also pre-render the slides (m-n)..(m-1) (default 3)
 
 Note: If you set this to zero, you will not get a thumbnail for the previous page
 rendered before you have visited it.
 
 .TP
-.B \-\-prerender-next-pages <n>
+.B \-\-prerender\-next\-pages \fIn\fR
 When jumping to slide m, also pre-render the slides (m+1)..(m+n) (default 10)
 
 Note: If you set this to zero, you will not get a thumbnail for the next page
 rendered before you have visited it.
 
 .TP
-.B \-a <bool>, \-\-presenter-area <bool>
+.B \-a, \-\-presenter-area \fI<bool>\fR
 Show (true, 1) or hide (false, 0) the presenter's area on the second screen.
 If this is set to zero, the following options will have no effect.
 
 .TP
-.B \-t <bool>, \-\-thumbnails <bool>
+.B \-t, \-\-thumbnails \fI<bool>\fR
 Show (true, 1) or hide (false, 0) the thumbnails on the second screen.
 
 .TP
-.B \-w <bool>, \-\-wall\-clock <bool>
+.B \-w, \-\-wall\-clock \fI<bool>\fR
 Show (true, 1) or hide (false, 0) the wall clock on the second screen.
 
 .TP
-.B \-p <bool>, \-\-presentation\-clock <bool>
+.B \-p, \-\-presentation\-clock \fI<bool>\fR
 Show (true, 1) or hide (false, 0) the presentation clock on the second screen.
 
 .TP
-.B \-s <bool>, \-\-slide\-clock <bool>
+.B \-s, \-\-slide\-clock \fI<bool>\fR
 Show (true, 1) or hide (false, 0) the slide clock on the second screen.
+
+.TP
+.B \-b, \-\-bottom\-pane\-height \fIn\fR
+Configure how large the presenter area on the second screen will be,
+unit is \fIpercent of second screen's total height\fR.
+
+Default value 20.
+
+.TP
+.B \-\-i3\-workaround \fI<bool>\fR
+This tries to ask the i3 window manager (by calling the i3-msg command) to move
+the audience window to "the other screen".
+
+This is considered an experimental feature and disabled by default.
+Read the runtimeconfiguration.cpp source code for more info.
+
 
 .SH CONTROLS
 You can use the following controls while
 .B dspdfviewer
-is running:
-.TP
-.B Left mouse button, Wheel down, Down Arrow, Right Arrow, Page Down, Return, N, F
-Go to next page
-.TP
-.B Right mouse button, Wheel up, Up Arrow, Left Arrow, Page Up, Backspace, P
-Go to previous page
-.TP
-.B B, . (period)
-Toggle blanking of the audience screen
-.TP
-.B G
-Go to specific page (a number entry window will pop up)
-.TP
-.B Home (also called Pos 1 on some keyboards), H
-Go to first page and
-.B reset the presentation and the slide clock to zero
-.TP
-.B Escape, Q
-Quit viewer
-.TP
-.B S, F12
-Switch primary and secondary screens
-(Use this if the audience sees your 'note' side instead of the actual
-presentation)
-.TP
-.B T
-Switch secondary screen's function
-(Use this if you want to see the audience side on your screen, without
-showing the notes to the audience. Pressing the button again will
-switch back to normal operation.)
-.TP
-.B ?, F1
-Show message box with the available keybindings.
+is running.
 
-.SH CONFIGURATION FILE
+Note that mouse-clicks are subject to pointer position if the hyperlink
+support is enabled. If your mouse cursor changes to a hand, it will follow
+the link you are hovering on a click.
+
+
+.TP
+.B Keyboard: ?, F1
+Display quick-help (most important key bindings)
+
+
+.TP
+.B Keyboard: Spacebar, Page Down / Mouse: Left-Click, Wheel Down
+Go one page forward
+
+Additional keyboard aliases:
+Down, Right, Return, Enter, N, F
+
+
+.TP
+.B Keyboard: Backspace, Page Up / Mouse: Right-Click, Wheel Up
+Go one page backward
+
+Additional keyboard aliases:
+Up, Left, P
+
+
+.TP
+.B Keyboard: B, . (period)
+Toggle blanking of the audience screen
+
+
+.TP
+.B Keyboard: G
+Go to specific page (a number entry window will pop up)
+
+Note that the this counts PDF pages, so a single slide having
+6 unmasking steps will be 7 PDF pages long, including the initial
+near-blank page.
+
+
+.TP
+.B Keyboard: Home, H
+Go to the first page and reset the clocks to zero.
+
+Use this if you want the clocks to stop at zero, use the
+G (goto) function to page 1
+if you want to them to keep running.
+
+Note that the Home key may be called "Pos 1" on some keyboards.
+
+
+.TP
+.B Keyboard: Escape, Q
+Quit \fBdspdfviewer\fR.
+
+
+.TP
+.B Keyboard: S, F12
+Switch primary and secondary screens
+
+Use this if the audience sees your 'note' side with the clocks
+and you see the actual presentation on your screen.
+
+If you just want to see the main presentation (for example,
+because the projector is behind you), use \fBT\fR.
+
+
+.TP
+.B Keyboard: T
+Switch secondary screen's function
+
+Use this if you want to see the audience side on your screen, without
+showing the notes to the audience. Pressing the button again will
+switch back to normal operation.
+
+
+
+.SH FILES
+.TP
 .B ~/.config/dspdfviewer.ini
 You can specify all long command-line options (without leading \-\-) here,
 in a "option=value" format, one per line.
 
+
+.SH PRESENTER REMOTE CONTROLS
+Most (maybe not all) presenter remote controls technically act as a keyboard
+sending one of the keystrokes listed either in the main or additional
+keybindings. If your remote control does not work as intended, please
+file a bug report describing what keystrokes it generates when you
+press its buttons. If there is no conflict, a keybinding will be included
+in the next release.
+
+
+.SH BUGS
+None currently known.
+
+If you find any bugs, the preferred way to report them
+is at the github issue tracker at
+https://github.com/dannyedel/dspdfviewer/issues.
+
+As a fallback, you can send e-mail to mail@danny-edel.de
+with the word "dspdfviewer" in the subject line.
+
+
 .SH SEE ALSO
+.TP
 .BR /usr/share/doc/latex-beamer/beameruserguide.pdf.gz
 from the
 .B latex-beamer
-package.
+package on how to create beamer presentations.
 
 Note: Use "show notes on second screen=right" because
 .B dspdfviewer
 assumes that the right half of the page is the notes.
+
+.TP
+.BR http://dspdfviewer.danny-edel.de
+for installation instructions and new release announcements.

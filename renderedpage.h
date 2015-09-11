@@ -21,22 +21,23 @@
 #ifndef RENDEREDPAGE_H
 #define RENDEREDPAGE_H
 #include <qimage.h>
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 #include "pagepart.h"
 #include "renderingidentifier.h"
+#include "adjustedlink.h"
 
 class RenderedPage
 {
 private:
   QImage theRenderedImage;
-  QList< QSharedPointer<Poppler::Link> > theLinks;
+  QList< AdjustedLink > theLinks;
   RenderingIdentifier theIdentifier;
 public:
 
-  RenderedPage(QImage img, QList<QSharedPointer< Poppler::Link >> links, PagePart whichPart, unsigned pageNum);
-  RenderedPage(QImage img, QList<QSharedPointer< Poppler::Link >> links, RenderingIdentifier identifier);
+  RenderedPage(QImage img, QList<AdjustedLink> links, PagePart whichPart, unsigned pageNum);
+  RenderedPage(QImage img, QList<AdjustedLink> links, RenderingIdentifier identifier);
   QImage getImage() const;
-  QList< QSharedPointer<Poppler::Link> > getLinks() const;
+  QList< AdjustedLink > getLinks() const;
   PagePart getPart() const;
   uint getPageNumber() const;
   RenderingIdentifier getIdentifier() const;

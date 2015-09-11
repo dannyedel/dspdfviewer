@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Exit in case of an error, and show the steps
+set -e
+
+install_via_aptget() {
+	echo "Calling apt-get to install $*"
+	sudo apt-get install "$@"
+}
+
+if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
+	# Update list of available packages in any case
+	DEPS="libboost-program-options-dev pkg-config"
+	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
+		echo "Adding dannyedel ppa"
+		sudo add-apt-repository ppa:dannyedel/libpoppler-qt5-backports -y
+		sudo add-apt-repository ppa:ubuntu-sdk-team/ppa -y
+		DEPS="${DEPS} libpoppler-qt5-dev qtbase5-dev"
+	else
+		DEPS="${DEPS} libpoppler-qt4-dev"
+	fi
+	echo "Calling apt-get update"
+	sudo apt-get update
+	install_via_aptget $DEPS
+elif [ "$TRAVIS_OS_NAME" = "osx" ] ; then
+	# Travis recommends to run homebrew update
+	brew update
+	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
+		brew install poppler --with-qt5
+	else
+		brew install poppler --with-qt4
+	fi
+else
+	echo "Unknown Travis OS $TRAVIS_OS_NAME - exiting now"
+	exit 1
+fi

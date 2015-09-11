@@ -22,6 +22,11 @@
 #define RUNTIMECONFIGURATION_H
 #include <string>
 #include <QString>
+#include <stdexcept>
+
+struct noFileNameException: public std::logic_error {
+	noFileNameException();
+};
 
 class RuntimeConfiguration
 {
@@ -50,6 +55,9 @@ class RuntimeConfiguration
   /** complete path to the PDF file */
   std::string m_filePath;
 
+  /** Support PDF Hyperlinks**/
+  bool m_hyperlinkSupport;
+
   /** Shall the complete PDF be read into memory */
   bool m_cacheToMemory;
 
@@ -59,6 +67,10 @@ class RuntimeConfiguration
    * Probably most useful with -f
    */
   bool m_useSecondScreen;
+
+  /** Workaround for i3 window manager active
+   */
+  bool m_i3workaround;
 
   /** Make sure that so many previous pages are pre-rendered
    * (Probably wont make sense until you can jump to slide
@@ -70,6 +82,11 @@ class RuntimeConfiguration
   /** Make sure so many next pages are pre-rendered
    */
   unsigned m_prerenderNextPages;
+
+  /**
+   * Percentage of the second screen devoted to the bottom pane
+   */
+  unsigned m_bottomPaneHeightPercent;
 public:
 
   /** fill the variables based on the config file and the C-style arguments to main()
@@ -86,9 +103,12 @@ public:
 
   bool useFullPage() const;
 
+  bool filePathDefined() const;
+
   QString filePathQString() const;
 
   std::string filePath() const;
+  void filePath(const std::string& newPath);
 
   bool showPresenterArea() const;
   bool showWallClock() const;
@@ -102,6 +122,21 @@ public:
   bool useSecondScreen() const;
 
   bool cachePDFToMemory() const;
+
+  unsigned bottomPaneHeight() const;
+  bool hyperlinkSupport() const;
+
+  /* Use i3-workaround.
+   *
+   * In the future, this might auto-detect if we're running on i3.
+   */
+  bool i3workaround() const;
+
+  /* What shellcode to execute.
+   *
+   * This may be programatically generated in the future.
+   */
+  std::string i3workaround_shellcode() const;
 };
 
 #endif // RUNTIMECONFIGURATION_H
