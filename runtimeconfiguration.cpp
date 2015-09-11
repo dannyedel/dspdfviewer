@@ -109,7 +109,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
 
   variables_map vm;
   store( command_line_parser(argc,argv).options(commandLineOptions).positional(p).run(), vm);
-  QString configurationFileLocation = qgetenv("HOME").append("/.config/dspdfviewer.ini");
+  QString configurationFileLocation = QString::fromAscii( qgetenv("HOME").append("/.config/dspdfviewer.ini") );
   {
     // See if the configuration file exists and is readable
     std::ifstream cfile( configurationFileLocation.toStdString() );

@@ -29,14 +29,15 @@
 int main(int argc, char** argv)
 {
 	QApplication app(argc, argv);
-	app.setApplicationName( "dspdfviewer" );
-	app.setApplicationVersion( DSPDFVIEWER_VERSION );
+
+	app.setApplicationName( QString::fromAscii("dspdfviewer") );
+	app.setApplicationVersion( QString::fromAscii( DSPDFVIEWER_VERSION ) );
 	QString locale = QLocale::system().name();
 	
 	qDebug() << QApplication::applicationDirPath();
 
 	QTranslator translator;
-	translator.load(QString("dspdfviewer_") + locale);
+	translator.load(QString::fromAscii("dspdfviewer_") + locale);
 	app.installTranslator(&translator);
 	/* If anything goes wrong, try to display the exception to the user.
 	 * Its the least i can do.
@@ -53,8 +54,8 @@ int main(int argc, char** argv)
 		return app.exec();
 	} catch ( std::exception& e ) {
 		QMessageBox errorMsg;
-		errorMsg.setText( QApplication::tr("Dual-Screen PDF Viewer has encountered an error and cannot continue") );
-		errorMsg.setInformativeText( QApplication::tr(e.what()) );
+		errorMsg.setText( app.tr("Dual-Screen PDF Viewer has encountered an error and cannot continue") );
+		errorMsg.setInformativeText( app.tr(e.what()) );
 		errorMsg.setDefaultButton(QMessageBox::Discard);
 		errorMsg.setIcon( QMessageBox::Critical );
 		errorMsg.exec();

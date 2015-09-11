@@ -55,7 +55,7 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart myPart, bool sho
     return;
   setupUi(this);
   setWindowRole(windowRole);
-  setWindowTitle(QString("DS PDF Viewer - %1").arg(windowRole).replace('_', ' ') );
+  setWindowTitle(tr("DS PDF Viewer - %1").arg( QString(windowRole).replace(QChar::fromAscii('_'), QChar::fromAscii(' ') ) ) );
   if ( !showInformationLine || ! r.showPresenterArea()) {
     /* If the information line is disabled because we're the primary screen,
      * or the user explicitly said so, disable it completely.
@@ -360,21 +360,22 @@ void PDFViewerWindow::updateWallClock(const QTime& wallClock)
 void PDFViewerWindow::keybindingsPopup()
 {
   QMessageBox *popup   = new QMessageBox();
-  QString msg;
-  msg.append("<table>\n");
-  msg.append("<tr><th width=200 align=left>Key</th><th width=400 align=left>Action</th></tr>\n");
+  QString msg = tr(
+  "<table>\n"
+  "<tr><th width=200 align=left>Key</th><th width=400 align=left>Action</th></tr>\n"
   /* I skip some navigation bindings (they have to many alternatives) */
-  msg.append("<tr><td>N or Left/Down arrow</td><td>Next slide</td></tr>\n");
-  msg.append("<tr><td>P or Right/Up arrow</td><td>Previous slide</td></tr>\n");
-  msg.append("<tr><td>B or .</td><td>Blank/Unblank audience screen</td></tr>\n");
-  msg.append("<tr><td>G</td><td>Go to specific slide</td></tr>\n");
-  msg.append("<tr><td>H or Home</td><td>Go to first page and reset counters</td></tr>\n");
-  msg.append("<tr><td>Q or Esc</td><td>Quit</td></tr>\n");
-  msg.append("<tr><td>S or F12</td><td>Switch primary and secondary screens</td></tr>\n");
-  msg.append("<tr><td>T</td><td>Toggle between notes and slides in the secondary screen</td></tr>\n");
-  msg.append("<tr><td>? or F1</td><td>Show this help box</td></tr>\n");
-  msg.append("</table>");
-  popup->setWindowTitle(QString("Keybindings"));
+  "<tr><td>N or Left/Down arrow</td><td>Next slide</td></tr>\n"
+  "<tr><td>P or Right/Up arrow</td><td>Previous slide</td></tr>\n"
+  "<tr><td>B or .</td><td>Blank/Unblank audience screen</td></tr>\n"
+  "<tr><td>G</td><td>Go to specific slide</td></tr>\n"
+  "<tr><td>H or Home</td><td>Go to first page and reset counters</td></tr>\n"
+  "<tr><td>Q or Esc</td><td>Quit</td></tr>\n"
+  "<tr><td>S or F12</td><td>Switch primary and secondary screens</td></tr>\n"
+  "<tr><td>T</td><td>Toggle between notes and slides in the secondary screen</td></tr>\n"
+  "<tr><td>? or F1</td><td>Show this help box</td></tr>\n"
+  "</table>"
+  );
+  popup->setWindowTitle(tr("Keybindings"));
   popup->setText(msg);
   popup->show();
 }

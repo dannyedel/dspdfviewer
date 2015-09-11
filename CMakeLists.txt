@@ -107,6 +107,9 @@ set(UIFILES
 	pdfviewerwindow.ui
 )
 
+# This helps with translation, since it disables QString(const char*)
+add_definitions(-DQT_NO_CAST_FROM_ASCII)
+
 set(dspdfviewer_SRCS pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp main.cpp)
 qt4_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
 
@@ -115,7 +118,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 option(UpdateTranslations "Do you want to update the .ts files (WARNING: make clean will eat them!)" OFF)
 
-if( ${UpdateTranslations} )
+if( UpdateTranslations )
 	qt4_create_translation(TRANSLATIONS ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
 else()
 	qt4_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
