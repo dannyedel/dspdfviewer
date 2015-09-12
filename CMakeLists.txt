@@ -54,6 +54,9 @@ list(APPEND dspdfviewer_SRCS
 	main.cpp
 )
 
+list(APPEND QRCFILES
+	dspdfviewer.qrc
+)
 
 if(UseQtFive)
 	#qt5
@@ -75,7 +78,6 @@ if(UseQtFive)
 	else()
 		qt5_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
 	endif()
-	#	qt5_add_binary_resources(TRANSLATIONRESOURCES ${TRANSLATIONS})
 else()
 	#qt4
 	message(STATUS "Using Qt4 and libpoppler-qt4")
@@ -98,10 +100,6 @@ list(APPEND LIST_INCLUDE_DIRS ${POPPLER_INCLUDE_DIRS})
 
 list(APPEND LIST_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 list(APPEND LIST_LIBRARIES ${Boost_LIBRARIES})
-
-# include current binary dir, for ui_pdfviewerwindow.h and the .moc files
-# Treat this like system headers because it's generated code
-list(APPEND LIST_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR})
 
 # Use c++11 support.
 # found on
@@ -218,7 +216,7 @@ endif()
 add_definitions(-DQT_NO_CAST_FROM_ASCII)
 
 
-add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
+add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS} ${QRCFILES} ${RESOURCES})
 target_link_libraries(dspdfviewer ${LIST_LIBRARIES})
 
 install(TARGETS	dspdfviewer
