@@ -45,15 +45,28 @@ int main(int argc, char** argv)
 #endif
 	QApplication app(argc, argv);
 
-	app.setApplicationName( QString::fromAscii("dspdfviewer") );
-	app.setApplicationVersion( QString::fromAscii( DSPDFVIEWER_VERSION ) );
-	QString locale = QLocale::system().name();
-	
-	qDebug() << QApplication::applicationDirPath();
+	app.setApplicationName( QString::fromUtf8("dspdfviewer") );
+	app.setApplicationVersion( QString::fromUtf8( DSPDFVIEWER_VERSION ) );
 
-	QTranslator translator;
-	translator.load(QString::fromAscii("dspdfviewer_") + locale);
-	app.installTranslator(&translator);
+	QTranslator qtTranslator;
+	const QLocale locale = QLocale::system();
+	const QString localeName = locale.name();
+
+	DEBUGOUT << "Loading qt translation for" << localeName;
+	if ( ! qtTranslator.load( QString::fromUtf8("qt_de") ) ) {
+		qWarning() << "Failed to load qt translation for current locale, falling back to english.";
+	} else {
+		app.installTranslator(&qtTranslator);
+	}
+
+	QTranslator appTranslator;
+	DEBUGOUT << "Loading dspdfviewer translation for" << QLocale::system();
+	if ( ! appTranslator.load(QLocale::system(), QString::fromUtf8("dspdfviewer"), QString::fromUtf8("_") ) ) {
+		qWarning() << "Failed to load dspdfviewer translation for current locale, falling back to english.";
+	} else {
+		app.installTranslator(&appTranslator);
+	}
+
 	/* If anything goes wrong, try to display the exception to the user.
 	 * Its the least i can do.
 	 */
