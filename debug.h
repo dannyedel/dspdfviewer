@@ -27,9 +27,9 @@
 #endif
 
 #define DEBUGOUT qDebug() << \
- QString::fromAscii("%1:%2 [%3()]"). \
- arg(QFileInfo( QString::fromAscii(__FILE__) ).fileName()). \
+ QString::fromUtf8("%1:%2 [%3()]"). \
+ arg(QFileInfo( QString::fromUtf8(__FILE__) ).fileName()). \
  arg(QString::number( __LINE__ )). \
- arg(QString::fromAscii(__func__) )
+ arg(QString::fromUtf8(__func__) )
 
 #endif

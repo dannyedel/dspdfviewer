@@ -104,7 +104,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
 	 tr(
      "Use i3 specific workaround: Execute shellcode once both windows have been created.")
 #ifndef NDEBUG
-	 .append( QString::fromAscii(
+	 .append( QString::fromUtf8(
      "\nDebug info: Shellcode is \n"
      I3WORKAROUND_SHELLCODE
 	 ) )
@@ -175,7 +175,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
 
   variables_map vm;
   store( command_line_parser(argc,argv).options(commandLineOptions).positional(p).run(), vm);
-  QString configurationFileLocation = QString::fromAscii( qgetenv("HOME").append("/.config/dspdfviewer.ini") );
+  QString configurationFileLocation = QString::fromUtf8( qgetenv("HOME").append("/.config/dspdfviewer.ini") );
   {
     // See if the configuration file exists and is readable
     std::ifstream cfile( configurationFileLocation.toStdString() );
@@ -194,7 +194,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
 			"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.").toStdString() << endl;
     if ( vm.count("help")) {
       cout << endl;
-      cout << tr("Usage: %1 [options] pdf-file").arg( QString::fromAscii(argv[0]) ).toStdString() << endl;
+      cout << tr("Usage: %1 [options] pdf-file").arg( QString::fromUtf8(argv[0]) ).toStdString() << endl;
       cout << help << endl;
       /*: Please try to keep line length below 70 chars and use \t (tab) for padding */
 		cout << tr("Interactive Controls:\n"
@@ -306,7 +306,7 @@ bool RuntimeConfiguration::filePathDefined() const
 }
 
 noFileNameException::noFileNameException():
-	logic_error( QCoreApplication::tr("NoFileNameException", "You did not specify a PDF-File to display.").toStdString() ) {
+	logic_error( QCoreApplication::tr("You did not specify a PDF-File to display.").toStdString() ) {
 }
 
 bool RuntimeConfiguration::i3workaround() const
