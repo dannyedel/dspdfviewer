@@ -391,7 +391,7 @@ QString PDFViewerWindow::timeToString(int milliseconds) const
 
 void PDFViewerWindow::updatePresentationClock(const QTime& presentationClock)
 {
-  ui.presentationClock->setText( tr("Total\n%1").arg(timeToString(presentationClock)));
+  ui.presentationClock->setText( QCoreApplication::tr("Form", "Total\n%1").arg(timeToString(presentationClock)));
 }
 
 void PDFViewerWindow::updateSlideClock(const QTime& slideClock)
