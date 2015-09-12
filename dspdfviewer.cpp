@@ -367,6 +367,3 @@ void DSPDFViewer::toggleSecondaryScreenFunction()
   }
   emit renderPage();
 }
-
-
-#include "dspdfviewer.moc"

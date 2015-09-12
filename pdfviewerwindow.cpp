@@ -525,7 +525,3 @@ void PDFViewerWindow::linkClicked(uint targetNumber)
   DEBUGOUT << "Hyperlink detected";
   emit pageRequested(targetNumber);
 }
-
-
-
-#include "pdfviewerwindow.moc"

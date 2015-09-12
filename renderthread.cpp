@@ -60,5 +60,3 @@ void RenderThread::run()
   DEBUGOUT << "RenderThread for " << renderMe.pageNumber() << renderMe.requestedPageSize() << " successful, image has size " << renderResult->getImage().size();
   emit renderingFinished(renderResult);
 }
-
-#include "renderthread.moc"
