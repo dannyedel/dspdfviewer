@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 
 		if ( ! rc.filePathDefined() ) {
 			rc.filePath( QFileDialog::getOpenFileName(
-				nullptr, app.tr("Load PDF from disk"), QString(), app.tr("PDF (*.pdf)") ).toStdString() );
+				nullptr, QFileDialog::tr("Load PDF from disk"), QString(), QFileDialog::tr("PDF (*.pdf)") ).toStdString() );
 		}
 
 		DSPDFViewer foo( rc );
@@ -77,7 +77,7 @@ int main(int argc, char** argv)
 			<< e.what() << std::endl;
 
 		QMessageBox errorMsg;
-		errorMsg.setText( app.tr("Dual-Screen PDF Viewer has encountered an error and cannot continue") );
+		errorMsg.setText( QMessageBox::tr("Dual-Screen PDF Viewer has encountered an error and cannot continue") );
 		errorMsg.setInformativeText( app.tr(e.what()) );
 		errorMsg.setDefaultButton(QMessageBox::Discard);
 		errorMsg.setIcon( QMessageBox::Critical );
