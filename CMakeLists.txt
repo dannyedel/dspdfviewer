@@ -29,11 +29,29 @@ option(UseQtFive "Build with Qt5 and libpoppler-qt5" OFF)
 option(UpdateTranslations "Do you want to update the .ts files (WARNING: make clean will eat them!)" OFF)
 
 list(APPEND TRANSLATIONFILES
-	dspdfviewer_de.ts
+	translations/dspdfviewer_de.ts
 )
 list(APPEND UIFILES
 	pdfviewerwindow.ui
 )
+list(APPEND dspdfviewer_SRCS
+	adjustedlink.cpp
+	hyperlinkarea.cpp
+	pdfpagereference.cpp
+	pdfdocumentreference.cpp
+	runtimeconfiguration.cpp
+	renderutils.cpp
+	renderthread.cpp
+	renderingidentifier.cpp
+	pagepart.cpp
+	renderedpage.cpp
+	pdfrenderfactory.cpp
+	pdfviewerwindow.cpp
+	dspdfviewer.cpp
+	windowrole.cpp
+	main.cpp
+)
+
 
 if(UseQtFive)
 	#qt5
@@ -55,6 +73,7 @@ if(UseQtFive)
 	else()
 		qt5_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
 	endif()
+	#	qt5_add_binary_resources(TRANSLATIONRESOURCES ${TRANSLATIONS})
 else()
 	#qt4
 	message(STATUS "Using Qt4 and libpoppler-qt4")
@@ -192,8 +211,6 @@ endif()
 if( I3WORKAROUND_SHELLCODE )
 	add_definitions(-DI3WORKAROUND_SHELLCODE="${I3WORKAROUND_SHELLCODE}")
 endif()
-
-set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp windowrole.cpp main.cpp)
 
 # This helps with translation, since it disables QString(const char*)
 add_definitions(-DQT_NO_CAST_FROM_ASCII)
