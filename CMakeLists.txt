@@ -26,6 +26,14 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
 find_package(Boost COMPONENTS program_options REQUIRED)
 
 option(UseQtFive "Build with Qt5 and libpoppler-qt5" OFF)
+option(UpdateTranslations "Do you want to update the .ts files (WARNING: make clean will eat them!)" OFF)
+
+list(APPEND TRANSLATIONFILES
+	dspdfviewer_de.ts
+)
+list(APPEND UIFILES
+	pdfviewerwindow.ui
+)
 
 if(UseQtFive)
 	#qt5
@@ -33,6 +41,7 @@ if(UseQtFive)
 	find_package(Qt5Core REQUIRED)
 	find_package(Qt5Gui REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
+	find_package(Qt5LinguistTools REQUIRED)
 	pkg_search_module(POPPLER REQUIRED poppler-qt5)
 	# add their include directories
 	list(APPEND LIST_INCLUDE_DIRS ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
@@ -40,7 +49,12 @@ if(UseQtFive)
 	list(APPEND LIST_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
 	add_definitions(-DPOPPLER_QT5)
 	add_definitions(-fPIC)
-	qt5_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
+	qt5_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
+	if( UpdateTranslations )
+		qt5_create_translation(TRANSLATIONS ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
+	else()
+		qt5_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
+	endif()
 else()
 	#qt4
 	message(STATUS "Using Qt4 and libpoppler-qt4")
@@ -50,6 +64,11 @@ else()
 	list(APPEND LIST_INCLUDE_DIRS ${QT_INCLUDES})
 	list(APPEND LIST_LIBRARIES Qt4::QtGui)
 	qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
+	if( UpdateTranslations )
+		qt4_create_translation(TRANSLATIONS ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
+	else()
+		qt4_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
+	endif()
 endif()
 
 # include/link poppler
@@ -176,27 +195,9 @@ endif()
 
 set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp windowrole.cpp main.cpp)
 
-set(TRANSLATIONFILES
-	dspdfviewer_de.ts
-)
-set(UIFILES
-	pdfviewerwindow.ui
-)
-
 # This helps with translation, since it disables QString(const char*)
 add_definitions(-DQT_NO_CAST_FROM_ASCII)
 
-qt4_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
-
-
-
-option(UpdateTranslations "Do you want to update the .ts files (WARNING: make clean will eat them!)" OFF)
-
-if( UpdateTranslations )
-	qt4_create_translation(TRANSLATIONS ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
-else()
-	qt4_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
-endif()
 
 add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
 target_link_libraries(dspdfviewer ${LIST_LIBRARIES})
