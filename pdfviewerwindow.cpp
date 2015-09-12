@@ -71,7 +71,12 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool s
   ui.verticalLayout->setStretch(0, numeric_cast<int>(mainImageHeight) );
   ui.verticalLayout->setStretch(1, numeric_cast<int>(r.bottomPaneHeight()) );
   setWindowRole(to_QString(wr));
-  setWindowTitle(tr("DS PDF Viewer - %1").arg(to_QString(windowRole).replace(QChar::fromAscii('_'), QChar::fromAscii(' ')) ) );
+  /*: User visible Window Title Line */
+	if ( windowRole == WindowRole::AudienceWindow ) {
+		setWindowTitle(tr("DS PDF Viewer - Audience Window"));
+	} else {
+		setWindowTitle(tr("DS PDF Viewer - Secondary Window"));
+	}
   if ( !showInformationLine || ! r.showPresenterArea()) {
     /* If the information line is disabled because we're the primary screen,
      * or the user explicitly said so, disable it completely.
