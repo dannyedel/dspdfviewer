@@ -27,9 +27,6 @@
 #include <stdexcept>
 #include "debug.h"
 
-
-static const QSize ThumbnailSize(200,100);
-
 void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> renderedPage)
 {
   {
@@ -61,11 +58,18 @@ void PdfRenderFactory::rewatchFile()
 
 
 
-PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption& cacheSetting): QObject(), documentReference(filename, cacheSetting), currentVersion(0),
-
-  // Attempt to read the document to get the number of pages within.
-  // This will throw an error if the document is unreadable.
-  numberOfPages_(documentReference.popplerDocument()->numPages())
+PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption& cacheSetting):
+	QObject(),
+	documentReference(filename, cacheSetting),
+	fileWatcher(),
+	fileWatcherRewatchTimer(),
+	currentlyRenderingPages(),
+	renderedPages(),
+	mutex(),
+	currentVersion(0),
+	// Attempt to read the document to get the number of pages within.
+	// This will throw an error if the document is unreadable.
+	numberOfPages_(documentReference.popplerDocument()->numPages())
 {
 
   rewatchFile();
@@ -155,7 +159,7 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
     }
 
     emit pdfFileRereadSuccesfully();
-  } catch( std::runtime_error& e) {
+  } catch( std::runtime_error& ) {
     DEBUGOUT << "Unable to read the new reference. keeping the old one.";
     emit pdfFileRereadFailed();
   }

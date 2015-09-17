@@ -2,6 +2,9 @@ language: cpp
 sudo: required
 services:
     - docker
+os:
+    - linux
+    - osx
 compiler:
     - clang
     - gcc
@@ -10,6 +13,11 @@ env:
     - CMAKE_PARAMETERS="-DUseQtFive=OFF"
 matrix:
   fast_finish: true
+  exclude:
+    - os: osx
+      env: CMAKE_PARAMETERS="-DUseQtFive=ON"
+    - os: osx
+      compiler: gcc
 install:
  - _travis/install_dependencies
 script:
