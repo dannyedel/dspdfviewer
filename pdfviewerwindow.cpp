@@ -377,9 +377,7 @@ QString PDFViewerWindow::timeToString(const QTime & time) const
 
 QString PDFViewerWindow::timeToString(int milliseconds) const
 {
-  QTime time;
-  time.addMSecs(milliseconds);
-  return timeToString(time);
+  return timeToString(QTime(0,0).addMSecs(milliseconds));
 }
 
 
