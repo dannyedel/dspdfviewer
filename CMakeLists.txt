@@ -111,8 +111,13 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_definitions(-Wno-padded)
 	#   in release mode: Unrechable code / Macro expansion (these stem from QDEBUG)
 	if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" )
-		add_definitions(-Wno-unreachable-code -Wno-unreachable-code -Wno-disabled-macro-expansion)
+		add_definitions(-Wno-unreachable-code -Wno-disabled-macro-expansion)
 	endif()
+	#   Qt's moc (Meta Object Compiler) generates code that triggers warnings
+	#   about undefined behaviours.
+
+	#   So don't set Werror for it.
+	add_definitions(-Wno-error=undefined-reinterpret-cast)
 else()
 	message(WARNING "Compiling with a Non-GNU compiler. A lot less warnings will be output, so more coding errors might go undetected.")
 endif()
