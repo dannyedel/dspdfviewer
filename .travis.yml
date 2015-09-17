@@ -1,5 +1,7 @@
 language: cpp
 sudo: required
+services:
+    - docker
 os:
     - linux
     - osx
@@ -11,10 +13,6 @@ env:
     - CMAKE_PARAMETERS="-DUseQtFive=OFF"
 matrix:
   fast_finish: true
-  allow_failures:
-    - env: CMAKE_PARAMETERS="-DUseQtFive=ON"
-    - compiler: clang
-      os: linux
   exclude:
     - os: osx
       env: CMAKE_PARAMETERS="-DUseQtFive=ON"

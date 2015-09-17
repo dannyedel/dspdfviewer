@@ -36,7 +36,9 @@ endif()
 if(UseQtFive)
 	#qt5
 	message(STATUS "Using Qt5 and libpoppler-qt5")
-	find_package(Qt5Core REQUIRED)
+	find_package(Qt5Core 5.1.1 REQUIRED)
+	# On lower versions, QTBUG-32100 prevents compilation at least on clang
+	# https://bugreports.qt.io/browse/QTBUG-32100
 	find_package(Qt5Gui REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
 	pkg_search_module(POPPLER REQUIRED poppler-qt5)
@@ -98,9 +100,7 @@ endif()
 if(CMAKE_COMPILER_IS_GNUCXX)
 	#add some warnings
 	add_definitions(-Wall -Wextra -pedantic -Werror -Wfatal-errors -Wold-style-cast -Woverloaded-virtual)
-	#I like these for my code, but Qt doesnt compile with them
-	# add_definitions( -Weffc++ )
-	add_definitions(-Wno-effc++)
+	add_definitions(-Weffc++)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	# Turn on a lot of warnings, hopefully helping with code quality.
 	add_definitions(-Weverything)
@@ -117,8 +117,13 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_definitions(-Wno-padded)
 	#   in release mode: Unrechable code / Macro expansion (these stem from QDEBUG)
 	if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" )
-		add_definitions(-Wno-unreachable-code -Wno-unreachable-code -Wno-disabled-macro-expansion)
+		add_definitions(-Wno-unreachable-code -Wno-disabled-macro-expansion)
 	endif()
+	#   Qt's moc (Meta Object Compiler) generates code that triggers warnings
+	#   about undefined behaviours.
+
+	#   So don't set Werror for it.
+	add_definitions(-Wno-error=undefined-reinterpret-cast)
 else()
 	message(WARNING "Compiling with a Non-GNU compiler. A lot less warnings will be output, so more coding errors might go undetected.")
 endif()

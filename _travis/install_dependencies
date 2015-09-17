@@ -11,9 +11,6 @@ if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
 	# Update list of available packages in any case
 	DEPS="libboost-program-options-dev libboost-test-dev pkg-config"
 	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
-		echo "Adding dannyedel ppa"
-		sudo add-apt-repository ppa:dannyedel/libpoppler-qt5-backports -y
-		sudo add-apt-repository ppa:ubuntu-sdk-team/ppa -y
 		DEPS="${DEPS} libpoppler-qt5-dev qtbase5-dev"
 	else
 		DEPS="${DEPS} libpoppler-qt4-dev"

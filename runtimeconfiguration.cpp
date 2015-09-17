@@ -43,7 +43,21 @@
 using namespace std;
 using namespace boost::program_options;
 
-RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
+RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
+	m_useFullPage(false),
+	m_showPresenterArea(true),
+	m_showWallClock(true),
+	m_showThumbnails(true),
+	m_showPresentationClock(true),
+	m_showSlideClock(true),
+	m_filePath(),
+	m_hyperlinkSupport(true),
+	m_cacheToMemory(true),
+	m_useSecondScreen(true),
+	m_i3workaround(false),
+	m_prerenderPreviousPages(3),
+	m_prerenderNextPages(10),
+	m_bottomPaneHeightPercent(20)
 {
   options_description generic("Generic options");
 
