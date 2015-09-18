@@ -46,8 +46,8 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 	documentFileWatcher(),
  renderFactory(r.filePathQString(), r.cachePDFToMemory()?PDFCacheOption::keepPDFinMemory:PDFCacheOption::rereadFromDisk ),
  m_pagenumber(0),
- audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r, WindowRole::AudienceWindow),
- secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true,  r, WindowRole::PresenterWindow, r.useSecondScreen() )
+ audienceWindow(1,   r.useFullPage()                 ? PagePart::FullPage : PagePart::LeftHalf , false, r, WindowRole::AudienceWindow),
+ secondaryWindow(0, (r.useFullPage() | r.duplicate())? PagePart::FullPage : PagePart::RightHalf, true , r, WindowRole::PresenterWindow, r.useSecondScreen())
 {
   DEBUGOUT << "Starting constructor" ;
 
@@ -85,6 +85,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 
   sconnect( &audienceWindow, SIGNAL(blankToggleRequested()), this, SLOT(toggleAudienceScreenBlank()));
   sconnect( &audienceWindow, SIGNAL(secondScreenFunctionToggleRequested()), this, SLOT(toggleSecondaryScreenFunction()));
+  sconnect( &audienceWindow, SIGNAL(secondScreenDuplicateRequested()), this, SLOT(toggleSecondaryScreenDuplication()));
 
   if ( r.useSecondScreen() )
   {
@@ -106,6 +107,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 
     sconnect( &secondaryWindow, SIGNAL(blankToggleRequested()), this, SLOT(toggleAudienceScreenBlank()));
     sconnect( &secondaryWindow, SIGNAL(secondScreenFunctionToggleRequested()), this, SLOT(toggleSecondaryScreenFunction()));
+	sconnect( &secondaryWindow, SIGNAL(secondScreenDuplicateRequested()), this, SLOT(toggleSecondaryScreenDuplication()));
 
 
     sconnect( this, SIGNAL(presentationClockUpdate(QTime)), &secondaryWindow, SLOT(updatePresentationClock(QTime)));
@@ -145,16 +147,6 @@ void DSPDFViewer::goForward()
 unsigned int DSPDFViewer::pageNumber() const
 {
   return m_pagenumber;
-}
-
-QImage DSPDFViewer::renderForTarget(QSharedPointer< Poppler::Page > page, QSize targetSize, bool onlyHalf, bool rightHalf)
-{
-  PagePart part(
-    onlyHalf?
-      ( rightHalf? PagePart::RightHalf : PagePart::LeftHalf )
-      : PagePart::FullPage );
-  return RenderUtils::renderPagePart(page, targetSize, part);
-
 }
 
 
@@ -363,6 +355,23 @@ void DSPDFViewer::toggleSecondaryScreenFunction()
       break;
     case PagePart::RightHalf:
       secondaryWindow.setMyPagePart(PagePart::LeftHalf);
+      break;
+  }
+  emit renderPage();
+}
+
+void DSPDFViewer::toggleSecondaryScreenDuplication()
+{
+  DEBUGOUT << "Swapping second screen duplication";
+  switch ( secondaryWindow.getMyPagePart() ) {
+    case PagePart::FullPage:
+      if (!runtimeConfiguration.useFullPage()) {
+        secondaryWindow.setMyPagePart(PagePart::RightHalf);
+      }
+      break;
+    case PagePart::LeftHalf:
+    case PagePart::RightHalf:
+      secondaryWindow.setMyPagePart(PagePart::FullPage);
       break;
   }
   emit renderPage();

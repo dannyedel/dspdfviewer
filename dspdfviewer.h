@@ -56,8 +56,6 @@ private:
 
 
 private:
-  QImage renderForTarget( QSharedPointer<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf=false);
-
   QString timeToString(QTime time) const;
   QString timeToString(int milliseconds) const;
   void	resetSlideClock();
@@ -125,6 +123,7 @@ public slots:
     void setAudienceScreenVisible();
 
     void toggleSecondaryScreenFunction();
+    void toggleSecondaryScreenDuplication();
 
     void exit();
 };

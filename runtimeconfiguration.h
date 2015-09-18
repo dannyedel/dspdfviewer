@@ -39,6 +39,10 @@ class RuntimeConfiguration
    */
   bool m_showPresenterArea;
 
+  /** Show a full second screen
+   */
+  bool m_duplicate;
+
   /** Show the wall clock
    */
   bool m_showWallClock;
@@ -111,6 +115,7 @@ public:
   void filePath(const std::string& newPath);
 
   bool showPresenterArea() const;
+  bool duplicate() const;
   bool showWallClock() const;
   bool showThumbnails() const;
   bool showPresentationClock() const;
