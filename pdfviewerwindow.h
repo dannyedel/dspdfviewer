@@ -136,6 +136,7 @@ public slots:
 
     void quitRequested();
     void secondScreenFunctionToggleRequested();
+    void secondScreenDuplicateRequested();
 
     void blankToggleRequested();
 private slots:

@@ -174,6 +174,9 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
       case Qt::Key_T:
 	emit secondScreenFunctionToggleRequested();
 	break;
+      case Qt::Key_D:
+	emit secondScreenDuplicateRequested();
+	break;
       case Qt::Key_Space:
       case Qt::Key_Enter:
       case Qt::Key_Return:
@@ -411,6 +414,7 @@ void PDFViewerWindow::keybindingsPopup()
   msg.append("<tr><td>Q or Esc</td><td>Quit</td></tr>\n");
   msg.append("<tr><td>S or F12</td><td>Switch primary and secondary screens</td></tr>\n");
   msg.append("<tr><td>T</td><td>Toggle between notes and slides in the secondary screen</td></tr>\n");
+  msg.append("<tr><td>D</td><td>Toggle between displaying both notes and slides in the secondary screen or only notes</td></tr>\n");
   msg.append("<tr><td>? or F1</td><td>Show this help box</td></tr>\n");
   msg.append("</table>");
   popup->setWindowTitle(QString("Keybindings"));

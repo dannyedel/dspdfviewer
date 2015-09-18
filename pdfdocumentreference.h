@@ -60,7 +60,9 @@ public:
    * explicitly that the standard copy-construct is all right
    */
   PDFDocumentReference(const PDFDocumentReference& ) =default;
+#ifndef _MSC_VER
   PDFDocumentReference(PDFDocumentReference&&) =default;
+#endif
 
   /** Compares the references. Exact behaviour depends on the cache option:
    * If we are memory-caching, this compares the ByteArrays (i.e. checks for

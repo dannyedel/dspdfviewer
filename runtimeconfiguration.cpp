@@ -46,6 +46,7 @@ using namespace boost::program_options;
 RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
 	m_useFullPage(false),
 	m_showPresenterArea(true),
+        m_duplicate(false),
 	m_showWallClock(true),
 	m_showThumbnails(true),
 	m_showPresentationClock(true),
@@ -112,6 +113,10 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
      value<bool>(&m_showPresenterArea)->default_value(true),
      "Shows or hides the complete \"presenter area\" on the second screen, giving you a full-screen note page.\n"
      "NOTE: Whatever you say on -t, -w, -s or -p doesnt matter if you set this to false."
+    )
+    ("duplicate,d",
+     value<bool>(&m_duplicate)->default_value(false),
+     "Duplicates the audience's screen next to the notes on the second screen.\n"
     )
     ("thumbnails,t",
      value<bool>(&m_showThumbnails)->default_value(true),
@@ -228,6 +233,10 @@ bool RuntimeConfiguration::showPresentationClock() const
 bool RuntimeConfiguration::showPresenterArea() const
 {
   return m_showPresenterArea;
+}
+bool RuntimeConfiguration::duplicate() const
+{
+  return m_duplicate;
 }
 bool RuntimeConfiguration::showSlideClock() const
 {
