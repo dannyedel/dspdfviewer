@@ -22,6 +22,11 @@ sudo apt-get update
 sudo apt-get install dspdfviewer
 {% endhighlight %}
 
+## Versions overview
+
+To see which version of `dspdfviewer` is included in which Ubuntu release, check out
+https://launchpad.net/ubuntu/+source/dspdfviewer
+
 ## Advanced users: Follow the development version
 
 If you want to help development by testing new features, please
