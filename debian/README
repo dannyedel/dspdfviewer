@@ -1,6 +1,20 @@
-The Debian Package dspdfviewer
-----------------------------
+Debian directory in dspdfviewer's git-repository
+------------------------------------------------
 
-Comments regarding the Package
+This debian/ directory is here to create automatic builds from every
+git revision on travis, jenkins and launchpad's auto-build service.
 
- -- Danny Edel <mail@danny-edel.de>  Tue, 13 Nov 2012 14:50:46 +0100
+As such, the program pretends to be debian-native, so that travis,
+jenkins and users can simply call debuild to generate tarball
+and a working binary on-the-fly.
+
+The created packages will likely be of subpar quality and are meant for
+users that want to test new and unreleased features without having
+too much hassle.
+
+
+A proper debian package has already been included into debian sid
+and is maintained by me, please take a look at the "debian" branch
+in this repository (git://github.com/dannyedel/dspdfviewer.git).
+
+ -- Danny Edel <mail@danny-edel.de>  Mon, 10 Aug 2015 22:44:02 +0200

@@ -23,24 +23,31 @@
 #include "renderingidentifier.h"
 #include "sconnect.h"
 
-#include <QtGui/QLabel>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QAction>
+#include <QLabel>
+#include <QMenu>
+#include <QMenuBar>
+#include <QAction>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <qlayout.h>
 
 #include "debug.h"
 #include <stdexcept>
+#include <boost/numeric/conversion/cast.hpp>
+
+using boost::numeric_cast;
 
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 	runtimeConfiguration(r),
- presentationClockRunning(false),
+	clockDisplayTimer(),
+	slideStart(),
+	presentationStart(),
+	presentationClockRunning(false),
+	documentFileWatcher(),
  renderFactory(r.filePathQString(), r.cachePDFToMemory()?PDFCacheOption::keepPDFinMemory:PDFCacheOption::rereadFromDisk ),
  m_pagenumber(0),
- audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r, "Audience_Window"),
- secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true,  r, "Secondary_Window", r.useSecondScreen() )
+ audienceWindow(1,  r.useFullPage()? PagePart::FullPage : PagePart::LeftHalf , false, r, WindowRole::AudienceWindow),
+ secondaryWindow(0, r.useFullPage()? PagePart::FullPage : PagePart::RightHalf, true,  r, WindowRole::PresenterWindow, r.useSecondScreen() )
 {
   DEBUGOUT << "Starting constructor" ;
 
@@ -232,8 +239,6 @@ void DSPDFViewer::exit()
   secondaryWindow.close();
 }
 
-const QSize DSPDFViewer::thumbnailSize = QSize(200, 100);
-
 PdfRenderFactory* DSPDFViewer::theFactory()
 {
   return &renderFactory;
@@ -241,17 +246,8 @@ PdfRenderFactory* DSPDFViewer::theFactory()
 
 unsigned int DSPDFViewer::numberOfPages() const {
   int pages = renderFactory.numberOfPages();
-	if ( pages < 0 )
-	{
-		/* What the... ?!
-		 *
-		 * I return zero, so that any kind of loop that counts "for
-		 * all pages" will terminate immediately.
-		 */
-		return 0;
-	}
-	/* numPages is non-negative and therefore safe to use. */
-	return pages;
+  // Numeric cast includes error handling.
+  return numeric_cast<uint>(pages);
 }
 
 void DSPDFViewer::goToStartAndResetClocks()

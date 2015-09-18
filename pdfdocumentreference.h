@@ -3,7 +3,7 @@
 #include <QString>
 #include <QSharedPointer>
 #include "pdfcacheoption.h"
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 
 // forward-declare
 struct PDFPageReference;
@@ -55,6 +55,12 @@ public:
    * effectively only updating the file contents buffer.
    */
   PDFDocumentReference& operator = (const PDFDocumentReference& rhs);
+
+  /** Since we define a custom copy-assignment, tell the compiler
+   * explicitly that the standard copy-construct is all right
+   */
+  PDFDocumentReference(const PDFDocumentReference& ) =default;
+  PDFDocumentReference(PDFDocumentReference&&) =default;
 
   /** Compares the references. Exact behaviour depends on the cache option:
    * If we are memory-caching, this compares the ByteArrays (i.e. checks for

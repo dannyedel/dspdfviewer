@@ -2,44 +2,21 @@ Source: dspdfviewer
 Section: text
 Priority: extra
 Maintainer: Danny Edel <mail@danny-edel.de>
-Build-Depends: g++ (>= 4:4.6),
- debhelper (>= 7.3.0), cmake,
- libpoppler-qt4-dev,
- libboost-program-options-dev,
- lsb-release
-# The project needs a c++11 compiler.
-# Its known to work with g++ 4.6 and up
-#
-# FIXME if there's a better, cleaner way to express
-# "This project needs a c++11 compiler" then specify it here
-# This probably is not an issue until Debian switches away from
-# the GNU Compiler collection...
-#
-# Rest of deps:
-# - debhelper 7.3.0
-# A Debhelper with cmake support
-# (otherwise it will not see the CMakeLists.txt and just build
-# a package with a manpage...
-#
-# - libpoppler-qt4-dev
-# the poppler-library for PDF decoding
-#
-# - libboost-program-options-dev
-# the boost program options to parse command line parameters
-#
-# - lsb-release
-# This is needed for the switch in the debian/rules file checking
-# against lucid
+Build-Depends: cmake,
+               debhelper (>= 7.3.0),
+               g++ (>= 4:4.6),
+               libboost-program-options-dev,
+               libpoppler-qt4-dev,
+               lsb-release,
+               pkg-config
 Standards-Version: 3.9.3
 Vcs-Git: git://github.com/dannyedel/dspdfviewer.git
 Vcs-Browser: https://github.com/dannyedel/dspdfviewer
-# Homepage: http://danny-edel.de/projects/dspdfviewer
-# NOTE: I have not written a homepage yet, but probably writing
-# the source code is more important.
+Homepage: http://dspdfviewer.danny-edel.de
 
 Package: dspdfviewer
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Suggests: latex-beamer
 Description: Dual-Screen PDF Viewer for LaTeX-beamer
  This is a specialized PDF Viewing application custom-made for
@@ -61,3 +38,13 @@ Description: Dual-Screen PDF Viewer for LaTeX-beamer
  information, like the time since you started the presentation
  and a "wall clock".
 
+Package: dspdfviewer-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: dspdfviewer (= ${binary:Version}), ${misc:Depends}
+Description: debugging symbols for dspdfviewer
+ dspdfviewer if a specialized PDF viewer for latex-beamer
+ presentations using the "shot notes on second screen" feature.
+ .
+ This package contains the debugging symbols for dspdfviewer.

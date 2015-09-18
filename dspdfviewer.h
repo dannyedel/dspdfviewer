@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QFileSystemWatcher>
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 
 #include "pdfviewerwindow.h"
 #include "pdfrenderfactory.h"
@@ -54,9 +54,6 @@ private:
   PDFViewerWindow secondaryWindow;
 
 
-
-public:
-  static const QSize thumbnailSize;
 
 private:
   QImage renderForTarget( QSharedPointer<Poppler::Page> page, QSize targetSize, bool onlyHalf, bool rightHalf=false);

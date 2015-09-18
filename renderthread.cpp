@@ -51,7 +51,7 @@ void RenderThread::run()
     try{
       AdjustedLink al(renderMe, ptrLink);
       links.append(al);
-    } catch( AdjustedLink::OutsidePage & e) {
+    } catch( AdjustedLink::OutsidePage &) {
       // no-op
     }
   }
@@ -60,4 +60,4 @@ void RenderThread::run()
   emit renderingFinished(renderResult);
 }
 
-#include "renderthread.cpp.moc"
+#include "renderthread.moc"

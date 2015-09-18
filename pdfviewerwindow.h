@@ -25,31 +25,32 @@
 #include "pdfrenderfactory.h"
 #include "runtimeconfiguration.h"
 #include "hyperlinkarea.h"
+#include "windowrole.h"
 
 #include "ui_pdfviewerwindow.h"
 
 /** Shared base class for both windows (primary and secondary)
  *
  */
-class PDFViewerWindow : public QWidget, private Ui::Form
+class PDFViewerWindow : public QWidget
 {
   Q_OBJECT
 private:
+  Ui::Form ui;
   bool	m_enabled;
   unsigned int m_monitor;
   QImage currentImage;
   bool blank;
-  bool useHyperlinks;
-
   bool informationLineVisible;
 
   uint currentPageNumber;
   uint minimumPageNumber;
   uint maximumPageNumber;
-  bool correntImageRendered;
+  bool correctImageRendered;
   PagePart myPart;
 
-  const RuntimeConfiguration runtimeConfiguration;
+  // Reference to the runtime configuration object.
+  const RuntimeConfiguration& runtimeConfiguration;
 
   /** Display this image
     */
@@ -76,9 +77,8 @@ private:
 public:
   /** Standard constructor
    * @param monitor monitor to start on (usually 0 for primary)
-   * @param dspdfviewer Pointer to the application (to handle next/prev commands)
    */
-    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const QString& windowRole, bool enabled=true);
+    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& windowRole, bool enabled=true);
 
     /** Sets the monitor to display this window on
      * Automatically calls reposition
@@ -107,7 +107,7 @@ public:
 
     bool isBlank() const;
 
-    void showLoadingScreen(int pageNumberToWaitFor);
+    void showLoadingScreen(uint pageNumberToWaitFor);
 
 public slots:
   void renderedPageIncoming( QSharedPointer<RenderedPage> renderedPage);

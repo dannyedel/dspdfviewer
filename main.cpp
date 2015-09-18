@@ -18,7 +18,7 @@
 */
 
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include "debug.h"
 #include "dspdfviewer.h"
 #include "runtimeconfiguration.h"

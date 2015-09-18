@@ -21,6 +21,8 @@
 #include "adjustedlink.h"
 
 #include <stdexcept>
+#include <boost/numeric/conversion/cast.hpp>
+using boost::numeric_cast;
 
 QSharedPointer< Poppler::Link > AdjustedLink::link() const
 {
@@ -81,7 +83,12 @@ AdjustedLink::OutsidePage::OutsidePage(): runtime_error("This link is not inside
 
 uint AdjustedLink::targetPageNumber() const
 {
-  return lgt().destination().pageNumber() -1;
+	/* Although page numbers in a PDF are non-negative, poppler's pageNumber
+	 * is a signed integer.
+	 *
+	 * numeric_cast checks that the number actually *is* non-negative.
+	 */
+  return numeric_cast<unsigned>(lgt().destination().pageNumber()) -1u;
 }
 
 

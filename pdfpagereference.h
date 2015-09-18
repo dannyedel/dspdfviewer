@@ -2,7 +2,7 @@
 #define PDFPAGEREFERENCE_H
 
 #include <QSharedPointer>
-#include <poppler/qt4/poppler-qt4.h>
+#include "poppler-qt.h"
 #include "pdfdocumentreference.h"
 
 /** This holds a reference to a page in a certain document

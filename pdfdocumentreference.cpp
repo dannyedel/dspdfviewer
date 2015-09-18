@@ -35,6 +35,7 @@ PDFPageReference PDFDocumentReference::page(unsigned int pageNumber) const
 
 PDFDocumentReference::PDFDocumentReference(const QString& theFilename, const PDFCacheOption& theCacheOption):
 filename_(theFilename),
+fileContents_(),
 cacheOption_(theCacheOption)
 {
   if ( cacheOption() == PDFCacheOption::keepPDFinMemory ) {

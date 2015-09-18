@@ -43,7 +43,21 @@
 using namespace std;
 using namespace boost::program_options;
 
-RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
+RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
+	m_useFullPage(false),
+	m_showPresenterArea(true),
+	m_showWallClock(true),
+	m_showThumbnails(true),
+	m_showPresentationClock(true),
+	m_showSlideClock(true),
+	m_filePath(),
+	m_hyperlinkSupport(true),
+	m_cacheToMemory(true),
+	m_useSecondScreen(true),
+	m_i3workaround(false),
+	m_prerenderPreviousPages(3),
+	m_prerenderNextPages(10),
+	m_bottomPaneHeightPercent(20)
 {
   options_description generic("Generic options");
 
@@ -157,8 +171,14 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv)
       cout << endl;
       cout << "Usage: " << argv[0] << " [options] pdf-file" << endl;
       cout << help << endl;
+      // Add a short primer about interactive controls
+      const std::string padding="\t";
+      cout << "Interactive Controls:" << endl
+           << padding << "Press F1 or ? during program execution to get a quick" << endl
+           << padding << "overview about available controls." << endl
+           << padding << "Please read the manpage (man dspdfviewer) for the full list." << endl;
     }
-    exit(1);
+    exit(0);
   }
 
   if ( m_bottomPaneHeightPercent < 1 || m_bottomPaneHeightPercent > 99 ) {
