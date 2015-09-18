@@ -1,5 +1,5 @@
 ---
-title: Installation on older Debian releases
+title: Installation on Debian wheezy release
 layout: default
 ---
 
@@ -7,8 +7,21 @@ layout: default
 
 -----
 
-If the official `dspdfviewer` package is not yet in your distribution,
-please follow these steps to add my repository to your system sources.
+If you are using Debian wheezy, please consider that it is now
+`oldstable` and will therefore stop receiving security updates soon.
+
+Please consider upgrading to the current stable release, especially
+on a desktop system.
+
+-----
+
+That said, I (Danny Edel <mail@danny-edel.de>) maintain a
+third-party repository to install `dspdfviewer` on wheezy.
+
+Although this not required, you are encouraged to send an e-mail to me
+if you use the repository, to show there is an active userbase.
+
+Please follow these steps to add my repository to your system sources.
 Once you have done that, you will get updates to dspdfviewer using
 <span class="root">
 standard `apt-get update && apt-get upgrade` calls.
@@ -35,91 +48,11 @@ Apt will obviously ask you if you want to continue without authentication.
 
 <div class="root">
 {% highlight bash %}
-# replace YOURDISTRIBUTION with wheezy or jessie, depending on your system.
-echo 'deb http://danny-edel.de/deb YOURDISTRIBUTION main' >> /etc/apt/sources.list.d/danny-edel.list
-echo 'deb-src http://danny-edel.de/deb YOURDISTRIBUTION main' >> /etc/apt/sources.list.d/danny-edel.list
+echo 'deb http://danny-edel.de/deb wheezy main' >> /etc/apt/sources.list.d/danny-edel.list
+echo 'deb-src http://danny-edel.de/deb wheezy main' >> /etc/apt/sources.list.d/danny-edel.list
 apt-get update    # note: apt-get will complain about the repository signing key
 apt-get install danny-edel-keyring    # note: apt-get will complain again
 apt-get update    # Now all is good.
 apt-get install dspdfviewer
 {% endhighlight %}
 </div>
-
-## Installation of daily debs, directly from git
-If you want to stay up-to-date from git (for example because you want to help test features
-in development), you can install the daily debs that my [jenkins] generates and signs for you.
-
-Jenkins' packages are signed with gpg key [0x61E9E242].
-
-<div class="root">
-{% highlight bash %}
-echo 'deb http://jenkins.danny-edel.de/jenkins-deb dspdfviewer-YOURDISTRIBUTION main' >> /etc/apt/sources.list.d/jenkins.list
-apt-key adv --keyserver hkp://hkps.pool.sks-keyservers.net --recv-keys 0xC86A1F0861E9E242
-apt-get update
-apt-get install dspdfviewer
-{% endhighlight %}
-</div>
-
-[jenkins]: http://danny-edel.de/jenkins
-[0x61E9E242]: https://sks-keyservers.net/pks/lookup?op=get&search=0xC86A1F0861E9E242
-
-### Upgrading
-
-Since the package repository is set up, your normal `apt-get update && apt-get upgrade` will
-include updates to dspdfviewer. This also means that using the (even graphical) apt frontend
-of your choosing will see and install updates.
-
-You can swap between the two repositories, but note that since apt doesn't do *down*grades by
-default, you will either have to wait for the next relese when swapping "down" from daily
-to release, or do an uninstallation followed by a fresh download of dspdfviewer.
-
-
-
-## Installation from source
-
-If you prefer to install from source, please execute the following steps.
-
-Install `build-essential`, `git`, `devscripts` and `equivs`.
-
-<div class="root">
-{% highlight bash %}
-apt-get install build-essential git devscripts equivs
-{% endhighlight %}
-</div>
-
-As normal user, clone the git repository.
-
-If you want to build from a release tag (instead of current git)
-you can checkout that tag.
-
-{% highlight bash %}
-git clone git://github.com/dannyedel/dspdfviewer.git
-cd dspdfviewer
-
-# optional:
-git checkout v1.12
-{% endhighlight %}
-
-As root, install build dependencies (You will most likely not have to repeat this,
-since build dependencies don't change often)
-
-<div class="root">
-{% highlight bash %}
-#from within the dspdfviewer directory
-mk-build-deps --install --remove
-{% endhighlight %}
-</div>
-
-As normal user, build your package with debian automation
-{% highlight bash %}
-debuild -tc -uc -us
-{% endhighlight %}
-
-As root, install the freshly-built package
-
-<div class="root">
-{% highlight bash %}
-debi
-{% endhighlight %}
-</div>
-
