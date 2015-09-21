@@ -16,13 +16,15 @@ a little bit different.
 
 `dspdfviewer` is included in `jessie-backports`.  Information on what
 `backports` is and how to use it is found on [backports instructions],
-but to get started, try these commands:
+but to get started, try these commands (make sure to replace
+*ftp.de.debian.org* with your preferred debian mirror!)
 
 <div class="root">
 {% highlight bash %}
 # Activate jessie-backports
-tee -a /etc/apt/sources.list.d/jessie-backports.list <<< "deb http://httpredir.debian.org/debian jessie-backports main"
+tee -a /etc/apt/sources.list.d/jessie-backports.list <<< "deb http://ftp.de.debian.org/debian jessie-backports main"
 apt-get update
+
 # Install dspdfviewer
 apt-get install dspdfviewer
 {% endhighlight %}
