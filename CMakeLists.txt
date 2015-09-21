@@ -232,7 +232,7 @@ endif()
 add_definitions(-DQT_NO_CAST_FROM_ASCII)
 
 
-add_library(libdspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
+add_library(libdspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
 set_target_properties(libdspdfviewer PROPERTIES OUTPUT_NAME dspdfviewer)
 target_link_libraries(libdspdfviewer ${LIST_LIBRARIES})
 

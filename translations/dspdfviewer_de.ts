@@ -81,14 +81,137 @@
     </message>
 </context>
 <context>
+    <name>KeybindingsDialog</name>
+    <message>
+        <location filename="../keybindings.ui" line="20"/>
+        <source>Keybindings</source>
+        <translation type="unfinished">Tastenkombinationen</translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="38"/>
+        <source>Key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="52"/>
+        <source>Action</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="59"/>
+        <source>Next slide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="66"/>
+        <source>N or Left/Down arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="73"/>
+        <source>P or Right/Down arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="80"/>
+        <source>Blank/Unblank audience screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="87"/>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="94"/>
+        <source>Previous slide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="101"/>
+        <source>Go to specific slide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="108"/>
+        <source>Toggle between notes and slides on the secondary screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="115"/>
+        <source>Toggle between displaying both notes and slides on the secondary screen or only notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="122"/>
+        <source>Switch primary and secondary screens</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="129"/>
+        <source>Go to first page and reset counters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="136"/>
+        <source>Show this help box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="143"/>
+        <source>B or .</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="150"/>
+        <source>G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="157"/>
+        <source>H or Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="164"/>
+        <source>Q or Esc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="171"/>
+        <source>S or F12</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="178"/>
+        <source>T</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="185"/>
+        <source>D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="192"/>
+        <source>? or F1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keybindings.ui" line="216"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PDFViewerWindow</name>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="339"/>
+        <location filename="../pdfviewerwindow.cpp" line="340"/>
         <source>Loading page number %1</source>
         <translation>Lade Seite Nummer %1</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="384"/>
+        <location filename="../pdfviewerwindow.cpp" line="385"/>
         <source>HH:mm:ss</source>
         <comment>This is used by QTime::toString. See its documentation before changing this.</comment>
         <translation>HH:mm:ss</translation>
@@ -100,45 +223,27 @@
 %1</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="76"/>
+        <location filename="../pdfviewerwindow.cpp" line="77"/>
         <source>DS PDF Viewer - Audience Window</source>
         <extracomment>User visible Window Title Line</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="78"/>
+        <location filename="../pdfviewerwindow.cpp" line="79"/>
         <source>DS PDF Viewer - Secondary Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="411"/>
-        <source>&lt;table&gt;
-&lt;tr&gt;&lt;th width=200 align=left&gt;Key&lt;/th&gt;&lt;th width=400 align=left&gt;Action&lt;/th&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;N or Left/Down arrow&lt;/td&gt;&lt;td&gt;Next slide&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;P or Right/Up arrow&lt;/td&gt;&lt;td&gt;Previous slide&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;B or .&lt;/td&gt;&lt;td&gt;Blank/Unblank audience screen&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;G&lt;/td&gt;&lt;td&gt;Go to specific slide&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;H or Home&lt;/td&gt;&lt;td&gt;Go to first page and reset counters&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Q or Esc&lt;/td&gt;&lt;td&gt;Quit&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;S or F12&lt;/td&gt;&lt;td&gt;Switch primary and secondary screens&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;T&lt;/td&gt;&lt;td&gt;Toggle between notes and slides in the secondary screen&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;D&lt;/td&gt;&lt;td&gt;Toggle between displaying both notes and slides in the secondary screen or only notes&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;? or F1&lt;/td&gt;&lt;td&gt;Show this help box&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;</source>
-        <translation type="unfinished"></translation>
+        <source>Keybindings</source>
+        <translation type="obsolete">Tastenkombinationen</translation>
     </message>
     <message>
         <location filename="../pdfviewerwindow.cpp" line="427"/>
-        <source>Keybindings</source>
-        <translation>Tastenkombinationen</translation>
-    </message>
-    <message>
-        <location filename="../pdfviewerwindow.cpp" line="442"/>
         <source>Select page</source>
         <translation>Seite auswählen</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="444"/>
+        <location filename="../pdfviewerwindow.cpp" line="429"/>
         <source>Jump to page number (%1-%2):</source>
         <translation>Springe zu Seite Nummer (%1-%2):</translation>
     </message>
@@ -153,7 +258,7 @@
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="395"/>
+        <location filename="../pdfviewerwindow.cpp" line="396"/>
         <source>Form</source>
         <comment>Total
 %1</comment>
