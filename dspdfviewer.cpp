@@ -49,7 +49,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
  audienceWindow(1,   r.useFullPage()                 ? PagePart::FullPage : PagePart::LeftHalf , false, r, WindowRole::AudienceWindow),
  secondaryWindow(0, (r.useFullPage() | r.duplicate())? PagePart::FullPage : PagePart::RightHalf, true , r, WindowRole::PresenterWindow, r.useSecondScreen())
 {
-  DEBUGOUT << "Starting constructor" ;
+  DEBUGOUT << tr("Starting constructor") ;
 
   if ( ! r.useSecondScreen() ) {
     secondaryWindow.hide();
@@ -63,10 +63,10 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   if ( ! pdfDocument  || pdfDocument->isLocked() )
   {
     /// FIXME: Error message
-    throw std::runtime_error("I was not able to open the PDF document. Sorry.");
+    throw std::runtime_error( tr("I was not able to open the PDF document. Sorry.").toStdString() );
   }
 #endif
-  DEBUGOUT << "Connecting audience window";
+  DEBUGOUT << tr("Connecting audience window");
 
   audienceWindow.setPageNumberLimits(0, numberOfPages()-1);
 
@@ -89,7 +89,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 
   if ( r.useSecondScreen() )
   {
-    DEBUGOUT << "Connecting secondary window";
+    DEBUGOUT << tr("Connecting secondary window");
 
     secondaryWindow.setPageNumberLimits(0, numberOfPages()-1);
 
@@ -152,7 +152,7 @@ unsigned int DSPDFViewer::pageNumber() const
 
 void DSPDFViewer::renderPage()
 {
-  DEBUGOUT << "Requesting rendering of page " << m_pagenumber;
+  DEBUGOUT << tr("Requesting rendering of page %1").arg(m_pagenumber);
   if ( m_pagenumber >= numberOfPages() ) {
     DEBUGOUT << "Page number out of range, clamping to " << numberOfPages()-1;
     m_pagenumber = numberOfPages()-1;
@@ -203,7 +203,7 @@ void DSPDFViewer::gotoPage(unsigned int pageNumber)
     m_pagenumber = pageNumber;
     renderPage();
   } else {
-    qWarning() << "Requested page number" << pageNumber << "which is out of range! Ignoring request.";
+    qWarning() << tr("Requested page number %1 which is out of range! Ignoring request.").arg(pageNumber);
   }
 }
 
@@ -376,6 +376,3 @@ void DSPDFViewer::toggleSecondaryScreenDuplication()
   }
   emit renderPage();
 }
-
-
-#include "dspdfviewer.moc"

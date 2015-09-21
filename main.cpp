@@ -26,6 +26,7 @@
 #include <iostream>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QTranslator>
 
 #if defined ( _WIN32 ) && defined ( NDEBUG )
 #pragma comment(linker, "/SUBSYSTEM:windows")
@@ -43,8 +44,45 @@ int main(int argc, char** argv)
 
 #endif
 	QApplication app(argc, argv);
-	app.setApplicationName( "dspdfviewer" );
-	app.setApplicationVersion( DSPDFVIEWER_VERSION );
+
+	app.setApplicationName( QString::fromUtf8("dspdfviewer") );
+	app.setApplicationVersion( QString::fromUtf8( DSPDFVIEWER_VERSION ) );
+
+	const auto locale = QLocale::system();
+	const auto localeName = locale.name();
+#ifdef QTRANSLATE_SYSTEM_PATH
+	const char* const systemQtPath = QTRANSLATE_SYSTEM_PATH ;
+#else
+	/** FIXME: Implement default path and file for Qt5 */
+	const char* const systemQtPath = "/usr/share/qt4/translations";
+#endif
+
+#ifdef QTRANSLATE_SYSTEM_NAME
+	const char* const systemQtName = QTRANSLATE_SYSTEM_NAME;
+#else
+	/** FIXME: Implement default path and file for Qt5 */
+	const char* const systemQtName = "qt_";
+#endif
+
+	QTranslator qtTranslator;
+	DEBUGOUT << "Loading" << systemQtName << "translation for" << localeName;
+	if ( !qtTranslator.load(
+			QString::fromUtf8( systemQtName ).append(localeName),
+			QString::fromUtf8( systemQtPath )
+			) ) {
+		qWarning() << "Failed to load qt translations for current locale";
+	} else {
+		app.installTranslator(&qtTranslator);
+	}
+
+	QTranslator appTranslator;
+	DEBUGOUT << "Loading dspdfviewer_ translation for" << localeName;
+	if ( ! appTranslator.load(QString::fromUtf8("dspdfviewer_").append(localeName) ) ) {
+		qWarning() << "Failed to load dspdfviewer translation for current locale, falling back to english.";
+	} else {
+		app.installTranslator(&appTranslator);
+	}
+
 	/* If anything goes wrong, try to display the exception to the user.
 	 * Its the least i can do.
 	 */
@@ -57,19 +95,19 @@ int main(int argc, char** argv)
 
 		if ( ! rc.filePathDefined() ) {
 			rc.filePath( QFileDialog::getOpenFileName(
-				nullptr, "Load PDF from disk", QString(), "PDF (*.pdf)" ).toStdString() );
+				nullptr, QFileDialog::tr("Load PDF from disk"), QString(), QFileDialog::tr("PDF (*.pdf)") ).toStdString() );
 		}
 
 		DSPDFViewer foo( rc );
 		return app.exec();
 	} catch ( std::exception& e ) {
-		QMessageBox errorMsg;
 		std::cerr << "----- FATAL ERROR -----" << std::endl
 			<< "Dual-Screen PDF Viewer has encountered an error and cannot continue:" << std::endl
 			<< e.what() << std::endl;
 
-		errorMsg.setText("Dual-Screen PDF Viewer has encountered an error and cannot continue");
-		errorMsg.setInformativeText(e.what());
+		QMessageBox errorMsg;
+		errorMsg.setText( QMessageBox::tr("Dual-Screen PDF Viewer has encountered an error and cannot continue") );
+		errorMsg.setInformativeText( app.tr(e.what()) );
 		errorMsg.setDefaultButton(QMessageBox::Discard);
 		errorMsg.setIcon( QMessageBox::Critical );
 		errorMsg.exec();

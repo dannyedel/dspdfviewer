@@ -23,6 +23,7 @@
 #include <boost/program_options.hpp>
 #include <iostream>
 #include <fstream>
+#include <QCoreApplication>
 
 #ifndef DSPDFVIEWER_VERSION
 #warning DSPDFVIEWER_VERSION was not set by the build system!
@@ -38,7 +39,6 @@
  */
 #define I3WORKAROUND_SHELLCODE "i3-msg '[class=\"Dspdfviewer\" window_role=\"Audience_Window\"] move to output right, fullscreen'"
 #endif
-
 
 using namespace std;
 using namespace boost::program_options;
@@ -60,59 +60,76 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
 	m_prerenderNextPages(10),
 	m_bottomPaneHeightPercent(20)
 {
-  options_description generic("Generic options");
+  options_description generic( tr("Generic options").toStdString() );
 
+/** FIXME: Using .toStdString().data() is Very Very Very Ugly,
+ * but works because program_options copies the string...
+ */
   generic.add_options()
-    ("help,h", "Print help message")
-    ("version,v", "Print version statement")
+    ("help,h", tr("Print help message").toStdString().data() )
+    ("version,v", tr("Print version statement").toStdString().data() )
     ;
 
   options_description global("Options affecting program behaviour");
   global.add_options()
     ("full-page,f", //value<bool>(&m_useFullPage)->default_value(false)->implicit_value(true),
-      "Display the full slide on both screens (useful for PDFs created by presentation software other than latex-beamer)")
+      tr("Display the full slide on both screens (useful for PDFs created by presentation software other than latex-beamer)").toStdString().data() )
     ("prerender-previous-pages",
      value<unsigned>(&m_prerenderPreviousPages)->default_value(3),
-     "Pre-render the preceding arg slides\n"
+     tr("Pre-render the preceding arg slides\n"
      "NOTE: If you set this to zero, you might not get a thumbnail for the previous slide unless it was loaded already."
+	 ).toStdString().data()
     )
     ("prerender-next-pages",
      value<unsigned>(&m_prerenderNextPages)->default_value(10),
+	 tr(
      "Pre-render the next arg slides\n"
      "NOTE: If you set this to zero, you might not get a thumbnail for the next slide unless it was loaded already."
+	 ).toStdString().data()
      )
     ("hyperlink-support,l",
      value<bool>(&m_hyperlinkSupport)->default_value(true),
+	 tr(
      "Support PDF Hyperlinks\n"
      "Follow hyperlinks when clicked (mouse pointer will change to a pointing hand) - set this to false if "
-     "you cannot reliably control your mouse pointer position and want to always go ahead one slide on click.")
+     "you cannot reliably control your mouse pointer position and want to always go ahead one slide on click.").toStdString().data()
+	)
     ("cache-to-memory",
      value<bool>(&m_cacheToMemory)->default_value(true),
+	 tr(
      "Cache the PDF file into memory\n"
-     "Useful if you are editing the PDF file with latex while using the presenter software."
+     "Useful if you are editing the PDF file with latex while using the presenter software.").toStdString().data()
      )
     ("i3-workaround",
      value<bool>(&m_i3workaround)->default_value(false),
-     "Use i3 specific workaround: Execute shellcode once both windows have been created."
+	 tr(
+     "Use i3 specific workaround: Execute shellcode once both windows have been created.")
 #ifndef NDEBUG
+	 .append( QString::fromUtf8(
      "\nDebug info: Shellcode is \n"
      I3WORKAROUND_SHELLCODE
+	 ) )
 #endif
+	 .toStdString().data()
     )
     ;
-  options_description secondscreen("Options affecting the second screen");
+  options_description secondscreen( tr("Options affecting the second screen").toStdString() );
   secondscreen.add_options()
     ("use-second-screen,u",
      value<bool>(&m_useSecondScreen)->default_value(true),
+	 tr(
      "Use the second screen. If you only have one monitor and just want to use this application as a fast, pre-caching PDF viewer"
      " you might want to say 0 here.\n"
      "NOTE: Whatever you say on -a, -t, -w, -s or -p doesn't matter if you set this to false.\n"
      "NOTE: You might want to say -f if you set this to false."
+	 ).toStdString().data()
     )
     ("presenter-area,a",
      value<bool>(&m_showPresenterArea)->default_value(true),
+	 tr(
      "Shows or hides the complete \"presenter area\" on the second screen, giving you a full-screen note page.\n"
      "NOTE: Whatever you say on -t, -w, -s or -p doesnt matter if you set this to false."
+	 ).toStdString().data()
     )
     ("duplicate,d",
      value<bool>(&m_duplicate)->default_value(false),
@@ -120,24 +137,32 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
     )
     ("thumbnails,t",
      value<bool>(&m_showThumbnails)->default_value(true),
-     "Show thumbnails of previous, current and next slide")
+	 tr(
+     "Show thumbnails of previous, current and next slide").toStdString().data()
+	)
     ("wall-clock,w",
      value<bool>(&m_showWallClock)->default_value(true),
-     "Show the wall clock")
+	 tr(
+     "Show the wall clock").toStdString().data()
+	)
     ("presentation-clock,p",
      value<bool>(&m_showPresentationClock)->default_value(true),
-     "Show the presentation clock")
+     tr(
+		 "Show the presentation clock").toStdString().data()
+	)
     ("slide-clock,s",
      value<bool>(&m_showSlideClock)->default_value(true),
-     "Show the slide clock")
+     tr("Show the slide clock").toStdString().data()
+	)
     ("bottom-pane-height,b",
      value<unsigned>(&m_bottomPaneHeightPercent)->default_value(20),
-     "Percentage of second screen to use for the bottom pane")
+     tr("Percentage of second screen to use for the bottom pane").toStdString().data()
+	)
     ;
 
-  options_description hidden("Hidden options");
+  options_description hidden(tr("Hidden options").toStdString());
   hidden.add_options()
-    ("pdf-file", value< string >(&m_filePath), "PDF File to display")
+    ("pdf-file", value< string >(&m_filePath), tr("PDF File to display").toStdString().data())
     ;
   positional_options_description p;
   p.add("pdf-file", 1);
@@ -155,7 +180,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
 
   variables_map vm;
   store( command_line_parser(argc,argv).options(commandLineOptions).positional(p).run(), vm);
-  QString configurationFileLocation = qgetenv("HOME").append("/.config/dspdfviewer.ini");
+  QString configurationFileLocation = QString::fromUtf8( qgetenv("HOME").append("/.config/dspdfviewer.ini") );
   {
     // See if the configuration file exists and is readable
     std::ifstream cfile( configurationFileLocation.toStdString() );
@@ -167,27 +192,26 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
 
   if ( vm.count("version") || vm.count("help") ) {
     cout << "dspdfviewer version " << DSPDFVIEWER_VERSION << endl;
-    cout << "Written by Danny Edel" << endl;
-    cout << endl;
-    cout << "Copyright (C) 2012 Danny Edel." << endl
-	 << "This is free software; see the source for copying conditions.  There is NO" << endl
-	 << "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << endl;
+	cout << tr( "Written by Danny Edel\n"
+			"\n"
+			"Copyright (C) 2012 Danny Edel.\n"
+			"This is free software; see the source for copying conditions.  There is NO\n"
+			"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.").toStdString() << endl;
     if ( vm.count("help")) {
       cout << endl;
-      cout << "Usage: " << argv[0] << " [options] pdf-file" << endl;
+      cout << tr("Usage: %1 [options] pdf-file").arg( QString::fromUtf8(argv[0]) ).toStdString() << endl;
       cout << help << endl;
-      // Add a short primer about interactive controls
-      const std::string padding="\t";
-      cout << "Interactive Controls:" << endl
-           << padding << "Press F1 or ? during program execution to get a quick" << endl
-           << padding << "overview about available controls." << endl
-           << padding << "Please read the manpage (man dspdfviewer) for the full list." << endl;
+      /*: Please try to keep line length below 70 chars and use \t (tab) for padding */
+		cout << tr("Interactive Controls:\n"
+			"\tPress F1 or ? during program execution to get a quick\n"
+			"\toverview about available controls.\n"
+			"\tPlease read the manpage (man dspdfviewer) for the full list.").toStdString() << endl;
     }
     exit(0);
   }
 
   if ( m_bottomPaneHeightPercent < 1 || m_bottomPaneHeightPercent > 99 ) {
-    throw std::runtime_error("Invalid percent height specified");
+    throw std::runtime_error( tr("Invalid height in specified. Please use a value from 1 to 99 (inclusive)").toStdString() );
   }
   
   m_useFullPage = ( 0 < vm.count("full-page") );
@@ -291,7 +315,7 @@ bool RuntimeConfiguration::filePathDefined() const
 }
 
 noFileNameException::noFileNameException():
-	logic_error("You did not specify a PDF-File to display.") {
+	logic_error( QCoreApplication::tr("You did not specify a PDF-File to display.").toStdString() ) {
 }
 
 bool RuntimeConfiguration::i3workaround() const

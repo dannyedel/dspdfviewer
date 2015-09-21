@@ -188,7 +188,3 @@ int PdfRenderFactory::numberOfPages() const
   QMutexLocker lock(&mutex);
   return numberOfPages_;
 }
-
-
-#include "pdfrenderfactory.moc"
-

@@ -12,7 +12,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
 	# Update list of available packages in any case
 	DEPS="libboost-program-options-dev pkg-config"
 	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
-		DEPS="${DEPS} libpoppler-qt5-dev qtbase5-dev"
+		DEPS="${DEPS} libpoppler-qt5-dev qtbase5-dev qttools5-dev qttools5-dev-tools"
 	else
 		DEPS="${DEPS} libpoppler-qt4-dev"
 	fi

@@ -20,6 +20,7 @@
 
 #ifndef RUNTIMECONFIGURATION_H
 #define RUNTIMECONFIGURATION_H
+#include <QObject>
 #include <string>
 #include <QString>
 #include <stdexcept>
@@ -28,8 +29,10 @@ struct noFileNameException: public std::logic_error {
 	noFileNameException();
 };
 
-class RuntimeConfiguration
+class RuntimeConfiguration: public QObject
 {
+	Q_OBJECT
+
   /** Use the program to render a standard PDF (i.e. display
    * the full page on both sides)
    */

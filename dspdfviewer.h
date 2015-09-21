@@ -35,7 +35,7 @@ class DSPDFViewer: public QObject
   Q_OBJECT
 
 private:
-  const RuntimeConfiguration runtimeConfiguration;
+  const RuntimeConfiguration& runtimeConfiguration;
   enum {
     TIMER_UPDATE_INTERVAL=250
   };

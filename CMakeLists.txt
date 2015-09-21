@@ -20,12 +20,43 @@
 project(dspdfviewer)
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 include(FindPkgConfig)
-set(CMAKE_AUTOMOC "on")#
-set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
+set(CMAKE_AUTOMOC ON)#
+set(CMAKE_AUTORCC OFF)
+set(CMAKE_INCLUDE_CURRENT_DIR OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(Boost COMPONENTS program_options REQUIRED)
 
 option(UseQtFive "Build with Qt5 and libpoppler-qt5" OFF)
+option(UpdateTranslations "Do you want to update the .ts files (WARNING: make clean will eat them!)" OFF)
+
+list(APPEND TRANSLATIONFILES
+	translations/dspdfviewer_de.ts
+)
+list(APPEND UIFILES
+	pdfviewerwindow.ui
+)
+list(APPEND dspdfviewer_SRCS
+	adjustedlink.cpp
+	hyperlinkarea.cpp
+	pdfpagereference.cpp
+	pdfdocumentreference.cpp
+	runtimeconfiguration.cpp
+	renderutils.cpp
+	renderthread.cpp
+	renderingidentifier.cpp
+	pagepart.cpp
+	renderedpage.cpp
+	pdfrenderfactory.cpp
+	pdfviewerwindow.cpp
+	dspdfviewer.cpp
+	windowrole.cpp
+	main.cpp
+)
+
+list(APPEND QRCFILES
+	dspdfviewer.qrc
+)
 
 if(UseQtFive)
 	#qt5
@@ -35,6 +66,7 @@ if(UseQtFive)
 	# https://bugreports.qt.io/browse/QTBUG-32100
 	find_package(Qt5Gui REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
+	find_package(Qt5LinguistTools REQUIRED)
 	pkg_search_module(POPPLER REQUIRED poppler-qt5)
 	# add their include directories
 	list(APPEND LIST_INCLUDE_DIRS ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
@@ -42,7 +74,12 @@ if(UseQtFive)
 	list(APPEND LIST_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
 	add_definitions(-DPOPPLER_QT5)
 	add_definitions(-fPIC)
-	qt5_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
+	qt5_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
+	if( UpdateTranslations )
+		qt5_create_translation(TRANSLATIONS ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
+	else()
+		qt5_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
+	endif()
 else()
 	#qt4
 	message(STATUS "Using Qt4 and libpoppler-qt4")
@@ -52,6 +89,11 @@ else()
 	list(APPEND LIST_INCLUDE_DIRS ${QT_INCLUDES})
 	list(APPEND LIST_LIBRARIES Qt4::QtGui)
 	qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
+	if( UpdateTranslations )
+		qt4_create_translation(TRANSLATIONS ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
+	else()
+		qt4_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
+	endif()
 endif()
 
 # include/link poppler
@@ -61,8 +103,6 @@ list(APPEND LIST_INCLUDE_DIRS ${POPPLER_INCLUDE_DIRS})
 list(APPEND LIST_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 list(APPEND LIST_LIBRARIES ${Boost_LIBRARIES})
 
-# include current binary dir, for ui_pdfviewerwindow.h and the .moc files
-# Treat this like system headers because it's generated code
 list(APPEND LIST_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR})
 
 # Use c++11 support.
@@ -181,9 +221,11 @@ if( I3WORKAROUND_SHELLCODE )
 	add_definitions(-DI3WORKAROUND_SHELLCODE="${I3WORKAROUND_SHELLCODE}")
 endif()
 
-set(dspdfviewer_SRCS adjustedlink.cpp hyperlinkarea.cpp pdfpagereference.cpp pdfdocumentreference.cpp runtimeconfiguration.cpp renderutils.cpp renderthread.cpp renderingidentifier.cpp pagepart.cpp renderedpage.cpp pdfrenderfactory.cpp pdfviewerwindow.cpp dspdfviewer.cpp windowrole.cpp main.cpp)
+# This helps with translation, since it disables QString(const char*)
+add_definitions(-DQT_NO_CAST_FROM_ASCII)
 
-add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
+
+add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
 target_link_libraries(dspdfviewer ${LIST_LIBRARIES})
 
 install(TARGETS	dspdfviewer

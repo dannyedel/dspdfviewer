@@ -49,6 +49,7 @@ private:
   bool correctImageRendered;
   PagePart myPart;
 
+  const WindowRole windowRole;
   // Reference to the runtime configuration object.
   const RuntimeConfiguration& runtimeConfiguration;
 

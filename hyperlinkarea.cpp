@@ -72,6 +72,3 @@ void HyperlinkArea::mousePressEvent(QMouseEvent* ev)
   
   emit gotoPageRequested(targetPage);
 }
-
-
-#include "hyperlinkarea.moc"

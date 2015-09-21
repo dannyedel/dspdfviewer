@@ -21,6 +21,7 @@
 #include "renderutils.h"
 
 #include "debug.h"
+#include <QApplication>
 #include <stdexcept>
 
 #include <boost/math/special_functions/round.hpp>
@@ -31,7 +32,7 @@ QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize t
 {
   if ( ! page )
   {
-    throw std::runtime_error( QString("RenderUtils::renderPagePart called with null page. Target size was %1x%2").
+    throw std::runtime_error( QApplication::translate("RenderUtils", "RenderUtils::renderPagePart called with null page. Target size was %1x%2").
       arg(targetSize.width()).arg(targetSize.height()).toStdString() );
   }
 
