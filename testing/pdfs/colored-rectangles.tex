@@ -1,0 +1,23 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{color}
+\usepackage{pgfpages}
+
+\setbeameroption{show notes on second screen}
+
+\title{Colored Pages without content}
+
+\begin{document}
+
+
+
+\definecolor{8f8}{HTML}{88FF88}
+\definecolor{f8f}{HTML}{FF88FF}
+
+\begingroup
+	\setbeamercolor{background canvas}{bg=8f8}
+	\setbeamercolor{note page}{bg=f8f}
+	\begin{frame}
+	\end{frame}
+\endgroup
+
+\end{document}

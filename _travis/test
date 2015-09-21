@@ -1,0 +1,7 @@
+#!/bin/bash
+set -ex
+cd build
+
+[ -x ./dspdfviewer ]
+ctest --output-on-failure
+ctest -T coverage

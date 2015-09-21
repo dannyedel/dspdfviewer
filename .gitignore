@@ -1,5 +1,5 @@
 # I like to call my build directory build.
-build/
+build*/
 
 #common editor swap files
 *~

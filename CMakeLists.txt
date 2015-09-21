@@ -25,8 +25,6 @@ set(CMAKE_AUTORCC OFF)
 set(CMAKE_INCLUDE_CURRENT_DIR OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(Boost COMPONENTS program_options REQUIRED)
-
 option(UseQtFive "Build with Qt5 and libpoppler-qt5" OFF)
 option(UpdateTranslations "Do you want to update the .ts files (WARNING: make clean will eat them!)" OFF)
 
@@ -57,6 +55,14 @@ list(APPEND dspdfviewer_SRCS
 list(APPEND QRCFILES
 	dspdfviewer.qrc
 )
+
+option(BuildTests "Build unit tests (this requires pdflatex)" ON)
+
+if(BuildTests)
+	find_package(Boost COMPONENTS program_options unit_test_framework REQUIRED)
+else()
+	find_package(Boost COMPONENTS program_options REQUIRED)
+endif()
 
 if(UseQtFive)
 	#qt5
@@ -225,8 +231,28 @@ endif()
 add_definitions(-DQT_NO_CAST_FROM_ASCII)
 
 
-add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
-target_link_libraries(dspdfviewer ${LIST_LIBRARIES})
+add_library(libdspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H})
+set_target_properties(libdspdfviewer PROPERTIES OUTPUT_NAME dspdfviewer)
+target_link_libraries(libdspdfviewer ${LIST_LIBRARIES})
+
+add_executable(dspdfviewer main)
+target_link_libraries(dspdfviewer libdspdfviewer)
+
+
+if(BuildTests)
+	# Run unit tests regardless of debug/release
+	include(CTest)
+	add_subdirectory(testing)
+
+	# coverage only works properly with gcc right now.
+	if (CMAKE_COMPILER_IS_GNUCXX)
+		message(STATUS "Testing with gcc, using gcov as helper")
+		add_definitions(-fprofile-arcs -ftest-coverage)
+		target_link_libraries(libdspdfviewer gcov)
+	endif()
+endif()
+
+#### Installation
 
 install(TARGETS	dspdfviewer
 	RUNTIME DESTINATION bin)
