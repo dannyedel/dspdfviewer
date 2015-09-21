@@ -18,6 +18,8 @@ matrix:
       env: CMAKE_PARAMETERS="-DUseQtFive=ON"
     - os: osx
       compiler: gcc
+  allow_failures:
+      - os: osx
 install:
  - _travis/install_dependencies
  - _travis/compile
