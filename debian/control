@@ -6,6 +6,7 @@ Build-Depends: cmake,
                debhelper (>= 7.3.0),
                g++ (>= 4:4.6),
                libboost-program-options-dev,
+               libboost-test-dev,
                libpoppler-qt4-dev,
                lsb-release,
                pkg-config
