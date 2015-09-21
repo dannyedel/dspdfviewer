@@ -30,6 +30,7 @@
 #include "sconnect.h"
 #include <cstdlib>
 #include <boost/numeric/conversion/cast.hpp>
+#include "ui_keybindings.h"
 
 using boost::numeric_cast;
 
@@ -407,26 +408,10 @@ void PDFViewerWindow::updateWallClock(const QTime& wallClock)
 
 void PDFViewerWindow::keybindingsPopup()
 {
-  QMessageBox *popup   = new QMessageBox();
-  QString msg = tr(
-  "<table>\n"
-  "<tr><th width=200 align=left>Key</th><th width=400 align=left>Action</th></tr>\n"
-  /* I skip some navigation bindings (they have to many alternatives) */
-  "<tr><td>N or Left/Down arrow</td><td>Next slide</td></tr>\n"
-  "<tr><td>P or Right/Up arrow</td><td>Previous slide</td></tr>\n"
-  "<tr><td>B or .</td><td>Blank/Unblank audience screen</td></tr>\n"
-  "<tr><td>G</td><td>Go to specific slide</td></tr>\n"
-  "<tr><td>H or Home</td><td>Go to first page and reset counters</td></tr>\n"
-  "<tr><td>Q or Esc</td><td>Quit</td></tr>\n"
-  "<tr><td>S or F12</td><td>Switch primary and secondary screens</td></tr>\n"
-  "<tr><td>T</td><td>Toggle between notes and slides in the secondary screen</td></tr>\n"
-  "<tr><td>D</td><td>Toggle between displaying both notes and slides in the secondary screen or only notes</td></tr>\n"
-  "<tr><td>? or F1</td><td>Show this help box</td></tr>\n"
-  "</table>"
-  );
-  popup->setWindowTitle(tr("Keybindings"));
-  popup->setText(msg);
-  popup->show();
+	Ui::KeybindingsDialog ui;
+	QDialog popup;
+	ui.setupUi(&popup);
+	popup.exec();
 }
 
 void PDFViewerWindow::changePageNumberDialog()

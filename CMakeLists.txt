@@ -33,6 +33,7 @@ list(APPEND TRANSLATIONFILES
 )
 list(APPEND UIFILES
 	pdfviewerwindow.ui
+	keybindings.ui
 )
 list(APPEND dspdfviewer_SRCS
 	adjustedlink.cpp
@@ -94,7 +95,7 @@ else()
 
 	list(APPEND LIST_INCLUDE_DIRS ${QT_INCLUDES})
 	list(APPEND LIST_LIBRARIES Qt4::QtGui)
-	qt4_wrap_ui(dspdfviewer_UIS_H pdfviewerwindow.ui)
+	qt4_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
 	if( UpdateTranslations )
 		qt4_create_translation(TRANSLATIONS ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
 	else()
