@@ -35,7 +35,7 @@ span.root code::before {
 	color: black;
 }
 
-p > code, li > code, li > span.root > code {
+p code, li > code, li > span.root > code {
 	/* Mark Inline code with a little border
 	 */
 	background-color: #eee;
@@ -53,4 +53,10 @@ p > code, li > code, li > span.root > code {
 
 h1, h2, h3 {
 	border-bottom: 1px solid #eee;
+}
+
+code.language-bash .c
+{
+	/* Comments */
+	color: #888;
 }
