@@ -32,7 +32,6 @@ add_definitions(
 	-Wold-style-cast
 	-Woverloaded-virtual
 	-Weffc++
-	-Wdate-time
 	-Winline
 )
 
