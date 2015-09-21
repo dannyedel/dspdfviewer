@@ -20,9 +20,13 @@ if(DownloadTestPDF)
 	#	)
 else()
 	# Build the PDF before creating the test helper functions
+
+	# Caveat: If the directory name contains a ~, pdflatex
+	# will fail. Replace it with \string~
+	STRING(REPLACE "~" "\\\\string~" PDFLATEX_FIXED_FILENAME "${CMAKE_CURRENT_SOURCE_DIR}/pdfs/colored-rectangles.tex")
 	add_custom_command(OUTPUT colored-rectangles.pdf
 		DEPENDS pdfs/colored-rectangles.tex
-		COMMAND pdflatex -interaction=nonstopmode ${CMAKE_CURRENT_SOURCE_DIR}/pdfs/colored-rectangles.tex
+		COMMAND pdflatex -interaction=nonstopmode ${PDFLATEX_FIXED_FILENAME}
 		WORKING_DIRECTORY
 	)
 endif()
