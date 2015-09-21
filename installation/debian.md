@@ -20,10 +20,17 @@ but to get started, try these commands:
 
 <div class="root">
 {% highlight bash %}
-echo deb http://http.debian.net/debian jessie-backports main | tee -a /etc/sources.list.d/jessie-backports.list
+# Activate jessie-backports
+tee -a /etc/sources.list.d/jessie-backports.list <<< "deb http://http.debian.net/debian jessie-backports main"
+apt-get update
+# Install dspdfviewer
 apt-get install dspdfviewer
 {% endhighlight %}
+
+If you already had jessie-backports activated, a simple `apt-get install dspdfviewer`
+is enough.
 </div>
+
 
 [backports instructions]: http://backports.debian.org/Instructions/
 
