@@ -167,12 +167,12 @@
 <context>
     <name>QFileDialog</name>
     <message>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="96"/>
         <source>Load PDF from disk</source>
         <translation>Lade PDF von Datenträger</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="96"/>
         <source>PDF (*.pdf)</source>
         <translation>PDF (*.pdf)</translation>
     </message>
@@ -180,7 +180,7 @@
 <context>
     <name>QMessageBox</name>
     <message>
-        <location filename="../main.cpp" line="93"/>
+        <location filename="../main.cpp" line="107"/>
         <source>Dual-Screen PDF Viewer has encountered an error and cannot continue</source>
         <translation>Zweibildschirm PDF-Betrachter hat einen Fehler festgestellt und kann nicht weiter ausgeführt werden</translation>
     </message>

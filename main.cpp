@@ -48,20 +48,36 @@ int main(int argc, char** argv)
 	app.setApplicationName( QString::fromUtf8("dspdfviewer") );
 	app.setApplicationVersion( QString::fromUtf8( DSPDFVIEWER_VERSION ) );
 
-	QTranslator qtTranslator;
-	const QLocale locale = QLocale::system();
-	const QString localeName = locale.name();
+	const auto locale = QLocale::system();
+	const auto localeName = locale.name();
+#ifdef QTRANSLATE_SYSTEM_PATH
+	const char* const systemQtPath = QTRANSLATE_SYSTEM_PATH ;
+#else
+	/** FIXME: Implement default path and file for Qt5 */
+	const char* const systemQtPath = "/usr/share/qt4/translations";
+#endif
 
-	DEBUGOUT << "Loading qt translation for" << localeName;
-	if ( ! qtTranslator.load( QString::fromUtf8("qt_de") ) ) {
-		qWarning() << "Failed to load qt translation for current locale, falling back to english.";
+#ifdef QTRANSLATE_SYSTEM_NAME
+	const char* const systemQtName = QTRANSLATE_SYSTEM_NAME;
+#else
+	/** FIXME: Implement default path and file for Qt5 */
+	const char* const systemQtName = "qt_";
+#endif
+
+	QTranslator qtTranslator;
+	DEBUGOUT << "Loading" << systemQtName << "translation for" << localeName;
+	if ( !qtTranslator.load(
+			QString::fromUtf8( systemQtName ).append(localeName),
+			QString::fromUtf8( systemQtPath )
+			) ) {
+		qWarning() << "Failed to load qt translations for current locale";
 	} else {
 		app.installTranslator(&qtTranslator);
 	}
 
 	QTranslator appTranslator;
-	DEBUGOUT << "Loading dspdfviewer translation for" << QLocale::system();
-	if ( ! appTranslator.load(QLocale::system(), QString::fromUtf8("dspdfviewer"), QString::fromUtf8("_") ) ) {
+	DEBUGOUT << "Loading dspdfviewer_ translation for" << localeName;
+	if ( ! appTranslator.load(QString::fromUtf8("dspdfviewer_").append(localeName) ) ) {
 		qWarning() << "Failed to load dspdfviewer translation for current locale, falling back to english.";
 	} else {
 		app.installTranslator(&appTranslator);

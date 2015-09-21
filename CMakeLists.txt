@@ -218,7 +218,7 @@ endif()
 add_definitions(-DQT_NO_CAST_FROM_ASCII)
 
 
-add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS} ${QRCFILES} ${RESOURCES})
+add_executable(dspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
 target_link_libraries(dspdfviewer ${LIST_LIBRARIES})
 
 install(TARGETS	dspdfviewer
