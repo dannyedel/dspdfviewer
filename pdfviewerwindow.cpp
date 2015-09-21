@@ -408,9 +408,9 @@ void PDFViewerWindow::updateWallClock(const QTime& wallClock)
 
 void PDFViewerWindow::keybindingsPopup()
 {
-	Ui::KeybindingsDialog ui;
+	Ui::KeybindingsDialog keybindUi;
 	QDialog popup;
-	ui.setupUi(&popup);
+	keybindUi.setupUi(&popup);
 	popup.exec();
 }
 
