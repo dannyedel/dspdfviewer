@@ -18,16 +18,15 @@ if(DownloadTestPDF)
 	#	COMMAND cp colored-rectangles.pdf.tmp colored-rectangles.pdf
 	#	WORKING_DIRECTORY
 	#	)
-	add_custom_target(testpdfs DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/colored-rectangles.pdf)
 else()
 	# Build the PDF before creating the test helper functions
 	add_custom_command(OUTPUT colored-rectangles.pdf
 		DEPENDS pdfs/colored-rectangles.tex
-		COMMAND pdflatex -interaction=nonstopmode ${CMAKE_CURRENT_SOURCE_DIR}/pdfs/colored-rectangles.tex >/dev/null
+		COMMAND pdflatex -interaction=nonstopmode ${CMAKE_CURRENT_SOURCE_DIR}/pdfs/colored-rectangles.tex
 		WORKING_DIRECTORY
 	)
-	add_custom_target(testpdfs DEPENDS colored-rectangles.pdf)
 endif()
+add_custom_target(testpdfs DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/colored-rectangles.pdf)
 
 add_dependencies(testhelp testpdfs)
 
