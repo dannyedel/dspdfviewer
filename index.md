@@ -84,8 +84,8 @@ Please follow the specific instructions:
   * [Mac OS](installation/macos.html)
 * [Windows](installation/windows.html)
 
-If your system isn't listed here, please try the Generic instructions. Feel free
-to open a ticket in the [issues system] asking for help if something goes wrong.
+If your system isn't listed here, please try the Generic instructions.
+Feel free to open a ticket in the [issues system] asking for help if something goes wrong.
 
 [issues system]: https://github.com/dannyedel/dspdfviewer/issues
 
@@ -98,7 +98,7 @@ If you want to help on development, please use github's
 amazing [pull request] feature.
 
 Both the [sourcecode] and [this website] are available to view and improve,
-and any  greatly appreciated!
+and any help is greatly appreciated!
 
 [sourcecode]: https://github.com/dannyedel/dspdfviewer
 [this website]: https://github.com/dannyedel/dspdfviewer/tree/gh-pages
