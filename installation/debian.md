@@ -28,10 +28,12 @@ apt-get update
 # Install dspdfviewer
 apt-get install dspdfviewer
 {% endhighlight %}
-
-If you already had jessie-backports activated, a simple `apt-get install dspdfviewer`
-is enough.
 </div>
+
+<span class="root">
+If you already had jessie-backports activated, a
+simple `apt-get install dspdfviewer` is enough.
+</span>
 
 
 [backports instructions]: http://backports.debian.org/Instructions/
