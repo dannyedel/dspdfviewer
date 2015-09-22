@@ -32,7 +32,6 @@ add_definitions(
 	-Wold-style-cast
 	-Woverloaded-virtual
 	-Weffc++
-	-Winline
 )
 
 # Turn all warnings into errors
