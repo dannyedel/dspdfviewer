@@ -1,7 +1,7 @@
 #include "testhelpers.hh"
 
 #define BOOST_TEST_MODULE renderfactory
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 
 using namespace std;
 using namespace TestHelpers;
