@@ -24,7 +24,7 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ] ; then
 	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
 		brew install poppler --with-qt5
 	else
-		brew install poppler --with-qt4
+		brew install poppler --with-qt
 	fi
 else
 	echo "Unknown Travis OS $TRAVIS_OS_NAME - exiting now"
