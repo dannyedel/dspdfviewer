@@ -33,6 +33,7 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../ )
 # Now add actual tests.
 add_executable(testrunner
 	testrenderonepage.cc
+	testrunner.cc
 )
 
 target_link_libraries(testrunner testhelp)
