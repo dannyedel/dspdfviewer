@@ -26,7 +26,6 @@ list(APPEND dspdfviewer_SRCS
 	pdfviewerwindow.cpp
 	dspdfviewer.cpp
 	windowrole.cpp
-	main.cpp
 )
 
 list(APPEND QRCFILES

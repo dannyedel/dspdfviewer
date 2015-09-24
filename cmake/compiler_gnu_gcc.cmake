@@ -56,7 +56,8 @@ endforeach()
 
 if(CodeCoverage)
 	message(STATUS "Adding gcov as test coverage helper")
-	add_definitions(-fprofile-arcs -ftest-coverage)
+	add_definitions(-fprofile-arcs -ftest-coverage -O0)
 	LIST(APPEND LIST_LIBRARIES
-		gcov)
+		gcov
+	)
 endif()
