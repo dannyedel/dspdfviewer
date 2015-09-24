@@ -22,6 +22,12 @@ export CFLAGS:=$(shell dpkg-buildflags --get CFLAGS) $(CPPFLAGS)
 export CXXFLAGS:=$(shell dpkg-buildflags --get CXXFLAGS) $(CPPFLAGS)
 export LDFLAGS:=$(shell dpkg-buildflags --get LDFLAGS)
 
+VERSION=$(shell dpkg-parsechangelog | sed -n 's/^Version: //p')
+
+
+override_dh_auto_configure:
+	dh_auto_configure -- -DDSPDFVIEWER_VERSION=$(VERSION)
+
 
 # Debug package building
 .PHONY: override_dh_strip
