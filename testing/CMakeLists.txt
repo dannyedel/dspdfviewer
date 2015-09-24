@@ -5,19 +5,12 @@ add_library(testhelp
 # Link this helper library to dspdfviewer's functions
 target_link_libraries(testhelp libdspdfviewer)
 
-option(DownloadTestPDF "Download test PDFs from http://danny-edel.de, rather then building them using latex-beamer" OFF)
-
 if(DownloadTestPDF)
 	file(DOWNLOAD http://danny-edel.de/colored-rectangles.pdf ${CMAKE_CURRENT_BINARY_DIR}/colored-rectangles.pdf
 		TIMEOUT 30
 		SHOW_PROGRESS
 		EXPECTED_MD5 de9617fb1c00d6185e90314124e2c2f5
 		)
-	#	add_custom_command(OUTPUT colored-rectangles.pdf
-	#	DEPENDS colored-rectangles.pdf.tmp
-	#	COMMAND cp colored-rectangles.pdf.tmp colored-rectangles.pdf
-	#	WORKING_DIRECTORY
-	#	)
 else()
 	# Build the PDF before creating the test helper functions
 
