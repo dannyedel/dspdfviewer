@@ -13,12 +13,24 @@ else
 	mkdir build
 	cd build
 fi
+
+CMAKE_PARAMETERS="-DDownloadTestPDF=ON"
 # In any case, we're in $SOURCE/build now.
-if [ "$TRAVIS_OS_NAME" != "linux" ] ; then
-	# Mac OSX
-	cmake "$CMAKE_PARAMETERS" -DDownloadTestPDF=ON ..
-else
-	# Linux
-	cmake "$CMAKE_PARAMETERS" -DDownloadTestPDF=ON -DCodeCoverage=ON ..
+# Activate coverage iff compiling with linux/g++
+if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ] ; then
+	# Linux / GCC: Activate coverage
+	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DCodeCoverage=ON"
 fi
+
+if [ "$QT_VERSION" -eq 4 ] ; then
+	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DUseQtFive=OFF"
+elif [ "$QT_VERSION" -eq 5 ] ; then
+	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DUseQtFive=ON"
+else
+	echo "Unknown qt version $QT_VERSION" >&2
+	false
+fi
+
+cmake $CMAKE_PARAMETERS ..
+
 make VERBOSE=1
