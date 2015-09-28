@@ -1,23 +1,29 @@
 language: cpp
 sudo: required
-services:
-    - docker
-os:
-    - linux
-    - osx
-compiler:
-    - clang
-    - gcc
-env:
-    - CMAKE_PARAMETERS="-DUseQtFive=ON"
-    - CMAKE_PARAMETERS="-DUseQtFive=OFF"
 matrix:
-  fast_finish: true
-  exclude:
-    - os: osx
-      env: CMAKE_PARAMETERS="-DUseQtFive=ON"
-    - os: osx
-      compiler: gcc
+    # This marks the build as failed as soon as something goes wrong
+    fast_finish: true
+
+    # Manually specify the matrix:
+    # Test Qt4 (compat with older releases) on precise,
+    # test Qt5 on trusty
+    include:
+        - os: linux
+          env: DIST=precise CMAKE_PARAMETERS="-DUseQtFive=OFF"
+          compiler: gcc
+        - os: linux
+          env: DIST=precise CMAKE_PARAMETERS="-DUseQtFive=OFF"
+          compiler: clang
+        - os: linux
+          services: docker
+          env: DIST=trusty CMAKE_PARAMETERS="-DUseQtFive=ON"
+          compiler: gcc
+        - os: linux
+          services: docker
+          env: DIST=trusty CMAKE_PARAMETERS="-DUseQtFive=ON"
+          compiler: clang
+        - os: osx
+          env: CMAKE_PARAMETERS="-DUseQtFive=OFF"
 install:
  - _travis/install_dependencies
  - _travis/compile
