@@ -4,4 +4,6 @@ cd build
 
 [ -x ./dspdfviewer ]
 ctest --output-on-failure
-ctest -T coverage
+if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ] ; then
+	ctest -T coverage
+fi

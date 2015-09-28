@@ -3,6 +3,8 @@
 # Exit in case of an error, and show the steps
 set -ex
 install_via_aptget() {
+	echo "Calling apt-get update"
+	sudo apt-get update
 	echo "Calling apt-get to install $*"
 	sudo apt-get install "$@"
 }
@@ -10,18 +12,16 @@ install_via_aptget() {
 if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
 	# Update list of available packages in any case
 	DEPS="libboost-program-options-dev libboost-test-dev pkg-config"
-	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
+	if [ "$QT_VERSION" -eq 5 ] ; then
 		DEPS="${DEPS} libpoppler-qt5-dev qtbase5-dev qttools5-dev qttools5-dev-tools"
 	else
 		DEPS="${DEPS} libpoppler-qt4-dev"
 	fi
-	echo "Calling apt-get update"
-	sudo apt-get update
 	install_via_aptget $DEPS
 elif [ "$TRAVIS_OS_NAME" = "osx" ] ; then
 	# Travis recommends to run homebrew update
 	brew update
-	if [ "$CMAKE_PARAMETERS" = "-DUseQtFive=ON" ] ; then
+	if [ "$QT_VERSION" -eq 5 ] ; then
 		brew install poppler --with-qt5
 	else
 		brew install poppler --with-qt

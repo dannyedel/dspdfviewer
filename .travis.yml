@@ -5,25 +5,26 @@ matrix:
     fast_finish: true
 
     # Manually specify the matrix:
-    # Test Qt4 (compat with older releases) on precise,
-    # test Qt5 on trusty
+    # Test Qt4 on precise
+    # test Qt5 on trusty (triggered via services: docker)
     include:
         - os: linux
-          env: DIST=precise CMAKE_PARAMETERS="-DUseQtFive=OFF"
+          env: QT_VERSION=4
           compiler: gcc
         - os: linux
-          env: DIST=precise CMAKE_PARAMETERS="-DUseQtFive=OFF"
+          env: QT_VERSION=4
           compiler: clang
         - os: linux
           services: docker
-          env: DIST=trusty CMAKE_PARAMETERS="-DUseQtFive=ON"
+          env: QT_VERSION=5
           compiler: gcc
         - os: linux
           services: docker
-          env: DIST=trusty CMAKE_PARAMETERS="-DUseQtFive=ON"
+          env: QT_VERSION=5
           compiler: clang
         - os: osx
-          env: CMAKE_PARAMETERS="-DUseQtFive=OFF"
+          env: QT_VERSION=4
+          compiler: clang
 install:
  - _travis/install_dependencies
  - _travis/compile
