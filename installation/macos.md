@@ -3,13 +3,17 @@ title: Installation on MacOS
 layout: default
 ---
 
-## MacPorts
-If you use a mac with macports, it is very easy to set up a qt4 environment
+## Homebrew
+If you use a mac with Homebrew, there already is a formula to install
+dspdfviewer
 
-1. install macports
-2. port install poppler +qt4+quartz
-3. port install cmake
+{% highlight bash %}
+brew install dspdfviewer
+{% endhighlight %}
 
-then follow the [normal build instructions]
+The previous command installs the latest release. If you want to test out the
+newest features, provide the head option:
 
-[normal build instructions]: installation/
+{% highlight bash %}
+brew install dspdfviewer --HEAD
+{% endhighlight %}
