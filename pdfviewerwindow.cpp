@@ -30,6 +30,7 @@
 #include "sconnect.h"
 #include <cstdlib>
 #include <boost/numeric/conversion/cast.hpp>
+#include "ui_keybindings.h"
 
 using boost::numeric_cast;
 
@@ -60,6 +61,7 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool s
   maximumPageNumber(65535),
   correctImageRendered(false),
   myPart(pagePart),
+  windowRole(wr),
   runtimeConfiguration(r),
   linkAreas()
 {
@@ -70,7 +72,12 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool s
   ui.verticalLayout->setStretch(0, numeric_cast<int>(mainImageHeight) );
   ui.verticalLayout->setStretch(1, numeric_cast<int>(r.bottomPaneHeight()) );
   setWindowRole(to_QString(wr));
-  setWindowTitle(QString("DS PDF Viewer - %1").arg(windowRole()).replace('_', ' ') );
+  /*: User visible Window Title Line */
+	if ( windowRole == WindowRole::AudienceWindow ) {
+		setWindowTitle(tr("DS PDF Viewer - Audience Window"));
+	} else {
+		setWindowTitle(tr("DS PDF Viewer - Secondary Window"));
+	}
   if ( !showInformationLine || ! r.showPresenterArea()) {
     /* If the information line is disabled because we're the primary screen,
      * or the user explicitly said so, disable it completely.
@@ -118,7 +125,7 @@ void PDFViewerWindow::reposition()
 
 void PDFViewerWindow::displayImage(QImage image)
 {
-  ui.imageLabel->setText("");
+  ui.imageLabel->setText( QString() );
   ui.imageLabel->resize( image.size() );
   if ( blank ) {
     // If we're supposed to display a blank image, leave it at this state.
@@ -330,7 +337,7 @@ void PDFViewerWindow::showLoadingScreen(uint pageNumberToWaitFor)
   this->correctImageRendered = false;
   this->currentImage = QImage();
   ui.imageLabel->setPixmap(QPixmap());
-  ui.imageLabel->setText(QString("Loading page number %1").arg(pageNumberToWaitFor) );
+  ui.imageLabel->setText(tr("Loading page number %1").arg(pageNumberToWaitFor) );
 
   /** Clear Thumbnails, they will come back in soon */
   ui.previousThumbnail->setPixmap( QPixmap() );
@@ -354,7 +361,7 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
   DEBUGOUT << "Resized from" << resizeEvent->oldSize() << "to" << resizeEvent->size() << ", requesting re-render.";
 	static bool i3shellcode_executed = false;
 	if (
-		windowRole() == "Audience_Window" &&
+		windowRole == WindowRole::AudienceWindow &&
 		runtimeConfiguration.i3workaround() &&
 		resizeEvent->spontaneous() &&
 		// i3 generates a spontaneous resize.
@@ -375,7 +382,7 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
 
 QString PDFViewerWindow::timeToString(const QTime & time) const
 {
-  return time.toString("HH:mm:ss");
+  return time.toString( tr("HH:mm:ss", "This is used by QTime::toString. See its documentation before changing this.") );
 }
 
 QString PDFViewerWindow::timeToString(int milliseconds) const
@@ -386,7 +393,7 @@ QString PDFViewerWindow::timeToString(int milliseconds) const
 
 void PDFViewerWindow::updatePresentationClock(const QTime& presentationClock)
 {
-  ui.presentationClock->setText( QString("Total\n%1").arg(timeToString(presentationClock)));
+  ui.presentationClock->setText( QCoreApplication::tr("Form", "Total\n%1").arg(timeToString(presentationClock)));
 }
 
 void PDFViewerWindow::updateSlideClock(const QTime& slideClock)
@@ -401,25 +408,10 @@ void PDFViewerWindow::updateWallClock(const QTime& wallClock)
 
 void PDFViewerWindow::keybindingsPopup()
 {
-  QMessageBox *popup   = new QMessageBox();
-  QString msg;
-  msg.append("<table>\n");
-  msg.append("<tr><th width=200 align=left>Key</th><th width=400 align=left>Action</th></tr>\n");
-  /* I skip some navigation bindings (they have to many alternatives) */
-  msg.append("<tr><td>N or Left/Down arrow</td><td>Next slide</td></tr>\n");
-  msg.append("<tr><td>P or Right/Up arrow</td><td>Previous slide</td></tr>\n");
-  msg.append("<tr><td>B or .</td><td>Blank/Unblank audience screen</td></tr>\n");
-  msg.append("<tr><td>G</td><td>Go to specific slide</td></tr>\n");
-  msg.append("<tr><td>H or Home</td><td>Go to first page and reset counters</td></tr>\n");
-  msg.append("<tr><td>Q or Esc</td><td>Quit</td></tr>\n");
-  msg.append("<tr><td>S or F12</td><td>Switch primary and secondary screens</td></tr>\n");
-  msg.append("<tr><td>T</td><td>Toggle between notes and slides in the secondary screen</td></tr>\n");
-  msg.append("<tr><td>D</td><td>Toggle between displaying both notes and slides in the secondary screen or only notes</td></tr>\n");
-  msg.append("<tr><td>? or F1</td><td>Show this help box</td></tr>\n");
-  msg.append("</table>");
-  popup->setWindowTitle(QString("Keybindings"));
-  popup->setText(msg);
-  popup->show();
+	Ui::KeybindingsDialog keybindUi;
+	QDialog popup;
+	keybindUi.setupUi(&popup);
+	popup.exec();
 }
 
 void PDFViewerWindow::changePageNumberDialog()
@@ -434,7 +426,7 @@ void PDFViewerWindow::changePageNumberDialog()
   int targetPageNumber = QInputDialog::getInt(this,
 	/* Window Caption */ tr("Select page"),
 	/* Input field caption */
-	QString(tr("Jump to page number (%1-%2):")).arg(displayMinNumber).arg(displayMaxNumber),
+	tr("Jump to page number (%1-%2):").arg(displayMinNumber).arg(displayMaxNumber),
 	/* Starting number. */
 	numeric_cast<int>(displayCurNumber),
 	/* minimum value */
@@ -520,7 +512,3 @@ void PDFViewerWindow::linkClicked(uint targetNumber)
   DEBUGOUT << "Hyperlink detected";
   emit pageRequested(targetNumber);
 }
-
-
-
-#include "pdfviewerwindow.moc"

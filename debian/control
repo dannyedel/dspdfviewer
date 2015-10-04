@@ -5,10 +5,13 @@ Maintainer: Danny Edel <mail@danny-edel.de>
 Build-Depends: cmake,
                debhelper (>= 7.3.0),
                g++ (>= 4:4.6),
+               latex-beamer,
                libboost-program-options-dev,
+               libboost-test-dev,
                libpoppler-qt4-dev,
                lsb-release,
-               pkg-config
+               pkg-config,
+               texlive-pictures
 Standards-Version: 3.9.3
 Vcs-Git: git://github.com/dannyedel/dspdfviewer.git
 Vcs-Browser: https://github.com/dannyedel/dspdfviewer

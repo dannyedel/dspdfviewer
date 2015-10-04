@@ -13,10 +13,24 @@ else
 	mkdir build
 	cd build
 fi
+
+CMAKE_PARAMETERS="-DDownloadTestPDF=ON"
 # In any case, we're in $SOURCE/build now.
-cmake "$CMAKE_PARAMETERS" ..
+# Activate coverage iff compiling with linux/g++
+if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ] ; then
+	# Linux / GCC: Activate coverage
+	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DCodeCoverage=ON"
+fi
+
+if [ "$QT_VERSION" -eq 4 ] ; then
+	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DUseQtFive=OFF"
+elif [ "$QT_VERSION" -eq 5 ] ; then
+	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DUseQtFive=ON"
+else
+	echo "Unknown qt version $QT_VERSION" >&2
+	false
+fi
+
+cmake $CMAKE_PARAMETERS ..
+
 make VERBOSE=1
-[ -x ./dspdfviewer ]
-# Activate these later:
-#make test
-#ctest -T coverage

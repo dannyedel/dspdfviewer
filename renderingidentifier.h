@@ -33,8 +33,7 @@ private:
   QSize theRequestedPageSize;
 
 public:
-  // This field needs to be changed after construction, therefore public
-  /** The "version" of the file this render started at
+  /*
    *
    * This will be set and checked by PDFRenderFactory
    */
@@ -47,8 +46,13 @@ public:
 
   bool operator == (const RenderingIdentifier& other) const;
 
+#if 0
   /** Cast to a string that is usable as a hash identifier **/
   operator QString() const;
+#endif
 };
+
+/** Hashes this object to something useable in the cache */
+uint qHash(const RenderingIdentifier& ri);
 
 #endif // RENDERINGIDENTIFIER_H
