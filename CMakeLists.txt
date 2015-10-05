@@ -46,7 +46,7 @@ endif()
 ### Compile all the source code into one .a file
 
 add_library(libdspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
-set_target_properties(libdspdfviewer PROPERTIES OUTPUT_NAME dspdfviewer)
+set_target_properties(libdspdfviewer PROPERTIES OUTPUT_NAME libdspdfviewer)
 target_link_libraries(libdspdfviewer ${LIST_LIBRARIES})
 
 ### And link it together with main.cpp to produce an executable
