@@ -133,7 +133,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
     )
     ("duplicate,d",
      value<bool>(&m_duplicate)->default_value(false),
-     "Duplicates the audience's screen next to the notes on the second screen.\n"
+     tr("Duplicates the audience's screen next to the notes on the second screen.").toStdString().data()
     )
     ("thumbnails,t",
      value<bool>(&m_showThumbnails)->default_value(true),
