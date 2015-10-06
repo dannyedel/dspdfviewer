@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>DS PDF Viewer</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: black;
+color: white;
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="80,20">
    <property name="spacing">
     <number>0</number>
