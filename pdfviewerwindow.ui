@@ -87,7 +87,7 @@
        <height>16777215</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0,1,0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0,0">
       <property name="margin">
        <number>0</number>
       </property>
@@ -143,7 +143,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>820</width>
+           <width>829</width>
            <height>162</height>
           </rect>
          </property>
@@ -217,13 +217,6 @@
        </widget>
       </item>
       <item>
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="slideClock">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -249,7 +242,6 @@
      <zorder>presentationClock</zorder>
      <zorder>wallClock</zorder>
      <zorder>slideClock</zorder>
-     <zorder>line</zorder>
     </widget>
    </item>
   </layout>
