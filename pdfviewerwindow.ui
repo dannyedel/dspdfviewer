@@ -14,9 +14,15 @@
    <string>DS PDF Viewer</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: black;
-color: white;
-</string>
+   <string notr="true">#Form,
+#thumbnailAreaWidget,
+#bottomArea QLabel,
+#imageArea,
+#imageLabel
+{
+ background-color: black;
+ color: white;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="80,20">
    <property name="spacing">
