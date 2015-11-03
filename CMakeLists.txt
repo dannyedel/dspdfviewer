@@ -46,7 +46,7 @@ endif()
 ### Compile all the source code into one .a file
 
 add_library(libdspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	set_target_properties(libdspdfviewer PROPERTIES OUTPUT_NAME libdspdfviewer)
 else()
 	set_target_properties(libdspdfviewer PROPERTIES OUTPUT_NAME dspdfviewer)
