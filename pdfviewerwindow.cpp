@@ -24,7 +24,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMouseEvent>
-#ifdef POPPLER_QT5
+#if defined(POPPLER_QT5) && defined(_WIN32)
 #include <QWindow>
 #endif
 #include "debug.h"
@@ -108,7 +108,7 @@ void PDFViewerWindow::reposition()
     return;
   this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
   this->showNormal();
-#ifdef POPPLER_QT5
+#if defined(POPPLER_QT5) && defined(_WIN32)
   this->windowHandle()->setScreen(QApplication::screens()[numeric_cast<int>(getMonitor())]);
   this->showFullScreen();
 #else
