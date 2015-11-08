@@ -76,8 +76,8 @@ int main(int argc, char** argv)
 	}
 
 	QTranslator appTranslator;
-	DEBUGOUT << "Loading dspdfviewer_ translation for" << localeName;
-	if ( ! appTranslator.load(QString::fromUtf8("dspdfviewer_").append(localeName) ) ) {
+	DEBUGOUT << "Loading dspdfviewer translation for current locale:" << localeName;
+	if ( ! appTranslator.load(QString::fromUtf8(":/translations/dspdfviewer") ) ) {
 		qWarning() << "Failed to load dspdfviewer translation for current locale, falling back to english.";
 	} else {
 		app.installTranslator(&appTranslator);
