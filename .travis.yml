@@ -1,5 +1,10 @@
 language: cpp
 sudo: required
+# Only build master branch on push, other branches will get built when
+# they are turned into pull-requests
+branches:
+    only:
+        - master
 matrix:
     # This marks the build as failed as soon as something goes wrong
     fast_finish: true
