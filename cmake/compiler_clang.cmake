@@ -29,7 +29,13 @@ endif()
 # about undefined behaviours.
 
 # So don't set Werror for it.
+# TODO: Set this only for the automoc files
 add_definitions(-Wno-error=undefined-reinterpret-cast)
+
+# qrc system generates code that triggers a lot of the
+# clang warnings.
+set_source_files_properties(dspdfviewer.qrc.cxx
+	PROPERTIES COMPILE_FLAGS "-Wno-error")
 
 # Include directories with -isystem to supress warnings
 foreach(lib IN LISTS LIST_INCLUDE_DIRS)
