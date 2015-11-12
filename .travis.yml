@@ -20,11 +20,11 @@ matrix:
           env: QT_VERSION=4
           compiler: clang
         - os: linux
-          services: docker
+          dist: trusty
           env: QT_VERSION=5
           compiler: gcc
         - os: linux
-          services: docker
+          dist: trusty
           env: QT_VERSION=5
           compiler: clang
         - os: osx
