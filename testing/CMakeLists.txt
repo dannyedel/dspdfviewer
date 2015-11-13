@@ -58,7 +58,7 @@ add_test(NAME BoostTestRunner
 # Check that the translations get activated
 
 add_test(NAME EnglishByDefault
-	COMMAND cmake -E env --unset=LANGUAGE --unset=LC_ALL ../dspdfviewer --help
+	COMMAND env --unset=LANGUAGE --unset=LC_ALL ../dspdfviewer --help
 )
 
 set_tests_properties(EnglishByDefault PROPERTIES
@@ -66,7 +66,7 @@ set_tests_properties(EnglishByDefault PROPERTIES
 	)
 
 add_test(NAME GermanWithDeDE
-	COMMAND cmake -E env LANGUAGE=de LC_ALL=de_DE@UTF-8 ../dspdfviewer --help
+	COMMAND env LANGUAGE=de LC_ALL=de_DE@UTF-8 ../dspdfviewer --help
 )
 
 set_tests_properties(GermanWithDeDE PROPERTIES
