@@ -34,9 +34,9 @@ option(CodeCoverage "Add coverage analysis code to the program. Will slow it dow
 
 include(cmake/filelists.cmake)
 include(cmake/external_libraries.cmake)
+include(cmake/qrc_embedding.cmake)
 include(cmake/compilers.cmake)
 include(cmake/version_number.cmake)
-include(cmake/qrc_embedding.cmake)
 
 
 if( I3WORKAROUND_SHELLCODE )

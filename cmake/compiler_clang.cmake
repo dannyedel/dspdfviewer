@@ -34,7 +34,7 @@ add_definitions(-Wno-error=undefined-reinterpret-cast)
 
 # qrc system generates code that triggers a lot of the
 # clang warnings.
-set_source_files_properties(dspdfviewer.qrc.cxx
+set_source_files_properties( ${EMBEDDED_QRC}
 	PROPERTIES COMPILE_FLAGS "-Wno-error")
 
 # Include directories with -isystem to supress warnings
