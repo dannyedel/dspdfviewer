@@ -54,3 +54,21 @@ endif()
 add_test(NAME BoostTestRunner
 	COMMAND testrunner --report_level=detailed
 )
+
+# Check that the translations get activated
+
+add_test(NAME EnglishByDefault
+	COMMAND cmake -E env --unset=LANGUAGE --unset=LC_ALL ../dspdfviewer --help
+)
+
+set_tests_properties(EnglishByDefault PROPERTIES
+	PASS_REGULAR_EXPRESSION "Interactive Controls"
+	)
+
+add_test(NAME GermanWithDeDE
+	COMMAND cmake -E env LANGUAGE=de LC_ALL=de_DE@UTF-8 ../dspdfviewer --help
+)
+
+set_tests_properties(GermanWithDeDE PROPERTIES
+	PASS_REGULAR_EXPRESSION "Interaktive Tasten"
+)
