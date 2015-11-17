@@ -11,7 +11,7 @@ install_via_aptget() {
 
 if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
 	# Update list of available packages in any case
-	DEPS="libboost-program-options-dev libboost-test-dev pkg-config"
+	DEPS="libboost-program-options-dev libboost-test-dev pkg-config xvfb"
 	if [ "$QT_VERSION" -eq 5 ] ; then
 		DEPS="${DEPS} libpoppler-qt5-dev qtbase5-dev qttools5-dev qttools5-dev-tools"
 	else

@@ -34,6 +34,7 @@ option(CodeCoverage "Add coverage analysis code to the program. Will slow it dow
 
 include(cmake/filelists.cmake)
 include(cmake/external_libraries.cmake)
+include(cmake/qrc_embedding.cmake)
 include(cmake/compilers.cmake)
 include(cmake/version_number.cmake)
 
@@ -54,7 +55,7 @@ endif()
 target_link_libraries(libdspdfviewer ${LIST_LIBRARIES})
 
 ### And link it together with main.cpp to produce an executable
-add_executable(dspdfviewer main)
+add_executable(dspdfviewer main ${EMBEDDED_QRC})
 target_link_libraries(dspdfviewer libdspdfviewer)
 
 ### ... and link it with the tests to produce a testing executable.
