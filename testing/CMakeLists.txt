@@ -58,7 +58,7 @@ add_test(NAME BoostTestRunner
 # Check that the translations get activated
 
 add_test(NAME EnglishByDefault
-	COMMAND env --unset=LANGUAGE --unset=LC_ALL ../dspdfviewer --help
+	COMMAND env LANGUAGE=C LC_ALL=C.UTF-8 xvfb-run -a ../dspdfviewer --help
 )
 
 set_tests_properties(EnglishByDefault PROPERTIES
@@ -66,7 +66,7 @@ set_tests_properties(EnglishByDefault PROPERTIES
 	)
 
 add_test(NAME GermanWithDeDE
-	COMMAND env LANGUAGE=de LC_ALL=de_DE@UTF-8 ../dspdfviewer --help
+	COMMAND env LANGUAGE=de LC_ALL=de_DE.UTF-8 xvfb-run -a ../dspdfviewer --help
 )
 
 set_tests_properties(GermanWithDeDE PROPERTIES
