@@ -30,7 +30,7 @@ if( NOT DSPDFVIEWER_VERSION )
 	# Use default
 
 	# TODO: Keep me updated!
-	set(DSPDFVIEWER_VERSION "1.14-unreleased")
+	set(DSPDFVIEWER_VERSION "1.14")
 	message(STATUS "Embedding version number ${DSPDFVIEWER_VERSION}. If you want to override this, "
 		"for example to embed the git revision you built from, please pass "
 		"-DDSPDFVIEWER_VERSION=1.2.3.4.5 to the cmake command.")
