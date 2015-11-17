@@ -14,7 +14,8 @@ too much hassle.
 
 
 A proper debian package has already been included into debian sid
-and is maintained by me, please take a look at the "debian" branch
-in this repository (git://github.com/dannyedel/dspdfviewer.git).
+and is maintained by me.  You can browse the repository at
+https://anonscm.debian.org/cgit/collab-maint/dspdfviewer.git or clone
+from git://anonscm.debian.org/collab-maint/dspdfviewer.git
 
- -- Danny Edel <mail@danny-edel.de>  Mon, 10 Aug 2015 22:44:02 +0200
+ -- Danny Edel <mail@danny-edel.de>  Mon, 13 Nov 2015 07:41:50 +0100
