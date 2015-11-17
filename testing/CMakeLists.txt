@@ -57,8 +57,17 @@ add_test(NAME BoostTestRunner
 
 # Check that the translations get activated
 
+if(APPLE)
+	set(XVFB "")
+elseif(WIN32)
+	set(XFFB "")
+else()
+	set(XVFB "xvfb-run -a")
+endif()
+separate_arguments(XVFB)
+
 add_test(NAME EnglishByDefault
-	COMMAND env LANGUAGE=C LC_ALL=C.UTF-8 xvfb-run -a ../dspdfviewer --help
+	COMMAND env LANGUAGE=C LC_ALL=C.UTF-8 ${XVFB} ../dspdfviewer --help
 )
 
 set_tests_properties(EnglishByDefault PROPERTIES
@@ -66,7 +75,7 @@ set_tests_properties(EnglishByDefault PROPERTIES
 	)
 
 add_test(NAME GermanWithDeDE
-	COMMAND env LANGUAGE=de LC_ALL=de_DE.UTF-8 xvfb-run -a ../dspdfviewer --help
+	COMMAND env LANGUAGE=de LC_ALL=de_DE.UTF-8 ${XVFB} ../dspdfviewer --help
 )
 
 set_tests_properties(GermanWithDeDE PROPERTIES
