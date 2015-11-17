@@ -8,6 +8,7 @@ target_link_libraries(testhelp libdspdfviewer)
 list(APPEND PDFFILENAMES
 	colored-rectangles.pdf
 	images.pdf
+	external-link.pdf
 )
 
 if(DownloadTestPDF)
@@ -20,6 +21,11 @@ if(DownloadTestPDF)
 		TIMEOUT 30
 		SHOW_PROGESS
 		EXPECTED_MD5 5c72e0954d457e3e9a1287ff299e307a
+		)
+	file(DOWNLOAD http://danny-edel.de/external-link.pdf ${CMAKE_CURRENT_BINARY_DIR}/external-link.pdf
+		TIMEOUT 30
+		SHOW_PROGESS
+		EXPECTED_MD5 56f89189525c4c46c2c1a2307d1a306c
 		)
 else()
 	# Compile from source
