@@ -419,6 +419,11 @@ void PDFViewerWindow::keybindingsPopup()
 	Ui::KeybindingsDialog keybindUi;
 	QDialog popup;
 	keybindUi.setupUi(&popup);
+	keybindUi.label_versionstring->setText(
+		keybindUi.label_versionstring->text().arg(
+			QString::fromUtf8(DSPDFVIEWER_VERSION )
+		)
+	);
 	popup.exec();
 }
 
