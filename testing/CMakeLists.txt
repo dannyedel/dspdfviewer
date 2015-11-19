@@ -5,25 +5,55 @@ add_library(testhelp
 # Link this helper library to dspdfviewer's functions
 target_link_libraries(testhelp libdspdfviewer)
 
+list(APPEND PDFFILENAMES
+	colored-rectangles.pdf
+	images.pdf
+)
+
 if(DownloadTestPDF)
 	file(DOWNLOAD http://danny-edel.de/colored-rectangles.pdf ${CMAKE_CURRENT_BINARY_DIR}/colored-rectangles.pdf
 		TIMEOUT 30
 		SHOW_PROGRESS
 		EXPECTED_MD5 de9617fb1c00d6185e90314124e2c2f5
 		)
+	file(DOWNLOAD http://danny-edel.de/images.pdf ${CMAKE_CURRENT_BINARY_DIR}/images.pdf
+		TIMEOUT 30
+		SHOW_PROGESS
+		EXPECTED_MD5 5c72e0954d457e3e9a1287ff299e307a
+		)
 else()
-	# Build the PDF before creating the test helper functions
+	foreach(pdffile IN LISTS PDFFILENAMES)
+		# get source file name.
+		# replace .pdf with .tex ending,
+		# prefix source directory
+		# and replace any ~ characters in filename with \\string~
+		STRING(REGEX REPLACE "\\.pdf$" ".tex" SOURCEFILENAME ${pdffile})
+		SET(SOURCEDIRNAME "${CMAKE_CURRENT_SOURCE_DIR}/pdfs")
+		SET(SOURCEFULLPATH "${SOURCEDIRNAME}/${SOURCEFILENAME}")
+		STRING(REPLACE "~" "\\\\string~" PDFLATEX_FIXED_DIRNAME ${SOURCEDIRNAME})
+		SET(PDFLATEX_FIXED_FILENAME "${PDFLATEX_FIXED_DIRNAME}/${SOURCEFILENAME}")
 
-	# Caveat: If the directory name contains a ~, pdflatex
-	# will fail. Replace it with \string~
-	STRING(REPLACE "~" "\\\\string~" PDFLATEX_FIXED_FILENAME "${CMAKE_CURRENT_SOURCE_DIR}/pdfs/colored-rectangles.tex")
-	add_custom_command(OUTPUT colored-rectangles.pdf
-		DEPENDS pdfs/colored-rectangles.tex
-		COMMAND pdflatex -interaction=nonstopmode ${PDFLATEX_FIXED_FILENAME}
-		WORKING_DIRECTORY
-	)
+		add_custom_command(OUTPUT ${pdffile}
+			DEPENDS ${SOURCEFULLPATH}
+			COMMAND # env TEXINPUTS=${SOURCEDIRNAME}
+				pdflatex
+				-interaction=nonstopmode
+				-output-directory ${CMAKE_CURRENT_BINARY_DIR}
+				${PDFLATEX_FIXED_FILENAME}
+				WORKING_DIRECTORY ${SOURCEDIRNAME}
+		)
+
+		message(STATUS "Building ${pdffile} from source.")
+	endforeach()
 endif()
-add_custom_target(testpdfs DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/colored-rectangles.pdf)
+
+foreach(pdffile IN LISTS PDFFILENAMES)
+	list(APPEND PDFTARGETFILES ${CMAKE_CURRENT_BINARY_DIR}/${pdffile})
+endforeach()
+add_custom_target(testpdfs DEPENDS
+	${PDFTARGETFILES}
+)
+
 
 add_dependencies(testhelp testpdfs)
 

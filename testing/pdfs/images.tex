@@ -1,0 +1,28 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{color}
+\usepackage{pgfpages}
+
+\setbeameroption{show notes on second screen}
+
+\title{Image on primary screen}
+
+\begin{document}
+
+\begingroup
+	\begin{frame}
+		\begin{center}
+			\includegraphics[width=0.5\textwidth]{jpeg-image}
+			% Target color:
+			% 112 29 193 // 701dc1
+		\end{center}
+	\end{frame}
+	\begin{frame}
+		\begin{center}
+			\includegraphics[width=0.5\textwidth]{png-image}
+			% Target color:
+			% 20 99 180 // 1463b4
+		\end{center}
+	\end{frame}
+\endgroup
+
+\end{document}
