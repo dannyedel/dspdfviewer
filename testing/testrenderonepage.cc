@@ -4,7 +4,7 @@ using namespace std;
 using namespace TestHelpers;
 
 BOOST_AUTO_TEST_CASE(render_one_page) {
-	PDFDocumentReference pdr( TestHelpers::pdfFilename(), PDFCacheOption::keepPDFinMemory );
+	PDFDocumentReference pdr( TestHelpers::pdfFilename("colored-rectangles.pdf"), PDFCacheOption::keepPDFinMemory );
 
 	auto left = RenderUtils::renderPagePart(pdr.page(0).page, QSize(1920,1080), PagePart::LeftHalf);
 	auto right = RenderUtils::renderPagePart(pdr.page(0).page, QSize(1920,1200), PagePart::RightHalf);

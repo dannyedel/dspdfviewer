@@ -26,7 +26,9 @@
 #include <boost/test/unit_test.hpp>
 
 namespace TestHelpers {
-	QString pdfFilename();
+
+	/** Returns full path to the specified file */
+	QString pdfFilename( const std::string& basename );
 
 	/** Handle to a integration test environment.
 	 * Spawns an in-memory X-Server in the background and allows to send
