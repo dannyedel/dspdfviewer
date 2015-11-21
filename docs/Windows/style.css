@@ -1,0 +1,12 @@
+td {
+   vertical-align: top;
+}
+
+td p {
+   margin: 0;
+}
+
+html, body {
+   font-family: 'Segoe UI', 'Trebuchet MS', Tahoma, Verdana, Arial, sans-serif;
+   font-size: 12pt;
+}
