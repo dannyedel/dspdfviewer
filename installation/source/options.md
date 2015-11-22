@@ -50,6 +50,11 @@ escape it for your shell.
   (see next option)
   * If this option is enabled, dspdfviewer also depends on the boost unit
   test framework.
+* `LinkBoostTestDynamic` boolean, default ON
+  * Link against the `boost::test` libraries dynamically.
+  Depending on your platform, it might make sense to link statically.
+  This option only controls whether `BOOST_TEST_DYN_LINK` is defined in the sourcecode,
+  you might need additional `LDFLAGS` to actually enforce static linking.
 * `DownloadTestPDF` boolean, default OFF
   * If `BuildTests` is off, the value of this option is *ignored*.
   * If this option is off, dspdfviewer depends on a working `pdflatex` installation
