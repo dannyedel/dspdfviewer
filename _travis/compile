@@ -17,7 +17,7 @@ fi
 CMAKE_PARAMETERS="-DDownloadTestPDF=ON"
 
 if [ "$BOOST_STATIC" ] ; then
-	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DLinkBoostTestDynamic=OFF"
+	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DBoostStaticLink=ON"
 fi
 
 # In any case, we're in $SOURCE/build now.

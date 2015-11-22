@@ -3,6 +3,13 @@ set -ex
 cd build
 
 [ -x ./dspdfviewer ]
+
+if [ "$BOOST_STATIC" ] && [ $BOOST_STATIC -gt 0 ] ; then
+	[ 0 -eq $(ldd testing/testrunner | grep --count boost ) ]
+else
+	$(ldd testing/testrunner | grep -q boost)
+fi
+
 ctest --output-on-failure
 if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ] ; then
 	ctest -T coverage
