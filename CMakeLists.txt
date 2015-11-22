@@ -28,6 +28,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(UseQtFive "Build with Qt5 and libpoppler-qt5" OFF)
 option(UpdateTranslations "Do you want to update the .ts files (WARNING: running make clean will delete them!)" OFF)
 option(BuildTests "Build unit tests (this requires pdflatex or internet access and DownloadTestPDFs=ON)" ON)
+option(LinkBoostTestDynamic "Link dynamically against the boost::test library" ON)
 option(DownloadTestPDF "Download test PDFs from http://danny-edel.de, rather then building them using latex-beamer" OFF)
 option(CodeCoverage "Add coverage analysis code to the program. Will slow it down. A lot. Only supported on GCC right now." OFF)
 

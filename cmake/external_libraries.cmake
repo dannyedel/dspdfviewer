@@ -9,6 +9,9 @@ if(BuildTests)
 	find_package(Boost
 		COMPONENTS program_options unit_test_framework
 		REQUIRED)
+	if( LinkBoostTestDynamic )
+		add_definitions(-DBOOST_TEST_DYN_LINK)
+	endif()
 else()
 	# No unit tests: Only program_options needed
 	find_package(Boost
