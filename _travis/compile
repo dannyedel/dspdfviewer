@@ -15,6 +15,11 @@ else
 fi
 
 CMAKE_PARAMETERS="-DDownloadTestPDF=ON"
+
+if [ "$BOOST_STATIC" ] ; then
+	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DLinkBoostTestDynamic=OFF"
+fi
+
 # In any case, we're in $SOURCE/build now.
 # Activate coverage iff compiling with linux/g++
 if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ] ; then
