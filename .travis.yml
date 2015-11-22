@@ -27,6 +27,10 @@ matrix:
           dist: trusty
           env: QT_VERSION=5
           compiler: clang
+        - os: linux
+          dist: trusty
+          env: QT_VERSION=5 BOOST_STATIC=1
+          compiler: gcc
         - os: osx
           env: QT_VERSION=4
           compiler: clang

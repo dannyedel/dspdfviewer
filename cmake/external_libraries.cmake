@@ -4,8 +4,16 @@
 
 
 ### Boost Libraries ###
+
+if( BoostStaticLink )
+	set(Boost_USE_STATIC_LIBS ON)
+elseif(BuildTests)
+	add_definitions(-DBOOST_TEST_DYN_LINK)
+endif()
+
 if(BuildTests)
-	# If we're building tests, we need program_options AND unit_test_framework
+	# If we're building tests, we need program_options
+	# AND unit_test_framework
 	find_package(Boost
 		COMPONENTS program_options unit_test_framework
 		REQUIRED)
