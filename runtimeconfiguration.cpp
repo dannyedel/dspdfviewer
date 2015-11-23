@@ -212,7 +212,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
   }
 
   if ( m_bottomPaneHeightPercent < 1 || m_bottomPaneHeightPercent > 99 ) {
-    throw std::runtime_error( tr("Invalid height in specified. Please use a value from 1 to 99 (inclusive)").toLocal8Bit() );
+    throw std::runtime_error( tr("Invalid height in specified. Please use a value from 1 to 99 (inclusive)").toLocal8Bit().constData() );
   }
   
   m_useFullPage = ( 0 < vm.count("full-page") );
@@ -316,7 +316,7 @@ bool RuntimeConfiguration::filePathDefined() const
 }
 
 noFileNameException::noFileNameException():
-	logic_error( QCoreApplication::tr("You did not specify a PDF-File to display.").toLocal8Bit() ) {
+	logic_error( QCoreApplication::tr("You did not specify a PDF-File to display.").toLocal8Bit().constData() ) {
 }
 
 bool RuntimeConfiguration::i3workaround() const
