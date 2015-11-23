@@ -102,12 +102,12 @@ int main(int argc, char** argv)
 		return app.exec();
 	} catch ( std::exception& e ) {
 		std::cerr << "----- FATAL ERROR -----" << std::endl
-			<< QCoreApplication::translate("main", "Dual-Screen PDF Viewer has encountered an error and cannot continue:")
+			<< QCoreApplication::translate("DSPDFViewer", "Dual-Screen PDF Viewer has encountered an error and cannot continue:")
 				.toLocal8Bit().constData() << std::endl
 			<< e.what() << std::endl;
 
 		QMessageBox errorMsg;
-		errorMsg.setText( QMessageBox::tr("Dual-Screen PDF Viewer has encountered an error and cannot continue") );
+		errorMsg.setText( QCoreApplication::translate("DSPDFViewer", "Dual-Screen PDF Viewer has encountered an error and cannot continue") );
 		errorMsg.setInformativeText( QString::fromLocal8Bit( e.what() ) );
 		errorMsg.setDefaultButton(QMessageBox::Discard);
 		errorMsg.setIcon( QMessageBox::Critical );
