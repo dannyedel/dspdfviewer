@@ -102,7 +102,7 @@ int main(int argc, char** argv)
 		return app.exec();
 	} catch ( std::exception& e ) {
 		std::cerr << "----- FATAL ERROR -----" << std::endl
-			<< QCoreApplication::translate("DSPDFViewer", "Dual-Screen PDF Viewer has encountered an error and cannot continue:")
+			<< QCoreApplication::translate("DSPDFViewer", "Dual-Screen PDF Viewer has encountered an error and cannot continue")
 				.toLocal8Bit().constData() << std::endl
 			<< e.what() << std::endl;
 

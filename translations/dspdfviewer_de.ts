@@ -33,6 +33,12 @@
         <source>Requested page number %1 which is out of range! Ignoring request.</source>
         <translation>Die angeforderte Seitennummer %1 liegt außerhalb des gültigen Bereichs! Die Anfrage wird ignoriert.</translation>
     </message>
+    <message>
+        <location filename="../main.cpp" line="105"/>
+        <location filename="../main.cpp" line="110"/>
+        <source>Dual-Screen PDF Viewer has encountered an error and cannot continue</source>
+        <translation type="unfinished">DS PDF Viewer hat einen Fehler festgestellt und kann nicht weiter ausgeführt werden</translation>
+    </message>
 </context>
 <context>
     <name>Form</name>
@@ -285,12 +291,14 @@
 <context>
     <name>QFileDialog</name>
     <message>
+        <location filename="../main.cpp" line="98"/>
         <source>Load PDF from disk</source>
-        <translation type="obsolete">Lade PDF von Datenträger</translation>
+        <translation type="unfinished">Lade PDF von Datenträger</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="98"/>
         <source>PDF (*.pdf)</source>
-        <translation type="obsolete">PDF (*.pdf)</translation>
+        <translation type="unfinished">PDF (*.pdf)</translation>
     </message>
 </context>
 <context>
