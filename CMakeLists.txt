@@ -47,7 +47,7 @@ endif()
 
 ### Compile all the source code into one .a file
 
-add_library(libdspdfviewer ${dspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
+add_library(libdspdfviewer ${libdspdfviewer_SRCS} ${dspdfviewer_UIS_H} ${TRANSLATIONS})
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	set_target_properties(libdspdfviewer PROPERTIES OUTPUT_NAME libdspdfviewer)
 else()
@@ -56,7 +56,7 @@ endif()
 target_link_libraries(libdspdfviewer ${LIST_LIBRARIES})
 
 ### And link it together with main.cpp to produce an executable
-add_executable(dspdfviewer main ${EMBEDDED_QRC})
+add_executable(dspdfviewer ${dspdfviewer_SRCS} ${EMBEDDED_QRC})
 target_link_libraries(dspdfviewer libdspdfviewer)
 
 ### ... and link it with the tests to produce a testing executable.
