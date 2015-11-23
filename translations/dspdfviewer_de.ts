@@ -37,7 +37,7 @@
         <location filename="../main.cpp" line="105"/>
         <location filename="../main.cpp" line="110"/>
         <source>Dual-Screen PDF Viewer has encountered an error and cannot continue</source>
-        <translation type="unfinished">DS PDF Viewer hat einen Fehler festgestellt und kann nicht weiter ausgeführt werden</translation>
+        <translation>DS PDF Viewer hat einen Fehler festgestellt und kann nicht weiter ausgeführt werden</translation>
     </message>
 </context>
 <context>
@@ -89,7 +89,7 @@
         <location filename="../pdfviewerwindow.cpp" line="404"/>
         <source>Total
 %1</source>
-        <translation type="unfinished">Total
+        <translation>Gesamt
 %1</translation>
     </message>
 </context>
@@ -218,7 +218,7 @@
     <message>
         <location filename="../keybindings.ui" line="241"/>
         <source>dspdfviewer version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>DS PDF Viewer Version %1</translation>
     </message>
 </context>
 <context>
@@ -293,12 +293,12 @@
     <message>
         <location filename="../main.cpp" line="98"/>
         <source>Load PDF from disk</source>
-        <translation type="unfinished">Lade PDF von Datenträger</translation>
+        <translation>Lade PDF von Datenträger</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="98"/>
         <source>PDF (*.pdf)</source>
-        <translation type="unfinished">PDF (*.pdf)</translation>
+        <translation>PDF (*.pdf)</translation>
     </message>
 </context>
 <context>
@@ -336,7 +336,7 @@
     <message>
         <location filename="../runtimeconfiguration.cpp" line="73"/>
         <source>Options affecting program behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation>Optionen, die das Programmverhalten beeinflussen</translation>
     </message>
     <message>
         <location filename="../runtimeconfiguration.cpp" line="77"/>
@@ -473,7 +473,7 @@ die EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.</translation>
     <message>
         <location filename="../runtimeconfiguration.cpp" line="215"/>
         <source>Invalid height in specified. Please use a value from 1 to 99 (inclusive)</source>
-        <translation>Ungültige Höhe angegeben. Bitte verwenden Sie einen Wert von 1 bis einschließlich 99.</translation>
+        <translation>Ungültige Höhe angegeben. Bitte verwenden Sie einen Wert von 1 bis einschließlich 99</translation>
     </message>
 </context>
 </TS>
