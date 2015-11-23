@@ -70,7 +70,8 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
     ("version,v", tr("Print version statement").toLocal8Bit() )
     ;
 
-  options_description global("Options affecting program behaviour");
+  options_description global( tr("Options affecting program behaviour")
+	.toLocal8Bit().constData() );
   global.add_options()
     ("full-page,f", //value<bool>(&m_useFullPage)->default_value(false)->implicit_value(true),
       tr("Display the full slide on both screens (useful for PDFs created by presentation software other than latex-beamer)").toLocal8Bit() )
