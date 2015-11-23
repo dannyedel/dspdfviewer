@@ -60,45 +60,46 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
 	m_prerenderNextPages(10),
 	m_bottomPaneHeightPercent(20)
 {
-  options_description generic( tr("Generic options").toStdString() );
+  options_description generic( tr("Generic options").toLocal8Bit().constData() );
 
-/** FIXME: Using .toStdString().data() is Very Very Very Ugly,
+/** FIXME: Using .toLocal8Bit() [.constData()] is Very Very Very Ugly,
  * but works because program_options copies the string...
  */
   generic.add_options()
-    ("help,h", tr("Print help message").toStdString().data() )
-    ("version,v", tr("Print version statement").toStdString().data() )
+    ("help,h", tr("Print help message").toLocal8Bit() )
+    ("version,v", tr("Print version statement").toLocal8Bit() )
     ;
 
-  options_description global("Options affecting program behaviour");
+  options_description global( tr("Options affecting program behaviour")
+	.toLocal8Bit().constData() );
   global.add_options()
     ("full-page,f", //value<bool>(&m_useFullPage)->default_value(false)->implicit_value(true),
-      tr("Display the full slide on both screens (useful for PDFs created by presentation software other than latex-beamer)").toStdString().data() )
+      tr("Display the full slide on both screens (useful for PDFs created by presentation software other than latex-beamer)").toLocal8Bit() )
     ("prerender-previous-pages",
      value<unsigned>(&m_prerenderPreviousPages)->default_value(3),
      tr("Pre-render the preceding arg slides\n"
      "NOTE: If you set this to zero, you might not get a thumbnail for the previous slide unless it was loaded already."
-	 ).toStdString().data()
+	 ).toLocal8Bit()
     )
     ("prerender-next-pages",
      value<unsigned>(&m_prerenderNextPages)->default_value(10),
 	 tr(
      "Pre-render the next arg slides\n"
      "NOTE: If you set this to zero, you might not get a thumbnail for the next slide unless it was loaded already."
-	 ).toStdString().data()
+	 ).toLocal8Bit()
      )
     ("hyperlink-support,l",
      value<bool>(&m_hyperlinkSupport)->default_value(true),
 	 tr(
      "Support PDF Hyperlinks\n"
      "Follow hyperlinks when clicked (mouse pointer will change to a pointing hand) - set this to false if "
-     "you cannot reliably control your mouse pointer position and want to always go ahead one slide on click.").toStdString().data()
+     "you cannot reliably control your mouse pointer position and want to always go ahead one slide on click.").toLocal8Bit()
 	)
     ("cache-to-memory",
      value<bool>(&m_cacheToMemory)->default_value(true),
 	 tr(
      "Cache the PDF file into memory\n"
-     "Useful if you are editing the PDF file with latex while using the presenter software.").toStdString().data()
+     "Useful if you are editing the PDF file with latex while using the presenter software.").toLocal8Bit()
      )
     ("i3-workaround",
      value<bool>(&m_i3workaround)->default_value(false),
@@ -110,10 +111,10 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
      I3WORKAROUND_SHELLCODE
 	 ) )
 #endif
-	 .toStdString().data()
+	 .toLocal8Bit()
     )
     ;
-  options_description secondscreen( tr("Options affecting the second screen").toStdString() );
+  options_description secondscreen( tr("Options affecting the second screen").toLocal8Bit().constData() );
   secondscreen.add_options()
     ("use-second-screen,u",
      value<bool>(&m_useSecondScreen)->default_value(true),
@@ -122,47 +123,47 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
      " you might want to say 0 here.\n"
      "NOTE: Whatever you say on -a, -t, -w, -s or -p doesn't matter if you set this to false.\n"
      "NOTE: You might want to say -f if you set this to false."
-	 ).toStdString().data()
+	 ).toLocal8Bit()
     )
     ("presenter-area,a",
      value<bool>(&m_showPresenterArea)->default_value(true),
 	 tr(
      "Shows or hides the complete \"presenter area\" on the second screen, giving you a full-screen note page.\n"
      "NOTE: Whatever you say on -t, -w, -s or -p doesnt matter if you set this to false."
-	 ).toStdString().data()
+	 ).toLocal8Bit()
     )
     ("duplicate,d",
      value<bool>(&m_duplicate)->default_value(false),
-     tr("Duplicates the audience's screen next to the notes on the second screen.").toStdString().data()
+     tr("Duplicates the audience's screen next to the notes on the second screen.").toLocal8Bit()
     )
     ("thumbnails,t",
      value<bool>(&m_showThumbnails)->default_value(true),
 	 tr(
-     "Show thumbnails of previous, current and next slide").toStdString().data()
+     "Show thumbnails of previous, current and next slide").toLocal8Bit()
 	)
     ("wall-clock,w",
      value<bool>(&m_showWallClock)->default_value(true),
 	 tr(
-     "Show the wall clock").toStdString().data()
+     "Show the wall clock").toLocal8Bit()
 	)
     ("presentation-clock,p",
      value<bool>(&m_showPresentationClock)->default_value(true),
      tr(
-		 "Show the presentation clock").toStdString().data()
+		 "Show the presentation clock").toLocal8Bit()
 	)
     ("slide-clock,s",
      value<bool>(&m_showSlideClock)->default_value(true),
-     tr("Show the slide clock").toStdString().data()
+     tr("Show the slide clock").toLocal8Bit()
 	)
     ("bottom-pane-height,b",
      value<unsigned>(&m_bottomPaneHeightPercent)->default_value(20),
-     tr("Percentage of second screen to use for the bottom pane").toStdString().data()
+     tr("Percentage of second screen to use for the bottom pane").toLocal8Bit()
 	)
     ;
 
-  options_description hidden(tr("Hidden options").toStdString());
+  options_description hidden(tr("Hidden options").toLocal8Bit().constData());
   hidden.add_options()
-    ("pdf-file", value< string >(&m_filePath), tr("PDF File to display").toStdString().data())
+    ("pdf-file", value< string >(&m_filePath), tr("PDF File to display").toLocal8Bit())
     ;
   positional_options_description p;
   p.add("pdf-file", 1);
@@ -196,22 +197,22 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
 			"\n"
 			"Copyright (C) 2012 Danny Edel.\n"
 			"This is free software; see the source for copying conditions.  There is NO\n"
-			"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.").toStdString() << endl;
+			"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.").toLocal8Bit().constData() << endl;
     if ( vm.count("help")) {
       cout << endl;
-      cout << tr("Usage: %1 [options] pdf-file").arg( QString::fromUtf8(argv[0]) ).toStdString() << endl;
+      cout << tr("Usage: %1 [options] pdf-file").arg( QString::fromUtf8(argv[0]) ).toLocal8Bit().constData() << endl;
       cout << help << endl;
       /*: Please try to keep line length below 70 chars and use \t (tab) for padding */
 		cout << tr("Interactive Controls:\n"
 			"\tPress F1 or ? during program execution to get a quick\n"
 			"\toverview about available controls.\n"
-			"\tPlease read the manpage (man dspdfviewer) for the full list.").toStdString() << endl;
+			"\tPlease read the manpage (man dspdfviewer) for the full list.").toLocal8Bit().constData() << endl;
     }
     exit(0);
   }
 
   if ( m_bottomPaneHeightPercent < 1 || m_bottomPaneHeightPercent > 99 ) {
-    throw std::runtime_error( tr("Invalid height in specified. Please use a value from 1 to 99 (inclusive)").toStdString() );
+    throw std::runtime_error( tr("Invalid height in specified. Please use a value from 1 to 99 (inclusive)").toLocal8Bit().constData() );
   }
   
   m_useFullPage = ( 0 < vm.count("full-page") );
@@ -315,7 +316,7 @@ bool RuntimeConfiguration::filePathDefined() const
 }
 
 noFileNameException::noFileNameException():
-	logic_error( QCoreApplication::tr("You did not specify a PDF-File to display.").toStdString() ) {
+	logic_error( QCoreApplication::tr("You did not specify a PDF-File to display.").toLocal8Bit().constData() ) {
 }
 
 bool RuntimeConfiguration::i3workaround() const

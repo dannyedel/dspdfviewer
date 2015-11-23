@@ -33,51 +33,64 @@
         <source>Requested page number %1 which is out of range! Ignoring request.</source>
         <translation>Die angeforderte Seitennummer %1 liegt außerhalb des gültigen Bereichs! Die Anfrage wird ignoriert.</translation>
     </message>
+    <message>
+        <location filename="../main.cpp" line="105"/>
+        <location filename="../main.cpp" line="110"/>
+        <source>Dual-Screen PDF Viewer has encountered an error and cannot continue</source>
+        <translation>DS PDF Viewer hat einen Fehler festgestellt und kann nicht weiter ausgeführt werden</translation>
+    </message>
 </context>
 <context>
     <name>Form</name>
     <message>
-        <location filename="../pdfviewerwindow.ui" line="429"/>
+        <location filename="../pdfviewerwindow.ui" line="14"/>
         <source>DS PDF Viewer</source>
         <translatorcomment>Programmnamen nicht übersetzen</translatorcomment>
         <translation>DS PDF Viewer</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.ui" line="477"/>
+        <location filename="../pdfviewerwindow.ui" line="73"/>
         <source>The actual image goes here.</source>
         <translation>Hier wird das eigentliche Bild angezeigt.</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.ui" line="938"/>
+        <location filename="../pdfviewerwindow.ui" line="119"/>
         <source>09:12:34</source>
         <translation>09:12:34</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.ui" line="990"/>
+        <location filename="../pdfviewerwindow.ui" line="171"/>
         <source>Next Page</source>
         <translation>Nächste Seite</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.ui" line="1006"/>
+        <location filename="../pdfviewerwindow.ui" line="187"/>
         <source>Current Page</source>
         <translation>Aktuelle Seite</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.ui" line="1016"/>
+        <location filename="../pdfviewerwindow.ui" line="197"/>
         <source>Previous Page</source>
         <translation>Vorherige Seite</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.ui" line="1041"/>
+        <location filename="../pdfviewerwindow.ui" line="222"/>
         <source>Total
 00:00:00</source>
         <translation>Gesamt
 00:00:00</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.ui" line="1070"/>
+        <location filename="../pdfviewerwindow.ui" line="244"/>
         <source>00:00</source>
         <translation>00:00</translation>
+    </message>
+    <message>
+        <location filename="../pdfviewerwindow.cpp" line="404"/>
+        <source>Total
+%1</source>
+        <translation>Gesamt
+%1</translation>
     </message>
 </context>
 <context>
@@ -202,16 +215,21 @@
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <location filename="../keybindings.ui" line="241"/>
+        <source>dspdfviewer version %1</source>
+        <translation>DS PDF Viewer Version %1</translation>
+    </message>
 </context>
 <context>
     <name>PDFViewerWindow</name>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="340"/>
+        <location filename="../pdfviewerwindow.cpp" line="348"/>
         <source>Loading page number %1</source>
         <translation>Lade Seitennummer %1</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="385"/>
+        <location filename="../pdfviewerwindow.cpp" line="393"/>
         <source>HH:mm:ss</source>
         <comment>This is used by QTime::toString. See its documentation before changing this.</comment>
         <translation>HH:mm:ss</translation>
@@ -223,13 +241,13 @@
 %1</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="77"/>
+        <location filename="../pdfviewerwindow.cpp" line="80"/>
         <source>DS PDF Viewer - Audience Window</source>
         <extracomment>User visible Window Title Line</extracomment>
         <translation>DS PDF Viewer - Zuschauerfenster</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="79"/>
+        <location filename="../pdfviewerwindow.cpp" line="82"/>
         <source>DS PDF Viewer - Secondary Window</source>
         <translation>DS PDF Viewer - Sekundärfenster</translation>
     </message>
@@ -238,12 +256,12 @@
         <translation type="obsolete">Tastenkombinationen</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="427"/>
+        <location filename="../pdfviewerwindow.cpp" line="440"/>
         <source>Select page</source>
         <translation>Seite auswählen</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="429"/>
+        <location filename="../pdfviewerwindow.cpp" line="442"/>
         <source>Jump to page number (%1-%2):</source>
         <translation>Springe zu Seitennummer (%1-%2):</translation>
     </message>
@@ -258,15 +276,14 @@
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="396"/>
         <source>Form</source>
         <comment>Total
 %1</comment>
-        <translation>Gesamt
+        <translation type="obsolete">Gesamt
 %1</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="322"/>
+        <location filename="../runtimeconfiguration.cpp" line="319"/>
         <source>You did not specify a PDF-File to display.</source>
         <translation>Sie haben keine anzuzeigende PDF-Datei ausgewählt.</translation>
     </message>
@@ -287,9 +304,8 @@
 <context>
     <name>QMessageBox</name>
     <message>
-        <location filename="../main.cpp" line="109"/>
         <source>Dual-Screen PDF Viewer has encountered an error and cannot continue</source>
-        <translation>DS PDF Viewer hat einen Fehler festgestellt und kann nicht weiter ausgeführt werden</translation>
+        <translation type="obsolete">DS PDF Viewer hat einen Fehler festgestellt und kann nicht weiter ausgeführt werden</translation>
     </message>
 </context>
 <context>
@@ -318,50 +334,55 @@
         <translation>Versionsmeldung ausgeben</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="76"/>
+        <location filename="../runtimeconfiguration.cpp" line="73"/>
+        <source>Options affecting program behaviour</source>
+        <translation>Optionen, die das Programmverhalten beeinflussen</translation>
+    </message>
+    <message>
+        <location filename="../runtimeconfiguration.cpp" line="77"/>
         <source>Display the full slide on both screens (useful for PDFs created by presentation software other than latex-beamer)</source>
         <translation>Die gesamte Folie auf beiden Bildschirmen anzeigen (nützlich für PDFs, die mit anderen Präsentationsprogrammen erstellt wurden als LaTeX-Beamer)</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="79"/>
+        <location filename="../runtimeconfiguration.cpp" line="80"/>
         <source>Pre-render the preceding arg slides
 NOTE: If you set this to zero, you might not get a thumbnail for the previous slide unless it was loaded already.</source>
         <translation>Die vorangehenden arg Folien rendern
 Hinweis: Wird dieser Wert auf Null gesetzt, kann eine Vorschau der vorangehenden Folien nur angezeigt werden, wenn diese bereits geladen wurden.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="85"/>
+        <location filename="../runtimeconfiguration.cpp" line="86"/>
         <source>Pre-render the next arg slides
 NOTE: If you set this to zero, you might not get a thumbnail for the next slide unless it was loaded already.</source>
         <translation>Die nächsten arg Folien rendern
 Hinweis: Wird dieser Wert auf Null gesetzt, kann eine Vorschau der vorangehenden Folien nur angezeigt werden, wenn diese bereits geladen wurden.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="92"/>
+        <location filename="../runtimeconfiguration.cpp" line="93"/>
         <source>Support PDF Hyperlinks
 Follow hyperlinks when clicked (mouse pointer will change to a pointing hand) - set this to false if you cannot reliably control your mouse pointer position and want to always go ahead one slide on click.</source>
         <translation>PDF-Hyperlinks unterstützen
 Hyperlinks verfolgen, wenn diese angeklickt werden (der Cursor wird sich zu einer Hand verändern) - auf false setzen, wenn die Cursorposition nicht zuverlässig kontrolliert werden kann und stattdessen bei jedem Klick stets eine Folie weitergegangen werden soll.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="99"/>
+        <location filename="../runtimeconfiguration.cpp" line="100"/>
         <source>Cache the PDF file into memory
 Useful if you are editing the PDF file with latex while using the presenter software.</source>
         <translation>PDF-Datei im im Speicher cachen
 Nützlich, wenn die PDF-Datei in LaTeX bearbeitet wird, während sie präsentiert wird.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="105"/>
+        <location filename="../runtimeconfiguration.cpp" line="106"/>
         <source>Use i3 specific workaround: Execute shellcode once both windows have been created.</source>
         <translation>I3-spezifische Funktionsweise verwenden: Shell-Code ausführen, sobald beide Fenster erstellt wurden.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="116"/>
+        <location filename="../runtimeconfiguration.cpp" line="117"/>
         <source>Options affecting the second screen</source>
         <translation>Optionen, die nur den zweiten Bildschirm betreffen</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="120"/>
+        <location filename="../runtimeconfiguration.cpp" line="121"/>
         <source>Use the second screen. If you only have one monitor and just want to use this application as a fast, pre-caching PDF viewer you might want to say 0 here.
 NOTE: Whatever you say on -a, -t, -w, -s or -p doesn&apos;t matter if you set this to false.
 NOTE: You might want to say -f if you set this to false.</source>
@@ -370,54 +391,54 @@ Hinweis: Die Optionen -a, -t, -w, -s und -p sind unerheblich, wenn dieser Wert a
 Hinweis: Vermutlich möchten Sie -f verwenden, wenn dieser Wert auf false gesetzt wird.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="129"/>
+        <location filename="../runtimeconfiguration.cpp" line="130"/>
         <source>Shows or hides the complete &quot;presenter area&quot; on the second screen, giving you a full-screen note page.
 NOTE: Whatever you say on -t, -w, -s or -p doesnt matter if you set this to false.</source>
         <translation>Steuert die Anzeige des gesamten Präsentationsbereichs auf dem zweiten Bildschirm, was die Anzeige einer Vollbild-Notizseite ermöglicht.
 Hinweis: Die Optionen -t, -w, -s und -p sind unerheblich, wenn dieser Wert auf false gesetzt wird.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="136"/>
-        <source>Duplicates the audience's screen next to the notes on the second screen.</source>
+        <location filename="../runtimeconfiguration.cpp" line="137"/>
+        <source>Duplicates the audience&apos;s screen next to the notes on the second screen.</source>
         <translation>Dupliziert das Zuschauerfenster neben den Notizen auf dem zweiten Bildschirm.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="140"/>
+        <location filename="../runtimeconfiguration.cpp" line="141"/>
         <source>Show thumbnails of previous, current and next slide</source>
         <translation>Zeigt Vorschauen der vorangehenden, aktuellen und nachfolgenden Folie</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="145"/>
+        <location filename="../runtimeconfiguration.cpp" line="146"/>
         <source>Show the wall clock</source>
         <translation>Zeigt die Uhrzeit</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="150"/>
+        <location filename="../runtimeconfiguration.cpp" line="151"/>
         <source>Show the presentation clock</source>
         <translation>Zeigt die vergangene Gesamtzeit</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="155"/>
+        <location filename="../runtimeconfiguration.cpp" line="156"/>
         <source>Show the slide clock</source>
         <translation>Zeigt die Zeit pro Folie</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="159"/>
+        <location filename="../runtimeconfiguration.cpp" line="160"/>
         <source>Percentage of second screen to use for the bottom pane</source>
         <translation>Prozentanteil des zweiten Bildschirms, der für den unteren Bereich verwendet wird</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="163"/>
+        <location filename="../runtimeconfiguration.cpp" line="164"/>
         <source>Hidden options</source>
         <translation>Weitere Optionen</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="165"/>
+        <location filename="../runtimeconfiguration.cpp" line="166"/>
         <source>PDF File to display</source>
         <translation>Anzuzeigende PDF-Datei</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="195"/>
+        <location filename="../runtimeconfiguration.cpp" line="196"/>
         <source>Written by Danny Edel
 
 Copyright (C) 2012 Danny Edel.
@@ -431,12 +452,12 @@ werden. Es wird KEINERLEI GARANTIE übernommen; nicht einmal für TAUGLICHKEIT o
 die EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="202"/>
+        <location filename="../runtimeconfiguration.cpp" line="203"/>
         <source>Usage: %1 [options] pdf-file</source>
         <translation>Verwendungn: %1 [optionen] PDF-Datei</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="205"/>
+        <location filename="../runtimeconfiguration.cpp" line="206"/>
         <source>Interactive Controls:
 	Press F1 or ? during program execution to get a quick
 	overview about available controls.
@@ -450,9 +471,9 @@ die EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.</translation>
 	Liste zu erhalten.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="214"/>
+        <location filename="../runtimeconfiguration.cpp" line="215"/>
         <source>Invalid height in specified. Please use a value from 1 to 99 (inclusive)</source>
-        <translation>Ungültige Höhe angegeben. Bitte verwenden Sie einen Wert von 1 bis einschließlich 99.</translation>
+        <translation>Ungültige Höhe angegeben. Bitte verwenden Sie einen Wert von 1 bis einschließlich 99</translation>
     </message>
 </context>
 </TS>

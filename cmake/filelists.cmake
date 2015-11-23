@@ -11,7 +11,7 @@ list(APPEND UIFILES
 	keybindings.ui
 )
 
-list(APPEND dspdfviewer_SRCS
+list(APPEND libdspdfviewer_SRCS
 	adjustedlink.cpp
 	hyperlinkarea.cpp
 	pdfpagereference.cpp
@@ -26,6 +26,10 @@ list(APPEND dspdfviewer_SRCS
 	pdfviewerwindow.cpp
 	dspdfviewer.cpp
 	windowrole.cpp
+)
+
+list(APPEND dspdfviewer_SRCS
+	main.cpp
 )
 
 list(APPEND QRCFILES

@@ -63,7 +63,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   if ( ! pdfDocument  || pdfDocument->isLocked() )
   {
     /// FIXME: Error message
-    throw std::runtime_error( tr("I was not able to open the PDF document. Sorry.").toStdString() );
+    throw std::runtime_error( tr("I was not able to open the PDF document. Sorry.").toLocal8Bit().constData() );
   }
 #endif
   DEBUGOUT << tr("Connecting audience window");
