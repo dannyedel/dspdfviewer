@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>Options</title>
+</head>
+<body>
+
+<h2>Options</h2>
+
+<p>The exact behaviour of <b>dspdfviewer</b> is configurable using command-line parameters.</p>
+
+<p>Unless otherwise noted, all command-line options can be written in a configuration file. See the <a href="files.html">Files</a> section for the location.</p>
+
+<p>For the command-line parameters, this program follows the usual GNU command line syntax, with long options starting with two dashes (&rsquo;-&rsquo;). A summary of options is included below.</p>
+
+<p>If you specify those in a configuration file, write one option per line, use the <i>long version without the two leading dashes</i>, followed by an equals sign and the desired value.</p>
+
+<p>For example, <b>bottom-pane-height=20</b> is a valid configuration line.</p>
+
+<p>If an option is specified in <b>both</b> the configuration file and the command-line, the command-line value takes precedence.</p>
+
+<p>Note for options of type <i>&lt;bool&gt;</i>: They take <b>true</b>, <b>false</b>, <b>0</b> or <b>1</b> as arguments. For example, <b>--use-second-screen false</b> can be expressed as <b>--use-second-screen 0</b> or shortened to <b>-u0</b>.
+<table>
+   <colgroup>
+      <col width="250">
+      <col>
+   </colgroup>
+   <tr>
+      <td><b> -h</b>, <b>--help</b></td>
+      <td>Show summary of options.</td>
+   </tr>
+   <tr>
+      <td><b>-f, --full-page</b></td>
+      <td><p>Use the presentation program with a normal single-screen PDF, that is display the full page on both the primary and secondary monitor.</p>
+          <p>The secondary screen still contains timers and thumbnails to help you with your presentation, unless you disable them using the options below.</p></td>
+   </tr>
+   <tr>
+      <td><b>-u, --use-second-screen</b> <i>&lt;bool&gt;</i></td>
+      <td><p>Controls whether the program actually works as a dual-screen viewer.</p>
+          <p>The default is true.</p>
+          <p>If you only have one screen, but still want to use the cache features, you can set this option to false. If the window ends up on the wrong display, you can still use the switch command (see below).</p>
+          <p>What comes out on the primary screen depends on whether you use the -f Option: -u0 -f results in a simple full-screen PDF viewer, while -u0 without -f still splits the page in half and outputs only the left frame.</p></td>
+   </tr>
+   <tr>
+      <td><b>-l, --hyperlink-support</b> <i>&lt;bool&gt;</i></td>
+      <td><p>Controls whether the program makes PDF Hyperlinks clickable.</p>
+          <p>The default is true.</p>
+          <p>While it is normally desired to have clickable hyperlinks, if you cannot control the position of your pointer (if your remote control has only left-click and right-click) it might be safer to disable hyperlinks.</p></td>
+   </tr>
+   <tr>
+      <td><b>--prerender-previous-pages</b> <i>n</i></td>
+      <td><p>When jumping to slide m, also pre-render the slides (m-n)..(m-1) (default 3)</p>
+          <p>Note: If you set this to zero, you will not get a thumbnail for the previous page rendered before you have visited it.</p></td>
+   </tr>
+   <tr>
+      <td><b>--prerender-next-pages</b> <i>n</i></td>
+      <td><p>When jumping to slide m, also pre-render the slides (m+1)..(m+n) (default 10)</p>
+          <p>Note: If you set this to zero, you will not get a thumbnail for the next page rendered before you have visited it.</p></td>
+   </tr>
+   <tr>
+      <td><b>-a, --presenter-area</b> <i>&lt;bool&gt;</i></td>
+      <td><p>Show (true, 1) or hide (false, 0) the presenter&rsquo;s area on the second screen. If this is set to zero, the following options will have no effect.</p>
+   </tr>
+   <tr>
+      <td><b>-d, --duplicate</b> <i>&lt;bool&gt;</i></td>
+      <td><p>Duplicate (true, 1) or hide (false, 0) the audience&rsquo;s screen next to the notes on the second screen.</p>
+          <p>The default is false.</p></td>
+   </tr>
+   <tr>
+      <td><b>-t, --thumbnails</b> <i>&lt;bool&gt;</i></td>
+      <td><p>Show (true, 1) or hide (false, 0) the thumbnails on the second screen.</p></td>
+   </tr>
+   <tr>
+      <td><b>-w, --wall-clock</b> <i>&lt;bool&gt;</i></td>
+      <td><p>Show (true, 1) or hide (false, 0) the wall clock on the second screen.</p></td>
+   </tr>
+   <tr>
+      <td><b>-p, --presentation-clock</b> <i>&lt;bool&gt;</i></td>
+      <td><p>Show (true, 1) or hide (false, 0) the presentation clock on the second screen.</p></td>
+   </tr>
+   <tr>
+      <td><b>-s, --slide-clock</b> <i>&lt;bool&gt;</i></td>
+      <td><p>Show (true, 1) or hide (false, 0) the slide clock on the second screen.</p></td>
+   </tr>
+   <tr>
+      <td><b>-b, --bottom-pane-height</b> <i>n</i></td>
+      <td><p>Configure how large the presenter area on the second screen will be, unit is <i>percent of second screen&rsquo;s total height</i>.</p>
+          <p>Default value 20.</p></td>
+   </tr>
+</table>
+
+</body>
+</html>

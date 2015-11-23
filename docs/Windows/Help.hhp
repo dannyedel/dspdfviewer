@@ -1,0 +1,25 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=Help.chm
+Contents file=TOC.hhc
+Default Font=Segoe UI,10,0
+Default topic=name.html
+Display compile progress=No
+Language=0x409 English (United States)
+Title=DSPDFVIEWER help
+
+
+[FILES]
+bugs.html
+controls.html
+description.html
+files.html
+name.html
+options.html
+presenter.html
+seealso.html
+synopsis.html
+license.html
+
+[INFOTYPES]
+
