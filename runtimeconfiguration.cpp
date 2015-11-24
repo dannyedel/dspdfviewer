@@ -49,6 +49,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
         m_duplicate(false),
 	m_showWallClock(true),
 	m_showThumbnails(true),
+	m_thumbnailPagePart(PagePart::FullPage),
 	m_showPresentationClock(true),
 	m_showSlideClock(true),
 	m_filePath(),
@@ -140,6 +141,10 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
      value<bool>(&m_showThumbnails)->default_value(true),
 	 tr(
      "Show thumbnails of previous, current and next slide").toLocal8Bit()
+	)
+	("thumbnail-page-part",
+		value<PagePart>(&m_thumbnailPagePart)->default_value(PagePart::FullPage),
+		tr("Thumbnails show this page part. Valid values are \"left\", \"right\" or \"both\"").toLocal8Bit()
 	)
     ("wall-clock,w",
      value<bool>(&m_showWallClock)->default_value(true),

@@ -24,6 +24,7 @@
 #include <string>
 #include <QString>
 #include <stdexcept>
+#include "pagepart.h"
 
 struct noFileNameException: public std::logic_error {
 	noFileNameException();
@@ -52,6 +53,9 @@ class RuntimeConfiguration: public QObject
 
   /** Show the thumbnails of previous, this and next slide */
   bool m_showThumbnails;
+
+  /** Select page part of the thumbnails */
+  PagePart m_thumbnailPagePart;
 
   /** Show the total presentation time **/
   bool m_showPresentationClock;
