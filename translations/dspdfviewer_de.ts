@@ -283,7 +283,7 @@
 %1</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="319"/>
+        <location filename="../runtimeconfiguration.cpp" line="324"/>
         <source>You did not specify a PDF-File to display.</source>
         <translation>Sie haben keine anzuzeigende PDF-Datei ausgewählt.</translation>
     </message>
@@ -319,70 +319,70 @@
 <context>
     <name>RuntimeConfiguration</name>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="63"/>
+        <location filename="../runtimeconfiguration.cpp" line="64"/>
         <source>Generic options</source>
         <translation>Allgemeine Optionen</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="69"/>
+        <location filename="../runtimeconfiguration.cpp" line="70"/>
         <source>Print help message</source>
         <translation>Hilfemeldung ausgeben</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="70"/>
+        <location filename="../runtimeconfiguration.cpp" line="71"/>
         <source>Print version statement</source>
         <translation>Versionsmeldung ausgeben</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="73"/>
+        <location filename="../runtimeconfiguration.cpp" line="74"/>
         <source>Options affecting program behaviour</source>
         <translation>Optionen, die das Programmverhalten beeinflussen</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="77"/>
+        <location filename="../runtimeconfiguration.cpp" line="78"/>
         <source>Display the full slide on both screens (useful for PDFs created by presentation software other than latex-beamer)</source>
         <translation>Die gesamte Folie auf beiden Bildschirmen anzeigen (nützlich für PDFs, die mit anderen Präsentationsprogrammen erstellt wurden als LaTeX-Beamer)</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="80"/>
+        <location filename="../runtimeconfiguration.cpp" line="81"/>
         <source>Pre-render the preceding arg slides
 NOTE: If you set this to zero, you might not get a thumbnail for the previous slide unless it was loaded already.</source>
         <translation>Die vorangehenden arg Folien rendern
 Hinweis: Wird dieser Wert auf Null gesetzt, kann eine Vorschau der vorangehenden Folien nur angezeigt werden, wenn diese bereits geladen wurden.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="86"/>
+        <location filename="../runtimeconfiguration.cpp" line="87"/>
         <source>Pre-render the next arg slides
 NOTE: If you set this to zero, you might not get a thumbnail for the next slide unless it was loaded already.</source>
         <translation>Die nächsten arg Folien rendern
 Hinweis: Wird dieser Wert auf Null gesetzt, kann eine Vorschau der vorangehenden Folien nur angezeigt werden, wenn diese bereits geladen wurden.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="93"/>
+        <location filename="../runtimeconfiguration.cpp" line="94"/>
         <source>Support PDF Hyperlinks
 Follow hyperlinks when clicked (mouse pointer will change to a pointing hand) - set this to false if you cannot reliably control your mouse pointer position and want to always go ahead one slide on click.</source>
         <translation>PDF-Hyperlinks unterstützen
 Hyperlinks verfolgen, wenn diese angeklickt werden (der Cursor wird sich zu einer Hand verändern) - auf false setzen, wenn die Cursorposition nicht zuverlässig kontrolliert werden kann und stattdessen bei jedem Klick stets eine Folie weitergegangen werden soll.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="100"/>
+        <location filename="../runtimeconfiguration.cpp" line="101"/>
         <source>Cache the PDF file into memory
 Useful if you are editing the PDF file with latex while using the presenter software.</source>
         <translation>PDF-Datei im im Speicher cachen
 Nützlich, wenn die PDF-Datei in LaTeX bearbeitet wird, während sie präsentiert wird.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="106"/>
+        <location filename="../runtimeconfiguration.cpp" line="107"/>
         <source>Use i3 specific workaround: Execute shellcode once both windows have been created.</source>
         <translation>I3-spezifische Funktionsweise verwenden: Shell-Code ausführen, sobald beide Fenster erstellt wurden.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="117"/>
+        <location filename="../runtimeconfiguration.cpp" line="118"/>
         <source>Options affecting the second screen</source>
         <translation>Optionen, die nur den zweiten Bildschirm betreffen</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="121"/>
+        <location filename="../runtimeconfiguration.cpp" line="122"/>
         <source>Use the second screen. If you only have one monitor and just want to use this application as a fast, pre-caching PDF viewer you might want to say 0 here.
 NOTE: Whatever you say on -a, -t, -w, -s or -p doesn&apos;t matter if you set this to false.
 NOTE: You might want to say -f if you set this to false.</source>
@@ -391,54 +391,59 @@ Hinweis: Die Optionen -a, -t, -w, -s und -p sind unerheblich, wenn dieser Wert a
 Hinweis: Vermutlich möchten Sie -f verwenden, wenn dieser Wert auf false gesetzt wird.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="130"/>
+        <location filename="../runtimeconfiguration.cpp" line="131"/>
         <source>Shows or hides the complete &quot;presenter area&quot; on the second screen, giving you a full-screen note page.
 NOTE: Whatever you say on -t, -w, -s or -p doesnt matter if you set this to false.</source>
         <translation>Steuert die Anzeige des gesamten Präsentationsbereichs auf dem zweiten Bildschirm, was die Anzeige einer Vollbild-Notizseite ermöglicht.
 Hinweis: Die Optionen -t, -w, -s und -p sind unerheblich, wenn dieser Wert auf false gesetzt wird.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="137"/>
+        <location filename="../runtimeconfiguration.cpp" line="138"/>
         <source>Duplicates the audience&apos;s screen next to the notes on the second screen.</source>
         <translation>Dupliziert das Zuschauerfenster neben den Notizen auf dem zweiten Bildschirm.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="141"/>
+        <location filename="../runtimeconfiguration.cpp" line="142"/>
         <source>Show thumbnails of previous, current and next slide</source>
         <translation>Zeigt Vorschauen der vorangehenden, aktuellen und nachfolgenden Folie</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="146"/>
+        <location filename="../runtimeconfiguration.cpp" line="147"/>
+        <source>Thumbnails show this page part. Valid values are &quot;left&quot;, &quot;right&quot; or &quot;both&quot;</source>
+        <translation>Vorschaubilder zeigen diesen Seitenteil. Gültige Werte sind &quot;left&quot;, &quot;right&quot; oder &quot;both&quot;</translation>
+    </message>
+    <message>
+        <location filename="../runtimeconfiguration.cpp" line="151"/>
         <source>Show the wall clock</source>
         <translation>Zeigt die Uhrzeit</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="151"/>
+        <location filename="../runtimeconfiguration.cpp" line="156"/>
         <source>Show the presentation clock</source>
         <translation>Zeigt die vergangene Gesamtzeit</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="156"/>
+        <location filename="../runtimeconfiguration.cpp" line="161"/>
         <source>Show the slide clock</source>
         <translation>Zeigt die Zeit pro Folie</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="160"/>
+        <location filename="../runtimeconfiguration.cpp" line="165"/>
         <source>Percentage of second screen to use for the bottom pane</source>
         <translation>Prozentanteil des zweiten Bildschirms, der für den unteren Bereich verwendet wird</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="164"/>
+        <location filename="../runtimeconfiguration.cpp" line="169"/>
         <source>Hidden options</source>
         <translation>Weitere Optionen</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="166"/>
+        <location filename="../runtimeconfiguration.cpp" line="171"/>
         <source>PDF File to display</source>
         <translation>Anzuzeigende PDF-Datei</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="196"/>
+        <location filename="../runtimeconfiguration.cpp" line="201"/>
         <source>Written by Danny Edel
 
 Copyright (C) 2012 Danny Edel.
@@ -452,12 +457,12 @@ werden. Es wird KEINERLEI GARANTIE übernommen; nicht einmal für TAUGLICHKEIT o
 die EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="203"/>
+        <location filename="../runtimeconfiguration.cpp" line="208"/>
         <source>Usage: %1 [options] pdf-file</source>
         <translation>Verwendungn: %1 [optionen] PDF-Datei</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="206"/>
+        <location filename="../runtimeconfiguration.cpp" line="211"/>
         <source>Interactive Controls:
 	Press F1 or ? during program execution to get a quick
 	overview about available controls.
@@ -471,7 +476,7 @@ die EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.</translation>
 	Liste zu erhalten.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="215"/>
+        <location filename="../runtimeconfiguration.cpp" line="220"/>
         <source>Invalid height in specified. Please use a value from 1 to 99 (inclusive)</source>
         <translation>Ungültige Höhe angegeben. Bitte verwenden Sie einen Wert von 1 bis einschließlich 99</translation>
     </message>
