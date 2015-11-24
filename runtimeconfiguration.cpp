@@ -333,3 +333,8 @@ std::string RuntimeConfiguration::i3workaround_shellcode() const
 {
 	return std::string( I3WORKAROUND_SHELLCODE );
 }
+
+PagePart RuntimeConfiguration::thumbnailPagePart() const
+{
+	return m_thumbnailPagePart;
+}

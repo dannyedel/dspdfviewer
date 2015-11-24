@@ -125,6 +125,7 @@ public:
   bool duplicate() const;
   bool showWallClock() const;
   bool showThumbnails() const;
+  PagePart thumbnailPagePart() const;
   bool showPresentationClock() const;
   bool showSlideClock() const;
 

@@ -315,7 +315,7 @@ RenderingIdentifier DSPDFViewer::toThumbnailRenderIdent(unsigned int pageNumber,
 	thumbnailSize=newSize;
 	renderPage();
   }
-  return RenderingIdentifier( pageNumber, PagePart::LeftHalf, thumbnailSize);
+  return RenderingIdentifier( pageNumber, runtimeConfiguration.thumbnailPagePart(), thumbnailSize);
 }
 
 
