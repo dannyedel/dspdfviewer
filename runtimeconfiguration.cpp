@@ -142,7 +142,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
 	 tr(
      "Show thumbnails of previous, current and next slide").toLocal8Bit()
 	)
-	("thumbnail-page-part",
+	("thumbnail-page-part,T",
 		value<PagePart>(&m_thumbnailPagePart)->default_value(PagePart::FullPage),
 		tr("Thumbnails show this page part. Valid values are \"left\", \"right\" or \"both\"").toLocal8Bit()
 	)
