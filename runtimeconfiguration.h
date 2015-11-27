@@ -110,7 +110,7 @@ public:
    *
    * Note: Might throw exceptions if not parsable.
    */
-  RuntimeConfiguration(int argc, char** argv);
+  RuntimeConfiguration(int argc, const char * const * argv);
 
   bool useFullPage() const;
 

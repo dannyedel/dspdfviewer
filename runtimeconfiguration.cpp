@@ -43,7 +43,7 @@
 using namespace std;
 using namespace boost::program_options;
 
-RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
+RuntimeConfiguration::RuntimeConfiguration(int argc, const char* const * argv):
 	m_useFullPage(false),
 	m_showPresenterArea(true),
         m_duplicate(false),
