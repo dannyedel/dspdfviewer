@@ -17,8 +17,12 @@
 #     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 # */
 cmake_minimum_required(VERSION 2.8.4 FATAL_ERROR)
-cmake_policy(SET CMP0020 NEW) # qtmain.lib linkage on windows
-cmake_policy(SET CMP0054 NEW) # dont expand quoted strings in if()s
+if( NOT CMAKE_VERSION VERSION_LESS 2.8.11)
+	cmake_policy(SET CMP0020 NEW) # qtmain.lib linkage on windows
+endif()
+if( NOT CMAKE_VERSION VERSION_LESS 3.1)
+	cmake_policy(SET CMP0054 NEW) # dont expand quoted strings in if()s
+endif()
 
 project(dspdfviewer)
 
