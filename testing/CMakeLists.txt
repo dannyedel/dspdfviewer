@@ -22,6 +22,13 @@ if(DownloadTestPDF)
 		EXPECTED_MD5 5c72e0954d457e3e9a1287ff299e307a
 		)
 else()
+	# Compile from source
+	find_program(PDFLATEX
+		NAMES pdflatex
+		)
+	if( PDFLATEX STREQUAL "PDFLATEX-NOTFOUND")
+		message(FATAL_ERROR "Compiling PDFs from source requires pdflatex with latex-beamer installed")
+	endif()
 	foreach(pdffile IN LISTS PDFFILENAMES)
 		# get source file name.
 		# replace .pdf with .tex ending,
@@ -36,7 +43,7 @@ else()
 		add_custom_command(OUTPUT ${pdffile}
 			DEPENDS ${SOURCEFULLPATH}
 			COMMAND # env TEXINPUTS=${SOURCEDIRNAME}
-				pdflatex
+				${PDFLATEX}
 				-interaction=nonstopmode
 				-output-directory ${CMAKE_CURRENT_BINARY_DIR}
 				${PDFLATEX_FIXED_FILENAME}
@@ -91,7 +98,7 @@ add_test(NAME BoostTestRunner
 
 if(APPLE)
 	set(XVFB "")
-elseif(WIN32)
+elseif(WINDOWS)
 	set(XFFB "")
 else()
 	# Find xvfb-run
@@ -114,18 +121,25 @@ if( ENV_PROG STREQUAL "ENV_PROG-NOTFOUND" )
 	message(FATAL_ERROR "env not found")
 endif()
 
-add_test(NAME EnglishByDefault
-	COMMAND ${ENV_PROG} LANGUAGE=C LC_ALL=C.UTF-8 ${XVFB} ../dspdfviewer --help
-)
+# On windows you cannot change the locale on a case-by-case basis.
+#
+# FIXME: Windows: Discover current locale
+# FIXME: Windows: Include the translation test for the current locale
 
-set_tests_properties(EnglishByDefault PROPERTIES
-	PASS_REGULAR_EXPRESSION "Interactive Controls"
+if(NOT WINDOWS)
+	add_test(NAME EnglishByDefault
+		COMMAND ${ENV_PROG} LANGUAGE=C LC_ALL=C.UTF-8 ${XVFB} ../dspdfviewer --help
 	)
 
-add_test(NAME GermanWithDeDE
-	COMMAND ${ENV_PROG} LANGUAGE=de LC_ALL=de_DE.UTF-8 ${XVFB} ../dspdfviewer --help
-)
+	set_tests_properties(EnglishByDefault PROPERTIES
+		PASS_REGULAR_EXPRESSION "Interactive Controls"
+		)
 
-set_tests_properties(GermanWithDeDE PROPERTIES
-	PASS_REGULAR_EXPRESSION "Interaktive Tasten"
-)
+	add_test(NAME GermanWithDeDE
+		COMMAND ${ENV_PROG} LANGUAGE=de LC_ALL=de_DE.UTF-8 ${XVFB} ../dspdfviewer --help
+	)
+
+	set_tests_properties(GermanWithDeDE PROPERTIES
+		PASS_REGULAR_EXPRESSION "Interaktive Tasten"
+	)
+endif()

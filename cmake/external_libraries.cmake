@@ -37,11 +37,18 @@ if(UseQtFive)
 	find_package(Qt5LinguistTools REQUIRED)
 	pkg_search_module(POPPLER REQUIRED poppler-qt5)
 	# add their include directories
-	list(APPEND LIST_INCLUDE_DIRS ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
+	list(APPEND LIST_INCLUDE_DIRS
+		${Qt5Core_INCLUDE_DIRS}
+		${Qt5Gui_INCLUDE_DIRS}
+		${Qt5Widgets_INCLUDE_DIRS}
+	)
 	# add their link flags
-	list(APPEND LIST_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
+	list(APPEND LIST_LIBRARIES
+		${Qt5Core_LIBRARIES}
+		${Qt5Gui_LIBRARIES}
+		${Qt5Widgets_LIBRARIES}
+	)
 	add_definitions(-DPOPPLER_QT5)
-	add_definitions(-fPIC)
 	qt5_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
 	if( UpdateTranslations )
 		qt5_create_translation(TRANSLATIONS ${libdspdfviewer_SRCS} ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
