@@ -22,6 +22,13 @@ if(DownloadTestPDF)
 		EXPECTED_MD5 5c72e0954d457e3e9a1287ff299e307a
 		)
 else()
+	# Compile from source
+	find_program(PDFLATEX
+		NAMES pdflatex
+		)
+	if( PDFLATEX STREQUAL "PDFLATEX-NOTFOUND")
+		message(FATAL_ERROR "Compiling PDFs from source requires pdflatex with latex-beamer installed")
+	endif()
 	foreach(pdffile IN LISTS PDFFILENAMES)
 		# get source file name.
 		# replace .pdf with .tex ending,
@@ -36,7 +43,7 @@ else()
 		add_custom_command(OUTPUT ${pdffile}
 			DEPENDS ${SOURCEFULLPATH}
 			COMMAND # env TEXINPUTS=${SOURCEDIRNAME}
-				pdflatex
+				${PDFLATEX}
 				-interaction=nonstopmode
 				-output-directory ${CMAKE_CURRENT_BINARY_DIR}
 				${PDFLATEX_FIXED_FILENAME}
