@@ -49,7 +49,6 @@ if(UseQtFive)
 		${Qt5Widgets_LIBRARIES}
 	)
 	add_definitions(-DPOPPLER_QT5)
-	add_definitions(-fPIC)
 	qt5_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
 	if( UpdateTranslations )
 		qt5_create_translation(TRANSLATIONS ${libdspdfviewer_SRCS} ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
