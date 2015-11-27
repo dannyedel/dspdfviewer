@@ -4,14 +4,12 @@
 // but not another string.
 
 BOOST_AUTO_TEST_CASE(thumbnail_cmdline) {
-	const int argc=3;
-
 	// correct arguments, left
 	{
 		const char * const argv[] = {
 			"dspdfviewer", "--thumbnail-page-part", "left"
 		};
-		RuntimeConfiguration rc{ argc, argv };
+		RuntimeConfiguration rc{ 3, argv };
 		BOOST_CHECK_EQUAL( rc.thumbnailPagePart(), PagePart::LeftHalf );
 	}
 	// shorthand, two words
@@ -19,7 +17,7 @@ BOOST_AUTO_TEST_CASE(thumbnail_cmdline) {
 		const char * const argv[] = {
 			"dspdfviewer", "-T", "left"
 		};
-		RuntimeConfiguration rc{ argc, argv };
+		RuntimeConfiguration rc{ 3, argv };
 		BOOST_CHECK_EQUAL( rc.thumbnailPagePart(), PagePart::LeftHalf );
 	}
 	// shorthand, one word
@@ -27,7 +25,7 @@ BOOST_AUTO_TEST_CASE(thumbnail_cmdline) {
 		const char * const argv[] = {
 			"dspdfviewer", "-Tleft"
 		};
-		RuntimeConfiguration rc{ argc, argv };
+		RuntimeConfiguration rc{ 2, argv };
 		BOOST_CHECK_EQUAL( rc.thumbnailPagePart(), PagePart::LeftHalf );
 	}
 
@@ -36,14 +34,14 @@ BOOST_AUTO_TEST_CASE(thumbnail_cmdline) {
 		const char* const argv[] = {
 			"dspdfviewer", "--thumbnail-page-part", "right"
 		};
-		RuntimeConfiguration rc{ argc, argv };
+		RuntimeConfiguration rc{ 3, argv };
 		BOOST_CHECK_EQUAL( rc.thumbnailPagePart(), PagePart::RightHalf );
 	}
 	{
 		const char* const argv[] = {
 			"dspdfviewer", "--thumbnail-page-part", "both"
 		};
-		RuntimeConfiguration rc{ argc, argv };
+		RuntimeConfiguration rc{ 3, argv };
 		BOOST_CHECK_EQUAL( rc.thumbnailPagePart(), PagePart::FullPage );
 	}
 
@@ -52,7 +50,7 @@ BOOST_AUTO_TEST_CASE(thumbnail_cmdline) {
 		const char* const argv[] = {
 			"dspdfviewer", "--thumbnail-page-part", "something"
 		};
-		BOOST_CHECK_THROW( RuntimeConfiguration( argc, argv ) , std::logic_error );
+		BOOST_CHECK_THROW( RuntimeConfiguration( 3, argv ) , std::logic_error );
 	}
 
 	// no argument
