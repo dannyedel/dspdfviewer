@@ -91,7 +91,7 @@ add_test(NAME BoostTestRunner
 
 if(APPLE)
 	set(XVFB "")
-elseif(WIN32)
+elseif(WINDOWS)
 	set(XFFB "")
 else()
 	# Find xvfb-run

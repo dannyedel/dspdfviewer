@@ -16,9 +16,12 @@
 #     with this program; if not, write to the Free Software Foundation, Inc.,
 #     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 # */
+cmake_minimum_required(VERSION 2.8.4 FATAL_ERROR)
+cmake_policy(SET CMP0020 NEW) # qtmain.lib linkage on windows
+cmake_policy(SET CMP0054 NEW) # dont expand quoted strings in if()s
 
 project(dspdfviewer)
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+
 include(FindPkgConfig)
 set(CMAKE_AUTOMOC ON)#
 set(CMAKE_AUTORCC OFF)
@@ -32,7 +35,7 @@ option(BoostStaticLink "Link statically against the boost libraries" OFF)
 option(DownloadTestPDF "Download test PDFs from http://danny-edel.de, rather then building them using latex-beamer" OFF)
 option(CodeCoverage "Add coverage analysis code to the program. Will slow it down. A lot. Only supported on GCC right now." OFF)
 
-
+include(cmake/platforms.cmake)
 include(cmake/filelists.cmake)
 include(cmake/external_libraries.cmake)
 include(cmake/qrc_embedding.cmake)
