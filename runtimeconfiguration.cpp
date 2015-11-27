@@ -43,12 +43,13 @@
 using namespace std;
 using namespace boost::program_options;
 
-RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
+RuntimeConfiguration::RuntimeConfiguration(int argc, const char* const * argv):
 	m_useFullPage(false),
 	m_showPresenterArea(true),
         m_duplicate(false),
 	m_showWallClock(true),
 	m_showThumbnails(true),
+	m_thumbnailPagePart(PagePart::FullPage),
 	m_showPresentationClock(true),
 	m_showSlideClock(true),
 	m_filePath(),
@@ -140,6 +141,10 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, char** argv):
      value<bool>(&m_showThumbnails)->default_value(true),
 	 tr(
      "Show thumbnails of previous, current and next slide").toLocal8Bit()
+	)
+	("thumbnail-page-part,T",
+		value<PagePart>(&m_thumbnailPagePart)->default_value(PagePart::FullPage),
+		tr("Thumbnails show this page part. Valid values are \"left\", \"right\" or \"both\"").toLocal8Bit()
 	)
     ("wall-clock,w",
      value<bool>(&m_showWallClock)->default_value(true),
@@ -327,4 +332,9 @@ bool RuntimeConfiguration::i3workaround() const
 std::string RuntimeConfiguration::i3workaround_shellcode() const
 {
 	return std::string( I3WORKAROUND_SHELLCODE );
+}
+
+PagePart RuntimeConfiguration::thumbnailPagePart() const
+{
+	return m_thumbnailPagePart;
 }

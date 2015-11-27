@@ -20,6 +20,7 @@
 
 #ifndef PAGEPART_H
 #define PAGEPART_H
+#include <iostream>
 
 enum class PagePart
 {
@@ -29,6 +30,10 @@ enum class PagePart
   RightHalf
 
 };
+
+std::istream& operator >> ( std::istream& in, PagePart& pagepart );
+std::ostream& operator << ( std::ostream& out, const PagePart& pagepart );
+
 
 
 #endif // PAGEPART_H

@@ -20,3 +20,31 @@
 
 #include "pagepart.h"
 
+namespace {
+	const char * const left = "left";
+	const char * const right = "right";
+	const char * const both = "both";
+}
+
+std::ostream& operator << ( std::ostream& out, const PagePart& pagepart ) {
+	if ( pagepart == PagePart::LeftHalf )
+		return out << left;
+	else if ( pagepart == PagePart::RightHalf )
+		return out << right;
+	else
+		return out << both;
+}
+
+std::istream& operator >> ( std::istream& in, PagePart& pagepart ) {
+	std::string s;
+	in >> s;
+	if ( s == left )
+		pagepart = PagePart::LeftHalf;
+	else if ( s == right )
+		pagepart = PagePart::RightHalf;
+	else if ( s == both )
+		pagepart = PagePart::FullPage;
+	else
+		in.setstate( std::ios::failbit );
+	return in;
+}
