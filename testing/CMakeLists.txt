@@ -65,6 +65,7 @@ add_executable(testrunner
 	testrenderonepage.cc
 	test-images.cc
 	testrunner.cc
+	test-thumbnail-cmdline.cc
 )
 
 target_link_libraries(testrunner testhelp)
