@@ -93,12 +93,28 @@ if(APPLE)
 elseif(WIN32)
 	set(XFFB "")
 else()
-	set(XVFB "xvfb-run -a")
+	# Find xvfb-run
+	find_program(XVFB_PROG
+		NAMES xvfb-run
+		)
+	if( XVFB_PROG STREQUAL "XVFB_PROG-NOTFOUND" )
+		message(FATAL_ERROR "xvfb-run not found")
+	else()
+		set(XVFB "${XVFB_PROG} -a")
+	endif()
 endif()
 separate_arguments(XVFB)
 
+# find env
+find_program(ENV_PROG
+	NAMES env
+	)
+if( ENV_PROG STREQUAL "ENV_PROG-NOTFOUND" )
+	message(FATAL_ERROR "env not found")
+endif()
+
 add_test(NAME EnglishByDefault
-	COMMAND env LANGUAGE=C LC_ALL=C.UTF-8 ${XVFB} ../dspdfviewer --help
+	COMMAND ${ENV_PROG} LANGUAGE=C LC_ALL=C.UTF-8 ${XVFB} ../dspdfviewer --help
 )
 
 set_tests_properties(EnglishByDefault PROPERTIES
@@ -106,7 +122,7 @@ set_tests_properties(EnglishByDefault PROPERTIES
 	)
 
 add_test(NAME GermanWithDeDE
-	COMMAND env LANGUAGE=de LC_ALL=de_DE.UTF-8 ${XVFB} ../dspdfviewer --help
+	COMMAND ${ENV_PROG} LANGUAGE=de LC_ALL=de_DE.UTF-8 ${XVFB} ../dspdfviewer --help
 )
 
 set_tests_properties(GermanWithDeDE PROPERTIES
