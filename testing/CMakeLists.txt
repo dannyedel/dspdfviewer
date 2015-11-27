@@ -113,12 +113,15 @@ else()
 endif()
 separate_arguments(XVFB)
 
-# find env
-find_program(ENV_PROG
-	NAMES env
-	)
-if( ENV_PROG STREQUAL "ENV_PROG-NOTFOUND" )
-	message(FATAL_ERROR "env not found")
+# Search for env only on non-windows platform
+if(NOT WINDOWS)
+	# find env
+	find_program(ENV_PROG
+		NAMES env
+		)
+	if( ENV_PROG STREQUAL "ENV_PROG-NOTFOUND" )
+		message(FATAL_ERROR "env not found")
+	endif()
 endif()
 
 # On windows you cannot change the locale on a case-by-case basis.
