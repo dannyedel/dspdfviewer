@@ -19,6 +19,7 @@
 
 
 #include "pagepart.h"
+#include <string>
 
 namespace {
 	const char * const left = "left";
