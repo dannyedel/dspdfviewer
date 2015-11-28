@@ -109,7 +109,11 @@ void PDFViewerWindow::reposition()
   this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
   this->showNormal();
 #if defined(POPPLER_QT5) && defined(_WIN32)
-  this->windowHandle()->setScreen(QApplication::screens()[numeric_cast<int>(getMonitor())]);
+  static QList<QScreen *> screens = QApplication::screens();
+  if ( m_monitor < screens.count() )
+    this->windowHandle()->setScreen(screens[m_monitor]);
+  else
+    this->windowHandle()->setScreen(0);
   this->showFullScreen();
 #else
   QRect rect = QApplication::desktop()->screenGeometry( numeric_cast<int>(getMonitor()) );
