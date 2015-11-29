@@ -5,7 +5,9 @@ foreach(qrc IN LISTS QRCFILES)
 
 	add_custom_command(
 		OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${qrc}
-		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${qrc}
+		DEPENDS
+			${CMAKE_CURRENT_SOURCE_DIR}/${qrc}
+			${TRANSLATIONFILES}
 		COMMAND cmake -E copy ${CMAKE_CURRENT_SOURCE_DIR}/${qrc} ${CMAKE_CURRENT_BINARY_DIR}/${qrc}
 	)
 
