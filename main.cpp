@@ -27,6 +27,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QTranslator>
+#include <QLibraryInfo>
 
 #if defined ( _WIN32 ) && defined ( NDEBUG )
 #pragma comment(linker, "/SUBSYSTEM:windows")
@@ -50,37 +51,28 @@ int main(int argc, char** argv)
 
 	const auto locale = QLocale::system();
 	const auto localeName = locale.name();
-#ifdef QTRANSLATE_SYSTEM_PATH
-	const char* const systemQtPath = QTRANSLATE_SYSTEM_PATH ;
-#else
-	/** FIXME: Implement default path and file for Qt5 */
-	const char* const systemQtPath = "/usr/share/qt4/translations";
-#endif
-
-#ifdef QTRANSLATE_SYSTEM_NAME
-	const char* const systemQtName = QTRANSLATE_SYSTEM_NAME;
-#else
-	/** FIXME: Implement default path and file for Qt5 */
-	const char* const systemQtName = "qt_";
-#endif
+	const auto systemTranslationsPath =
+		QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 
 	QTranslator qtTranslator;
-	DEBUGOUT << "Loading" << systemQtName << "translation for" << localeName;
+	DEBUGOUT << "Loading qt system translation for" << localeName
+		<< "from" << systemTranslationsPath;
 	if ( !qtTranslator.load(
-			QString::fromUtf8( systemQtName ).append(localeName),
-			QString::fromUtf8( systemQtPath )
-			) ) {
-		qWarning() << "Failed to load qt translations for current locale";
+			QString::fromUtf8( "qt_" ) + localeName, systemTranslationsPath )
+			) {
+		qWarning() << "Failed to load qt translations for locale" << localeName;
 	} else {
 		app.installTranslator(&qtTranslator);
+		DEBUGOUT << "Qt system translation loaded for" << localeName;
 	}
 
 	QTranslator appTranslator;
 	DEBUGOUT << "Loading dspdfviewer translation for current locale:" << localeName;
 	if ( ! appTranslator.load(QString::fromUtf8(":/translations/dspdfviewer") ) ) {
-		qWarning() << "Failed to load dspdfviewer translation for current locale, falling back to english.";
+		qWarning() << "Failed to load dspdfviewer translation for current locale" << localeName;
 	} else {
 		app.installTranslator(&appTranslator);
+		DEBUGOUT << "dspdfviewer translation loaded for" << localeName;
 	}
 
 	/* If anything goes wrong, try to display the exception to the user.
