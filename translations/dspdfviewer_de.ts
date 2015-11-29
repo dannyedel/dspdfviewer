@@ -34,8 +34,8 @@
         <translation>Die angeforderte Seitennummer %1 liegt außerhalb des gültigen Bereichs! Die Anfrage wird ignoriert.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="105"/>
-        <location filename="../main.cpp" line="110"/>
+        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="102"/>
         <source>Dual-Screen PDF Viewer has encountered an error and cannot continue</source>
         <translation>DS PDF Viewer hat einen Fehler festgestellt und kann nicht weiter ausgeführt werden</translation>
     </message>
@@ -86,7 +86,7 @@
         <translation>00:00</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="404"/>
+        <location filename="../pdfviewerwindow.cpp" line="408"/>
         <source>Total
 %1</source>
         <translation>Gesamt
@@ -224,12 +224,12 @@
 <context>
     <name>PDFViewerWindow</name>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="348"/>
+        <location filename="../pdfviewerwindow.cpp" line="352"/>
         <source>Loading page number %1</source>
         <translation>Lade Seitennummer %1</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="393"/>
+        <location filename="../pdfviewerwindow.cpp" line="397"/>
         <source>HH:mm:ss</source>
         <comment>This is used by QTime::toString. See its documentation before changing this.</comment>
         <translation>HH:mm:ss</translation>
@@ -256,12 +256,12 @@
         <translation type="obsolete">Tastenkombinationen</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="440"/>
+        <location filename="../pdfviewerwindow.cpp" line="444"/>
         <source>Select page</source>
         <translation>Seite auswählen</translation>
     </message>
     <message>
-        <location filename="../pdfviewerwindow.cpp" line="442"/>
+        <location filename="../pdfviewerwindow.cpp" line="446"/>
         <source>Jump to page number (%1-%2):</source>
         <translation>Springe zu Seitennummer (%1-%2):</translation>
     </message>
@@ -291,12 +291,12 @@
 <context>
     <name>QFileDialog</name>
     <message>
-        <location filename="../main.cpp" line="98"/>
+        <location filename="../main.cpp" line="90"/>
         <source>Load PDF from disk</source>
         <translation>Lade PDF von Datenträger</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="98"/>
+        <location filename="../main.cpp" line="90"/>
         <source>PDF (*.pdf)</source>
         <translation>PDF (*.pdf)</translation>
     </message>
