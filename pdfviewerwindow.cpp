@@ -110,7 +110,7 @@ void PDFViewerWindow::reposition()
   this->showNormal();
 #if defined(POPPLER_QT5) && defined(_WIN32)
   static QList<QScreen *> screens = QApplication::screens();
-  if ( m_monitor < screens.count() )
+  if ( m_monitor < numeric_cast<unsigned>(screens.count()) )
     this->windowHandle()->setScreen(screens[m_monitor]);
   else
     this->windowHandle()->setScreen(0);
