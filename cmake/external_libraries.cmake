@@ -35,7 +35,7 @@ if(UseQtFive)
 	find_package(Qt5Gui REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
 	find_package(Qt5LinguistTools REQUIRED)
-	if(WINDOWS)
+	if(MSVC)
 		set(POPPLER_LIBRARIES
 			optimized "C:/dspdf/poppler/poppler/lib/poppler.lib"
 			debug "C:/dspdf/poppler/poppler/lib/popplerd.lib"
