@@ -35,7 +35,57 @@ if(UseQtFive)
 	find_package(Qt5Gui REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
 	find_package(Qt5LinguistTools REQUIRED)
-	pkg_search_module(POPPLER REQUIRED poppler-qt5)
+	if(WINDOWS)
+		set(POPPLER_LIBRARIES
+			optimized "C:/dspdf/poppler/poppler/lib/poppler.lib"
+			debug "C:/dspdf/poppler/poppler/lib/popplerd.lib"
+			optimized "C:/dspdf/poppler/poppler/lib/poppler-qt5.lib"
+			debug "C:/dspdf/poppler/poppler/lib/poppler-qt5d.lib"
+			optimized "C:/dspdf/poppler/deps/cairo/lib/cairo-static.lib"
+			debug "C:/dspdf/poppler/deps/cairo/lib/cairo-staticd.lib"
+			optimized "C:/dspdf/poppler/deps/freetype/lib/freetype.lib"
+			debug "C:/dspdf/poppler/deps/freetype/lib/freetyped.lib"
+			optimized "C:/dspdf/poppler/deps/lcms/Lib/MS/lcms2_static.lib"
+			debug "C:/dspdf/poppler/deps/lcms/Lib/MS/lcms2_staticd.lib"
+			optimized "C:/dspdf/poppler/deps/fontconfig/lib/libfontconfig.lib"
+			debug "C:/dspdf/poppler/deps/fontconfig/lib/libfontconfigd.lib"
+			optimized "C:/dspdf/poppler/deps/libpng/lib/libpng16_static.lib"
+			debug "C:/dspdf/poppler/deps/libpng/lib/libpng16_staticd.lib"
+			optimized "C:/dspdf/poppler/deps/libtiff/lib/tiff_static.lib"
+			debug "C:/dspdf/poppler/deps/libtiff/lib/tiff_staticd.lib"
+			optimized "C:/dspdf/poppler/deps/zlib/lib/zlibstatic.lib"
+			debug "C:/dspdf/poppler/deps/zlib/lib/zlibstaticd.lib"
+			optimized "C:/dspdf/poppler/deps/expat/lib/expat.lib"
+			debug "C:/dspdf/poppler/deps/expat/lib/expatd.lib"
+			optimized "C:/dspdf/poppler/deps/openjpeg/lib/openjp2.lib"
+			debug "C:/dspdf/poppler/deps/openjpeg/lib/openjp2d.lib"
+			optimized "C:/dspdf/poppler/deps/libtiff/lib/port.lib"
+			debug "C:/dspdf/poppler/deps/libtiff/lib/portd.lib"
+			optimized "C:/dspdf/poppler/deps/libiconv/lib/libiconvStatic.lib"
+			debug "C:/dspdf/poppler/deps/libiconv/lib/libiconvStaticD.lib"
+			optimized "C:/dspdf/poppler/deps/pixman/lib/pixman-1_static.lib"
+			debug "C:/dspdf/poppler/deps/pixman/lib/pixman-1_staticd.lib")
+		set(POPPLER_INCLUDE_DIRS "C:/dspdf/poppler/poppler/include/poppler/qt5")
+		list(APPEND LIST_LIBRARIES
+			optimized "C:/Qt/Static/qtbase/lib/Qt5XML.lib"
+	  		debug "C:/Qt/Static/qtbase/lib/Qt5XMLd.lib"
+  			optimized "C:/Qt/Static/qtbase/lib/Qt5PlatformSupport.lib"
+  			debug "C:/Qt/Static/qtbase/lib/Qt5PlatformSupportd.lib"
+	  		optimized "C:/Qt/Static/qtbase/plugins/platforms/qwindows.lib"
+  			debug "C:/Qt/Static/qtbase/plugins/platforms/qwindowsd.lib"
+  			optimized "C:/Qt/Static/qtbase/lib/qtpcre.lib"
+	  		debug "C:/Qt/Static/qtbase/lib/qtpcred.lib"
+  			optimized "C:/Qt/Static/qtbase/lib/qtharfbuzzng.lib"
+  			debug "C:/Qt/Static/qtbase/lib/qtharfbuzzngd.lib"
+	  		"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/WS2_32.Lib"
+  			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/OpenGL32.Lib"
+  			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/MSImg32.Lib"
+	  		"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Imm32.Lib"
+  			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Winmm.Lib"
+		)
+	else()
+		pkg_search_module(POPPLER REQUIRED poppler-qt5)
+	endif()
 	# add their include directories
 	list(APPEND LIST_INCLUDE_DIRS
 		${Qt5Core_INCLUDE_DIRS}

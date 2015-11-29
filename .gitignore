@@ -20,3 +20,6 @@ debian/*.log
 # for example left behind from a failed
 # mk-build-deps
 *.deb
+
+# Windows compiled help files
+*.chm
