@@ -10,6 +10,10 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	message(STATUS "Clang++ detected.")
 	include(cmake/compiler_clang.cmake)
 
+elseif(MSVC)
+	message(STATUS "MSVC detected.")
+	include(cmake/compiler_msvc.cmake)
+
 else()
 	# Unknown Compiler
 	message(WARNING "You are using an unidentified and therefore unsupported compiler. "
