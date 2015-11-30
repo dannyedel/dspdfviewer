@@ -5,6 +5,7 @@ sudo: required
 branches:
     only:
         - master
+        - /^test-.*$/
 matrix:
     # This marks the build as failed as soon as something goes wrong
     fast_finish: true
