@@ -9,3 +9,5 @@ if(CompileMTMode)
 		endif()
 	endforeach()
 endif()
+
+include_directories(${LIST_INCLUDE_DIRS})
