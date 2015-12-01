@@ -9,6 +9,21 @@ inspect the output of commands like `git diff -w v1.11..v1.12` directly.
 
 
 
+v1.14 - 2015-12-01
+------------------
+
+New features:
+
+* Translation support
+  * For now, a german translation is included, thanks to projekter.
+* Experimental i3 support
+  * If you specify the --i3-workaround=true option, dspdfviewer will try to
+    use i3-cmd to move the audience window one screen to the right.
+  * This code is not well tested, please leave feedback and suggestions.
+* Add support for Qt5
+* Add support for Windows, thanks to projekter.
+
+
 v1.13.1 - 2015-08-06
 --------------------
 
