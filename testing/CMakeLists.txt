@@ -1,6 +1,7 @@
 # Test driver library for convenience linking.
 add_library(testhelp
 	testhelpers
+	${LIST_TEST_LIBRARIES}
 )
 # Link this helper library to dspdfviewer's functions
 target_link_libraries(testhelp libdspdfviewer)
