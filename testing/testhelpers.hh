@@ -55,3 +55,16 @@ namespace TestHelpers {
 
 /** Print a QSize to a standard output stream */
 std::ostream& operator << (std::ostream& where, const QSize& what);
+
+/** Print QRgb values as #123456 html-style-strings within boost test
+ * log messages */
+namespace boost{
+	namespace test_tools{
+		template<>
+		inline
+		void
+		print_log_value<QColor>::operator()(std::ostream& where, const QColor& what) {
+			where << what.name().toStdString();
+		}
+	}
+}

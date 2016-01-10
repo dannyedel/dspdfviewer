@@ -11,7 +11,8 @@ Build-Depends: cmake,
                libpoppler-qt4-dev,
                lsb-release,
                pkg-config,
-               texlive-pictures
+               texlive-pictures,
+               xvfb
 Standards-Version: 3.9.3
 Vcs-Git: git://github.com/dannyedel/dspdfviewer.git
 Vcs-Browser: https://github.com/dannyedel/dspdfviewer
