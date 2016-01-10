@@ -63,8 +63,8 @@ namespace boost{
 		template<>
 		inline
 		void
-		print_log_value<QRgb>::operator()(std::ostream& where, const QRgb& what) {
-			where << QColor::fromRgb(what).name().toStdString();
+		print_log_value<QColor>::operator()(std::ostream& where, const QColor& what) {
+			where << what.name().toStdString();
 		}
 	}
 }
