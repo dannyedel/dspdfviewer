@@ -14,7 +14,7 @@ else
 	cd build
 fi
 
-CMAKE_PARAMETERS="-DDownloadTestPDF=ON"
+CMAKE_PARAMETERS="-DDownloadTestPDF=OFF"
 
 if [ "$BOOST_STATIC" ] ; then
 	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DBoostStaticLink=ON"
