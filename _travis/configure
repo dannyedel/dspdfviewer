@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Print commands as executed and fail on error
+set -ex
+
+# Test inside-git build system
+mkdir build
+cd build
+
+CMAKE_PARAMETERS="-DCMAKE_VERBOSE_MAKEFILE=ON"
+
+# on OSX: Download Test PDF,
+# rather than install pdflatex
+if [ "$TRAVIS_OS_NAME" = "osx" ] ; then
+	CMAKE_PARAMETERS+=" -DDownloadTestPDF=ON"
+fi
+
+# on Linux, with GCC:
+# Activate code coverage analysis
+if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ] ; then
+	# Linux / GCC: Activate coverage
+	CMAKE_PARAMETERS+=" -DCodeCoverage=ON"
+fi
+
+# Allow switching Qt version via environment variable
+if [ "$QT_VERSION" -eq 4 ] ; then
+	CMAKE_PARAMETERS+=" -DUseQtFive=OFF"
+elif [ "$QT_VERSION" -eq 5 ] ; then
+	CMAKE_PARAMETERS+=" -DUseQtFive=ON"
+else
+	echo "Unknown qt version $QT_VERSION" >&2
+	false
+fi
+
+cmake $CMAKE_PARAMETERS ..

@@ -1,41 +1,71 @@
 language: cpp
-sudo: required
+compiler: gcc
+sudo: false
+# define dependencies as q4dep and q5dep
+qt4_deps: &q4dep
+    - libboost-program-options-dev
+    - libboost-test-dev
+    - pkg-config
+    - xvfb
+    - xauth
+    - libpoppler-qt4-dev
+    - texlive-latex-recommended
+    - texlive-pictures
+    - latex-beamer
+qt5_deps: &q5dep
+    - libboost-program-options-dev
+    - libboost-test-dev
+    - pkg-config
+    - xvfb
+    - xauth
+    - libpoppler-qt5-dev
+    - qtbase5-dev
+    - qttools5-dev
+    - qttools5-dev-tools
+    - texlive-latex-recommended
+    - texlive-pictures
+    - latex-beamer
+addons:
+    apt:
+        packages: *q4dep
+env: QT_VERSION=4
 # Only build master branch on push, other branches will get built when
 # they are turned into pull-requests
 branches:
     only:
         - master
         - /^test-.*$/
+# Build matrix.
+#
+# The first (implicit) build will be
+# qt4/gcc/container-based (precise)
+#
+# additional builds specified are
+# 2. qt4/clang/container (precise)
+# 3. qt5/gcc/gce (sudo/trusty)
+# 4. qt5/clang/gce (sudo/trusty)
+# 5. osx/clang
 matrix:
-    # This marks the build as failed as soon as something goes wrong
-    fast_finish: true
-
-    # Manually specify the matrix:
-    # Test Qt4 on precise
-    # test Qt5 on trusty (triggered via services: docker)
     include:
-        - os: linux
-          env: QT_VERSION=4
-          compiler: gcc
-        - os: linux
-          env: QT_VERSION=4
-          compiler: clang
-        - os: linux
-          dist: trusty
+        - compiler: clang
+        - dist: trusty
+          sudo: required
           env: QT_VERSION=5
           compiler: gcc
-        - os: linux
-          dist: trusty
+          addons:
+              apt:
+                  packages: *q5dep
+        - dist: trusty
+          sudo: required
           env: QT_VERSION=5
           compiler: clang
-        - os: linux
-          dist: trusty
-          env: QT_VERSION=5 BOOST_STATIC=1
-          compiler: gcc
+          addons:
+              apt:
+                  packages: *q5dep
         - os: osx
-          env: QT_VERSION=4
           compiler: clang
+          before_install: _travis/osx-install-dependencies
 install:
- - _travis/install_dependencies
- - _travis/compile
+    - _travis/configure
+    - make -C build
 script: _travis/test

@@ -2,22 +2,10 @@
 set -ex
 cd build
 
-[ -x ./dspdfviewer ]
-[ -x ./testing/testrunner ]
-
-if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
-	# Verify whether the testrunner is linked
-	# statically or dynamically against boost
-	if [ "$BOOST_STATIC" ] && [ $BOOST_STATIC -gt 0 ] ; then
-		[ 0 -eq $(ldd testing/testrunner | grep --count boost ) ]
-	else
-		$(ldd testing/testrunner | grep -q boost)
-	fi
-else
-	echo "FIXME: Don't know how to check linkage on $TRAVIS_OS_NAME"
-fi
-
+# Call CTest test runner
 ctest --output-on-failure
+
+# If on Linux with GCC: print coverage report
 if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ] ; then
 	ctest -T coverage
 fi
