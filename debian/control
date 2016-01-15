@@ -12,6 +12,7 @@ Build-Depends: cmake,
                lsb-release,
                pkg-config,
                texlive-pictures,
+               xauth,
                xvfb
 Standards-Version: 3.9.3
 Vcs-Git: git://github.com/dannyedel/dspdfviewer.git
