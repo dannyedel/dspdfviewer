@@ -14,7 +14,13 @@ else
 	cd build
 fi
 
-CMAKE_PARAMETERS="-DDownloadTestPDF=OFF"
+CMAKE_PARAMETERS=""
+
+if [ "$TRAVIS_OS_NAME" = "osx" ] ; then
+	# on OSX: Download Test PDF (installing pdflatex using
+	# brew would take too long)
+	CMAKE_PARAMETERS="${CMAKE_PARAMETERS} -DDownloadTestPDF=ON"
+fi
 
 if [ "$BOOST_STATIC" ] ; then
 	CMAKE_PARAMETERS="$CMAKE_PARAMETERS -DBoostStaticLink=ON"
