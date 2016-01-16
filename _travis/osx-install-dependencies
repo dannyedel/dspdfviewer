@@ -3,8 +3,14 @@
 # Exit in case of an error, and show the steps
 set -ex
 
-# Travis recommends to run homebrew update
-brew update > /dev/null
+which ccache || brew install ccache
+
+brew ls -v ccache
+
+which clang++
+
+exit 1
+
 if [ "$QT_VERSION" -eq 5 ] ; then
 	brew install poppler --with-qt5
 else

@@ -69,7 +69,9 @@ matrix:
                   packages: *q5dep
         - os: osx
           compiler: clang
-          before_install: _travis/osx-install-dependencies
+          before_install:
+              - brew update > /dev/null
+              - _travis/osx-install-dependencies
 install:
     - ccache -s
     - _travis/configure
