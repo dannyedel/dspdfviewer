@@ -4,10 +4,12 @@ title: Installation of daily debs, directly from git
 
 
 If you want to stay up-to-date from git (for example because you want to help test features
-in development), you can install the daily debs that my [jenkins] generates and signs for you.
+in development), but do not feel comfortable compiling from source yourself,
+you can install the daily debs that my [jenkins] generates and signs for you.
 
 Jenkins' daily packages are signed with gpg key [0x61E9E242],
-and they are available for `jessie`, `stretch` and `sid` distributions.
+and they are *only* available for the `amd64` architectures of
+`jessie`, `sid`, `trusty` and `xenial`.
 
 <div class="root">
 {% highlight bash %}
@@ -23,18 +25,19 @@ apt-get install dspdfviewer
 
 ### Unsupported Repository
 
-This is a third-party repository reflecting current git status.
+This is an ***unsupported third-party repository*** reflecting current git status.
 You can not expect the same quality as from a "release" repository,
 but feedback on the not-yet-released functions can be very useful.
 
-Please do not report issues to the official Debian bug tracking system,
-but rather to the [github issues] system.
+Please **do not** report issues to the official Debian bug tracking system.
+
+Please send any feedback directly to the [github issues] system.
 
 [github issues]: https://github.com/dannyedel/dspdfviewer/issues
 
 ### Upgrading
 
-Since the package repository is set up, your normal
+Once the package repository is set up, your normal
 <span class="root">`apt-get update && apt-get upgrade`</span>
 will include updates to dspdfviewer.
 This also means that using the (even graphical) apt frontend

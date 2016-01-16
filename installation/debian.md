@@ -38,12 +38,6 @@ simple `apt-get install dspdfviewer` is enough.
 
 [backports instructions]: http://backports.debian.org/Instructions/
 
-## Debian wheezy
-
-[@dannyedel] maintains a third-party deb repository for wheezy.
-If you want to use it, please follow the instructions in [deb-repository].
-
-
 ## Versions overview
 
 To see which versions are available in Debian, please take a look at the
@@ -55,6 +49,5 @@ If you want to follow the current development version, take a look at the
 [daily debs] for prebuilt binaries.
 
 [package tracker]: https://tracker.debian.org/pkg/dspdfviewer
-[deb-repository]: /installation/deb-repository.html
 [daily debs]: /installation/daily-deb.html
 [@dannyedel]: https://github.com/dannyedel
