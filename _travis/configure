@@ -3,6 +3,11 @@
 # Print commands as executed and fail on error
 set -ex
 
+# activate ccache if exists
+if [ -d /usr/lib/ccache ] ; then
+	export PATH="/usr/lib/ccache:$PATH"
+fi
+
 # Test inside-git build system
 mkdir build
 cd build
