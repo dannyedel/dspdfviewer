@@ -49,6 +49,5 @@ If you want to follow the current development version, take a look at the
 [daily debs] for prebuilt binaries.
 
 [package tracker]: https://tracker.debian.org/pkg/dspdfviewer
-[deb-repository]: /installation/deb-repository.html
 [daily debs]: /installation/daily-deb.html
 [@dannyedel]: https://github.com/dannyedel
