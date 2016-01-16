@@ -38,12 +38,6 @@ simple `apt-get install dspdfviewer` is enough.
 
 [backports instructions]: http://backports.debian.org/Instructions/
 
-## Debian wheezy
-
-[@dannyedel] maintains a third-party deb repository for wheezy.
-If you want to use it, please follow the instructions in [deb-repository].
-
-
 ## Versions overview
 
 To see which versions are available in Debian, please take a look at the
