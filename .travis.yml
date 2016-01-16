@@ -1,6 +1,7 @@
 language: cpp
 compiler: gcc
 sudo: false
+cache: ccache
 # define dependencies as q4dep and q5dep
 qt4_deps: &q4dep
     - libboost-program-options-dev
@@ -12,6 +13,7 @@ qt4_deps: &q4dep
     - texlive-latex-recommended
     - texlive-pictures
     - latex-beamer
+    - ccache
 qt5_deps: &q5dep
     - libboost-program-options-dev
     - libboost-test-dev
@@ -25,6 +27,7 @@ qt5_deps: &q5dep
     - texlive-latex-recommended
     - texlive-pictures
     - latex-beamer
+    - ccache
 addons:
     apt:
         packages: *q4dep
@@ -66,6 +69,8 @@ matrix:
           compiler: clang
           before_install: _travis/osx-install-dependencies
 install:
+    - ccache -s
     - _travis/configure
     - make -C build
+    - ccache -s
 script: _travis/test
