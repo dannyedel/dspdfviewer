@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.3 -->
-<!-- CreationDate: Mon Sep 21 15:28:14 2015 -->
+<!-- CreationDate: Sat Jan 16 10:31:12 2016 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -221,11 +221,26 @@ page rendered before you have visited it.</p>
 is set to zero, the following options will have no
 effect.</p>
 
+<p style="margin-left:11%;"><b>&minus;d,
+&minus;&minus;duplicate</b> <i>&lt;bool&gt;</i></p>
+
+<p style="margin-left:22%;">Duplicate (true, 1) or hide
+(false, 0) the audience&rsquo;s screen next to the notes on
+the second screen. The default is false.</p>
+
 <p style="margin-left:11%;"><b>&minus;t,
 &minus;&minus;thumbnails</b> <i>&lt;bool&gt;</i></p>
 
 <p style="margin-left:22%;">Show (true, 1) or hide (false,
 0) the thumbnails on the second screen.</p>
+
+<p style="margin-left:11%;"><b>&minus;T,
+&minus;&minus;thumbnail&minus;page&minus;part</b>
+<i>&lt;pagepart&gt;</i></p>
+
+<p style="margin-left:22%;">Show this part of the page for
+thumbnails, valid values are &quot;left&quot;,
+&quot;right&quot; or &quot;both&quot;.</p>
 
 <p style="margin-left:11%;"><b>&minus;w,
 &minus;&minus;wall&minus;clock</b> <i>&lt;bool&gt;</i></p>
@@ -256,6 +271,19 @@ presenter area on the second screen will be, unit is
 
 <p style="margin-left:22%; margin-top: 1em">Default value
 20.</p>
+
+
+<p style="margin-left:11%;"><b>&minus;&minus;i3&minus;workaround</b>
+<i>&lt;bool&gt;</i></p>
+
+<p style="margin-left:22%;">This tries to ask the i3 window
+manager (by calling the i3-msg command) to move the audience
+window to &quot;the other screen&quot;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is
+considered an experimental feature and disabled by default.
+Read the runtimeconfiguration.cpp source code for more
+info.</p>
 
 <h2>CONTROLS
 <a name="CONTROLS"></a>
@@ -346,6 +374,17 @@ function</p>
 want to see the audience side on your screen, without
 showing the notes to the audience. Pressing the button again
 will switch back to normal operation.</p>
+
+<p style="margin-left:11%;"><b>Keyboard: D</b></p>
+
+<p style="margin-left:22%;">Switch duplication of the
+audience&rsquo;s screen</p>
+
+<p style="margin-left:22%; margin-top: 1em">Use this if you
+want to see the audience side and the notes on your screen
+(so the full presentation), leaving the audience&rsquo;s
+screen untouched. Pressing the button again will switch back
+to split mode.</p>
 
 <h2>FILES
 <a name="FILES"></a>
