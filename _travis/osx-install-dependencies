@@ -3,13 +3,9 @@
 # Exit in case of an error, and show the steps
 set -ex
 
-which ccache || brew install ccache
+brew install ccache
 
-brew ls -v ccache
-
-which clang++
-
-exit 1
+export PATH="/usr/local/opt/ccache/libexec:$PATH"
 
 if [ "$QT_VERSION" -eq 5 ] ; then
 	brew install poppler --with-qt5
