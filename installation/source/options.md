@@ -17,25 +17,28 @@ Boolean options in `cmake` are specified with `-DSomeOpt=ON` and `OFF`, respecti
 For string-type options you can specify an arbitrary string, just make sure to correctly
 escape it for your shell.
 
-## Options for stable (currently v1.13.1)
+## Options for v1.14
+
+By default, you will need the following external software:
+
+* `boost`
+* `cmake`
+* `qt4`
+* `poppler` with the Qt4 bindings
+* For the test suite (activated by default):
+  * `pdflatex` with `latex-beamer` package installed
+  * On Linux: `xvfb`
+
+The following `cmake` options manipulate the compilation and dependency list:
 
 * `DSPDFVIEWER_VERSION` string
   * Completely overrides the version reported by `dspdfviewer --version`.
   Use this if you're packaging `dspdfviewer` for a distribution and want
   to include a dist-specific version.
-
-`dspdfviewer` depends on:
-
-* `boost` (component `program_options`)
-* `Qt4`
-* `poppler-qt4` bindings (and through that, on the poppler library itself)
-
-## Options for the upcoming version (currently only in git)
-
-* `DSPDFVIEWER_VERSION` string
-  * as above
+  * By default, this is auto-detected using `git describe`, with a hardcoded
+  fallback version number (such as, when not building from a git clone).
 * `UseQtFive` boolean, default OFF
-  * If this is true, `dspdfviewer` will be built against `Qt5` and the
+  * If this is ON, `dspdfviewer` will be built against `Qt5` and the
   `poppler-qt5` bindings, instead of the Qt4 version.
   * If this options is enabled, dspdfviewer depends on Qt5 and libpoppler-qt5,
   and no longer depends on Qt4 or libpoppler-qt4.
@@ -52,7 +55,11 @@ escape it for your shell.
   test framework.
 * `BoostStaticLink` boolean, default OFF
   * Link against the `boost` libraries statically (ON) or dynamically (OFF)
-  Depending on your platform, it might make sense to link statically to boost.
+  * If your platform supports dynamic linking, ideally through a package manager
+  that takes care of installing and updating the libraries, it is highly
+  recommended to stick to dynamic linking.
+  * If you link statically, please ensure that you recompile when the boost
+  libraries get updated.
 * `DownloadTestPDF` boolean, default OFF
   * If `BuildTests` is off, the value of this option is *ignored*.
   * If this option is off, dspdfviewer depends on a working `pdflatex` installation
