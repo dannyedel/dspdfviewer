@@ -71,10 +71,8 @@ matrix:
           compiler: clang
           before_install:
               - brew update > /dev/null
-              - _travis/osx-install-dependencies
+              - brew install poppler --with-qt
 install:
-    - ccache -s
     - _travis/configure
     - make -C build
-    - ccache -s
 script: _travis/test
