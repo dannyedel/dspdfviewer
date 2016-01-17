@@ -8,6 +8,19 @@ if [ -d /usr/lib/ccache ] ; then
 	export PATH="/usr/lib/ccache:$PATH"
 fi
 
+# Travis' clang is not in standard directory,
+# so the /usr/lib/ccache/clang symlink does
+# not exist.
+#
+# Set it up manually inside homedir:
+
+if [ "$CC" = "clang" -a "$TRAVIS_OS_NAME" = "linux" ]; then
+	mkdir "$HOME/bin"
+	ln -s /usr/bin/ccache "$HOME/bin/clang"
+	ln -s /usr/bin/ccache "$HOME/bin/clang++"
+	export PATH="$HOME/bin:$PATH"
+fi
+
 # Test inside-git build system
 mkdir build
 cd build
