@@ -72,7 +72,7 @@ matrix:
           before_install:
               - brew update > /dev/null
               - brew install --only-dependencies poppler --with-qt
-              - brew install poppler --with-qt
+              - brew install --build-bottle poppler --with-qt
 install:
     - _travis/configure
     - make -C build
