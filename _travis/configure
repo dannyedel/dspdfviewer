@@ -19,6 +19,8 @@ if [ "$CC" = "clang" -a "$TRAVIS_OS_NAME" = "linux" ]; then
 	ln -s /usr/bin/ccache "$HOME/bin/clang"
 	ln -s /usr/bin/ccache "$HOME/bin/clang++"
 	export PATH="$HOME/bin:$PATH"
+
+	CXXFLAGS+="Wno-error=unused-argument"
 fi
 
 # Test inside-git build system
