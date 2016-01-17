@@ -73,6 +73,7 @@ matrix:
               - brew update > /dev/null
               - brew install --only-dependencies poppler --with-qt
               - brew install --build-bottle poppler --with-qt
+              - find /Library/Caches/Homebrew
 install:
     - _travis/configure
     - make -C build
