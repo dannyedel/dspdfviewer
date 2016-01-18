@@ -51,6 +51,7 @@ if( I3WORKAROUND_SHELLCODE )
 	add_definitions(-DI3WORKAROUND_SHELLCODE="${I3WORKAROUND_SHELLCODE}")
 endif()
 
+include_directories(SYSTEM ${LIST_INCLUDE_DIRS})
 
 ### Compile all the source code into one .a file
 

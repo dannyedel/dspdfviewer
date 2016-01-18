@@ -46,14 +46,6 @@ if( NOT UseQtFive )
 	add_definitions(-Wno-error=effc++)
 endif()
 
-# Add the include directories using -isystem
-# This should™ supress warnings in included files
-
-foreach(lib IN LISTS LIST_INCLUDE_DIRS)
-	add_definitions(-isystem ${lib})
-endforeach()
-
-
 if(CodeCoverage)
 	message(STATUS "Adding gcov as test coverage helper")
 	add_definitions(-fprofile-arcs -ftest-coverage -O0)

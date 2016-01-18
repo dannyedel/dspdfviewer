@@ -36,8 +36,3 @@ add_definitions(-Wno-error=undefined-reinterpret-cast)
 # clang warnings.
 set_source_files_properties( ${EMBEDDED_QRC}
 	PROPERTIES COMPILE_FLAGS "-Wno-error")
-
-# Include directories with -isystem to supress warnings
-foreach(lib IN LISTS LIST_INCLUDE_DIRS)
-	add_definitions(-isystem ${lib})
-endforeach()
