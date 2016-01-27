@@ -69,3 +69,6 @@ install:
     - _travis/configure
     - make -C build
 script: _travis/test
+after_success:
+    - pip install --user codecov
+    - codecov
