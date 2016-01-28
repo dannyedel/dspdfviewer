@@ -11,6 +11,7 @@ target_link_libraries(testhelp
 list(APPEND PDFFILENAMES
 	colored-rectangles.pdf
 	images.pdf
+	many-many-pages.pdf
 )
 
 if(DownloadTestPDF)
