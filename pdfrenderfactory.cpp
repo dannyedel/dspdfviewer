@@ -28,6 +28,8 @@
 #include "debug.h"
 #include "renderutils.h"
 
+#include <boost/cast.hpp>
+
 namespace {
 	/** Estimates size in bytes of a rendered Page
 	 *
@@ -85,7 +87,7 @@ PdfRenderFactory::PdfRenderFactory( const RuntimeConfiguration& rc):
 	fileWatcher(),
 	fileWatcherRewatchTimer(),
 	currentlyRenderingPages(),
-	renderedPages(rc.cacheSizeBytes()),
+	renderedPages( boost::numeric_cast<int>(rc.cacheSizeBytes()) ),
 	mutex(),
 	currentVersion(0),
 	// Attempt to read the document to get the number of pages within.
