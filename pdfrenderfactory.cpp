@@ -26,6 +26,7 @@
 #include <QThreadPool>
 #include <stdexcept>
 #include "debug.h"
+#include "renderutils.h"
 
 namespace {
 	/** Estimates size in bytes of a rendered Page
@@ -207,4 +208,8 @@ int PdfRenderFactory::numberOfPages() const
 {
   QMutexLocker lock(&mutex);
   return numberOfPages_;
+}
+
+PdfRenderFactory::~PdfRenderFactory() {
+	RenderUtils::notifyShutdown();
 }

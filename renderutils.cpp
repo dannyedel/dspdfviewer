@@ -28,6 +28,10 @@
 
 using boost::math::iround;
 
+namespace {
+	bool shuttingDown = false;
+}
+
 QImage RenderUtils::renderPagePart(QSharedPointer< const Poppler::Page > page, QSize targetSize, PagePart whichPart)
 {
   if ( ! page )
@@ -35,6 +39,9 @@ QImage RenderUtils::renderPagePart(QSharedPointer< const Poppler::Page > page, Q
     throw std::runtime_error( QApplication::translate("RenderUtils", "RenderUtils::renderPagePart called with null page. Target size was %1x%2").
       arg(targetSize.width()).arg(targetSize.height()).toStdString() );
   }
+
+  if ( shuttingDown )
+    return QImage();
 
   /* pagesize in points, (72 points is an inch) */
   QSizeF pagesize = page->pageSizeF();
@@ -80,4 +87,8 @@ QImage RenderUtils::renderPagePart(QSharedPointer< const Poppler::Page > page, Q
 		      );
 
   return renderedImage;
+}
+
+void RenderUtils::notifyShutdown(void) {
+	shuttingDown = true;
 }

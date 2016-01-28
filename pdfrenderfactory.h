@@ -93,6 +93,7 @@ private:
 
 public:
   PdfRenderFactory( const RuntimeConfiguration& );
+  ~PdfRenderFactory();
 
   /** Request a page rendering. Defaults to low priority (i.e. background rendering), please set High priority manually
    * on the current page.

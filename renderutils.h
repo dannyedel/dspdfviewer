@@ -33,6 +33,12 @@ public:
 
   /** Since only the static functions of this class are used, we do not need to construct instances */
   RenderUtils() =delete;
+
+  /** Notifies about impending shutdown.
+   *
+   * All further render attempts will return null images.
+   */
+  static void notifyShutdown(void);
 };
 
 #endif // RENDERUTILS_H
