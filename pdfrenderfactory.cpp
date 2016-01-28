@@ -170,7 +170,9 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
 	  DEBUGOUT << "The new document compares identical to the old one, not doing anything.";
 	  return;
 	}
+
       }
+	DEBUGOUT << "The file on disk has different contents. Trying to parse it as PDF.";
 
       // Verify poppler can read this
       newDoc.popplerDocument();
@@ -179,6 +181,7 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
       documentReference = newDoc;
 
       numberOfPages_ = documentReference.popplerDocument()->numPages();
+	  DEBUGOUT << "New document has" << numberOfPages_ << "pages.";
 
       // clear the page cache
       clearAllCaches();

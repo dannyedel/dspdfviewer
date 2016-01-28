@@ -83,9 +83,11 @@ bool operator==(const PDFDocumentReference& lhs, const PDFDocumentReference& rhs
     return false;
   }
   else if ( lhs.cacheOption() == PDFCacheOption::keepPDFinMemory ) {
+	  DEBUGOUT << "Using memory cache, comparing byte-by-byte.";
     return lhs.fileContents_ == rhs.fileContents_;
   }
   else {
+	  DEBUGOUT << "Not using memory cache, just comparing the filename.";
     return lhs.filename() == rhs.filename();
   }
 }
