@@ -497,7 +497,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
   for( AdjustedLink const & link: links ) {
     const QRectF& rect = link.linkArea();
     if ( rect.isNull() ) {
-      qWarning() << "Null Link Area not supported yet.";
+      WARNINGOUT << "Null Link Area not supported yet.";
       continue;
     }
     const Poppler::Link::LinkType& type = link.link()->linkType();
@@ -505,7 +505,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
       // type is Goto. Bind it to imageLabel
       const Poppler::LinkGoto& linkGoto = dynamic_cast<const Poppler::LinkGoto&>( * link.link() );
       if( linkGoto.isExternal() ) {
-	qWarning() << "External links are not supported yet.";
+	WARNINGOUT << "External links are not supported yet.";
 	continue;
       }
       HyperlinkArea* linkArea = new HyperlinkArea(ui.imageLabel, link);
@@ -513,7 +513,7 @@ void PDFViewerWindow::parseLinks(QList< AdjustedLink > links)
       newLinkAreas.append(linkArea);
     }
     else {
-      qWarning() << "Types other than Goto are not supported yet.";
+      WARNINGOUT << "Types other than Goto are not supported yet.";
       continue;
     }
   }

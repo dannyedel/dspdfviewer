@@ -203,7 +203,7 @@ void DSPDFViewer::gotoPage(unsigned int pageNumber)
     m_pagenumber = pageNumber;
     renderPage();
   } else {
-    qWarning() << tr("Requested page number %1 which is out of range! Ignoring request.").arg(pageNumber);
+    WARNINGOUT << tr("Requested page number %1 which is out of range! Ignoring request.").arg(pageNumber);
   }
 }
 

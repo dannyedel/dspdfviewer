@@ -37,7 +37,7 @@ void RenderThread::run()
   QImage renderImage = RenderUtils::renderPagePart(m_page.page, renderMe.requestedPageSize(), renderMe.pagePart());
   if ( renderImage.isNull() )
   {
-    qWarning() << "RenderThread for " << renderMe.pageNumber() <<
+    WARNINGOUT << "RenderThread for " << renderMe.pageNumber() <<
 		renderMe.requestedPageSize().width() << renderMe.requestedPageSize().height() << " failed";
     QSharedPointer<RenderingIdentifier> ri( new RenderingIdentifier(renderMe) );
     emit renderingFailed(ri);
