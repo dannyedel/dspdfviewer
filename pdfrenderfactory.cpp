@@ -33,12 +33,12 @@
 namespace {
 	/** Estimates size in bytes of a rendered Page
 	 *
-	 * This currently assumes 24 bit (3 byte) per pixel, and no
+	 * This currently assumes 32 bit (4 byte) per pixel, and no
 	 * overhead.
 	 */
 	int cacheCost(const RenderedPage& renderedPage) {
 		const QSize imageSize = renderedPage.getImage().size();
-		return 3 * imageSize.width() * imageSize.height();
+		return 4 * imageSize.width() * imageSize.height();
 	}
 }
 
