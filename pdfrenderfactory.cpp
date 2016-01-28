@@ -85,7 +85,7 @@ PdfRenderFactory::PdfRenderFactory( const RuntimeConfiguration& rc):
 	fileWatcher(),
 	fileWatcherRewatchTimer(),
 	currentlyRenderingPages(),
-	renderedPages(),
+	renderedPages(rc.cacheSizeBytes()),
 	mutex(),
 	currentVersion(0),
 	// Attempt to read the document to get the number of pages within.

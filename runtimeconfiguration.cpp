@@ -55,6 +55,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, const char* const * argv):
 	m_filePath(),
 	m_hyperlinkSupport(true),
 	m_cacheToMemory(true),
+	m_cacheSizeMegaBytes(0),
 	m_useSecondScreen(true),
 	m_i3workaround(false),
 	m_prerenderPreviousPages(3),
@@ -102,6 +103,12 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, const char* const * argv):
      "Cache the PDF file into memory\n"
      "Useful if you are editing the PDF file with latex while using the presenter software.").toLocal8Bit()
      )
+	("cache-size",
+		value<unsigned>(&m_cacheSizeMegaBytes)->default_value(1024),
+		tr(
+			"Size of the cache for pre-rendered pages, in megabytes."
+		).toLocal8Bit()
+	)
     ("i3-workaround",
      value<bool>(&m_i3workaround)->default_value(false),
 	 tr(
@@ -339,4 +346,12 @@ std::string RuntimeConfiguration::i3workaround_shellcode() const
 PagePart RuntimeConfiguration::thumbnailPagePart() const
 {
 	return m_thumbnailPagePart;
+}
+
+unsigned RuntimeConfiguration::cacheSizeBytes() const {
+	return cacheSizeMegaBytes()*1024*1024;
+}
+
+unsigned RuntimeConfiguration::cacheSizeMegaBytes() const{
+	return m_cacheSizeMegaBytes;
 }
