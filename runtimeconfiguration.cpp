@@ -295,9 +295,11 @@ bool RuntimeConfiguration::useSecondScreen() const
   return m_useSecondScreen;
 }
 
-bool RuntimeConfiguration::cachePDFToMemory() const
+PDFCacheOption RuntimeConfiguration::cacheSetting() const
 {
-  return m_cacheToMemory;
+  return m_cacheToMemory?
+	PDFCacheOption::keepPDFinMemory :
+	PDFCacheOption::rereadFromDisk;
 }
 
 unsigned int RuntimeConfiguration::bottomPaneHeight() const

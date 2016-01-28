@@ -78,9 +78,9 @@ void PdfRenderFactory::rewatchFile()
 
 
 
-PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption& cacheSetting):
+PdfRenderFactory::PdfRenderFactory( const RuntimeConfiguration& rc):
 	QObject(),
-	documentReference(filename, cacheSetting),
+	documentReference(rc.filePathQString(), rc.cacheSetting()),
 	fileWatcher(),
 	fileWatcherRewatchTimer(),
 	currentlyRenderingPages(),

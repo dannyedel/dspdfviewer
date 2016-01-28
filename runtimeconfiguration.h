@@ -25,6 +25,7 @@
 #include <QString>
 #include <stdexcept>
 #include "pagepart.h"
+#include "pdfcacheoption.h"
 
 struct noFileNameException: public std::logic_error {
 	noFileNameException();
@@ -134,7 +135,7 @@ public:
 
   bool useSecondScreen() const;
 
-  bool cachePDFToMemory() const;
+  PDFCacheOption cacheSetting() const;
 
   unsigned bottomPaneHeight() const;
   bool hyperlinkSupport() const;
