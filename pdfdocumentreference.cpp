@@ -7,24 +7,31 @@
 
 QSharedPointer< const Poppler::Document > PDFDocumentReference::popplerDocument() const
 {
-  QSharedPointer<Poppler::Document> m_document;
+	// Make sure this function is "single threaded"
+	Lock lk{mutex_};
 
-  if ( cacheOption() == PDFCacheOption::rereadFromDisk ) {
-    DEBUGOUT << "Trying to build a Poppler::Document from file" << filename();
-    QSharedPointer<Poppler::Document> diskDocument( Poppler::Document::load(filename()) );
-    m_document.swap(diskDocument);
-  }
-  else if ( cacheOption() == PDFCacheOption::keepPDFinMemory ) {
-    DEBUGOUT << "Trying to build a document from" << fileContents_.size() << "byte memory cache";
-    QSharedPointer<Poppler::Document> memoryDocument( Poppler::Document::loadFromData(fileContents_) );
-    m_document.swap(memoryDocument);
-  }
-  if ( !m_document || m_document->isLocked() )
-    throw std::runtime_error("Document not readable");
-  m_document->setRenderHint(Poppler::Document::Antialiasing, true);
-  m_document->setRenderHint(Poppler::Document::TextAntialiasing, true);
-  m_document->setRenderHint(Poppler::Document::TextHinting, true);
-  return m_document;
+	if ( ! popplerDocument_ ) {
+		/** No document defined yet. Create it from the disk/memory cache. */
+
+		QSharedPointer<Poppler::Document> m_document;
+		if ( cacheOption() == PDFCacheOption::rereadFromDisk ) {
+			DEBUGOUT << "Trying to build a Poppler::Document from file" << filename();
+			QSharedPointer<Poppler::Document> diskDocument( Poppler::Document::load(filename()) );
+			m_document.swap(diskDocument);
+		}
+		else if ( cacheOption() == PDFCacheOption::keepPDFinMemory ) {
+			DEBUGOUT << "Trying to build a document from" << fileContents_.size() << "byte memory cache";
+			QSharedPointer<Poppler::Document> memoryDocument( Poppler::Document::loadFromData(fileContents_) );
+			m_document.swap(memoryDocument);
+		}
+		if ( !m_document || m_document->isLocked() )
+			throw std::runtime_error("Document not readable");
+		m_document->setRenderHint(Poppler::Document::Antialiasing, true);
+		m_document->setRenderHint(Poppler::Document::TextAntialiasing, true);
+		m_document->setRenderHint(Poppler::Document::TextHinting, true);
+		popplerDocument_ = m_document;
+	}
+  return popplerDocument_;
 }
 
 PDFPageReference PDFDocumentReference::page(unsigned int pageNumber) const
@@ -36,7 +43,9 @@ PDFPageReference PDFDocumentReference::page(unsigned int pageNumber) const
 PDFDocumentReference::PDFDocumentReference(const QString& theFilename, const PDFCacheOption& theCacheOption):
 filename_(theFilename),
 fileContents_(),
-cacheOption_(theCacheOption)
+cacheOption_(theCacheOption),
+mutex_(),
+popplerDocument_()
 {
   if ( cacheOption() == PDFCacheOption::keepPDFinMemory ) {
     DEBUGOUT << "Reading file into memory";

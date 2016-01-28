@@ -5,6 +5,8 @@
 #include "pdfcacheoption.h"
 #include "poppler-qt.h"
 
+#include <mutex>
+
 // forward-declare
 struct PDFPageReference;
 
@@ -24,6 +26,10 @@ private:
   const QString filename_;
   QByteArray fileContents_;
   const PDFCacheOption cacheOption_;
+  // protects access to the poppler document
+  mutable std::mutex mutex_;
+  typedef std::lock_guard<std::mutex> Lock;
+  mutable QSharedPointer<const Poppler::Document> popplerDocument_;
 
 public:
   /** Create the document reference.
