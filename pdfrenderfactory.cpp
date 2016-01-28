@@ -54,13 +54,16 @@ void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> 
     renderedPages.insert(ident, new RenderedPage(*renderedPage), cacheCost(*renderedPage) );
     currentlyRenderingPages.remove(ident);
 	if ( renderedPages.contains(ident) ) {
-		DEBUGOUT << "Stored" << ident << "into cache, new load" <<
-			renderedPages.totalCost() << "/" << renderedPages.maxCost();
+		DEBUGOUT << "Stored" << ident << "into cache";
 	} else {
 		WARNINGOUT << "Unable to store" << ident << "into the cache! It would cost" <<
 			cacheCost(*renderedPage) << "but Current load is" <<
 			renderedPages.totalCost() << "/" << renderedPages.maxCost();
 	}
+
+	DEBUGOUT << "Current cache fill is " <<
+		renderedPages.totalCost() << "/" << renderedPages.maxCost() << '(' <<
+		100.0 * renderedPages.totalCost() / renderedPages.maxCost() << "% )";
   }
 
   emit pageRendered(renderedPage);
