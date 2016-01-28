@@ -8,6 +8,7 @@
  * qDebug()'s definition.
  */
 #define DEBUGOUT qDebug()
+#define WARNINGOUT qWarning() << "WARNING"
 
 #else
 
@@ -27,6 +28,12 @@
 #endif
 
 #define DEBUGOUT qDebug() << \
+ QString::fromUtf8("%1:%2 [%3()]"). \
+ arg(QFileInfo( QString::fromUtf8(__FILE__) ).fileName()). \
+ arg(QString::number( __LINE__ )). \
+ arg(QString::fromUtf8(__func__) )
+
+#define WARNINGOUT qWarning() << "WARNING" << \
  QString::fromUtf8("%1:%2 [%3()]"). \
  arg(QFileInfo( QString::fromUtf8(__FILE__) ).fileName()). \
  arg(QString::number( __LINE__ )). \
