@@ -27,6 +27,18 @@
 #include <stdexcept>
 #include "debug.h"
 
+namespace {
+	/** Estimates size in bytes of a rendered Page
+	 *
+	 * This currently assumes 24 bit (3 byte) per pixel, and no
+	 * overhead.
+	 */
+	int cacheCost(const RenderedPage& renderedPage) {
+		const QSize imageSize = renderedPage.getImage().size();
+		return 3 * imageSize.width() * imageSize.height();
+	}
+}
+
 void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> renderedPage)
 {
   {
@@ -36,8 +48,16 @@ void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> 
     if ( ident.theVersion != currentVersion )
       return;
 
-    renderedPages.insert(ident, new RenderedPage(*renderedPage));
+    renderedPages.insert(ident, new RenderedPage(*renderedPage), cacheCost(*renderedPage) );
     currentlyRenderingPages.remove(ident);
+	if ( renderedPages.contains(ident) ) {
+		DEBUGOUT << "Stored" << ident << "into cache, new load" <<
+			renderedPages.totalCost() << "/" << renderedPages.maxCost();
+	} else {
+		WARNINGOUT << "Unable to store" << ident << "into the cache! It would cost" <<
+			cacheCost(*renderedPage) << "but Current load is" <<
+			renderedPages.totalCost() << "/" << renderedPages.maxCost();
+	}
   }
 
   emit pageRendered(renderedPage);

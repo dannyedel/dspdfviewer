@@ -21,6 +21,8 @@
 #include "renderingidentifier.h"
 #include <QApplication>
 #include <QHash>
+#include <QDebugStateSaver>
+#include <sstream>
 
 bool RenderingIdentifier::operator==(const RenderingIdentifier& other) const
 {
@@ -80,4 +82,11 @@ uint qHash(const RenderingIdentifier& ri)
   return qHash(ri.pageNumber()) ^ qHash(ri.requestedPageSize().height()) ^ qHash(ri.requestedPageSize().width());
 }
 
-
+QDebug operator << (QDebug d, const RenderingIdentifier& ri) {
+	QDebugStateSaver s(d);
+	std::ostringstream oss;
+	oss << ri.pagePart();
+	d.nospace() << "[page " << ri.pageNumber() << '/' << oss.str().c_str() << '/' <<
+		ri.requestedPageSize().width() << 'x' << ri.requestedPageSize().height() << ']';
+	return d;
+}
