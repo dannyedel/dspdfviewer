@@ -21,8 +21,13 @@
 #include "renderingidentifier.h"
 #include <QApplication>
 #include <QHash>
-#include <QDebugStateSaver>
 #include <sstream>
+
+#if defined ( POPPLER_QT5 )
+#include <QDebugStateSaver>
+#else
+#include <QDebug>
+#endif
 
 bool RenderingIdentifier::operator==(const RenderingIdentifier& other) const
 {
@@ -83,7 +88,10 @@ uint qHash(const RenderingIdentifier& ri)
 }
 
 QDebug operator << (QDebug d, const RenderingIdentifier& ri) {
+#if defined ( POPPLER_QT5 )
+	// QDebugStateSaver only exists in Qt5.1
 	QDebugStateSaver s(d);
+#endif
 	std::ostringstream oss;
 	oss << ri.pagePart();
 	d.nospace() << "[page " << ri.pageNumber() << '/' << oss.str().c_str() << '/' <<
