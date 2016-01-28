@@ -42,7 +42,7 @@ public:
    * If you did not cache the file to memory, this step will try to
    * read the file.
    */
-  QSharedPointer<Poppler::Document> popplerDocument() const;
+  QSharedPointer<const Poppler::Document> popplerDocument() const;
 
   /** get filename */
   const QString& filename() const;

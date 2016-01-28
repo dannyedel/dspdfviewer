@@ -23,7 +23,7 @@
 #include "adjustedlink.h"
 #include "debug.h"
 
-RenderThread::RenderThread(PDFDocumentReference theDocument, RenderingIdentifier renderIdent):
+RenderThread::RenderThread(const PDFDocumentReference& theDocument, const RenderingIdentifier& renderIdent):
   QObject(),
   QRunnable(),
   m_page( theDocument.page( renderIdent.pageNumber() ) ),

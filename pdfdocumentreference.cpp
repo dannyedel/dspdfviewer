@@ -5,7 +5,7 @@
 #include <QFile>
 #include "debug.h"
 
-QSharedPointer< Poppler::Document > PDFDocumentReference::popplerDocument() const
+QSharedPointer< const Poppler::Document > PDFDocumentReference::popplerDocument() const
 {
   QSharedPointer<Poppler::Document> m_document;
 

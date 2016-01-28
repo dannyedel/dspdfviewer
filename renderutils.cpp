@@ -28,7 +28,7 @@
 
 using boost::math::iround;
 
-QImage RenderUtils::renderPagePart(QSharedPointer< Poppler::Page > page, QSize targetSize, PagePart whichPart)
+QImage RenderUtils::renderPagePart(QSharedPointer< const Poppler::Page > page, QSize targetSize, PagePart whichPart)
 {
   if ( ! page )
   {
