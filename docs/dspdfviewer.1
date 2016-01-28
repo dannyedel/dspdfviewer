@@ -146,6 +146,21 @@ Note: If you set this to zero, you will not get a thumbnail for the next page
 rendered before you have visited it.
 
 .TP
+.B \-\-cache\-size \fIn\fR (in megabytes / MiB)
+This controls how much memory dspdfviewer is allowed to use for caching rendered pages.
+The default value is 1024, meaning 1 GiB of RAM.
+Note that the memory used for active rendering processes, as well as the currently
+displayed images are not included in the accounting, so the total memory usage
+of dspdfviewer will be higher than this.
+
+CAVEAT: It is currently not verified that this memory is enough to hold all
+prerendered pages.
+If you make the cache too small to hold the prerendered pages,
+it will start dropping the first rendered (adjacent to the current page),
+resulting in very poor performance.
+If in doubt, set a larger cache or a lower prerender amount.
+
+.TP
 .B \-a, \-\-presenter-area \fI<bool>\fR
 Show (true, 1) or hide (false, 0) the presenter's area on the second screen.
 If this is set to zero, the following options will have no effect.
