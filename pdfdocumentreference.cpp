@@ -74,6 +74,7 @@ PDFDocumentReference& PDFDocumentReference::operator=(const PDFDocumentReference
     throw std::runtime_error("This PDFDocumentReference has a different cache setting");
   }
   fileContents_=rhs.fileContents_;
+  popplerDocument_=rhs.popplerDocument_;
   return *this;
 }
 
