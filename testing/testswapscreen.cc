@@ -16,7 +16,7 @@ SwapScreensAndCheckAlign::SwapScreensAndCheckAlign(DSPDFViewer& d):
 	DEBUGOUT << "screen 0 [pri]:" << screenPrimary;
 	DEBUGOUT << "screen 1 [sec]:" << screenSecondary;
 
-	if ( screenPrimary == screenSecondary ) {
+	if ( screenPrimary.size() == screenSecondary.size() ) {
 		WARNINGOUT << "Cannot tell the screens apart! Are you running this test in a dualscreen environment?";
 		std::exit( 125 );
 	}
@@ -36,8 +36,8 @@ SwapScreensAndCheckAlign::SwapScreensAndCheckAlign(DSPDFViewer& d):
 
 void SwapScreensAndCheckAlign::checkStartPositions() {
 	DEBUGOUT << "Start positions";
-	check(dspdfviewer.audienceGeometry(), screenSecondary); // Audience starts on external
-	check(dspdfviewer.secondGeometry(), screenPrimary); // Presenter starts on internal
+	check(dspdfviewer.audienceGeometry().size(), screenSecondary.size()); // Audience starts on external
+	check(dspdfviewer.secondGeometry().size(), screenPrimary.size()); // Presenter starts on internal
 	DEBUGOUT << "Firing screen swap event";
 	emit screenSwapRequested();
 	// 0.5 sec to swap
@@ -46,8 +46,8 @@ void SwapScreensAndCheckAlign::checkStartPositions() {
 
 void SwapScreensAndCheckAlign::checkAfterFirstSwap() {
 	DEBUGOUT << "Check after first swap";
-	check(dspdfviewer.audienceGeometry(), screenPrimary); // Audience window on laptop
-	check(dspdfviewer.secondGeometry(), screenSecondary); // Presenter window on beamer
+	check(dspdfviewer.audienceGeometry().size(), screenPrimary.size()); // Audience window on laptop
+	check(dspdfviewer.secondGeometry().size(), screenSecondary.size()); // Presenter window on beamer
 	emit screenSwapRequested();
 	// 0.5 sec time to swap
 	QTimer::singleShot(500, this, SLOT(checkAfterSwapBack()));
@@ -55,8 +55,8 @@ void SwapScreensAndCheckAlign::checkAfterFirstSwap() {
 
 void SwapScreensAndCheckAlign::checkAfterSwapBack() {
 	DEBUGOUT << "Check after swapping back";
-	check(dspdfviewer.audienceGeometry(), screenSecondary);
-	check(dspdfviewer.secondGeometry(), screenPrimary);
+	check(dspdfviewer.audienceGeometry().size(), screenSecondary.size());
+	check(dspdfviewer.secondGeometry().size(), screenPrimary.size());
 	emit quitRequested();
 }
 
