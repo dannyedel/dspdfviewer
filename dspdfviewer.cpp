@@ -376,3 +376,11 @@ void DSPDFViewer::toggleSecondaryScreenDuplication()
   }
   emit renderPage();
 }
+
+const QRect DSPDFViewer::audienceGeometry() const {
+	return audienceWindow.geometry();
+}
+
+const QRect DSPDFViewer::secondGeometry() const {
+	return secondaryWindow.geometry();
+}
