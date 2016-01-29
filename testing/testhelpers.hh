@@ -60,11 +60,13 @@ std::ostream& operator << (std::ostream& where, const QSize& what);
  * log messages */
 namespace boost{
 	namespace test_tools{
-		template<>
-		inline
-		void
-		print_log_value<QColor>::operator()(std::ostream& where, const QColor& what) {
-			where << what.name().toStdString();
+		namespace tt_detail {
+			template<>
+			inline
+			void
+			print_log_value<QColor>::operator()(std::ostream& where, const QColor& what) {
+				where << what.name().toStdString();
+			}
 		}
 	}
 }
