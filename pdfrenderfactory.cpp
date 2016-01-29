@@ -37,8 +37,9 @@ namespace {
 	 * overhead.
 	 */
 	int cacheCost(const RenderedPage& renderedPage) {
-		const QSize imageSize = renderedPage.getImage().size();
-		return 4 * imageSize.width() * imageSize.height();
+		const QSize& imageSize = renderedPage.getImage().size();
+		return sizeof(RenderedPage) +
+			4 * imageSize.width() * imageSize.height();
 	}
 }
 
