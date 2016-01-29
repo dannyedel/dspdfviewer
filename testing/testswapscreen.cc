@@ -10,21 +10,29 @@ SwapScreensAndCheckAlign::SwapScreensAndCheckAlign(DSPDFViewer& d):
 	screenPrimary( QApplication::desktop()->screenGeometry( 0 ) ),
 	screenSecondary( QApplication::desktop()->screenGeometry( 1 ) )
 {
+
+	DEBUGOUT << "Number of screens:" << QApplication::desktop()->numScreens() ;
+
 	DEBUGOUT << "screen 0 [pri]:" << screenPrimary;
 	DEBUGOUT << "screen 1 [sec]:" << screenSecondary;
 
 	if ( screenPrimary == screenSecondary ) {
 		WARNINGOUT << "Cannot tell the screens apart! Are you running this test in a dualscreen environment?";
-		QApplication::exit( 125);
+		std::exit( 125 );
 	}
-
-	// 1 Second time to boot
-	QTimer::singleShot(1000, this, SLOT(checkStartPositions()));
+	else if ( screenPrimary.width() == 0 || screenPrimary.height() == 0 ) {
+		WARNINGOUT << "Cannot query primary screen size!";
+		std::exit( 125 );
+	}
+	else if ( screenSecondary.width() == 0 || screenSecondary.height() == 0 ) {
+		WARNINGOUT << "Cannot query secondary screen size!";
+		std::exit( 125 );
+	}
+	else {
+		// 1 Second time to boot
+		QTimer::singleShot(1000, this, SLOT(checkStartPositions()));
+	}
 }
-
-#ifndef WARNINGOUT
-#define WARNINGOUT qWarning()
-#endif
 
 void SwapScreensAndCheckAlign::checkStartPositions() {
 	DEBUGOUT << "Start positions";
