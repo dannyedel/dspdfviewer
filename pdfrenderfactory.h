@@ -30,6 +30,7 @@
 #include <qimage.h>
 #include "poppler-qt.h"
 #include "renderedpage.h"
+#include "runtimeconfiguration.h"
 #include "pdfcacheoption.h"
 #include "pdfdocumentreference.h"
 
@@ -91,7 +92,8 @@ private:
   void clearAllCaches();
 
 public:
-  PdfRenderFactory( const QString& filename, const PDFCacheOption& cacheSetting );
+  PdfRenderFactory( const RuntimeConfiguration& );
+  ~PdfRenderFactory();
 
   /** Request a page rendering. Defaults to low priority (i.e. background rendering), please set High priority manually
    * on the current page.

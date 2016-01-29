@@ -55,4 +55,7 @@ public:
 /** Hashes this object to something useable in the cache */
 uint qHash(const RenderingIdentifier& ri);
 
+/** allow outputting a rendering identifier */
+QDebug operator << ( QDebug, const RenderingIdentifier&);
+
 #endif // RENDERINGIDENTIFIER_H

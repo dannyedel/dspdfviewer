@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 	if ( !qtTranslator.load(
 			QString::fromUtf8( "qt_" ) + localeName, systemTranslationsPath )
 			) {
-		qWarning() << "Failed to load qt translations for locale" << localeName;
+		WARNINGOUT << "Failed to load qt translations for locale" << localeName;
 	} else {
 		app.installTranslator(&qtTranslator);
 		DEBUGOUT << "Qt system translation loaded for" << localeName;
@@ -69,7 +69,7 @@ int main(int argc, char** argv)
 	QTranslator appTranslator;
 	DEBUGOUT << "Loading dspdfviewer translation for current locale:" << localeName;
 	if ( ! appTranslator.load(QString::fromUtf8(":/translations/dspdfviewer") ) ) {
-		qWarning() << "Failed to load dspdfviewer translation for current locale" << localeName;
+		WARNINGOUT << "Failed to load dspdfviewer translation for current locale" << localeName;
 	} else {
 		app.installTranslator(&appTranslator);
 		DEBUGOUT << "dspdfviewer translation loaded for" << localeName;

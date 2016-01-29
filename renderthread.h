@@ -35,7 +35,7 @@ private:
   RenderingIdentifier renderMe;
 
 public:
-  RenderThread( PDFDocumentReference theDocument, RenderingIdentifier renderIdent);
+  RenderThread( const PDFDocumentReference& theDocument, const RenderingIdentifier& renderIdent);
 
   void run();
 

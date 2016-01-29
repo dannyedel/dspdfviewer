@@ -25,6 +25,7 @@
 #include <QString>
 #include <stdexcept>
 #include "pagepart.h"
+#include "pdfcacheoption.h"
 
 struct noFileNameException: public std::logic_error {
 	noFileNameException();
@@ -71,6 +72,9 @@ class RuntimeConfiguration: public QObject
 
   /** Shall the complete PDF be read into memory */
   bool m_cacheToMemory;
+
+  /** Size of the pre-render-cache in megabytes */
+  unsigned m_cacheSizeMegaBytes;
 
   /** Single-Display mode
    *
@@ -132,9 +136,12 @@ public:
   unsigned prerenderPreviousPages() const;
   unsigned prerenderNextPages() const;
 
+  unsigned cacheSizeMegaBytes() const;
+  unsigned cacheSizeBytes() const;
+
   bool useSecondScreen() const;
 
-  bool cachePDFToMemory() const;
+  PDFCacheOption cacheSetting() const;
 
   unsigned bottomPaneHeight() const;
   bool hyperlinkSupport() const;

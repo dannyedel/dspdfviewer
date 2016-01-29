@@ -1,0 +1,29 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{color}
+\usepackage{pgfpages}
+\usepackage{pgffor}
+
+\setbeameroption{show notes on second screen}
+
+\title{Many, Many, Many pages.}
+
+\begin{document}
+
+
+
+\definecolor{8f8}{HTML}{88FF88}
+\definecolor{f8f}{HTML}{FF88FF}
+
+\foreach \n in {1,...,100}{
+
+\begingroup
+	\setbeamercolor{background canvas}{bg=8f8}
+	\setbeamercolor{note page}{bg=f8f}
+	\begin{frame}
+		Page \thepage
+	\end{frame}
+\endgroup
+
+}
+
+\end{document}

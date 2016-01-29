@@ -26,6 +26,22 @@
 #include <QThreadPool>
 #include <stdexcept>
 #include "debug.h"
+#include "renderutils.h"
+
+#include <boost/cast.hpp>
+
+namespace {
+	/** Estimates size in bytes of a rendered Page
+	 *
+	 * This currently assumes 32 bit (4 byte) per pixel, and no
+	 * overhead.
+	 */
+	int cacheCost(const RenderedPage& renderedPage) {
+		const QSize& imageSize = renderedPage.getImage().size();
+		return boost::numeric_cast<int>(sizeof(RenderedPage)) +
+			4 * imageSize.width() * imageSize.height();
+	}
+}
 
 void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> renderedPage)
 {
@@ -36,8 +52,19 @@ void PdfRenderFactory::pageThreadFinishedRendering(QSharedPointer<RenderedPage> 
     if ( ident.theVersion != currentVersion )
       return;
 
-    renderedPages.insert(ident, new RenderedPage(*renderedPage));
+    renderedPages.insert(ident, new RenderedPage(*renderedPage), cacheCost(*renderedPage) );
     currentlyRenderingPages.remove(ident);
+	if ( renderedPages.contains(ident) ) {
+		DEBUGOUT << "Stored" << ident << "into cache";
+	} else {
+		WARNINGOUT << "Unable to store" << ident << "into the cache! It would cost" <<
+			cacheCost(*renderedPage) << "but Current load is" <<
+			renderedPages.totalCost() << "/" << renderedPages.maxCost();
+	}
+
+	DEBUGOUT << "Current cache fill is " <<
+		renderedPages.totalCost() << "/" << renderedPages.maxCost() << '(' <<
+		100.0 * renderedPages.totalCost() / renderedPages.maxCost() << "% )";
   }
 
   emit pageRendered(renderedPage);
@@ -58,13 +85,13 @@ void PdfRenderFactory::rewatchFile()
 
 
 
-PdfRenderFactory::PdfRenderFactory(const QString& filename, const PDFCacheOption& cacheSetting):
+PdfRenderFactory::PdfRenderFactory( const RuntimeConfiguration& rc):
 	QObject(),
-	documentReference(filename, cacheSetting),
+	documentReference(rc.filePathQString(), rc.cacheSetting()),
 	fileWatcher(),
 	fileWatcherRewatchTimer(),
 	currentlyRenderingPages(),
-	renderedPages(),
+	renderedPages( boost::numeric_cast<int>(rc.cacheSizeBytes()) ),
 	mutex(),
 	currentVersion(0),
 	// Attempt to read the document to get the number of pages within.
@@ -144,7 +171,9 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
 	  DEBUGOUT << "The new document compares identical to the old one, not doing anything.";
 	  return;
 	}
+
       }
+	DEBUGOUT << "The file on disk has different contents. Trying to parse it as PDF.";
 
       // Verify poppler can read this
       newDoc.popplerDocument();
@@ -153,6 +182,7 @@ void PdfRenderFactory::fileOnDiskChanged(const QString& filename)
       documentReference = newDoc;
 
       numberOfPages_ = documentReference.popplerDocument()->numPages();
+	  DEBUGOUT << "New document has" << numberOfPages_ << "pages.";
 
       // clear the page cache
       clearAllCaches();
@@ -187,4 +217,8 @@ int PdfRenderFactory::numberOfPages() const
 {
   QMutexLocker lock(&mutex);
   return numberOfPages_;
+}
+
+PdfRenderFactory::~PdfRenderFactory() {
+	RenderUtils::notifyShutdown();
 }

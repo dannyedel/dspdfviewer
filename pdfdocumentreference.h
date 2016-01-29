@@ -5,6 +5,8 @@
 #include "pdfcacheoption.h"
 #include "poppler-qt.h"
 
+#include <mutex>
+
 // forward-declare
 struct PDFPageReference;
 
@@ -24,6 +26,10 @@ private:
   const QString filename_;
   QByteArray fileContents_;
   const PDFCacheOption cacheOption_;
+  // protects access to the poppler document
+  mutable std::mutex mutex_;
+  typedef std::lock_guard<std::mutex> Lock;
+  mutable QSharedPointer<const Poppler::Document> popplerDocument_;
 
 public:
   /** Create the document reference.
@@ -42,7 +48,7 @@ public:
    * If you did not cache the file to memory, this step will try to
    * read the file.
    */
-  QSharedPointer<Poppler::Document> popplerDocument() const;
+  QSharedPointer<const Poppler::Document> popplerDocument() const;
 
   /** get filename */
   const QString& filename() const;
@@ -55,14 +61,6 @@ public:
    * effectively only updating the file contents buffer.
    */
   PDFDocumentReference& operator = (const PDFDocumentReference& rhs);
-
-  /** Since we define a custom copy-assignment, tell the compiler
-   * explicitly that the standard copy-construct is all right
-   */
-  PDFDocumentReference(const PDFDocumentReference& ) =default;
-#ifndef _MSC_VER
-  PDFDocumentReference(PDFDocumentReference&&) =default;
-#endif
 
   /** Compares the references. Exact behaviour depends on the cache option:
    * If we are memory-caching, this compares the ByteArrays (i.e. checks for
