@@ -38,7 +38,7 @@ namespace {
 	 */
 	int cacheCost(const RenderedPage& renderedPage) {
 		const QSize& imageSize = renderedPage.getImage().size();
-		return sizeof(RenderedPage) +
+		return boost::numeric_cast<int>(sizeof(RenderedPage)) +
 			4 * imageSize.width() * imageSize.height();
 	}
 }
