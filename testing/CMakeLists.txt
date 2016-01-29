@@ -118,6 +118,19 @@ set_tests_properties(
 		PASS_REGULAR_EXPRESSION ${DSPDFVIEWER_VERSION}
 )
 
+add_executable(testswapscreen
+	testswapscreen.cc
+)
+target_link_libraries(testswapscreen
+	testhelp
+)
+
+if(RunDualScreenTests)
+	add_test(NAME testswapscreen
+		COMMAND testswapscreen
+	)
+endif()
+
 
 # On windows you cannot change the locale on a case-by-case basis.
 #
