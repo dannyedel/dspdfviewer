@@ -13,7 +13,6 @@ qt4_deps: &q4dep
     - texlive-pictures
     - latex-beamer
     - xserver-xorg-video-dummy
-    - openbox
 qt5_deps: &q5dep
     - libboost-program-options-dev
     - libboost-test-dev
@@ -28,7 +27,6 @@ qt5_deps: &q5dep
     - texlive-pictures
     - latex-beamer
     - xserver-xorg-video-dummy
-    - openbox
 addons:
     apt:
         packages: *q4dep
