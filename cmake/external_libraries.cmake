@@ -36,6 +36,7 @@ if(UseQtFive)
 	find_package(Qt5Widgets REQUIRED)
 	find_package(Qt5LinguistTools REQUIRED)
 	if(MSVC)
+		option(StaticQt5 "Windows only: Link against C:/Qt/Static" OFF)
 		set(POPPLER_LIBRARIES
 			optimized "C:/dspdf/poppler/poppler/lib/poppler.lib"
 			debug "C:/dspdf/poppler/poppler/lib/popplerd.lib"
@@ -66,22 +67,26 @@ if(UseQtFive)
 			optimized "C:/dspdf/poppler/deps/pixman/lib/pixman-1_static.lib"
 			debug "C:/dspdf/poppler/deps/pixman/lib/pixman-1_staticd.lib")
 		set(POPPLER_INCLUDE_DIRS "C:/dspdf/poppler/poppler/include/poppler/qt5")
+		if(StaticQt5)
+			list(APPEND LIST_LIBRARIES
+				optimized "C:/Qt/Static/qtbase/lib/Qt5XML.lib"
+				debug "C:/Qt/Static/qtbase/lib/Qt5XMLd.lib"
+				optimized "C:/Qt/Static/qtbase/lib/Qt5PlatformSupport.lib"
+				debug "C:/Qt/Static/qtbase/lib/Qt5PlatformSupportd.lib"
+				optimized "C:/Qt/Static/qtbase/plugins/platforms/qwindows.lib"
+				debug "C:/Qt/Static/qtbase/plugins/platforms/qwindowsd.lib"
+				optimized "C:/Qt/Static/qtbase/lib/qtpcre.lib"
+				debug "C:/Qt/Static/qtbase/lib/qtpcred.lib"
+				optimized "C:/Qt/Static/qtbase/lib/qtharfbuzzng.lib"
+				debug "C:/Qt/Static/qtbase/lib/qtharfbuzzngd.lib"
+			)
+		endif()
 		list(APPEND LIST_LIBRARIES
-			optimized "C:/Qt/Static/qtbase/lib/Qt5XML.lib"
-	  		debug "C:/Qt/Static/qtbase/lib/Qt5XMLd.lib"
-  			optimized "C:/Qt/Static/qtbase/lib/Qt5PlatformSupport.lib"
-  			debug "C:/Qt/Static/qtbase/lib/Qt5PlatformSupportd.lib"
-	  		optimized "C:/Qt/Static/qtbase/plugins/platforms/qwindows.lib"
-  			debug "C:/Qt/Static/qtbase/plugins/platforms/qwindowsd.lib"
-  			optimized "C:/Qt/Static/qtbase/lib/qtpcre.lib"
-	  		debug "C:/Qt/Static/qtbase/lib/qtpcred.lib"
-  			optimized "C:/Qt/Static/qtbase/lib/qtharfbuzzng.lib"
-  			debug "C:/Qt/Static/qtbase/lib/qtharfbuzzngd.lib"
-	  		"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/WS2_32.Lib"
-  			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/OpenGL32.Lib"
-  			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/MSImg32.Lib"
-	  		"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Imm32.Lib"
-  			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Winmm.Lib"
+			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/WS2_32.Lib"
+			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/OpenGL32.Lib"
+			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/MSImg32.Lib"
+			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Imm32.Lib"
+			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Winmm.Lib"
 		)
 	else()
 		pkg_search_module(POPPLER REQUIRED poppler-qt5)
