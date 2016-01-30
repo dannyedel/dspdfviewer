@@ -36,8 +36,8 @@ QImage RenderUtils::renderPagePart(QSharedPointer< const Poppler::Page > page, Q
 {
   if ( ! page )
   {
-    throw std::runtime_error( QApplication::translate("RenderUtils", "RenderUtils::renderPagePart called with null page. Target size was %1x%2").
-      arg(targetSize.width()).arg(targetSize.height()).toStdString() );
+    throw std::runtime_error( std::string( qPrintable( QApplication::translate("RenderUtils", "RenderUtils::renderPagePart called with null page. Target size was %1x%2").
+      arg(targetSize.width()).arg(targetSize.height()) ) ) );
   }
 
   if ( shuttingDown )

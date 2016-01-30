@@ -86,16 +86,15 @@ int main(int argc, char** argv)
 		RuntimeConfiguration rc(argc, argv);
 
 		if ( ! rc.filePathDefined() ) {
-			rc.filePath( QFileDialog::getOpenFileName(
-				nullptr, QFileDialog::tr("Load PDF from disk"), QString(), QFileDialog::tr("PDF (*.pdf)") ).toStdString() );
+			rc.filePath( qPrintable( QFileDialog::getOpenFileName(
+				nullptr, QFileDialog::tr("Load PDF from disk"), QString(), QFileDialog::tr("PDF (*.pdf)") ) ) );
 		}
 
 		DSPDFViewer foo( rc );
 		return app.exec();
 	} catch ( std::exception& e ) {
 		std::cerr << "----- FATAL ERROR -----" << std::endl
-			<< QCoreApplication::translate("DSPDFViewer", "Dual-Screen PDF Viewer has encountered an error and cannot continue")
-				.toLocal8Bit().constData() << std::endl
+			<< qPrintable( QCoreApplication::translate("DSPDFViewer", "Dual-Screen PDF Viewer has encountered an error and cannot continue") ) << std::endl
 			<< e.what() << std::endl;
 
 		QMessageBox errorMsg;

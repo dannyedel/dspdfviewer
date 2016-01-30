@@ -196,7 +196,7 @@ RuntimeConfiguration::RuntimeConfiguration(int argc, const char* const * argv):
   QString configurationFileLocation = QString::fromUtf8( qgetenv("HOME").append("/.config/dspdfviewer.ini") );
   {
     // See if the configuration file exists and is readable
-    std::ifstream cfile( configurationFileLocation.toStdString() );
+    std::ifstream cfile( qPrintable(configurationFileLocation) );
     if ( cfile.good() ) {
       store( parse_config_file( cfile, configFileOptions), vm);
     }
@@ -255,7 +255,7 @@ string RuntimeConfiguration::filePath() const
 
 QString RuntimeConfiguration::filePathQString() const
 {
-  return QString::fromStdString( filePath() );
+  return QString::fromLocal8Bit( filePath().c_str() );
 }
 
 bool RuntimeConfiguration::useFullPage() const
