@@ -14,3 +14,7 @@ QString TestHelpers::pdfFilename(const std::string& basename) {
 std::ostream& operator << (std::ostream& where, const QSize& what) {
 	return where << "QSize(" << what.width() << 'x' << what.height() << ')';
 }
+
+std::ostream& operator << (std::ostream& where, const QColor& what) {
+	return where << "QColor(" << what.name().toStdString() << ")";
+}
