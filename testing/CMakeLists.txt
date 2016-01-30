@@ -128,7 +128,12 @@ target_link_libraries(testswapscreen
 if(RunDualScreenTests)
 	add_test(NAME testswapscreen
 		COMMAND testswapscreen
+			--prerender-prev=0
+			--prerender-next=0
+			images.pdf
 	)
+	set_tests_properties(testswapscreen
+		PROPERTIES TIMEOUT 60)
 endif()
 
 
