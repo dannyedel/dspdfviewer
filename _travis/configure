@@ -9,6 +9,8 @@ cd build
 
 CMAKE_PARAMETERS="-DCMAKE_VERBOSE_MAKEFILE=ON"
 
+CMAKE_PARAMETERS+=" -DCMAKE_BUILD_TYPE=Debug"
+
 # on OSX: Download Test PDF,
 # rather than install pdflatex
 if [ "$TRAVIS_OS_NAME" = "osx" ] ; then
