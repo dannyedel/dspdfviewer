@@ -118,23 +118,26 @@ set_tests_properties(
 		PASS_REGULAR_EXPRESSION ${DSPDFVIEWER_VERSION}
 )
 
-add_executable(testswapscreen
-	testswapscreen.cc
-	testswapscreen-main.cc
-)
-target_link_libraries(testswapscreen
-	testhelp
-)
-
-if(RunDualScreenTests)
-	add_test(NAME testswapscreen
-		COMMAND testswapscreen
-			--prerender-prev=0
-			--prerender-next=0
-			images.pdf
+# Only build and run the swap screen test on Qt5
+if(UseQtFive)
+	add_executable(testswapscreen
+		testswapscreen.cc
+		testswapscreen-main.cc
 	)
-	set_tests_properties(testswapscreen
-		PROPERTIES TIMEOUT 60)
+	target_link_libraries(testswapscreen
+		testhelp
+	)
+
+	if(RunDualScreenTests)
+		add_test(NAME testswapscreen
+			COMMAND testswapscreen
+				--prerender-prev=0
+				--prerender-next=0
+				images.pdf
+		)
+		set_tests_properties(testswapscreen
+			PROPERTIES TIMEOUT 60)
+	endif()
 endif()
 
 
