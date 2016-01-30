@@ -1,6 +1,7 @@
 #include "testswapscreen.hh"
 
 #include <QDesktopWidget>
+#include <QRect>
 
 using namespace std;
 using namespace TestHelpers;
