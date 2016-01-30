@@ -36,9 +36,6 @@ list(APPEND QRCFILES
 	dspdfviewer.qrc
 )
 
-list(APPEND TRANSLATIONFILES
-	translations/dspdfviewer_de.ts
-)
 list(APPEND UIFILES
 	pdfviewerwindow.ui
 	keybindings.ui
