@@ -111,7 +111,10 @@ if(UseQtFive)
 	add_definitions(-DPOPPLER_QT5)
 	qt5_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
 	if( UpdateTranslations )
-		qt5_create_translation(TRANSLATIONS ${libdspdfviewer_SRCS} ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
+		qt5_create_translation(TRANSLATIONS
+			${libdspdfviewer_SRCS} ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES}
+			OPTIONS -no-obsolete
+			)
 	else()
 		qt5_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
 	endif()
@@ -125,7 +128,10 @@ else()
 	list(APPEND LIST_LIBRARIES Qt4::QtGui)
 	qt4_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
 	if( UpdateTranslations )
-		qt4_create_translation(TRANSLATIONS ${libdspdfviewer_SRCS} ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
+		qt4_create_translation(TRANSLATIONS
+			${libdspdfviewer_SRCS} ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES}
+			OPTIONS -no-obsolete
+			)
 	else()
 		qt4_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
 	endif()
