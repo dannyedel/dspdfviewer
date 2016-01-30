@@ -1,4 +1,4 @@
-#include "testswapscreen.hh"
+#include "testswapscreen.h"
 #include "testhelpers.hh"
 
 #include <QDesktopWidget>

@@ -14,6 +14,7 @@
  */
 class SwapScreensAndCheckAlign: public QObject {
 	Q_OBJECT
+
 	DSPDFViewer& dspdfviewer;
 	QRect screenPrimary;
 	QRect screenSecondary;

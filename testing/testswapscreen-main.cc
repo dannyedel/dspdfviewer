@@ -1,4 +1,4 @@
-#include "testswapscreen.hh"
+#include "testswapscreen.h"
 #include "testhelpers.hh"
 
 int main(int argc, char** argv) {
