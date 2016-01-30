@@ -62,6 +62,22 @@ namespace TestHelpers {
 			}
 		}
 
+#ifndef POPPLER_QT5
+	template<>
+		inline
+		void check(const QRect& lhs, const QRect& rhs, int failcode) {
+			if ( ! ( lhs == rhs ) ) {
+				WARNINGOUT << "Failure! Rects dont match!";
+				WARNINGOUT << "size" << lhs.size().width() << 'x' << lhs.size().height()
+					<< "--- vs. ---" << rhs.size().width() << 'x' << rhs.size().height();
+				WARNINGOUT << "pos." << lhs.topLeft().x() << ',' << rhs.topLeft().y()
+					<< "--- vs. ---" << rhs.topLeft().x() << ',' << rhs.topLeft().y();
+				QApplication::exit(failcode);
+			} else {
+				DEBUGOUT << "All right. Rects match.";
+			}
+		}
+#endif
 }
 
 /** Print a QSize to a standard output stream */
@@ -69,5 +85,3 @@ std::ostream& operator << (std::ostream& where, const QSize& what);
 
 /** Print a QColor to a standard output stream */
 std::ostream& operator << (std::ostream& where, const QColor& what);
-
-QDebug operator << (QDebug, const QRect&);
