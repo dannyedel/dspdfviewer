@@ -11,3 +11,6 @@ gentoo/ export-ignore
 # Also don't export travis' build script
 .travis.yml	export-ignore
 _travis/	export-ignore
+
+# Same for appveyor
+.appveyor.yml	export-ignore
