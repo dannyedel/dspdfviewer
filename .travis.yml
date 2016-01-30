@@ -1,6 +1,9 @@
 language: cpp
 compiler: gcc
 sudo: false
+cache:
+    directories:
+        - $HOME/.ccache
 # define dependencies as q4dep and q5dep
 qt4_deps: &q4dep
     - libboost-program-options-dev
@@ -12,6 +15,7 @@ qt4_deps: &q4dep
     - texlive-latex-recommended
     - texlive-pictures
     - latex-beamer
+    - ccache
 qt5_deps: &q5dep
     - libboost-program-options-dev
     - libboost-test-dev
@@ -25,6 +29,7 @@ qt5_deps: &q5dep
     - texlive-latex-recommended
     - texlive-pictures
     - latex-beamer
+    - ccache
 addons:
     apt:
         packages: *q4dep
@@ -64,7 +69,11 @@ matrix:
                   packages: *q5dep
         - os: osx
           compiler: clang
-          before_install: _travis/osx-install-dependencies
+          before_install:
+              - brew update > /dev/null
+              - brew install --only-dependencies poppler --with-qt
+              - brew install --build-bottle poppler --with-qt
+              - find /Library/Caches/Homebrew
 install:
     - _travis/configure
     - make -C build
