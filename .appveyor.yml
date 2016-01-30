@@ -13,7 +13,8 @@ environment:
 # Before build: Download and extract dependency package
 before_build:
 - ps: (new-object net.webclient).DownloadFile('https://github.com/projekter/dspdfviewer/releases/download/v1.14-42-g4acfb31/Dependencies.rar', 'c:\dependencies.rar')
-- cmd: 7z x -o\ \dependencies.rar
+- cmd: cd \
+- cmd: 7z x \dependencies.rar
 
 # Build with cmake
 build_script:
