@@ -69,3 +69,5 @@ std::ostream& operator << (std::ostream& where, const QSize& what);
 
 /** Print a QColor to a standard output stream */
 std::ostream& operator << (std::ostream& where, const QColor& what);
+
+QDebug operator << (QDebug, const QRect&);

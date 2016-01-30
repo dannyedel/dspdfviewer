@@ -18,3 +18,9 @@ std::ostream& operator << (std::ostream& where, const QSize& what) {
 std::ostream& operator << (std::ostream& where, const QColor& what) {
 	return where << "QColor(" << qPrintable( what.name() ) << ")";
 }
+
+QDebug operator << (QDebug d, const QRect& what) {
+	d.nospace() << "QRect(" << what.width() << "x" << what.height()
+		<< " @ " << what.x() << "," << what.y() << ")";
+	return d.space();
+}
