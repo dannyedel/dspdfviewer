@@ -7,6 +7,7 @@
 
 if( BoostStaticLink )
 	set(Boost_USE_STATIC_LIBS ON)
+	set(Boost_USE_STATIC_RUNTIME ON)
 elseif(BuildTests)
 	add_definitions(-DBOOST_TEST_DYN_LINK)
 endif()
