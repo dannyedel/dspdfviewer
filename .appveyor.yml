@@ -18,6 +18,7 @@ before_build:
 
 # Build with cmake
 build_script:
+- cmd: cd \projects\dspdfviewer
 - cmd: mkdir build
 - cmd: cd build
 - cmd: >
