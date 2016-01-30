@@ -330,7 +330,7 @@ bool RuntimeConfiguration::filePathDefined() const
 }
 
 noFileNameException::noFileNameException():
-	logic_error( QCoreApplication::tr("You did not specify a PDF-File to display.").toLocal8Bit().constData() ) {
+	logic_error( QCoreApplication::translate("DSPDFViewer", "You did not specify a PDF-File to display.").toLocal8Bit().constData() ) {
 }
 
 bool RuntimeConfiguration::i3workaround() const
