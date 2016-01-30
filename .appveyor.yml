@@ -11,20 +11,17 @@ environment:
   BOOST_LIBRARYDIR: '\libraries\boost\lib32-msvc-12.0'
 
 # Before build: Download and extract dependency package
-init:
+before_build:
 - ps: (new-object net.webclient).DownloadFile('https://github.com/projekter/dspdfviewer/releases/download/v1.14-42-g4acfb31/Dependencies.rar', 'c:\dependencies.rar')
 - cmd: mkdir \dspdf
 - cmd: 7z x -o\dspdf\poppler \dependencies.rar
 
 # Build with cmake
 build_script:
-- cmd: >-
-    mkdir \dspdf
-    7z x -o\dspdf\poppler \dependencies.rar
-    mkdir build
-    cd build
-    cmake .. -G "Visual Studio 12 2013" -DUseQtFive=ON -DDownloadTestPDF=ON -DCMAKE_VERBOSE_MAKEFILE=ON
-    cmake --build .
+- cmd: mkdir build
+- cmd: cd build
+- cmd: cmake .. -G "Visual Studio 12 2013" -DUseQtFive=ON -DDownloadTestPDF=ON -DCMAKE_VERBOSE_MAKEFILE=ON
+- cmd: cmake --build .
 
 test_script:
 - cmd: ctest --output-on-failure
