@@ -84,6 +84,12 @@ if(UseQtFive)
   			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Winmm.Lib"
 		)
 	else()
+		# add their link flags
+		list(APPEND LIST_LIBRARIES
+			${Qt5Core_LIBRARIES}
+			${Qt5Gui_LIBRARIES}
+			${Qt5Widgets_LIBRARIES}
+		)
 		pkg_search_module(POPPLER REQUIRED poppler-qt5)
 	endif()
 	# add their include directories
@@ -91,12 +97,6 @@ if(UseQtFive)
 		${Qt5Core_INCLUDE_DIRS}
 		${Qt5Gui_INCLUDE_DIRS}
 		${Qt5Widgets_INCLUDE_DIRS}
-	)
-	# add their link flags
-	list(APPEND LIST_LIBRARIES
-		${Qt5Core_LIBRARIES}
-		${Qt5Gui_LIBRARIES}
-		${Qt5Widgets_LIBRARIES}
 	)
 	add_definitions(-DPOPPLER_QT5)
 	qt5_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
