@@ -372,7 +372,12 @@ Useful if you are editing the PDF file with latex while using the presenter soft
 Nützlich, wenn die PDF-Datei in LaTeX bearbeitet wird, während sie präsentiert wird.</translation>
     </message>
     <message>
-        <location filename="../runtimeconfiguration.cpp" line="107"/>
+        <location filename="../runtimeconfiguration.cpp" line="108"/>
+        <source>Size of the cache for pre-rendered pages, in megabytes.</source>
+        <translation>Größe des Zwischenspeichers für im Voraus berechnete Folien, in Megabytes.</translation>
+    </message>
+    <message>
+        <location filename="../runtimeconfiguration.cpp" line="114"/>
         <source>Use i3 specific workaround: Execute shellcode once both windows have been created.</source>
         <translation>I3-spezifische Funktionsweise verwenden: Shell-Code ausführen, sobald beide Fenster erstellt wurden.</translation>
     </message>
