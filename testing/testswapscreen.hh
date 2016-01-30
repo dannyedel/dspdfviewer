@@ -1,5 +1,6 @@
 #pragma once
-#include "testhelpers.hh"
+
+#include "dspdfviewer.h"
 
 /** Test driver
  *

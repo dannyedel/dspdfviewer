@@ -120,6 +120,7 @@ set_tests_properties(
 
 add_executable(testswapscreen
 	testswapscreen.cc
+	testswapscreen-main.cc
 )
 target_link_libraries(testswapscreen
 	testhelp

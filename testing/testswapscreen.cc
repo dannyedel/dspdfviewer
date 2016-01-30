@@ -1,4 +1,5 @@
 #include "testswapscreen.hh"
+#include "testhelpers.hh"
 
 #include <QDesktopWidget>
 #include <QRect>
@@ -68,22 +69,4 @@ void SwapScreensAndCheckAlign::checkAfterSwapBack() {
 		check(dspdfviewer.secondGeometry(), screenPrimary);
 	}
 	emit quitRequested();
-}
-
-/** Run dspdfviewer, checking if screens correctly re-position to the monitors */
-int main(int argc, char** argv) {
-
-	QApplication qapp(argc,argv);
-
-	qRegisterMetaType< QSharedPointer<RenderedPage> >("QSharedPointer<RenderedPage>");
-
-	RuntimeConfiguration rc{argc, argv};
-
-	DSPDFViewer dsp{rc};
-	SwapScreensAndCheckAlign testdriver{dsp};
-
-	sconnect(&testdriver, SIGNAL(screenSwapRequested()), &dsp, SLOT(swapScreens()));
-	sconnect(&testdriver, SIGNAL(quitRequested()), &dsp, SLOT(exit()));
-
-	return qapp.exec();
 }
