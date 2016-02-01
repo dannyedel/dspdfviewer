@@ -7,7 +7,7 @@ os: Visual Studio 2013
 
 environment:
   BOOST_ROOT: '\libraries\boost'
-  CMAKE_PREFIX_PATH: '\qt\static:\qt\5.5\msvc2013'
+  CMAKE_PREFIX_PATH: '\qt\static'
   BOOST_LIBRARYDIR: '\libraries\boost\lib32-msvc-12.0'
 
 # Before build: Download and extract dependency package
