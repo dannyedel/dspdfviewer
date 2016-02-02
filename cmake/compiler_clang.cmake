@@ -42,3 +42,8 @@ add_definitions(-Wno-unused-command-line-argument)
 # clang warnings.
 set_source_files_properties( ${EMBEDDED_QRC}
 	PROPERTIES COMPILE_FLAGS "-Wno-error")
+
+if(CodeCoverage)
+	add_definitions(--coverage -O0)
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif()
