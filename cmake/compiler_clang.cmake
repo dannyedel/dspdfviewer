@@ -32,6 +32,12 @@ endif()
 # TODO: Set this only for the automoc files
 add_definitions(-Wno-error=undefined-reinterpret-cast)
 
+#message(FATAL_ERROR "Version: ${CMAKE_CXX_COMPILER_VERSION}")
+
+# clang will complain about -isystem passed but not used.
+# This adds unnecessary noise
+add_definitions(-Wno-unused-command-line-argument)
+
 # qrc system generates code that triggers a lot of the
 # clang warnings.
 set_source_files_properties( ${EMBEDDED_QRC}
