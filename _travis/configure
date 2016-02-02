@@ -15,12 +15,8 @@ if [ "$TRAVIS_OS_NAME" = "osx" ] ; then
 	CMAKE_PARAMETERS+=" -DDownloadTestPDF=ON"
 fi
 
-# on Linux, with GCC:
 # Activate code coverage analysis
-if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ] ; then
-	# Linux / GCC: Activate coverage
-	CMAKE_PARAMETERS+=" -DCodeCoverage=ON"
-fi
+CMAKE_PARAMETERS+=" -DCodeCoverage=ON"
 
 # Allow switching Qt version via environment variable
 if [ "$QT_VERSION" -eq 4 ] ; then
