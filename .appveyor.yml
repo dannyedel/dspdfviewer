@@ -5,11 +5,6 @@ branches:
   - /^windows-test.*/
 os: Visual Studio 2013
 
-environment:
-  BOOST_ROOT: '\libraries\boost'
-  CMAKE_PREFIX_PATH: '\qt\static'
-  BOOST_LIBRARYDIR: '\libraries\boost\lib32-msvc-12.0'
-
 # Before build: Download and extract dependency package
 before_build:
 - ps: (new-object net.webclient).DownloadFile('https://github.com/projekter/dspdfviewer/releases/download/v1.14-42-g4acfb31/Dependencies.rar', 'c:\dependencies.rar')
@@ -29,6 +24,9 @@ build_script:
     -DCMAKE_VERBOSE_MAKEFILE=ON
     -DCMAKE_BUILD_TYPE=Release
     -DBoostStaticLink=ON
+    -DBOOST_ROOT=\libraries\boost
+    -DCMAKE_PREFIX_PATH=\qt\static\qtbase
+    -DBOOST_LIBRARYDIR=\libraries\boost\lib32-msvc-12.0
 - cmd: cmake --build .
 
 test_script:
