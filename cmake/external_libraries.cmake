@@ -56,7 +56,7 @@ if(UseQtFive)
 				"C:/dspdf/poppler/poppler/include/poppler/qt5"
 			)
 		else() # MSVC, but not statically linking
-			set(POPPLER_LIBARIES
+			set(POPPLER_LIBRARIES
 				${WINDOWS_PRECOMPILED_DYNAMIC_LIBRARIES}
 			)
 			set(POPPLER_INCLUDE_DIRS
