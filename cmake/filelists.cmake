@@ -79,6 +79,15 @@ list(APPEND WINDOWS_PRECOMPILED_STATIC_LIBRARIES
 	"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/MSImg32.Lib"
 	"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Imm32.Lib"
 	"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Winmm.Lib"
+	# Qt Platform Support
+	optimized "C:/Qt/Static/qtbase/lib/Qt5PlatformSupport.lib"
+	debug "C:/Qt/Static/qtbase/lib/Qt5PlatformSupportd.lib"
+	optimized "C:/Qt/Static/qtbase/lib/qtharfbuzzng.lib"
+	debug "C:/Qt/Static/qtbase/lib/qtharfbuzzngd.lib"
+	optimized "C:/Qt/Static/qtbase/lib/qtpcre.lib"
+	debug "C:/Qt/Static/qtbase/lib/qtpcred.lib"
+	optimized "C:/Qt/Static/qtbase/plugins/platforms/qwindows.lib"
+	debug "C:/Qt/Static/qtbase/plugins/platforms/qwindowsd.lib"
 )
 
 list(APPEND WINDOWS_PRECOMPILED_DYNAMIC_LIBRARIES

@@ -37,7 +37,7 @@ if(UseQtFive)
 		# Try to find Qt in /qt/static/qtbase
 		# or plain /qt/static
 		set(CMAKE_PREFIX_PATH
-			"/Qt/static/qtbase;/Qt/static;${CMAKE_PREFIX_PATH}")
+			"/Qt/static/qtbase;/Qt/static;/Qt/static/qttools;${CMAKE_PREFIX_PATH}")
 	endif()
 	find_package(Qt5Core 5.1.1 REQUIRED)
 	# On lower versions, QTBUG-32100 prevents compilation at least on clang
@@ -45,6 +45,7 @@ if(UseQtFive)
 	find_package(Qt5Gui REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
 	find_package(Qt5LinguistTools REQUIRED)
+	find_package(Qt5Xml REQUIRED)
 	message(STATUS "Found Qt5 at ${Qt5Core_DIR}")
 
 	if(MSVC)
@@ -75,6 +76,7 @@ if(UseQtFive)
 		${Qt5Gui_LIBRARIES}
 		${Qt5Widgets_LIBRARIES}
 		${Qt5LinguistTools_LIBRARIES}
+		${Qt5Xml_LIBRARIES}
 	)
 
 	# add their include directories
@@ -83,6 +85,7 @@ if(UseQtFive)
 		${Qt5Gui_INCLUDE_DIRS}
 		${Qt5Widgets_INCLUDE_DIRS}
 		${Qt5LinguistTools_INCLUDE_DIRS}
+		${Qt5Xml_INCLUDE_DIRS}
 	)
 
 	# Set conditional compilation to Qt5 mode
