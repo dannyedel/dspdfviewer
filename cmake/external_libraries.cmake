@@ -77,12 +77,6 @@ if(UseQtFive)
 		${Qt5LinguistTools_LIBRARIES}
 	)
 
-	if(MSVC)
-		list(APPEND LIST_LIBRARIES
-			${Qt5Core_QTMAIN_LIBRARIES}
-		)
-	endif()
-
 	# add their include directories
 	list(APPEND LIST_INCLUDE_DIRS
 		${Qt5Core_INCLUDE_DIRS}
