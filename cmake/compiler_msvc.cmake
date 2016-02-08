@@ -16,5 +16,6 @@ foreach(var
 		if(${var} MATCHES "/MD")
 			string(REGEX REPLACE "/MD" "/MT" ${var} "${${var}}")
 		endif()
+		add_definitions(-DWINDOWS_STATIC_LINK)
 	endif()
 endforeach()

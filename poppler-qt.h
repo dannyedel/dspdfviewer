@@ -3,7 +3,7 @@
 #else
 #include <poppler-qt5.h>
 
-#ifndef qtplugin
+#if defined( WINDOWS_STATIC_LINK) and not defined(qtplugin)
   #define qtplugin
   #if defined(WIN32) || defined(WIN64)
     #include <QtPlugin>
