@@ -23,7 +23,7 @@ build_script:
     -DDownloadTestPDF=ON
     -DCMAKE_VERBOSE_MAKEFILE=ON
     -DCMAKE_BUILD_TYPE=Release
-    -DBoostStaticLink=OFF
+    -DBoostStaticLink=ON
     -DWindowsStaticLink=OFF
     -DBOOST_ROOT=\libraries\boost
     -DCMAKE_PREFIX_PATH=\qt\static\qtbase
