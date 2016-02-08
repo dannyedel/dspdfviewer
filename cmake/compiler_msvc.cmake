@@ -16,9 +16,5 @@ foreach(var
 		if(${var} MATCHES "/MD")
 			string(REGEX REPLACE "/MD" "/MT" ${var} "${${var}}")
 		endif()
-	else() # not WindowsStaticLink
-		if(${var} MATCHES "/MT")
-			string(REGEX REPLACE "/MT" "/MD" ${var} "${${var}}")
-		endif()
 	endif()
 endforeach()
