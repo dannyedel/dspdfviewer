@@ -22,7 +22,7 @@ build_script:
     -DUseQtFive=ON
     -DDownloadTestPDF=ON
     -DCMAKE_VERBOSE_MAKEFILE=ON
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Debug
     -DBoostStaticLink=ON
     -DWindowsStaticLink=OFF
     -DBOOST_ROOT=\libraries\boost
@@ -30,7 +30,7 @@ build_script:
 - cmd: cmake --build .
 
 test_script:
-- cmd: ctest --output-on-failure
+    - cmd: ctest -C Debug --output-on-failure
 
 # Un-Comment this to get an RDP shell when something fails
 #on_failure:
