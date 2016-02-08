@@ -26,7 +26,6 @@ build_script:
     -DBoostStaticLink=ON
     -DWindowsStaticLink=OFF
     -DBOOST_ROOT=\libraries\boost
-    -DCMAKE_PREFIX_PATH=\qt\static\qtbase
     -DBOOST_LIBRARYDIR=\libraries\boost\lib32-msvc-12.0
 - cmd: cmake --build .
 
