@@ -28,6 +28,7 @@ endif()
 add_definitions(
 	-Wall
 	-Wextra
+	-Wconversion
 	-pedantic
 	-Wold-style-cast
 	-Woverloaded-virtual
