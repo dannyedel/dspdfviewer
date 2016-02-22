@@ -5,5 +5,5 @@ cd build
 # Call CTest test runner
 ctest --output-on-failure --timeout 60
 
-# print coverage report
-ctest -T coverage
+# print coverage report, ignore errors
+ctest -T coverage || true
