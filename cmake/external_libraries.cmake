@@ -108,6 +108,9 @@ if(UseQtFive)
 else()
 	#qt4
 	message(STATUS "Using Qt4 and libpoppler-qt4")
+	message(WARNING "Qt4 support is deprecated and will be removed in the next version. "
+		"Please build dspdfviewer using Qt5. "
+		"If that does not work correctly on your platform, please file a bug!")
 	find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
 	pkg_search_module(POPPLER REQUIRED poppler-qt4)
 
