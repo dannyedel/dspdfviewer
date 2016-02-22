@@ -46,11 +46,11 @@ before_test:
     - cmd: SET PATH=%PATH%;C:\dspdf\popplerDyn\deps\openjpeg\bin
     - cmd: SET PATH=%PATH%;C:\dspdf\popplerDyn\deps\zlib\bin
     - cmd: SET PATH=%PATH%;C:\dspdf\popplerDyn\poppler\bin
-    - cmd: SET PATH=%PATH%;C:\qt\5.5\msvc2013\lib
+    - cmd: SET PATH=%PATH%;C:\qt\5.5\msvc2013\bin
 
 test_script:
     - cmd: ctest -C Debug --output-on-failure --timeout 30
 
 # Un-Comment this to get an RDP shell when something fails
 on_failure:
-- ps: '$blockRdp = $true; iex ((new-object net.webclient).DownloadString(''https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1''))'
+    #- ps: '$blockRdp = $true; iex ((new-object net.webclient).DownloadString(''https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1''))'
