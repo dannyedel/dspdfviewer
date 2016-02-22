@@ -71,4 +71,4 @@ install:
 script: _travis/test
 after_success:
     - pip install --user codecov
-    - codecov
+    - PATH="$HOME/.local/bin:$PATH" codecov
