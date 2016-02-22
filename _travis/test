@@ -5,7 +5,5 @@ cd build
 # Call CTest test runner
 ctest --output-on-failure --timeout 60
 
-# If on Linux with GCC: print coverage report
-if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ] ; then
-	ctest -T coverage
-fi
+# print coverage report
+ctest -T coverage
