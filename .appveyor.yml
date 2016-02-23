@@ -26,12 +26,11 @@ build_script:
     -DUseQtFive=ON
     -DDownloadTestPDF=ON
     -DCMAKE_VERBOSE_MAKEFILE=ON
-    -DCMAKE_BUILD_TYPE=Debug
     -DBoostStaticLink=ON
     -DWindowsStaticLink=OFF
     -DBOOST_ROOT=\libraries\boost
     -DBOOST_LIBRARYDIR=\libraries\boost\lib32-msvc-12.0
-- cmd: cmake --build .
+- cmd: cmake --build . --config Release
 
 before_test:
     - cmd: SET PATH=%PATH%;C:\dspdf\popplerDyn\deps\cairo\bin
@@ -49,7 +48,7 @@ before_test:
     - cmd: SET PATH=%PATH%;C:\qt\5.5\msvc2013\bin
 
 test_script:
-    - cmd: ctest -C Debug --output-on-failure --timeout 30
+    - cmd: ctest -C Release --output-on-failure --timeout 30
 
 # Un-Comment this to get an RDP shell when something fails
 on_failure:
