@@ -36,6 +36,7 @@ option(UseQtFive "Build with Qt5 and libpoppler-qt5" ON)
 option(UpdateTranslations "Do you want to update the .ts files (WARNING: running make clean will delete them!)" OFF)
 option(BuildTests "Build unit tests (this requires pdflatex or internet access and DownloadTestPDFs=ON)" ON)
 option(BoostStaticLink "Link statically against the boost libraries" OFF)
+option(WindowsStaticLink "Windows/MSVC only: Link statically against the dependencies and set /MT instead of /MD" ON)
 option(DownloadTestPDF "Download test PDFs from http://danny-edel.de, rather then building them using latex-beamer" OFF)
 option(CodeCoverage "Add coverage analysis code to the program. Will slow it down. A lot. Only supported on GCC right now." OFF)
 

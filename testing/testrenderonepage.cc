@@ -6,9 +6,11 @@ using namespace TestHelpers;
 BOOST_AUTO_TEST_CASE(render_one_page) {
 	PDFDocumentReference pdr( TestHelpers::pdfFilename("colored-rectangles.pdf"), PDFCacheOption::keepPDFinMemory );
 
-	const auto left = RenderUtils::renderPagePart(pdr.page(0).page, QSize(1920,1080), PagePart::LeftHalf);
-	const auto right = RenderUtils::renderPagePart(pdr.page(0).page, QSize(1920,1200), PagePart::RightHalf);
-	const auto both = RenderUtils::renderPagePart(pdr.page(0).page, QSize(3840,1080), PagePart::FullPage);
+	const auto pageref = pdr.page(0);
+
+	const auto left = RenderUtils::renderPagePart(pageref.page, QSize(1920,1080), PagePart::LeftHalf);
+	const auto right = RenderUtils::renderPagePart(pageref.page, QSize(1920,1200), PagePart::RightHalf);
+	const auto both = RenderUtils::renderPagePart(pageref.page, QSize(3840,1080), PagePart::FullPage);
 
 	const auto leftScreenColor = QColor( 0x88, 0xff, 0x88);
 	auto rightScreenColor = QColor( 0xff, 0x88, 0xff);

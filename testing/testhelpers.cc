@@ -3,7 +3,7 @@
 #include <QDir>
 
 QString TestHelpers::pdfFilename(const std::string& basename) {
-	const QString relativePart = QString::fromStdString( basename );
+	const QString relativePart = QString::fromLocal8Bit( basename.c_str() );
 	const QDir myDir = QDir::current();
 	if ( ! myDir.exists(relativePart) ) {
 		throw std::runtime_error("Could not find the test pdf. This is bad.");
@@ -16,5 +16,5 @@ std::ostream& operator << (std::ostream& where, const QSize& what) {
 }
 
 std::ostream& operator << (std::ostream& where, const QColor& what) {
-	return where << "QColor(" << what.name().toStdString() << ")";
+	return where << "QColor(" << qPrintable( what.name() ) << ")";
 }

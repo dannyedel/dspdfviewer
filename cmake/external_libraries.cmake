@@ -7,6 +7,9 @@
 
 if( BoostStaticLink )
 	set(Boost_USE_STATIC_LIBS ON)
+	if(WindowsStaticLink)
+		set(Boost_USE_STATIC_RUNTIME ON)
+	endif()
 elseif(BuildTests)
 	add_definitions(-DBOOST_TEST_DYN_LINK)
 endif()
@@ -29,79 +32,70 @@ endif()
 if(UseQtFive)
 	# Qt5
 	message(STATUS "Using Qt5 and libpoppler-qt5")
+	if(MSVC AND WindowsStaticLink)
+		# If linking statically,
+		# Try to find Qt in /qt/static/qtbase
+		# or plain /qt/static
+		set(CMAKE_PREFIX_PATH
+			"/Qt/static/qtbase;/Qt/static;/Qt/static/qttools;${CMAKE_PREFIX_PATH}")
+	endif()
 	find_package(Qt5Core 5.1.1 REQUIRED)
 	# On lower versions, QTBUG-32100 prevents compilation at least on clang
 	# https://bugreports.qt.io/browse/QTBUG-32100
 	find_package(Qt5Gui REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
 	find_package(Qt5LinguistTools REQUIRED)
+	find_package(Qt5Xml REQUIRED)
+	message(STATUS "Found Qt5 at ${Qt5Core_DIR}")
+
 	if(MSVC)
-		set(POPPLER_LIBRARIES
-			optimized "C:/dspdf/poppler/poppler/lib/poppler.lib"
-			debug "C:/dspdf/poppler/poppler/lib/popplerd.lib"
-			optimized "C:/dspdf/poppler/poppler/lib/poppler-qt5.lib"
-			debug "C:/dspdf/poppler/poppler/lib/poppler-qt5d.lib"
-			optimized "C:/dspdf/poppler/deps/cairo/lib/cairo-static.lib"
-			debug "C:/dspdf/poppler/deps/cairo/lib/cairo-staticd.lib"
-			optimized "C:/dspdf/poppler/deps/freetype/lib/freetype.lib"
-			debug "C:/dspdf/poppler/deps/freetype/lib/freetyped.lib"
-			optimized "C:/dspdf/poppler/deps/lcms/Lib/MS/lcms2_static.lib"
-			debug "C:/dspdf/poppler/deps/lcms/Lib/MS/lcms2_staticd.lib"
-			optimized "C:/dspdf/poppler/deps/fontconfig/lib/libfontconfig.lib"
-			debug "C:/dspdf/poppler/deps/fontconfig/lib/libfontconfigd.lib"
-			optimized "C:/dspdf/poppler/deps/libpng/lib/libpng16_static.lib"
-			debug "C:/dspdf/poppler/deps/libpng/lib/libpng16_staticd.lib"
-			optimized "C:/dspdf/poppler/deps/libtiff/lib/tiff_static.lib"
-			debug "C:/dspdf/poppler/deps/libtiff/lib/tiff_staticd.lib"
-			optimized "C:/dspdf/poppler/deps/zlib/lib/zlibstatic.lib"
-			debug "C:/dspdf/poppler/deps/zlib/lib/zlibstaticd.lib"
-			optimized "C:/dspdf/poppler/deps/expat/lib/expat.lib"
-			debug "C:/dspdf/poppler/deps/expat/lib/expatd.lib"
-			optimized "C:/dspdf/poppler/deps/openjpeg/lib/openjp2.lib"
-			debug "C:/dspdf/poppler/deps/openjpeg/lib/openjp2d.lib"
-			optimized "C:/dspdf/poppler/deps/libtiff/lib/port.lib"
-			debug "C:/dspdf/poppler/deps/libtiff/lib/portd.lib"
-			optimized "C:/dspdf/poppler/deps/libiconv/lib/libiconvStatic.lib"
-			debug "C:/dspdf/poppler/deps/libiconv/lib/libiconvStaticD.lib"
-			optimized "C:/dspdf/poppler/deps/pixman/lib/pixman-1_static.lib"
-			debug "C:/dspdf/poppler/deps/pixman/lib/pixman-1_staticd.lib")
-		set(POPPLER_INCLUDE_DIRS "C:/dspdf/poppler/poppler/include/poppler/qt5")
-		list(APPEND LIST_LIBRARIES
-			optimized "C:/Qt/Static/qtbase/lib/Qt5XML.lib"
-	  		debug "C:/Qt/Static/qtbase/lib/Qt5XMLd.lib"
-  			optimized "C:/Qt/Static/qtbase/lib/Qt5PlatformSupport.lib"
-  			debug "C:/Qt/Static/qtbase/lib/Qt5PlatformSupportd.lib"
-	  		optimized "C:/Qt/Static/qtbase/plugins/platforms/qwindows.lib"
-  			debug "C:/Qt/Static/qtbase/plugins/platforms/qwindowsd.lib"
-  			optimized "C:/Qt/Static/qtbase/lib/qtpcre.lib"
-	  		debug "C:/Qt/Static/qtbase/lib/qtpcred.lib"
-  			optimized "C:/Qt/Static/qtbase/lib/qtharfbuzzng.lib"
-  			debug "C:/Qt/Static/qtbase/lib/qtharfbuzzngd.lib"
-	  		"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/WS2_32.Lib"
-  			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/OpenGL32.Lib"
-  			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/MSImg32.Lib"
-	  		"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Imm32.Lib"
-  			"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Winmm.Lib"
-		)
+		if (WindowsStaticLink)
+			set(POPPLER_LIBRARIES
+				${WINDOWS_PRECOMPILED_STATIC_LIBRARIES}
+			)
+			set(POPPLER_INCLUDE_DIRS
+				"C:/dspdf/poppler/poppler/include/poppler/qt5"
+			)
+		else() # MSVC, but not statically linking
+			set(POPPLER_LIBRARIES
+				${WINDOWS_PRECOMPILED_DYNAMIC_LIBRARIES}
+			)
+			set(POPPLER_INCLUDE_DIRS
+				"C:/dspdf/popplerDyn/poppler/include/poppler/qt5"
+			)
+		endif()
 	else()
+		# Non-MSVC Platforms:
+		# Find poppler using pkg-config
 		pkg_search_module(POPPLER REQUIRED poppler-qt5)
 	endif()
-	# add their include directories
-	list(APPEND LIST_INCLUDE_DIRS
-		${Qt5Core_INCLUDE_DIRS}
-		${Qt5Gui_INCLUDE_DIRS}
-		${Qt5Widgets_INCLUDE_DIRS}
-	)
+
 	# add their link flags
 	list(APPEND LIST_LIBRARIES
 		${Qt5Core_LIBRARIES}
 		${Qt5Gui_LIBRARIES}
 		${Qt5Widgets_LIBRARIES}
+		${Qt5LinguistTools_LIBRARIES}
+		${Qt5Xml_LIBRARIES}
 	)
+
+	# add their include directories
+	list(APPEND LIST_INCLUDE_DIRS
+		${Qt5Core_INCLUDE_DIRS}
+		${Qt5Gui_INCLUDE_DIRS}
+		${Qt5Widgets_INCLUDE_DIRS}
+		${Qt5LinguistTools_INCLUDE_DIRS}
+		${Qt5Xml_INCLUDE_DIRS}
+	)
+
+	# Set conditional compilation to Qt5 mode
 	add_definitions(-DPOPPLER_QT5)
 	qt5_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
 	if( UpdateTranslations )
-		qt5_create_translation(TRANSLATIONS ${libdspdfviewer_SRCS} ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
+		qt5_create_translation(TRANSLATIONS
+			${libdspdfviewer_SRCS} ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES}
+			OPTIONS -no-obsolete
+			)
 	else()
 		qt5_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
 	endif()
@@ -118,7 +112,10 @@ else()
 	list(APPEND LIST_LIBRARIES Qt4::QtGui)
 	qt4_wrap_ui(dspdfviewer_UIS_H ${UIFILES})
 	if( UpdateTranslations )
-		qt4_create_translation(TRANSLATIONS ${libdspdfviewer_SRCS} ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES})
+		qt4_create_translation(TRANSLATIONS
+			${libdspdfviewer_SRCS} ${dspdfviewer_SRCS} ${UIFILES} ${TRANSLATIONFILES}
+			OPTIONS -no-obsolete
+			)
 	else()
 		qt4_add_translation(TRANSLATIONS ${TRANSLATIONFILES})
 	endif()
