@@ -1,22 +1,25 @@
 Source: dspdfviewer
 Section: text
-Priority: extra
+Priority: optional
 Maintainer: Danny Edel <mail@danny-edel.de>
 Build-Depends: cmake,
-               debhelper (>= 7.3.0),
-               g++ (>= 4:4.6),
+               debhelper (>= 9.20120417),
                latex-beamer,
+               libboost-dev,
                libboost-program-options-dev,
                libboost-test-dev,
-               libpoppler-qt4-dev,
-               lsb-release,
+               libpoppler-qt5-dev,
                pkg-config,
+               qtbase5-dev,
+               qttools5-dev,
+               qttools5-dev-tools,
+               texlive-latex-recommended,
                texlive-pictures,
                xauth,
                xvfb
-Standards-Version: 3.9.3
-Vcs-Git: git://github.com/dannyedel/dspdfviewer.git
-Vcs-Browser: https://github.com/dannyedel/dspdfviewer
+Standards-Version: 3.9.6
+Vcs-Git: git://anonscm.debian.org/collab-maint/dspdfviewer.git
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/dspdfviewer.git
 Homepage: http://dspdfviewer.danny-edel.de
 
 Package: dspdfviewer
@@ -42,14 +45,3 @@ Description: Dual-Screen PDF Viewer for LaTeX-beamer
  Also, on the second screen, you get page thumbnails and status
  information, like the time since you started the presentation
  and a "wall clock".
-
-Package: dspdfviewer-dbg
-Section: debug
-Priority: extra
-Architecture: any
-Depends: dspdfviewer (= ${binary:Version}), ${misc:Depends}
-Description: debugging symbols for dspdfviewer
- dspdfviewer if a specialized PDF viewer for latex-beamer
- presentations using the "shot notes on second screen" feature.
- .
- This package contains the debugging symbols for dspdfviewer.
