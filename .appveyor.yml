@@ -51,5 +51,5 @@ test_script:
     - cmd: ctest -C Release --output-on-failure --timeout 30
 
 # Un-Comment this to get an RDP shell when something fails
-on_failure:
-    - ps: '$blockRdp = $true; iex ((new-object net.webclient).DownloadString(''https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1''))'
+#on_failure:
+#    - ps: '$blockRdp = $true; iex ((new-object net.webclient).DownloadString(''https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1''))'
