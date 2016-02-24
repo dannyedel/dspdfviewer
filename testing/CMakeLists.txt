@@ -136,7 +136,10 @@ if(UseQtFive)
 				images.pdf
 		)
 		set_tests_properties(testswapscreen
-			PROPERTIES TIMEOUT 60)
+			PROPERTIES
+				TIMEOUT 60
+				SKIP_RETURN_CODE 77
+		)
 	endif()
 endif()
 

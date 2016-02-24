@@ -67,6 +67,9 @@ void SwapScreensAndCheckAlign::checkAfterSwapBack() {
 	if ( verify ) {
 		check(dspdfviewer.audienceGeometry(), screenSecondary);
 		check(dspdfviewer.secondGeometry(), screenPrimary);
+		emit quitRequested();
 	}
-	emit quitRequested();
+	else {
+		QCoreApplication::exit(77);
+	}
 }
