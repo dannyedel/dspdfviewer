@@ -17,14 +17,14 @@ before_build:
     - cmd: mkdir \projects\dspdfviewer\build
     - cmd: cd \projects\dspdfviewer\build
     - cmd: >
-      cmake ..
-      -G "Visual Studio 12 2013"
-      -DUseQtFive=ON
-      -DDownloadTestPDF=ON
-      -DBoostStaticLink=ON
-      -DWindowsStaticLink=OFF
-      -DBOOST_ROOT=\libraries\boost
-      -DBOOST_LIBRARYDIR=\libraries\boost\lib32-msvc-12.0
+        cmake ..
+        -G "Visual Studio 12 2013"
+        -DUseQtFive=ON
+        -DDownloadTestPDF=ON
+        -DBoostStaticLink=ON
+        -DWindowsStaticLink=OFF
+        -DBOOST_ROOT=\libraries\boost
+        -DBOOST_LIBRARYDIR=\libraries\boost\lib32-msvc-12.0
 
 build:
   project: C:\projects\dspdfviewer\build\dspdfviewer.sln
