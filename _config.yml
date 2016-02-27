@@ -3,6 +3,7 @@ exclude:
   - Gemfile
   - Makefile
   - README.md
+  - build*
 
 markdown: redcarpet
 redcarpet:
