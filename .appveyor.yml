@@ -11,6 +11,7 @@ init:
 - ps: (new-object net.webclient).DownloadFile('https://github.com/projekter/dspdfviewer/releases/download/v1.14-42-g4acfb31/DependenciesDyn.rar', 'c:\dependencies.rar')
 - cmd: cd \
 - cmd: 7z x \dependencies.rar
+- cmd: cd \projects\dspdfviewer
 
 # Before build: Let CMake create the solution file
 before_build:
