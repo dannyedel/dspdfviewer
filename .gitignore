@@ -23,3 +23,7 @@ debian/*.log
 
 # Windows compiled help files
 *.chm
+
+# stuff from jekyll after building the website
+_site/
+vendor
