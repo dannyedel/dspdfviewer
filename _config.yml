@@ -5,19 +5,15 @@ exclude:
   - README.md
   - build*
 
-markdown: redcarpet
-redcarpet:
-  extensions:
-    - autolink
-    - with_toc_data
-
-# mimick github
-# changeable
-highlighter: pygments
+markdown: kramdown
+kramdown:
+    input: GFM
+    hard_wrap: false
+#    syntax_highlighter_opts:
+#        line_numbers: false
 
 # mimick github
 # fixed
-safe: true
 lsi: false
 source: .
 
