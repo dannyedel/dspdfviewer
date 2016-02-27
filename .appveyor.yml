@@ -4,7 +4,9 @@ branches:
   - master
   - /^test-.*/
 os: Visual Studio 2013
-configuration: Debug, Release
+configuration:
+  - Debug
+  - Release
 
 # Before anything else: Download and extract dependency package
 init:
