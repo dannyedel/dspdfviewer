@@ -103,6 +103,22 @@ add_test(NAME BoostTestRunner
 	COMMAND testrunner --report_level=detailed
 )
 
+
+# Check whether --version and --help contain
+# the version in their output
+add_test(NAME TestCommandLineVersion
+	COMMAND dspdfviewer --version
+)
+add_test(NAME TestCommandLineHelp
+	COMMAND dspdfviewer --help
+)
+set_tests_properties(
+	TestCommandLineVersion
+	TestCommandLineHelp
+	PROPERTIES
+		PASS_REGULAR_EXPRESSION ${DSPDFVIEWER_VERSION}
+)
+
 # Check that the translations get activated
 
 if(APPLE)
