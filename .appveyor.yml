@@ -50,6 +50,7 @@ before_test:
     - cmd: SET PATH=%PATH%;C:\qt\5.5\msvc2013\bin
     - cmd: if exist Testing\Debug copy C:\dspdf\popplerDyn\poppler\bin\poppler-qt5d.dll Testing\Debug\poppler-qt5.dll
     - cmd: if exist Testing\Debug copy C:\dspdf\popplerDyn\poppler\bin\poppler-qt5d.dll Testing\poppler-qt5.dll
+    - cmd: SET CTEST_OUTPUT_ON_FAILURE=1
 
 after_test:
     - cmd: msbuild RUN_TESTS.vcxproj
