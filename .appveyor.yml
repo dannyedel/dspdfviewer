@@ -48,8 +48,8 @@ before_test:
     - cmd: SET PATH=%PATH%;C:\dspdf\popplerDyn\deps\zlib\bin
     - cmd: SET PATH=%PATH%;C:\dspdf\popplerDyn\poppler\bin
     - cmd: SET PATH=%PATH%;C:\qt\5.5\msvc2013\bin
-    - cmd: copy C:\dspdf\popplerDyn\poppler\bin\poppler-qt5d.dll Testing\Debug\poppler-qt5.dll
-    - cmd: copy C:\dspdf\popplerDyn\poppler\bin\poppler-qt5d.dll Testing\poppler-qt5.dll
+    - cmd: if exist Testing\Debug copy C:\dspdf\popplerDyn\poppler\bin\poppler-qt5d.dll Testing\Debug\poppler-qt5.dll
+    - cmd: if exist Testing copy C:\dspdf\popplerDyn\poppler\bin\poppler-qt5d.dll Testing\poppler-qt5.dll
 
 after_test:
     - cmd: msbuild RUN_TESTS.vcxproj
