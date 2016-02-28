@@ -107,10 +107,10 @@ add_test(NAME BoostTestRunner
 # Check whether --version and --help contain
 # the version in their output
 add_test(NAME TestCommandLineVersion
-	COMMAND dspdfviewer --version
+	COMMAND ${XVFB} dspdfviewer --version
 )
 add_test(NAME TestCommandLineHelp
-	COMMAND dspdfviewer --help
+	COMMAND ${XVFB} dspdfviewer --help
 )
 set_tests_properties(
 	TestCommandLineVersion
