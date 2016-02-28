@@ -26,13 +26,11 @@ endif()
 ### Common for all compilers
 #
 
-# Disable debug info unless we're in debugmode.
-if( "${CMAKE_BUILD_TYPE}" MATCHES "^Debug$" )
-  # do nothing
-else()
-  add_definitions(-DQT_NO_DEBUG_OUTPUT)
-endif()
+# Add -DQT_NO_DEBUG_OUTPUT to Release
+# and Release with Debug Info builds
 
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DQT_NO_DEBUG_OUTPUT")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DQT_NO_DEBUG_OUTPUT")
 
 # This helps with translation, since it disables QString(const char*)
 add_definitions(-DQT_NO_CAST_FROM_ASCII)

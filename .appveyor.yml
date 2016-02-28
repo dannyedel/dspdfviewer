@@ -32,7 +32,6 @@ before_build:
 build:
   project: C:\projects\dspdfviewer\build\dspdfviewer.sln
   parallel: true
-  verbosity: detailed
 
 before_test:
     - cmd: SET PATH=%PATH%;C:\dspdf\popplerDyn\deps\cairo\bin
