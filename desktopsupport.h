@@ -4,10 +4,12 @@
 #include <vector>
 #include <QWidget>
 
+#include "windowrole.h"
+
 enum class DesktopEnvironmentHandlerQuality {
 	NotMyEnvironment = 0,
 	GenericHandler,
-	OperatingSpecificHandler,
+	OperatingSystemSpecificHandler,
 	DesktopEnvironmentSpecificHandler
 };
 
@@ -16,9 +18,12 @@ enum class DesktopEnvironmentHandlerQuality {
  *
  * Exact type will be dependent on the handler that created it.
  */
-class OutputHandle {
+struct OutputHandle {
 	/** Get a human-readable name of the output */
 	virtual std::string const name() const =0;
+
+	/** Is this output marked as "primary" ? */
+	virtual bool isPrimary() const =0;
 
 	/** Polymorphic class */
 	virtual ~OutputHandle() =default;
@@ -45,7 +50,16 @@ public:
 	 */
 	virtual DesktopEnvironmentHandlerQuality quality() const =0;
 
-	/** Get all outputs on the machine */
+	/** Output the DesktopSupport's name
+	 *
+	 * Human-readable, but must be unique across implementations.
+	 * */
+	virtual std::string const name() const =0;
+
+	/** Get all outputs on the machine
+	 *
+	 * This needs to be implemented by inheriting classes
+	 * */
 	virtual OutputList getOutputs() const =0;
 
 	/** Get Primary output
@@ -54,14 +68,17 @@ public:
 	 * if there is more than one screen and
 	 * none of them is marked primary
 	 *
+	 * If there is more than one "primary" screen,
+	 * it will output the numerically first of them.
+	 *
 	 * If errors are ignored, will pick the numerically
 	 * first screen returned from the environment.
 	 */
-	virtual OutputPtr getPrimary(
+	OutputPtr getPrimary(
 		const DesktopSupportErrorHandling& errorMode=
 			DesktopSupportErrorHandling::ThrowOnError
 		)
-		const =0;
+		const;
 
 	/** Get secondary screen
 	 *
@@ -83,11 +100,11 @@ public:
 	 * The exact screen chosen depends on the environment
 	 * and is probably random.
 	 */
-	virtual OutputPtr getSecondary(
+	OutputPtr getSecondary(
 		const DesktopSupportErrorHandling& errorMode=
 			DesktopSupportErrorHandling::ThrowOnError
 		)
-		const =0;
+		const;
 
 	/** Move a window to a specified output
 	 *
@@ -96,6 +113,24 @@ public:
 	 */
 	virtual void moveWindow(QWidget& window, OutputHandle& to)
 		const =0;
+
+	/** Get target output for a specific window role */
+	OutputPtr getTargetOutput(
+		const WindowRole& windowRole,
+		const DesktopSupportErrorHandling& errorMode=
+			DesktopSupportErrorHandling::ThrowOnError
+			) const;
+
+	/** Make the window fullscreen.
+	 *
+	 * Must not make an already-fullscreened window
+	 * "normal" again.
+	 *
+	 * If the desktop does not allow detection of fullscreen
+	 * state, unconditional un-full-screening and re-full-screening
+	 * is acceptable as a last resort.
+	 */
+	virtual void makeFullscreen(QWidget& window) const =0;
 
 	/** This is a base class, make destructor virtual */
 	virtual ~DesktopSupport() =default;

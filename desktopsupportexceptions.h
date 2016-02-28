@@ -6,23 +6,25 @@
 
 /** Desktop support exceptions */
 
+
 struct DesktopSupportException: public std::runtime_error {
 	DesktopSupportException(const std::string&);
 };
 
 struct CannotDeterminePrimaryOutput: public DesktopSupportException {
-	const OutputList outputs;
-	CannotDeterminePrimaryOutput(OutputList&& outputs);
+	CannotDeterminePrimaryOutput(const OutputList& outputs);
+};
+
+struct NoOutputsFound: public DesktopSupportException {
+	NoOutputsFound();
 };
 
 struct OnlyOneOutput: public DesktopSupportException {
-	const OutputPtr output;
-	OnlyOneOutput(OutputPtr&& output);
+	OnlyOneOutput(const OutputHandle& output);
 };
 
 struct TooManyScreens: public DesktopSupportException {
-	const OutputList outputs;
-	TooManyScreens(OutputList&& outputs);
+	TooManyScreens(const OutputList& outputs);
 };
 
 struct FailedToMoveToOutput: public DesktopSupportException {

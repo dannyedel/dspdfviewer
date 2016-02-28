@@ -37,25 +37,10 @@
 
 using boost::numeric_cast;
 
-void PDFViewerWindow::setMonitor(const unsigned int monitor)
-{
-  if ( m_monitor != monitor )
-  {
-    m_monitor = monitor;
-    reposition();
-  }
-}
-
-unsigned int PDFViewerWindow::getMonitor() const
-{
-  return m_monitor;
-}
-
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& wr, bool enabled):
+PDFViewerWindow::PDFViewerWindow(PagePart pagePart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& wr, bool enabled):
   QWidget(),
   ui(),
   m_enabled(enabled),
-  m_monitor(monitor),
   currentImage(),
   blank(false),
   informationLineVisible(false),
@@ -96,12 +81,10 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool s
     ui.slideClock->setVisible(r.showSlideClock());
     ui.presentationClock->setVisible(r.showPresentationClock());
   }
-
-  reposition(); // This will fullscreen on its own
 }
 
 
-
+#if 0
 void PDFViewerWindow::reposition()
 {
   if ( ! m_enabled )
@@ -134,6 +117,7 @@ void PDFViewerWindow::reposition()
   //this->showFullScreen();
 
 }
+#endif
 
 void PDFViewerWindow::displayImage(QImage image)
 {
