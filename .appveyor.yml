@@ -26,6 +26,7 @@ before_build:
         -DDownloadTestPDF=ON
         -DBoostStaticLink=ON
         -DWindowsStaticLink=OFF
+        -DRunDualScreenTests=OFF
         -DBOOST_ROOT=\libraries\boost
         -DBOOST_LIBRARYDIR=\libraries\boost\lib32-msvc-12.0
 

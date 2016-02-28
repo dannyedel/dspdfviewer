@@ -118,6 +118,31 @@ set_tests_properties(
 		PASS_REGULAR_EXPRESSION ${DSPDFVIEWER_VERSION}
 )
 
+# Only build and run the swap screen test on Qt5
+if(UseQtFive)
+	add_executable(testswapscreen
+		testswapscreen.cc
+		testswapscreen-main.cc
+	)
+	target_link_libraries(testswapscreen
+		testhelp
+	)
+
+	if(RunDualScreenTests)
+		add_test(NAME testswapscreen
+			COMMAND testswapscreen
+				--prerender-prev=0
+				--prerender-next=0
+				images.pdf
+		)
+		set_tests_properties(testswapscreen
+			PROPERTIES
+				TIMEOUT 60
+				SKIP_RETURN_CODE 77
+		)
+	endif()
+endif()
+
 
 # On windows you cannot change the locale on a case-by-case basis.
 #

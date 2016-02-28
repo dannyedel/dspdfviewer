@@ -93,6 +93,11 @@ public:
 
     bool isAudienceScreenBlank() const;
 
+	/** Allow const access to the windows' positions.
+	 * Needed for tests to inspect things. */
+	const QRect audienceGeometry() const;
+	const QRect secondGeometry() const;
+
 signals:
   void wallClockUpdate(const QTime& wallClock) const;
   void slideClockUpdate(const QTime& slideClock) const;

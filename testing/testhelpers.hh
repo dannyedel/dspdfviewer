@@ -51,6 +51,16 @@ namespace TestHelpers {
 		QColor grabPixelColor( uint x, uint y);
 	};
 
+	template<typename T1, typename T2>
+		inline
+		void check(const T1& lhs, const T2& rhs, int failcode=2) {
+			if ( ! (lhs == rhs) ) {
+				WARNINGOUT << "Failure:" << lhs << "!=" << rhs;
+				QApplication::exit(failcode);
+			} else {
+				DEBUGOUT << "All right." << lhs << "==" << rhs;
+			}
+		}
 }
 
 /** Print a QSize to a standard output stream */
