@@ -26,6 +26,10 @@ list(APPEND libdspdfviewer_SRCS
 	pdfviewerwindow.cpp
 	dspdfviewer.cpp
 	windowrole.cpp
+	desktopsupport.cpp
+	desktopsupportfactory.cpp
+	desktopsupportexceptions.cpp
+	desktopsupport/generic.cpp
 )
 
 list(APPEND dspdfviewer_SRCS
