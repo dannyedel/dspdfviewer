@@ -104,21 +104,6 @@ add_test(NAME BoostTestRunner
 )
 
 
-# Check whether --version and --help contain
-# the version in their output
-add_test(NAME TestCommandLineVersion
-	COMMAND ${XVFB} dspdfviewer --version
-)
-add_test(NAME TestCommandLineHelp
-	COMMAND ${XVFB} dspdfviewer --help
-)
-set_tests_properties(
-	TestCommandLineVersion
-	TestCommandLineHelp
-	PROPERTIES
-		PASS_REGULAR_EXPRESSION ${DSPDFVIEWER_VERSION}
-)
-
 # Check that the translations get activated
 
 if(APPLE)
@@ -148,6 +133,23 @@ if(NOT WINDOWS)
 		message(FATAL_ERROR "env not found")
 	endif()
 endif()
+
+
+# Check whether --version and --help contain
+# the version in their output
+add_test(NAME TestCommandLineVersion
+	COMMAND ${XVFB} dspdfviewer --version
+)
+add_test(NAME TestCommandLineHelp
+	COMMAND ${XVFB} dspdfviewer --help
+)
+set_tests_properties(
+	TestCommandLineVersion
+	TestCommandLineHelp
+	PROPERTIES
+		PASS_REGULAR_EXPRESSION ${DSPDFVIEWER_VERSION}
+)
+
 
 # On windows you cannot change the locale on a case-by-case basis.
 #
