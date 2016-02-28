@@ -103,45 +103,13 @@ add_test(NAME BoostTestRunner
 	COMMAND testrunner --report_level=detailed
 )
 
-
-# Check that the translations get activated
-
-if(APPLE)
-	set(XVFB "")
-elseif(WINDOWS)
-	set(XFFB "")
-else()
-	# Find xvfb-run
-	find_program(XVFB_PROG
-		NAMES xvfb-run
-		)
-	if( XVFB_PROG STREQUAL "XVFB_PROG-NOTFOUND" )
-		message(FATAL_ERROR "xvfb-run not found")
-	else()
-		set(XVFB "${XVFB_PROG} -a")
-	endif()
-endif()
-separate_arguments(XVFB)
-
-# Search for env only on non-windows platform
-if(NOT WINDOWS)
-	# find env
-	find_program(ENV_PROG
-		NAMES env
-		)
-	if( ENV_PROG STREQUAL "ENV_PROG-NOTFOUND" )
-		message(FATAL_ERROR "env not found")
-	endif()
-endif()
-
-
 # Check whether --version and --help contain
 # the version in their output
 add_test(NAME TestCommandLineVersion
-	COMMAND ${XVFB} dspdfviewer --version
+	COMMAND dspdfviewer --version
 )
 add_test(NAME TestCommandLineHelp
-	COMMAND ${XVFB} dspdfviewer --help
+	COMMAND dspdfviewer --help
 )
 set_tests_properties(
 	TestCommandLineVersion
@@ -158,18 +126,20 @@ set_tests_properties(
 
 if(NOT WINDOWS)
 	add_test(NAME EnglishByDefault
-		COMMAND ${ENV_PROG} LANGUAGE=C LC_ALL=C.UTF-8 ${XVFB} ../dspdfviewer --help
+		COMMAND dspdfviewer --help
 	)
 
 	set_tests_properties(EnglishByDefault PROPERTIES
 		PASS_REGULAR_EXPRESSION "Interactive Controls"
+		ENVIRONMENT "LANGUAGE=C:LC_ALL=C.UTF-8"
 		)
 
 	add_test(NAME GermanWithDeDE
-		COMMAND ${ENV_PROG} LANGUAGE=de LC_ALL=de_DE.UTF-8 ${XVFB} ../dspdfviewer --help
+		COMMAND dspdfviewer --help
 	)
 
 	set_tests_properties(GermanWithDeDE PROPERTIES
 		PASS_REGULAR_EXPRESSION "Interaktive Tasten"
+		ENVIRONMENT "LANGUAGE=de:LC_ALL=de_DE.UTF=8"
 	)
 endif()

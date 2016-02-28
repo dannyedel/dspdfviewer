@@ -8,6 +8,32 @@ or non user-relevant changes (like build system or packaging related), please
 inspect the output of commands like `git diff -w v1.11..v1.12` directly.
 
 
+v1.15 - UNRELEASED
+------------------
+
+Changes in behaviour:
+
+* When compiling dspdfviewer yourself:
+  * You must now execute the testsuite within a running X Server.
+  * The testsuite expects two screens to be connected, if your test
+    environment does not have that pass -DRunDualScreenTests=OFF at
+    CMake time.  This can be useful if you run the test suite under
+    XvFB.
+
+New features:
+* Memory usage now configurable
+  * Previously, dspdfviewer allowed to cache 100 images.  It did not
+    matter whether these where thumbnails or full pages, resulting in
+    unpredictable memory usage.
+  * Now you can specify memory limit for the cache in MiB, using
+    the command-line parameter --cache-size.  The default value 1024
+    is normally fine, setting is below 250 will result in severe
+    performance crippling.
+  * This only affects the *cache* memory.  The total memory usage of
+    dspdfviewer can be up to 300M higher, mainly depending on whether
+    the shared libraries (poppler/qt) are also used by other programs,
+    or are specifically loaded for dspdfviewer.
+
 
 v1.14 - 2015-12-01
 ------------------
