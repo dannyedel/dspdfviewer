@@ -2,12 +2,13 @@
 set -ex
 cd build
 
-XVFB=
 # Call CTest test runner within XvFB
 if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
-	XVFB="xvfb-run -a"
+	xvfb-run -a -s '-screen 0 1920x1080x24 -screen 1 1920x1200x24' \
+		ctest --output-on-failure --timeout 60
+else
+	ctest --output-on-failure --timeout 60
 fi
-$XVFB ctest --output-on-failure --timeout 60
 
 # print coverage report, ignore errors
 ctest -T coverage || true

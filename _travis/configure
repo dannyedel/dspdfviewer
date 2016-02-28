@@ -11,10 +11,15 @@ CMAKE_PARAMETERS="-DCMAKE_VERBOSE_MAKEFILE=ON"
 
 CMAKE_PARAMETERS+=" -DCMAKE_BUILD_TYPE=Debug"
 
-# on OSX: Download Test PDF,
-# rather than install pdflatex
+# OSX specific stuff
 if [ "$TRAVIS_OS_NAME" = "osx" ] ; then
+	# Download Test PDF,
+	# rather than install pdflatex
 	CMAKE_PARAMETERS+=" -DDownloadTestPDF=ON"
+
+	# Skip dual screen tests since we don't have
+	# xvfb-run
+	CMAKE_PARAMETERS+=" -DRunDualScreenTests=OFF"
 fi
 
 # Activate code coverage analysis
