@@ -129,17 +129,28 @@ if(NOT WINDOWS)
 		COMMAND dspdfviewer --help
 	)
 
+	set(ENVVARS
+		"LC_ALL=C.UTF-8:C"
+		"LANGUAGE=C"
+	)
+
 	set_tests_properties(EnglishByDefault PROPERTIES
 		PASS_REGULAR_EXPRESSION "Interactive Controls"
-		ENVIRONMENT "LANGUAGE=C:LC_ALL=C.UTF-8"
+		ENVIRONMENT "${ENVVARS}"
 		)
 
+	# the ENVIRONMENT property was added in 2.8.0
 	add_test(NAME GermanWithDeDE
 		COMMAND dspdfviewer --help
 	)
 
+	set(ENVVARS
+		"LC_ALL=de_DE.UTF-8:de_DE"
+		"LANGUAGE=de"
+	)
+
 	set_tests_properties(GermanWithDeDE PROPERTIES
 		PASS_REGULAR_EXPRESSION "Interaktive Tasten"
-		ENVIRONMENT "LANGUAGE=de:LC_ALL=de_DE.UTF=8"
+		ENVIRONMENT "${ENVVARS}"
 	)
 endif()
