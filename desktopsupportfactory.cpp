@@ -32,7 +32,7 @@ DesktopSupportPtr DesktopSupportFactory::getDesktopSupport() {
 	allImpls.emplace_back( new GenericDesktopSupport() );
 
 	/** The Win32 support requires QT5 */
-#if POPPLER_QT5
+#if defined( POPPLER_QT5 )
 	allImpls.emplace_back( new Win32DesktopSupport() );
 #endif
 

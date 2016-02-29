@@ -26,7 +26,7 @@ struct OutputHandle {
 	virtual bool isPrimary() const =0;
 
 	/** Polymorphic class */
-	virtual ~OutputHandle() { };
+	virtual ~OutputHandle() { }
 };
 typedef std::unique_ptr<OutputHandle> OutputPtr;
 typedef std::vector<OutputPtr> OutputList;
@@ -133,5 +133,5 @@ public:
 	virtual void makeFullscreen(QWidget& window) const =0;
 
 	/** This is a base class, make destructor virtual */
-	virtual ~DesktopSupport() { };
+	virtual ~DesktopSupport() { }
 };
