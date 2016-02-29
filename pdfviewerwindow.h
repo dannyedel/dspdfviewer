@@ -76,7 +76,6 @@ private:
   
 public:
   /** Standard constructor
-   * @param monitor monitor to start on (usually 0 for primary)
    */
     explicit PDFViewerWindow(PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& windowRole, bool enabled=true);
 
