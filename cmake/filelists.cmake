@@ -30,6 +30,7 @@ list(APPEND libdspdfviewer_SRCS
 	desktopsupportfactory.cpp
 	desktopsupportexceptions.cpp
 	desktopsupport/generic.cpp
+	desktopsupport/win32.cpp
 )
 
 list(APPEND dspdfviewer_SRCS

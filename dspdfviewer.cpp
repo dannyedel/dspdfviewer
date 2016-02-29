@@ -39,6 +39,7 @@ using boost::numeric_cast;
 
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 	runtimeConfiguration(r),
+	desktopSupport( DesktopSupportFactory::getDesktopSupport() ),
 	clockDisplayTimer(),
 	slideStart(),
 	presentationStart(),
@@ -48,8 +49,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
  m_pagenumber(0),
  audienceWindow(  r.useFullPage()                 ? PagePart::FullPage : PagePart::LeftHalf , false, r, WindowRole::AudienceWindow),
  secondaryWindow((r.useFullPage() | r.duplicate())? PagePart::FullPage : PagePart::RightHalf, true , r, WindowRole::PresenterWindow, r.useSecondScreen()),
-	monitorsSwapped(false),
-	desktopSupport( DesktopSupportFactory::getDesktopSupport() )
+	monitorsSwapped(false)
 {
   DEBUGOUT << tr("Starting constructor") ;
 
@@ -118,6 +118,16 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 
 
   }
+
+  // Activate windows
+  audienceWindow.show();
+  if ( r.useSecondScreen() )
+  {
+	secondaryWindow.show();
+  }
+
+  /** Position the windows */
+  repositionWindows();
 
   renderPage();
 
@@ -382,33 +392,44 @@ const QRect DSPDFViewer::secondGeometry() const {
 
 void DSPDFViewer::repositionWindows() {
 	auto primaryOutput = desktopSupport->getPrimary();
-	auto secondaryOutput = desktopSupport->getSecondary();
 
-	/** If monitors should be swapped, invert the following
-	 * logic.
+	/** Get secondary output only if we actually use
+	 * two screens
 	 */
-	if ( monitorsSwapped ) {
-		primaryOutput.swap( secondaryOutput );
+	if ( runtimeConfiguration.useSecondScreen() ) {
+		auto secondaryOutput = desktopSupport->getSecondary();
+
+		/** If monitors should be swapped, invert the following
+		 * logic.
+		 */
+		if ( monitorsSwapped ) {
+			primaryOutput.swap( secondaryOutput );
+		}
+
+		/** Primary Output: Built-in Laptop screen
+		 * This has the window for the presenter */
+		desktopSupport->moveWindow( secondaryWindow, *primaryOutput);
+
+		/** Secondary Output: External screen / beamer
+		 * This has the audience's window
+		 */
+		desktopSupport->moveWindow( audienceWindow, *secondaryOutput);
+
+		/** FIXME: Add configuration setting for non-fullscreen-mode
+		 */
+
+		/** Just in case the desktop environment will un-full-screen
+		 * the first window, make the presenter's window fullscreen
+		 * first (possibly disposable) and ensure the audience
+		 * gets the real fullscreen.
+		 */
+		desktopSupport->makeFullscreen( secondaryWindow );
+		desktopSupport->makeFullscreen( audienceWindow );
+	} else {
+		/** Only one window in use */
+		desktopSupport->moveWindow(audienceWindow, *primaryOutput);
+
+		/** FIXME: Add configuration for non-fullscreen mode */
+		desktopSupport->makeFullscreen( audienceWindow );
 	}
-
-	/** Primary Output: Built-in Laptop screen
-	 * This has the window for the presenter */
-	desktopSupport->moveWindow( secondaryWindow, *primaryOutput);
-
-	/** Secondary Output: External screen / beamer
-	 * This has the audience's window
-	 */
-	desktopSupport->moveWindow( audienceWindow, *secondaryOutput);
-
-	/** FIXME: Add configuration setting for non-fullscreen-mode
-	 */
-
-	/** Just in case the desktop environment will un-full-screen
-	 * the first window, make the presenter's window fullscreen
-	 * first (possibly disposable) and ensure the audience
-	 * gets the real fullscreen.
-	 */
-	desktopSupport->makeFullscreen( secondaryWindow );
-	desktopSupport->makeFullscreen( audienceWindow );
-
 }

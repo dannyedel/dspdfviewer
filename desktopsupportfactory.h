@@ -6,14 +6,6 @@
 
 typedef std::unique_ptr< DesktopSupport > DesktopSupportPtr;
 
-/** Compare two DesktopSupportPtr's by their quality */
-inline bool lessQuality (
-	const DesktopSupportPtr& lhs,
-	const DesktopSupportPtr& rhs
-	) {
-	return lhs->quality() < rhs->quality();
-}
-
 class DesktopSupportFactory {
 public:
 	/** Initializes all compiled-in modules,

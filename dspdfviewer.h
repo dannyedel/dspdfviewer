@@ -37,6 +37,7 @@ class DSPDFViewer: public QObject
 
 private:
   const RuntimeConfiguration& runtimeConfiguration;
+  const DesktopSupportPtr desktopSupport;
   enum {
     TIMER_UPDATE_INTERVAL=250
   };
@@ -55,7 +56,6 @@ private:
   PDFViewerWindow secondaryWindow;
   bool monitorsSwapped;
 
-  DesktopSupportPtr desktopSupport;
 
 private:
   QString timeToString(QTime time) const;
