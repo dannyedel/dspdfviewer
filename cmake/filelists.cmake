@@ -30,8 +30,13 @@ list(APPEND libdspdfviewer_SRCS
 	desktopsupportfactory.cpp
 	desktopsupportexceptions.cpp
 	desktopsupport/generic.cpp
-	desktopsupport/win32.cpp
 )
+
+if(UseQtFive)
+	list(APPEND libdspdfviewer_SRCS
+		desktopsupport/win32.cpp
+	)
+endif()
 
 list(APPEND dspdfviewer_SRCS
 	main.cpp

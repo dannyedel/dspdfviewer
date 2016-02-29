@@ -4,6 +4,7 @@
 #include "desktopsupport/generic.h"
 #include "desktopsupport/win32.h"
 #include <algorithm>
+#include <stdexcept>
 
 using namespace std;
 
@@ -29,7 +30,11 @@ DesktopSupportPtr DesktopSupportFactory::getDesktopSupport() {
 
 	/** Construct all the implementations here */
 	allImpls.emplace_back( new GenericDesktopSupport() );
+
+	/** The Win32 support requires QT5 */
+#if POPPLER_QT5
 	allImpls.emplace_back( new Win32DesktopSupport() );
+#endif
 
 	auto maxElemIt = max_element(
 		allImpls.begin(),
