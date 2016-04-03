@@ -3,6 +3,8 @@
 
 #include "desktopsupport/generic.h"
 #include "desktopsupport/win32.h"
+#include "desktopsupport/i3.h"
+
 #include <algorithm>
 #include <stdexcept>
 
@@ -35,6 +37,8 @@ DesktopSupportPtr DesktopSupportFactory::getDesktopSupport() {
 #if defined( POPPLER_QT5 )
 	allImpls.emplace_back( new Win32DesktopSupport() );
 #endif
+
+	allImpls.emplace_back( new i3DesktopSupport() );
 
 	auto maxElemIt = max_element(
 		allImpls.begin(),
