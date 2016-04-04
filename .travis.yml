@@ -73,4 +73,11 @@ install:
 script: _travis/test
 after_success:
     - pip install --user codecov
-    - PATH="$HOME/.local/bin:$PATH" codecov
+    - >
+        if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then
+          ~/Library/Python/*/bin/codecov ;
+        elif [[ "$CXX" == "clang++" ]] ; then
+          ~/.local/bin/codecov --gcov-exec llvm-cov ;
+        else
+          ~/.local/bin/codecov ;
+        fi
