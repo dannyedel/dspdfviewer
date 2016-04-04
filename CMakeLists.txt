@@ -36,6 +36,7 @@ option(UseQtFive "Build with Qt5 and libpoppler-qt5" ON)
 option(UpdateTranslations "Do you want to update the .ts files (WARNING: running make clean will delete them!)" OFF)
 option(BuildTests "Build unit tests (this requires pdflatex or internet access and DownloadTestPDFs=ON)" ON)
 option(RunDualScreenTests "Also run tests that require two screens to be connected" ON)
+option(RunTestsOnBigEndian "Run tests on a big-endian system" OFF)
 option(BoostStaticLink "Link statically against the boost libraries" OFF)
 option(WindowsStaticLink "Windows/MSVC only: Link statically against the dependencies and set /MT instead of /MD" ON)
 option(UsePrerenderedPDF "Use prerendered PDFs included in the source for testing, instead of building with pdflatex" OFF)
@@ -75,8 +76,17 @@ if(BuildTests)
 	# Set a default timeout to 60 seconds
 	set(DART_TESTING_TIMEOUT 60)
 	set(CTEST_TEST_TIMEOUT 60)
-	include(CTest)
-	add_subdirectory(testing)
+	# Check for big endian
+	include(TestBigEndian)
+	TEST_BIG_ENDIAN(BigEndian)
+	if( NOT BigEndian OR RunTestsOnBigEndian)
+		include(CTest)
+		add_subdirectory(testing)
+	else()
+		message(WARNING "The unit tests have been temporarily disabled on big-endian "
+			"systems.  If you want to help in debugging this, please pass "
+			"-DRunTestsOnBigEndian=ON to cmake to force their execution.")
+	endif()
 endif()
 
 #### Installation
