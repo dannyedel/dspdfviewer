@@ -2,7 +2,7 @@ sudo: false
 language: ruby
 rvm: 2
 cache: bundler
-script: bundle exec jekyll build
+script: bundle exec jekyll build --trace
 branches:
   only:
     - gh-pages
