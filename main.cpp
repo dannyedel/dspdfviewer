@@ -29,21 +29,17 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 
-#if defined ( _WIN32 ) && defined ( NDEBUG )
-#pragma comment(linker, "/SUBSYSTEM:windows")
-#include <Windows.h>
+#if defined ( _WIN32 )
+	#pragma comment(linker, "/ENTRY:mainCRTStartup")
 
-int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
-{
-	int argc = __argc;
-	#define argv __argv
+	#if defined( NDEBUG )
+		#pragma comment(linker, "/SUBSYSTEM:windows")
+	#endif
 
-#else
+#endif
 
 int main(int argc, char** argv)
 {
-
-#endif
 	QApplication app(argc, argv);
 
 	app.setApplicationName( QString::fromUtf8("dspdfviewer") );

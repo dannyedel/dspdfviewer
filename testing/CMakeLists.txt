@@ -15,21 +15,20 @@ list(APPEND PDFFILENAMES
 )
 
 if(DownloadTestPDF)
-	file(DOWNLOAD http://danny-edel.de/colored-rectangles.pdf ${CMAKE_CURRENT_BINARY_DIR}/colored-rectangles.pdf
-		TIMEOUT 30
-		SHOW_PROGRESS
-		EXPECTED_MD5 de9617fb1c00d6185e90314124e2c2f5
-		)
-	file(DOWNLOAD http://danny-edel.de/images.pdf ${CMAKE_CURRENT_BINARY_DIR}/images.pdf
-		TIMEOUT 30
-		SHOW_PROGESS
-		EXPECTED_MD5 5c72e0954d457e3e9a1287ff299e307a
-		)
-	file(DOWNLOAD http://danny-edel.de/many-many-pages.pdf ${CMAKE_CURRENT_BINARY_DIR}/many-many-pages.pdf
-		TIMEOUT 30
-		SHOW_PROGRESS
-		EXPECTED_MD5 22d934fbc13a93adc5e91bfec866229e
-		)
+	message(WARNING "DownloadTestPDF option has been deprectated, since "
+		"prerendered PDFs are now included in the source.  Use the option
+		-DUsePrerenderedPDF=ON from now on.")
+	set(UsePrerenderedPDF ON)
+endif()
+
+if(UsePrerenderedPDF)
+	foreach(pdffile IN LISTS PDFFILENAMES)
+		file(
+			COPY "pdfs/${pdffile}"
+			DESTINATION .
+			)
+		message(STATUS "Using pre-rendered ${pdffile}")
+	endforeach()
 else()
 	# Compile from source
 	find_program(PDFLATEX

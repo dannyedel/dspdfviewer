@@ -19,6 +19,9 @@ Changes in behaviour:
     environment does not have that pass -DRunDualScreenTests=OFF at
     CMake time.  This can be useful if you run the test suite under
     XvFB.
+  * Instead of offering pre-rendered PDFs for download, they are now
+    included in the source tree.  The option `DownloadTestPDF` has
+    been replaced with `UsePrerenderedPDF` accordingly.
 
 New features:
 * Memory usage now configurable
