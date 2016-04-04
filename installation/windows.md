@@ -6,8 +6,12 @@ layout: default
 ## Use a ready-to-run binary (recommended for most users)
 
 [@projekter][] provides ready-to-install windows binaries for you.
-You can download them at [@projekters release page][].
-Download the setup.exe, start it and follow the on-screen-instructions.
+
+It is recommended that you install the [latest release version][latest].
+Simply download the setup.exe, start it and follow the on-screen-instructions.
+
+If you want to install an older version or a pre-release,
+please see the full list at [@projekters release page][].
 
 ## Advanced users: Compile dspdfviewer from source
 
@@ -53,3 +57,4 @@ for examples of how to set up and compile a Debug configuration.
 [deps]: https://github.com/projekter/dspdfviewer/releases/tag/v1.14-42-g4acfb31
 [buildme.bat]: https://gist.github.com/dannyedel/549e57aa73936d7d7a7f
 [appveyor]: https://github.com/dannyedel/dspdfviewer/blob/master/.appveyor.yml
+[latest]: https://github.com/projekter/dspdfviewer/releases/latest
