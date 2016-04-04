@@ -9,6 +9,3 @@ if [ "$TRAVIS_OS_NAME" = "linux" ] ; then
 else
 	ctest --output-on-failure --timeout 60
 fi
-
-# print coverage report, ignore errors
-ctest -T coverage || true
