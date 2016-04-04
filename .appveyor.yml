@@ -50,7 +50,11 @@ before_test:
     - cmd: SET PATH=%PATH%;C:\qt\5.5\msvc2013\bin
     - cmd: if exist Testing\Debug copy C:\dspdf\popplerDyn\poppler\bin\poppler-qt5d.dll Testing\Debug\poppler-qt5.dll
     - cmd: if exist Testing\Debug copy C:\dspdf\popplerDyn\poppler\bin\poppler-qt5d.dll Debug\poppler-qt5.dll
+    - cmd: if exist Testing\Debug windeployqt Testing\Debug\
+    - cmd: if exist Testing\Debug windeployqt Debug\
     - cmd: SET CTEST_OUTPUT_ON_FAILURE=1
+    - cmd: if exist Testing\Release windeployqt Testing\Release\
+    - cmd: if exist Testing\Release windeployqt Release\
 
 after_test:
     - cmd: msbuild RUN_TESTS.vcxproj
