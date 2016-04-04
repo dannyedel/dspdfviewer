@@ -23,7 +23,7 @@ before_build:
         cmake ..
         -G "Visual Studio 12 2013"
         -DUseQtFive=ON
-        -DDownloadTestPDF=ON
+        -DUsePrerenderedPDF=ON
         -DBoostStaticLink=ON
         -DWindowsStaticLink=OFF
         -DRunDualScreenTests=OFF
