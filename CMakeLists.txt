@@ -74,6 +74,7 @@ if(BuildTests)
 	# Run unit tests regardless of debug/release
 	# Set a default timeout to 60 seconds
 	set(DART_TESTING_TIMEOUT 60)
+	set(CTEST_TEST_TIMEOUT 60)
 	include(CTest)
 	add_subdirectory(testing)
 endif()
