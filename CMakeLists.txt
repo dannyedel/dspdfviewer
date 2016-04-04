@@ -38,9 +38,7 @@ option(BuildTests "Build unit tests (this requires pdflatex or internet access a
 option(RunDualScreenTests "Also run tests that require two screens to be connected" ON)
 option(BoostStaticLink "Link statically against the boost libraries" OFF)
 option(WindowsStaticLink "Windows/MSVC only: Link statically against the dependencies and set /MT instead of /MD" ON)
-option(UsePrerenderedPDF
-	"Use prerendered PDFs included in the source for testing, "
-	"instead of building with pdflatex" OFF)
+option(UsePrerenderedPDF "Use prerendered PDFs included in the source for testing, instead of building with pdflatex" OFF)
 option(CodeCoverage "Add coverage analysis code to the program. Will slow it down. A lot. Only supported on GCC right now." OFF)
 
 include(cmake/platforms.cmake)
