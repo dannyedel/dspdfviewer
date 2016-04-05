@@ -21,7 +21,7 @@ before_build:
     - cmd: cd \projects\dspdfviewer\build
     - cmd: >
         cmake ..
-        -G "Visual Studio 12 2013"
+        -G "Visual Studio 12 2013" -T v120_xp
         -DUseQtFive=ON
         -DUsePrerenderedPDF=ON
         -DBoostStaticLink=ON
