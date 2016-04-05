@@ -8,23 +8,30 @@ or non user-relevant changes (like build system or packaging related), please
 inspect the output of commands like `git diff -w v1.11..v1.12` directly.
 
 
-v1.15 - UNRELEASED
+v1.15 - 2016-04-05
 ------------------
 
 Changes in behaviour:
 
 * When compiling dspdfviewer yourself:
-  * You must now execute the testsuite within a running X Server.
-  * The testsuite expects two screens to be connected, if your test
-    environment does not have that pass -DRunDualScreenTests=OFF at
-    CMake time.  This can be useful if you run the test suite under
-    XvFB.
+  * You must now execute the testsuite within a running X Server
+    (Linux) or within a graphical environment (Windows/OSX).
+    It will no longer try to set up one on its own.
+  * The testsuite expects two screens to be connected by default.
+    If your environment only has one screen, you can pass
+    -DRunDualScreenTests=OFF at CMake time to avoid a test failure.
   * Instead of offering pre-rendered PDFs for download, they are now
     included in the source tree.  The option `DownloadTestPDF` has
     been replaced with `UsePrerenderedPDF` accordingly.
+  * Qt5 is now the default.  If you want to build against Qt4,
+    you will have to pass -DUseQtFive=OFF to CMake.
+    Note that Qt4 support is now considered deprecated and will be
+    removed in one of the next versions.  Please file a bug if your
+    system does not work correctly with Qt5.
 
 New features:
-* Memory usage now configurable
+
+* Predictable memory usage and configurable cache size limit
   * Previously, dspdfviewer allowed to cache 100 images.  It did not
     matter whether these where thumbnails or full pages, resulting in
     unpredictable memory usage.
@@ -36,6 +43,15 @@ New features:
     dspdfviewer can be up to 300M higher, mainly depending on whether
     the shared libraries (poppler/qt) are also used by other programs,
     or are specifically loaded for dspdfviewer.
+
+Other:
+
+* A lot of work has gone into the Windows port, and compiling on
+  Windows with MSVC is now part of the automated testing.
+* The testsuite is currently disabled on big-endian machines.
+  It keeps failing with what appears to be an endian issue.
+  If you want to help out, you can force the testsuite to run
+  by passing -DRunTestsOnBigEndian=ON at cmake time.
 
 
 v1.14 - 2015-12-01
