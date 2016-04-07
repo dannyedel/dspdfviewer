@@ -6,7 +6,7 @@ struct i3OutputHandle: public OutputHandle {
 	const std::string xrandrName;
 	const std::string name() const override;
 	const bool primary;
-	bool isPrimary() const { return primary; }
+	bool isPrimary() const override { return primary; }
 
 	i3OutputHandle(const std::string&, bool);
 };
@@ -19,6 +19,7 @@ class i3DesktopSupport: public DesktopSupport {
 	OutputList getOutputs() const override;
 	void moveWindow(QWidget&, OutputHandle&) const override;
 	void makeFullscreen(QWidget&) const override;
+	void removeFullscreen(QWidget&) const override;
 private:
 	static const std::string getSocketpath();
 };

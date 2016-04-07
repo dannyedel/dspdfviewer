@@ -406,6 +406,9 @@ void DSPDFViewer::repositionWindows() {
 			primaryOutput.swap( secondaryOutput );
 		}
 
+		desktopSupport->removeFullscreen( audienceWindow );
+		desktopSupport->removeFullscreen( secondaryWindow );
+
 		/** Primary Output: Built-in Laptop screen
 		 * This has the window for the presenter */
 		desktopSupport->moveWindow( secondaryWindow, *primaryOutput);

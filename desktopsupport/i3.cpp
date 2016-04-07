@@ -53,7 +53,7 @@ void i3DesktopSupport::moveWindow(QWidget& w, OutputHandle& hnd) const {
 	ostringstream command;
 	command << "i3-msg " 
 		<< "[id=" << w.winId() << "] "
-		<< "fullscreen disable, "
+//		<< "fullscreen disable, "
 		<< "move to output " << h.xrandrName;
 	cerr << "Trying to run " << command.str() << endl;
 	system( command.str().c_str() );
@@ -61,10 +61,24 @@ void i3DesktopSupport::moveWindow(QWidget& w, OutputHandle& hnd) const {
 }
 
 void i3DesktopSupport::makeFullscreen(QWidget& w) const {
+	if ( w.isFullScreen() )
+		return;
 	ostringstream command;
 	command << "i3-msg "
 		<< "[id=" << w.winId() << "] "
 		<< "fullscreen enable";
+	cerr << "Trying to run " << command.str() << endl;
+	system( command.str().c_str() );
+	QApplication::processEvents();
+}
+
+void i3DesktopSupport::removeFullscreen(QWidget& w) const {
+	if ( ! w.isFullScreen() )
+		return;
+	ostringstream command;
+	command << "i3-msg "
+		<< "[id=" << w.winId() << "] "
+		<< "fullscreen disable";
 	cerr << "Trying to run " << command.str() << endl;
 	system( command.str().c_str() );
 	QApplication::processEvents();

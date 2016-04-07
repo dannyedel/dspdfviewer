@@ -27,4 +27,5 @@ class Win32DesktopSupport: public DesktopSupport {
 	OutputList getOutputs() const override;
 	void moveWindow(QWidget&, OutputHandle&) const override;
 	void makeFullscreen(QWidget&) const override;
+	void removeFullscreen(QWidget&) const override;
 };

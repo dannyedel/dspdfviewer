@@ -132,6 +132,8 @@ public:
 	 */
 	virtual void makeFullscreen(QWidget& window) const =0;
 
+	virtual void removeFullscreen(QWidget& window) const =0;
+
 	/** This is a base class, make destructor virtual */
 	virtual ~DesktopSupport() { }
 };
