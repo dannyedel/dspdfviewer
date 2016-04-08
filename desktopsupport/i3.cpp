@@ -76,18 +76,12 @@ void i3DesktopSupport::removeFullscreen(QWidget& w) const {
 
 
 const string i3DesktopSupport::getSocketpath() {
-	/** Cache for the socket path */
-	static string spath;
-	if ( ! spath.empty() ) {
-		return spath;
-	}
-
 	/** FIXME: Actually check the return STRING, not just the retval */
 	int ret = system("i3 --get-socketpath");
 
 	if ( ret == 0 ) {
-		spath = "OK";
+		return "OK";
 	}
 
-	return spath;
+	return string();
 }
