@@ -11,12 +11,12 @@ CMAKE_PARAMETERS="-DCMAKE_VERBOSE_MAKEFILE=ON"
 
 CMAKE_PARAMETERS+=" -DCMAKE_BUILD_TYPE=Debug"
 
+# Use prerendered PDF
+# rather than install pdflatex
+CMAKE_PARAMETERS+=" -DUsePrerenderedPDF=ON"
+
 # OSX specific stuff
 if [ "$TRAVIS_OS_NAME" = "osx" ] ; then
-	# Use prerendered PDF
-	# rather than install pdflatex
-	CMAKE_PARAMETERS+=" -DUsePrerenderedPDF=ON"
-
 	# Skip dual screen tests since we don't have
 	# xvfb-run
 	CMAKE_PARAMETERS+=" -DRunDualScreenTests=OFF"
@@ -33,6 +33,13 @@ elif [ "$QT_VERSION" -eq 5 ] ; then
 else
 	echo "Unknown qt version $QT_VERSION" >&2
 	false
+fi
+
+# travis/ccache hack for clang
+if [[ "$CXX" == "clang++" && -x /usr/bin/ccache ]] ; then
+	mkdir -p "$HOME/bin"
+	ln -s "/usr/bin/ccache" "$HOME/bin/clang"
+	ln -s "/usr/bin/ccache" "$HOME/bin/clang++"
 fi
 
 cmake $CMAKE_PARAMETERS ..
