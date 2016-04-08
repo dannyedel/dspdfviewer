@@ -37,10 +37,8 @@ fi
 
 # travis/ccache hack for clang
 if [[ "$CXX" == "clang++" && -x /usr/bin/ccache ]] ; then
-	mkdir -p /home/travis/bin
-	ln -s /usr/bin/ccache /home/travis/bin/clang
-	ln -s /usr/bin/ccache /home/travis/bin/clang++
-	export PATH=/home/travis/bin:$PATH
+	"ln -s /usr/bin/ccache" "$HOME/bin/clang"
+	"ln -s /usr/bin/ccache" "$HOME/bin/clang++"
 fi
 
 cmake $CMAKE_PARAMETERS ..
