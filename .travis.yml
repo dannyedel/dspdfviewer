@@ -10,10 +10,6 @@ qt4_deps: &q4dep
     - xvfb
     - xauth
     - libpoppler-qt4-dev
-    - texlive-latex-recommended
-    - texlive-pictures
-    - latex-beamer
-    - xserver-xorg-video-dummy
 qt5_deps: &q5dep
     - libboost-program-options-dev
     - libboost-test-dev
@@ -24,10 +20,6 @@ qt5_deps: &q5dep
     - qtbase5-dev
     - qttools5-dev
     - qttools5-dev-tools
-    - texlive-latex-recommended
-    - texlive-pictures
-    - latex-beamer
-    - xserver-xorg-video-dummy
 addons:
     apt:
         packages: *q4dep

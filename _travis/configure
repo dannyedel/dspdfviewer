@@ -11,12 +11,12 @@ CMAKE_PARAMETERS="-DCMAKE_VERBOSE_MAKEFILE=ON"
 
 CMAKE_PARAMETERS+=" -DCMAKE_BUILD_TYPE=Debug"
 
+# Use prerendered PDF
+# rather than install pdflatex
+CMAKE_PARAMETERS+=" -DUsePrerenderedPDF=ON"
+
 # OSX specific stuff
 if [ "$TRAVIS_OS_NAME" = "osx" ] ; then
-	# Use prerendered PDF
-	# rather than install pdflatex
-	CMAKE_PARAMETERS+=" -DUsePrerenderedPDF=ON"
-
 	# Skip dual screen tests since we don't have
 	# xvfb-run
 	CMAKE_PARAMETERS+=" -DRunDualScreenTests=OFF"
