@@ -1,19 +1,8 @@
 #include "i3.h"
 #include "../debug.h"
-#include <boost/throw_exception.hpp>
-#include <stdio.h>
 #include <sstream>
 #include <iostream>
-#include <thread>
-#include <chrono>
 #include <QApplication>
-
-namespace {
-	typedef std::unique_ptr<
-		FILE,
-		decltype(&pclose)
-	> FILEptr;
-}
 
 using namespace std;
 
@@ -42,6 +31,7 @@ const std::string i3OutputHandle::name() const {
 
 OutputList i3DesktopSupport::getOutputs() const {
 	/** FIXME: Dummy code */
+	/** FIXME: Parse output of i3-msg --get-outputs with a JSON parser */
 	OutputList list;
 	list.emplace_back( new i3OutputHandle("DVI-I-1", true) );
 	list.emplace_back( new i3OutputHandle("VGA-0", false) );
@@ -91,11 +81,13 @@ const string i3DesktopSupport::getSocketpath() {
 	if ( ! spath.empty() ) {
 		return spath;
 	}
-	/** Socketpath not cached */
 
-	/** FIXME: Port this to boost or similar */
-	FILEptr fd( popen("i3 --get-socketpath", "r"), pclose );
+	/** FIXME: Actually check the return STRING, not just the retval */
+	int ret = system("i3 --get-socketpath");
 
+	if ( ret == 0 ) {
+		spath = "OK";
+	}
 
-	return "/run/user/1000/i3/ipc-socket.1468";
+	return spath;
 }
