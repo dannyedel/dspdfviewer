@@ -62,3 +62,19 @@ OutputPtr DesktopSupport::getSecondary(const DesktopSupportErrorHandling& err) c
 	/** Return the first non-primary output */
 	return move( vec.at(0) );
 }
+
+void DesktopSupport::makeFullscreen( QWidget& window ) const {
+	if ( isFullscreen(window) )
+		return;
+	window.showFullScreen();
+}
+
+void DesktopSupport::removeFullscreen( QWidget& window ) const {
+	if ( ! isFullscreen(window) )
+		return;
+	window.showNormal();
+}
+
+bool DesktopSupport::isFullscreen( QWidget& window ) const {
+	return window.isFullScreen();
+}

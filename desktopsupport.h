@@ -129,10 +129,25 @@ public:
 	 * If the desktop does not allow detection of fullscreen
 	 * state, unconditional un-full-screening and re-full-screening
 	 * is acceptable as a last resort.
+	 *
+	 * The default implementation simply calls QWidget::showFullscreen()
 	 */
-	virtual void makeFullscreen(QWidget& window) const =0;
+	virtual void makeFullscreen(QWidget& window) const;
 
-	virtual void removeFullscreen(QWidget& window) const =0;
+	/** Make the window non-fullscreen.
+	 *
+	 * Must not make an already normal window fullscreen.
+	 *
+	 * The default implementation simply calls QWidget::showNormal().
+	 */
+	virtual void removeFullscreen(QWidget& window) const;
+
+	/** Can this desktop environment move fullscreen windows?
+	 */
+	virtual bool canMoveWindowWhileFullscreen() const =0;
+
+	/* Is this window fullscreen? */
+	virtual bool isFullscreen(QWidget& window) const;
 
 	/** This is a base class, make destructor virtual */
 	virtual ~DesktopSupport() { }

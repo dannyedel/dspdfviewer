@@ -406,8 +406,10 @@ void DSPDFViewer::repositionWindows() {
 			primaryOutput.swap( secondaryOutput );
 		}
 
-		desktopSupport->removeFullscreen( audienceWindow );
-		desktopSupport->removeFullscreen( secondaryWindow );
+		if ( ! desktopSupport->canMoveWindowWhileFullscreen() ) {
+			desktopSupport->removeFullscreen( audienceWindow );
+			desktopSupport->removeFullscreen( secondaryWindow );
+		}
 
 		/** Primary Output: Built-in Laptop screen
 		 * This has the window for the presenter */
@@ -426,13 +428,22 @@ void DSPDFViewer::repositionWindows() {
 		 * first (possibly disposable) and ensure the audience
 		 * gets the real fullscreen.
 		 */
-		desktopSupport->makeFullscreen( secondaryWindow );
-		desktopSupport->makeFullscreen( audienceWindow );
+
+		if ( ! desktopSupport->canMoveWindowWhileFullscreen() ) {
+			desktopSupport->makeFullscreen( secondaryWindow );
+			desktopSupport->makeFullscreen( audienceWindow );
+		}
 	} else {
 		/** Only one window in use */
+		if ( ! desktopSupport->canMoveWindowWhileFullscreen() ) {
+			desktopSupport->removeFullscreen( audienceWindow );
+		}
+
 		desktopSupport->moveWindow(audienceWindow, *primaryOutput);
 
-		/** FIXME: Add configuration for non-fullscreen mode */
-		desktopSupport->makeFullscreen( audienceWindow );
+		if ( ! desktopSupport->canMoveWindowWhileFullscreen() ) {
+			/** FIXME: Add configuration for non-fullscreen mode */
+			desktopSupport->makeFullscreen( audienceWindow );
+		}
 	}
 }

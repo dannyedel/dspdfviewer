@@ -32,19 +32,6 @@ OutputList GenericDesktopSupport::getOutputs() const {
 	return vec;
 }
 
-void GenericDesktopSupport::makeFullscreen(QWidget& window) const {
-	if ( window.isFullScreen() )
-		return;
-	window.showNormal();
-	window.showFullScreen();
-}
-
-void GenericDesktopSupport::removeFullscreen(QWidget& window) const {
-	if ( ! window.isFullScreen() )
-		return;
-	window.showNormal();
-}
-
 void GenericDesktopSupport::moveWindow(QWidget& window, OutputHandle& outhand) const {
 	GenericOutputHandle& out = dynamic_cast<GenericOutputHandle&>(outhand);
 	window.move( out.screenRect.topLeft() );

@@ -38,14 +38,6 @@ void Win32DesktopSupport::moveWindow(QWidget& window, OutputHandle& out) const {
 	);
 }
 
-void Win32DesktopSupport::makeFullscreen(QWidget& window) const {
-	window.showFullScreen();
-}
-
-void Win32DesktopSupport::removeFullscreen(QWidget& window) const {
-	window.showNormal();
-}
-
 std::string const Win32OutputHandle::name() const {
 	std::ostringstream os;
 	os << "Win32 Output [" << screenNumber << "]";
