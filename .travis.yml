@@ -73,6 +73,7 @@ install:
     - make -C build
 script: _travis/test
 after_success:
+    - ccache -s
     - pip install --user codecov
     - >
         if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then
