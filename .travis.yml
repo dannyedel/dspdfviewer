@@ -1,6 +1,7 @@
 language: cpp
 compiler: gcc
 sudo: false
+cache: ccache
 # define dependencies as q4dep and q5dep
 qt4_deps: &q4dep
     - libboost-program-options-dev
