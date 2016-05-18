@@ -33,9 +33,8 @@ elif [ "$QT_VERSION" -eq 5 ] ; then
 	if [ "$TRAVIS_OS_NAME" = "osx" ] ; then
 		# on OSX/Homebrew, qt5 is not in default search path yet.
 		#
-		# Use shell-glob to find the qt5 directory
-		# and pass it to cmake
-		QT5PATH=$(ls -d /usr/local/Cellar/qt5/5.*/ | head -n1 )
+		# Use brew to find the qt5 prefix and pass it to cmake.
+		QT5PATH=$(brew --prefix qt5)
 		CMAKE_PARAMETERS+=" -DCMAKE_PREFIX_PATH=$QT5PATH"
 	fi
 else
