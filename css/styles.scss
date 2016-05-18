@@ -1,3 +1,6 @@
+---
+---
+
 code {
 	white-space: pre;
 }
@@ -59,4 +62,20 @@ code.language-bash .c
 {
 	/* Comments */
 	color: #888;
+}
+
+/* Include the page-generator css */
+@import 'page-generator';
+
+/* Include syntax highlighting,
+ * create with
+ * bundle exec rougify style github > /path/to/scss
+ */
+@import 'rouge';
+
+/* Overwrite any font definitions,
+ * use the systems default monospace font
+ */
+code,pre {
+	font-family: monospace;
 }
