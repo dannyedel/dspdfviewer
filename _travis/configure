@@ -30,6 +30,14 @@ if [ "$QT_VERSION" -eq 4 ] ; then
 	CMAKE_PARAMETERS+=" -DUseQtFive=OFF"
 elif [ "$QT_VERSION" -eq 5 ] ; then
 	CMAKE_PARAMETERS+=" -DUseQtFive=ON"
+	if [ "$TRAVIS_OS_NAME" = "osx" ] ; then
+		# on OSX/Homebrew, qt5 is not in default search path yet.
+		#
+		# Use shell-glob to find the qt5 directory
+		# and pass it to cmake
+		QT5PATH=$(ls -d /usr/local/Cellar/qt5/5.*/ | head -n1 )
+		CMAKE_PARAMETERS+=" -DCMAKE_PREFIX_PATH=$QT5PATH"
+	fi
 else
 	echo "Unknown qt version $QT_VERSION" >&2
 	false
