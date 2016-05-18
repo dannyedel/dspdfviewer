@@ -27,3 +27,4 @@ debian/*.log
 # stuff from jekyll after building the website
 _site/
 vendor
+.sass-cache
