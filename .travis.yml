@@ -60,6 +60,10 @@ matrix:
         - os: osx
           compiler: clang
           before_install: _travis/osx-install-dependencies
+        - os: osx
+          compiler: clang
+          env: QT_VERSION=5
+          before_install: _travis/osx-install-dependencies
 install:
     - _travis/configure
     - make -C build
