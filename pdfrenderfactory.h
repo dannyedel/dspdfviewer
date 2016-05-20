@@ -87,6 +87,7 @@ private:
   quint64 currentVersion;
 
   int numberOfPages_;
+  bool renderingActive;
 
 private:
   void clearAllCaches();
@@ -115,6 +116,8 @@ signals:
 
   public slots:
   void rewatchFile();
+  void suspendRendering();
+  void resumeRendering();
 };
 
 #endif // PDFRENDERFACTORY_H

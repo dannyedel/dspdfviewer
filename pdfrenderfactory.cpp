@@ -96,7 +96,8 @@ PdfRenderFactory::PdfRenderFactory( const RuntimeConfiguration& rc):
 	currentVersion(0),
 	// Attempt to read the document to get the number of pages within.
 	// This will throw an error if the document is unreadable.
-	numberOfPages_(documentReference.popplerDocument()->numPages())
+	numberOfPages_(documentReference.popplerDocument()->numPages()),
+	renderingActive(true)
 {
 
   rewatchFile();
@@ -113,6 +114,10 @@ PdfRenderFactory::PdfRenderFactory( const RuntimeConfiguration& rc):
 void PdfRenderFactory::requestPageRendering(const RenderingIdentifier& originalIdentifier, QThread::Priority priority)
 {
   QMutexLocker lock(&mutex);
+	if ( ! renderingActive )
+	{
+		return;
+	}
 
   RenderingIdentifier renderingIdentifier(originalIdentifier);
 
@@ -221,4 +226,14 @@ int PdfRenderFactory::numberOfPages() const
 
 PdfRenderFactory::~PdfRenderFactory() {
 	RenderUtils::notifyShutdown();
+}
+
+void PdfRenderFactory::suspendRendering()
+{
+	renderingActive=false;
+}
+
+void PdfRenderFactory::resumeRendering()
+{
+	renderingActive=true;
 }

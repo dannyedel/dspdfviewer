@@ -391,6 +391,7 @@ const QRect DSPDFViewer::secondGeometry() const {
 }
 
 void DSPDFViewer::repositionWindows() {
+	renderFactory.suspendRendering();
 	auto primaryOutput = desktopSupport->getPrimary();
 
 	/** Get secondary output only if we actually use
@@ -446,4 +447,7 @@ void DSPDFViewer::repositionWindows() {
 			desktopSupport->makeFullscreen( audienceWindow );
 		}
 	}
+
+	renderFactory.resumeRendering();
+	renderPage();
 }
