@@ -20,7 +20,7 @@ class i3DesktopSupport: public DesktopSupport {
 	void moveWindow(QWidget&, OutputHandle&) const override;
 	void makeFullscreen(QWidget&) const override;
 	void removeFullscreen(QWidget&) const override;
-	bool canMoveWindowWhileFullscreen() const {
+	bool canMoveWindowWhileFullscreen() const override {
 		return false;
 	}
 private:
