@@ -58,7 +58,6 @@ matrix:
               apt:
                   packages: *q5dep
         - os: osx
-          osx_image: xcode7.3
           compiler: clang
           before_install: _travis/osx-install-dependencies
         - os: osx
@@ -72,12 +71,9 @@ install:
 script: _travis/test
 after_success:
     - ccache -s
-    - pip install --user codecov
     - >
-        if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then
-          ~/Library/Python/*/bin/codecov ;
-        elif [[ "$CXX" == "clang++" ]] ; then
-          ~/.local/bin/codecov --gcov-exec llvm-cov ;
+        if [[ "$CXX" == "clang++" && "$TRAVIS_OS_NAME" != "osx" ]] ; then
+          bash <(curl -s https://codecov.io/bash) -x llvm-cov
         else
-          ~/.local/bin/codecov ;
+          bash <(curl -s https://codecov.io/bash)
         fi
