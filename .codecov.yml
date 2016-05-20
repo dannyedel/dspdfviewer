@@ -1,0 +1,4 @@
+coverage:
+    ignore:
+        - testing/.*
+comment: off
