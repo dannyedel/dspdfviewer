@@ -29,10 +29,6 @@ OutputList Win32DesktopSupport::getOutputs() const {
 
 void Win32DesktopSupport::moveWindow(QWidget& window, OutputHandle& out) const {
 	Win32OutputHandle& h=dynamic_cast<Win32OutputHandle&>(out);
-	/** Un-fullscreen the window, to be sure we're allowed to move it */
-	if ( window.isFullScreen() ) {
-		window.showNormal();
-	}
 	window.windowHandle()->setScreen(
 		QApplication::screens().at( h.screenNumber )
 	);

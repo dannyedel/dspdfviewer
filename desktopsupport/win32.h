@@ -27,6 +27,6 @@ class Win32DesktopSupport: public DesktopSupport {
 	OutputList getOutputs() const override;
 	void moveWindow(QWidget&, OutputHandle&) const override;
 	bool canMoveWindowWhileFullscreen() const override {
-		return true;
+		return false;
 	}
 };
