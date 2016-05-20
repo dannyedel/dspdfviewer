@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 #include <QWidget>
 
 #include "windowrole.h"
