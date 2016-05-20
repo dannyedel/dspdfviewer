@@ -32,6 +32,9 @@ endif()
 # TODO: Set this only for the automoc files
 add_definitions(-Wno-error=undefined-reinterpret-cast)
 
+# Clang on recent XCode fails to compile the boost tests
+add_definitions(-Wno-error=disabled-macro-expansion)
+
 #message(FATAL_ERROR "Version: ${CMAKE_CXX_COMPILER_VERSION}")
 
 # clang will complain about -isystem passed but not used.
