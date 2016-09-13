@@ -8,6 +8,16 @@ or non user-relevant changes (like build system or packaging related), please
 inspect the output of commands like `git diff -w v1.11..v1.12` directly.
 
 
+v1.15.1 - 2016-09-13
+--------------------
+
+Bugfix:
+
+* No longer advances two slides on mouse wheel when
+  used with recent Qt5.  Thanks to @nbecker for reporting
+  this on GitHub.
+
+
 v1.15 - 2016-04-05
 ------------------
 
