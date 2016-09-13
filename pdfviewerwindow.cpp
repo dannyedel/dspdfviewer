@@ -167,6 +167,7 @@ void PDFViewerWindow::wheelEvent(QWheelEvent* e)
       DEBUGOUT << "Next";
       emit nextPageRequested();
     }
+	e->accept();
 }
 
 void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
