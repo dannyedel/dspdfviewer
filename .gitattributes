@@ -14,3 +14,6 @@ _travis/	export-ignore
 
 # Same for appveyor
 .appveyor.yml	export-ignore
+
+# Same for codecov
+.codecov.yml	export-ignore
