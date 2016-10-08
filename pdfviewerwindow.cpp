@@ -24,9 +24,6 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMouseEvent>
-#if defined(POPPLER_QT5) && defined(_WIN32)
-#include <QWindow>
-#endif
 #include "debug.h"
 #include <QInputDialog>
 #include <QMessageBox>
@@ -37,25 +34,10 @@
 
 using boost::numeric_cast;
 
-void PDFViewerWindow::setMonitor(const unsigned int monitor)
-{
-  if ( m_monitor != monitor )
-  {
-    m_monitor = monitor;
-    reposition();
-  }
-}
-
-unsigned int PDFViewerWindow::getMonitor() const
-{
-  return m_monitor;
-}
-
-PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& wr, bool enabled):
+PDFViewerWindow::PDFViewerWindow(PagePart pagePart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& wr, bool enabled):
   QWidget(),
   ui(),
   m_enabled(enabled),
-  m_monitor(monitor),
   currentImage(),
   blank(false),
   informationLineVisible(false),
@@ -96,43 +78,6 @@ PDFViewerWindow::PDFViewerWindow(unsigned int monitor, PagePart pagePart, bool s
     ui.slideClock->setVisible(r.showSlideClock());
     ui.presentationClock->setVisible(r.showPresentationClock());
   }
-
-  reposition(); // This will fullscreen on its own
-}
-
-
-
-void PDFViewerWindow::reposition()
-{
-  if ( ! m_enabled )
-    return;
-  this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
-  this->showNormal();
-#if defined(POPPLER_QT5) && defined(_WIN32)
-  static QList<QScreen *> screens = QApplication::screens();
-  if ( m_monitor < numeric_cast<unsigned>(screens.count()) )
-    this->windowHandle()->setScreen(screens[m_monitor]);
-  else
-    this->windowHandle()->setScreen(0);
-  this->showFullScreen();
-#else
-  QRect rect = QApplication::desktop()->screenGeometry( numeric_cast<int>(getMonitor()) );
-  move(rect.topLeft());
-  resize( rect.size() );
-  this->showFullScreen();
-#endif
-  /* Note: The focus should be on the primary window, because at least
-   * Gnome draws the primary window's border onto the secondary.
-   *
-   * I dont mind the border on my helper screen, but the
-   * audience shouldnt see it.
-   */
-  if ( !informationLineVisible )
-    this->activateWindow();
-//  this->resize( 100, 100 );
- // this->move(rect.topLeft());
-  //this->showFullScreen();
-
 }
 
 void PDFViewerWindow::displayImage(QImage image)

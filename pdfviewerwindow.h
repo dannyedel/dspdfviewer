@@ -38,7 +38,6 @@ class PDFViewerWindow : public QWidget
 private:
   Ui::Form ui;
   bool	m_enabled;
-  unsigned int m_monitor;
   QImage currentImage;
   bool blank;
   bool informationLineVisible;
@@ -77,22 +76,8 @@ private:
   
 public:
   /** Standard constructor
-   * @param monitor monitor to start on (usually 0 for primary)
    */
-    explicit PDFViewerWindow(unsigned int monitor, PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& windowRole, bool enabled=true);
-
-    /** Sets the monitor to display this window on
-     * Automatically calls reposition
-     */
-    void setMonitor(const unsigned int monitor);
-
-    /** Gets the current monitor setting
-     */
-    unsigned int getMonitor() const;
-
-    /** Reposition the window (for example after a monitor change)
-     */
-    void reposition();
+    explicit PDFViewerWindow(PagePart myPart, bool showInformationLine, const RuntimeConfiguration& r, const WindowRole& windowRole, bool enabled=true);
 
     QSize getTargetImageSize() const;
 
