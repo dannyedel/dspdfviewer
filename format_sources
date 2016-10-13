@@ -1,0 +1,1 @@
+*.cpp *.h : uncrustify -l CPP -f $TMPFILE -c uncrustify.cfg -o $TMPFILE
