@@ -44,14 +44,12 @@ matrix:
     include:
         - compiler: clang
         - dist: trusty
-          sudo: required
           env: QT_VERSION=5
           compiler: gcc
           addons:
               apt:
                   packages: *q5dep
         - dist: trusty
-          sudo: required
           env: QT_VERSION=5
           compiler: clang
           addons:
