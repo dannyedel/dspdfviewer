@@ -17,17 +17,16 @@ Boolean options in `cmake` are specified with `-DSomeOpt=ON` and `OFF`, respecti
 For string-type options you can specify an arbitrary string, just make sure to correctly
 escape it for your shell.
 
-## Options for v1.14
+## Options for v1.15
 
 By default, you will need the following external software:
 
 * `boost`
 * `cmake`
-* `qt4`
-* `poppler` with the Qt4 bindings
-* For the test suite (activated by default):
+* `qt5`
+* `poppler` with the Qt5 bindings
+* If you want to compile the test PDFs during build (activated by default):
   * `pdflatex` with `latex-beamer` package installed
-  * On Linux: `xvfb`
 
 The following `cmake` options manipulate the compilation and dependency list:
 
@@ -37,22 +36,31 @@ The following `cmake` options manipulate the compilation and dependency list:
   to include a dist-specific version.
   * By default, this is auto-detected using `git describe`, with a hardcoded
   fallback version number (such as, when not building from a git clone).
-* `UseQtFive` boolean, default OFF
-  * If this is ON, `dspdfviewer` will be built against `Qt5` and the
-  `poppler-qt5` bindings, instead of the Qt4 version.
-  * If this options is enabled, dspdfviewer depends on Qt5 and libpoppler-qt5,
-  and no longer depends on Qt4 or libpoppler-qt4.
+* `UseQtFive` boolean, default ON
+  * If this is OFF, `dspdfviewer` will be built against `Qt4` and the
+  `poppler-qt4` bindings, instead of the Qt5 version.
+  * If this options is disabled, dspdfviewer depends on Qt4 and libpoppler-qt4,
+  and no longer depends on Qt5 or libpoppler-qt5.
+  * The Qt4 support will get dropped eventually.  Please use the Qt5
+  version and report bugs if you experience regressions compared to Qt4.
 * `UpdateTranslations` boolean, default OFF
   * If you want to work on the translation, you can activate this flag
   to make `cmake` regenerate the `.ts` files.
-  **Be warned** that cmake now considers the `.ts` file an output and
-  will delete it if you call `make clean`.
+  **Be warned** that when this switch is ON, cmake sees the `.ts` files
+  as *output* files and will **delete** them if you call `make clean`.
 * `BuildTests` boolean, default ON
-  * Builds unit tests.  These tests will require PDFs to render, which
-  can either be generated during the build or downloaded from the internet
-  (see next option)
-  * If this option is enabled, dspdfviewer also depends on the boost unit
-  test framework.
+  * Builds unit tests.  These tests will require PDFs to function, which
+  are included in the tarball, but can be (re)generated during the build.
+  * `RunDualScreenTests` boolean, default ON
+    * Include unit tests that require two screens to be connected.
+  * `RunTestsOnBigEndian` boolean, default OFF
+    * Run the unit tests on a big-endian system.  By default, tests are
+      only run on little-endian systems.
+  * `UsePrerenderedPDF` boolean, default OFF
+    * Use pre-rendered PDFs for the test suite, instead of compiling them
+      on-the-fly during the build.
+    * Enable this to speed up build time and reduce dependencies. 
+    * The default value will probably switch to ON in a future version.
 * `BoostStaticLink` boolean, default OFF
   * Link against the `boost` libraries statically (ON) or dynamically (OFF)
   * If your platform supports dynamic linking, ideally through a package manager
@@ -60,21 +68,22 @@ The following `cmake` options manipulate the compilation and dependency list:
   recommended to stick to dynamic linking.
   * If you link statically, please ensure that you recompile when the boost
   libraries get updated.
-* `DownloadTestPDF` boolean, default OFF
-  * If `BuildTests` is off, the value of this option is *ignored*.
-  * If this option is off, dspdfviewer depends on a working `pdflatex` installation
-  that includes `latex-beamer`.
-  * If you want to avoid the rather large dependency chain resulting from this, you can switch
-  this to ON and it will download the test PDFs from `http://danny-edel.de/`.
+* `WindowsStaticLink` boolean, default ON
+  * Only relevant for Windows builds using the MS Visual C++ Compiler.
+  * Sets the `/MT` instead of the `/MD` compiler flags.
 * `CodeCoverage` boolean, default OFF
   * This flag adds the necessary flags to record code coverage (currently
   only supported with gcc).  Only of interest for developers, this massively
   slows down the code.  Don't use it for production builds.
 
-Additionally, `dspdfviewer` always depends on:
-
-* `boost` (component `program_options`)
 
 ---
+
+## Historical options (no longer present in current version)
+
+* `DownloadTestPDF`
+  * This option is ignored since v1.15,
+    because the pre-rendered PDF files are now distributed in
+    the release tarball.
 
 back to [compile from source](/installation/)
