@@ -3,40 +3,13 @@ title: Installation on Ubuntu
 layout: default
 ---
 
-## Ubuntu wily and newer
+`dspdfviewer` is **included in the main repositories** since wily (2015/10).
 
-`dspdfviewer` is included in wily and newer. Simply call <span class="root">
-`apt-get install dspdfviewer`</span>.
+Simply call <span class="root">`apt-get install dspdfviewer`</span> or
+use your favorite GUI to install the `dspdfviewer` package.
 
-## Ubuntu Precise LTS and Trusty LTS
+## Older versions
 
-Add the repository `ppa:dannyedel/dspdfviewer` to your system source list
-and install from it.
+* There is a [PPA hosting 1.15 for trusty and precise][ppa].
 
-You can do this by running
-
-{% highlight bash %}
-sudo add-apt-repository ppa:dannyedel/dspdfviewer
-# the system will ask for your password and confirmation
-sudo apt-get update
-sudo apt-get install dspdfviewer
-{% endhighlight %}
-
-## Versions overview
-
-To see which version of `dspdfviewer` is included in which Ubuntu release, check out
-https://launchpad.net/ubuntu/+source/dspdfviewer
-
-## Advanced users: Follow the development version
-
-If you want to help development by testing new features, please
-use the `ppa:dannyedel/dspdfviewer-daily` package source.
-
-You can do this by running
-
-{% highlight bash %}
-sudo add-apt-repository ppa:dannyedel/dspdfviewer-daily
-# the system will ask for your password and confirmation
-sudo apt-get update
-sudo apt-get install dspdfviewer
-{% endhighlight %}
+[ppa]: /installation/ubuntu/ppa
