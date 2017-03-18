@@ -5,10 +5,16 @@ layout: default
 
 ## Use a ready-to-run binary (recommended for most users)
 
-[@projekter][] provides ready-to-install windows binaries for you.
+[@projekter][] provides ready-to-use windows binaries for you.
 
-It is recommended that you install the [latest release version][latest].
-Simply download the setup.exe, start it and follow the on-screen-instructions.
+It is recommended that you use the [latest release version][latest].
+
+The recommended way is to download the `setup.exe`,
+start it and follow the on-screen-instructions to install
+dspdfviewer into your programs folder, and create shortcuts where desired.
+
+Since v1.15.1, there is also a `dspdfviewer-$VERSION.zip` archive available,
+containing a portable version that works without installation.
 
 If you want to install an older version or a pre-release,
 please see the full list at [@projekters release page][].
