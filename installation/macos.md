@@ -4,8 +4,8 @@ layout: default
 ---
 
 ## Homebrew (recommended)
-If you use a mac with Homebrew, there already is a formula to install
-dspdfviewer
+If you use a mac with Homebrew, there already is [a formula][formula]
+to install dspdfviewer
 
 {% highlight bash %}
 brew install dspdfviewer
@@ -30,3 +30,5 @@ to pass its installation prefix to `cmake`:
 ```bash
 cmake /path/to/source -DSomeOption=ON -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)
 ```
+
+[formula]: https://github.com/Homebrew/homebrew-core/blob/master/Formula/dspdfviewer.rb
