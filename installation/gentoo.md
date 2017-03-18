@@ -21,3 +21,10 @@ want and run "emerge dspdfviewer".
 
 [0]: https://github.com/dannyedel/dspdfviewer/tree/master/gentoo
 [1]: https://www.gentoo.org/proj/en/overlays/userguide.xml
+
+-----
+
+The inclusion request for the main Gentoo repository is filed under
+[bug 520120 in the Gentoo bugzilla][gentoobug].
+
+[gentoobug]: https://bugs.gentoo.org/show_bug.cgi?id=520120
