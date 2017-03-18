@@ -9,45 +9,25 @@ a little bit different.
 
 ## Debian stretch and newer (incl. sid)
 
-`dspdfviewer` is already included on the official mirrors. Simply call
-<span class="root">`apt-get install dspdfviewer`</span> and you're ready to go.
+`dspdfviewer` is included in the distribution since `stretch`.
 
-## Debian jessie
+You don't need to activate anything special, simply call
+<span class="root">`apt-get install dspdfviewer`</span>
+(or use your favorite GUI to install the `dspdfviewer` package)
+and you're ready to go.
 
-`dspdfviewer` is included in `jessie-backports`.  Information on what
-`backports` is and how to use it is found on [backports instructions],
-but to get started, try these commands (make sure to replace
-*ftp.de.debian.org* with your preferred debian mirror!)
+## Older Debian releases
 
-<div class="root">
-{% highlight bash %}
-# Activate jessie-backports
-tee -a /etc/apt/sources.list.d/jessie-backports.list <<< "deb http://ftp.de.debian.org/debian jessie-backports main"
-apt-get update
+* Debian jessie: dspdfviewer is available via jessie-backports.
+  If you have not activated backports yet,
+  [Click here for detailed instructions.][1]
 
-# Install dspdfviewer
-apt-get install dspdfviewer
-{% endhighlight %}
-</div>
-
-<span class="root">
-If you already had jessie-backports activated, a
-simple `apt-get install dspdfviewer` is enough.
-</span>
-
-
-[backports instructions]: http://backports.debian.org/Instructions/
+[1]: /installation/debian/jessie.html
 
 ## Versions overview
 
 To see which versions are available in Debian, please take a look at the
 [package tracker].
 
-## Advanced users: Follow the development version
-
-If you want to follow the current development version, take a look at the
-[daily debs] for prebuilt binaries.
-
 [package tracker]: https://tracker.debian.org/pkg/dspdfviewer
-[daily debs]: /installation/daily-deb.html
 [@dannyedel]: https://github.com/dannyedel
