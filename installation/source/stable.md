@@ -3,24 +3,42 @@ title: Compile the stable release from source
 ---
 
 
-Note: At the time of writing, the current release is `v1.13.1`. You can check at
-https://github.com/dannyedel/dspdfviewer/releases
-if a newer version was released since then.
-	Please adapt the version numbers as needed.
+Note: Please take a look at the [github releases][rel] page to get an
+overview of the released versions and how they changed.
+
+You can also jump directly to the [latest version][latest].
+
+[rel]: https://github.com/dannyedel/dspdfviewer/releases
+[latest]: https://github.com/dannyedel/dspdfviewer/releases/latest
+
+Info:  When compiling software yourself, you have the opportunity to
+change certain aspects.
+Please read the [compile-time options list][opts] if you want to
+fine-tune certain things.
+
+[opts]: /installation/source/options.html
 
 {% highlight bash %}
-wget https://github.com/dannyedel/dspdfviewer/archive/v1.13.1.tar.gz
-wget https://github.com/dannyedel/dspdfviewer/releases/download/v1.13.1/dspdfviewer-1.13.1.tar.gz.asc
-gpgv dspdfviewer-1.13.1.tar.gz.asc v1.13.1.tar.gz # verify archive integrity
-cd dspdfviewer-1.13.1
+VERSION=1.33.7 # Change this!
+wget https://github.com/dannyedel/dspdfviewer/archive/v$VERSION.tar.gz
+wget https://github.com/dannyedel/dspdfviewer/releases/download/v$VERSION/dspdfviewer-$VERSION.tar.gz.asc
+gpgv dspdfviewer-$VERSION.tar.gz.asc v$VERSION.tar.gz # verify archive integrity
+cd dspdfviewer-$VERSION
 mkdir build
 cd build
-cmake .. # You can pass options here
+cmake .. # You could pass options here (see above)
 make
-# You can now call the software as ./dspdfviewer
+
+#
+# You can now use the software as ./dspdfviewer
+#
+
 make install # optional, requires root privileges
 {% endhighlight %}
 
 Note that there is no uninstall script, so please consider replacing the final
 `make install` with something more appropriate for your distribution.
 It will respect the usual DESTDIR parameter.
+
+If you are willing to write and maintain a dspdfviewer installation
+script/package for a specific distribution, please get in touch.

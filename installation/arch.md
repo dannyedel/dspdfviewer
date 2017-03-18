@@ -3,8 +3,10 @@ title: Installation on Arch Linux
 layout: default
 ---
 
-## Arch Linux
-In the [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) there is
-a PKGBUILD for installing dspdfviewer from
-[latest release](https://aur.archlinux.org/packages/dspdfviewer/) or from
-[git](https://aur.archlinux.org/packages/dspdfviewer-git/).
+`dspdfviewer` is available via the [Arch User Repository AUR][aur].
+
+There is a PKGBUILD file for the [latest release version][release].
+
+[aur]: https://wiki.archlinux.org/index.php/Arch_User_Repository
+[release]: https://aur.archlinux.org/packages/dspdfviewer/
+[git]: https://aur.archlinux.org/packages/dspdfviewer-git/
