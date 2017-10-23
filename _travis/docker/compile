@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -evx
+
+mkdir /build
+cd /build
+cmake /source -DUsePrerenderedPDF=ON
+make -k

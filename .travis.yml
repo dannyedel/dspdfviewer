@@ -32,17 +32,19 @@ branches:
         - /^test-.*$/
 # Build matrix.
 #
-# The first (implicit) build will be
-# qt4/gcc/container-based (precise)
-#
-# additional builds specified are
-# 2. qt4/clang/container (precise)
-# 3. qt5/gcc/gce (sudo/trusty)
-# 4. qt5/clang/gce (sudo/trusty)
-# 5. osx/clang
+# 1. qt4/gcc @ precise
+# 2. qt4/clang @ precise
+# 3. qt5/gcc @ trusty
+# 4. qt5/clang @ trusty
+# 5. qt5/clang @ osx (default xcode)
+# 6. qt5/gcc7 and clang-5.0 @ buster
+# 7. qt5/gcc8 and clang-6.0 @ sid/experimental
 matrix:
     include:
-        - compiler: clang
+        - dist: precise
+          compiler: gcc
+        - dist: precise
+          compiler: clang
         - dist: trusty
           sudo: required
           env: QT_VERSION=5
@@ -59,12 +61,22 @@ matrix:
                   packages: *q5dep
         - os: osx
           compiler: clang
-          before_install: _travis/osx-install-dependencies
-        - os: osx
-          osx_image: xcode7.3
-          compiler: clang
           env: QT_VERSION=5
           before_install: _travis/osx-install-dependencies
+        - services: docker
+          addons:
+              apt:
+                  packages:
+          env: DEBDIST=buster
+          script:  _travis/docker/build-and-test-software
+          install: _travis/docker/build-docker-image
+        - services: docker
+          addons:
+              apt:
+                  packages:
+          env: DEBDIST=experimental
+          script:  _travis/docker/build-and-test-software
+          install: _travis/docker/build-docker-image
 install:
     - _travis/configure
     - make -C build

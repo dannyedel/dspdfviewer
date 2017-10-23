@@ -41,6 +41,18 @@ if( NOT UseQtFive )
 	add_definitions(-Wno-error=effc++)
 endif()
 
+# on GCC 8, compilation fails on the Qt auto-generated code
+# file moc_dspdfviewerwindow.cpp with errors like these:
+#
+# error: unnecessary parentheses in declaration of 'type name' [-Werror=parentheses]
+#
+# FIXME: Limit this to the auto-generated files only
+CHECK_CXX_COMPILER_FLAG("-Wno-error=parentheses"
+	GCC_SUPPORTS_PARENTHESES_DIAGNOSTIC)
+if(GCC_SUPPORTS_PARENTHESES_DIAGNOSTIC)
+	add_definitions(-Wno-error=parentheses)
+endif()
+
 if(CodeCoverage)
 	message(STATUS "Adding gcov as test coverage helper")
 	add_definitions(-fprofile-arcs -ftest-coverage -O0)

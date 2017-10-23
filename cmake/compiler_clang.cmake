@@ -35,7 +35,39 @@ add_definitions(-Wno-error=undefined-reinterpret-cast)
 # Clang on recent XCode fails to compile the boost tests
 add_definitions(-Wno-error=disabled-macro-expansion)
 
-#message(FATAL_ERROR "Version: ${CMAKE_CXX_COMPILER_VERSION}")
+# Clang-5.0 notices this on runtimeconfiguration.cpp:201:14
+#
+# 'boost::program_options::parse_config_file<char>' required here, but no
+# definition is available [-Werror,-Wundefined-func-template]
+# store( parse_config_file( cfile, configFileOptions), vm);
+#
+# FIXME: This is a workaround, not a solution.
+# See #191 at https://github.com/dannyedel/dspdfviewer/issues/191
+#
+# Older clang versions (at least including clang-3.8) abort compilation
+# with this flag, so first check if this current version supports it.
+Include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-Wno-error=undefined-func-template"
+	CLANG_SUPPORTS_UNDEFINED_FUNC_TEMPLATE_DIAGNOSTIC)
+if(CLANG_SUPPORTS_UNDEFINED_FUNC_TEMPLATE_DIAGNOSTIC)
+	# Add the command-l
+	add_definitions(-Wno-error=undefined-func-template)
+endif()
+
+# Clang-6.0 notices this on the auto-generated moc files:
+#
+# moc_dspdfviewer.cpp:[many times]: error: redundant parentheses
+# surrounding declarator [-Werror,-Wredundant-parens]
+#
+# Since this is auto-generated code by Qt, we just demote the error
+# to warning.
+#
+# FIXME: Limit this to *only* the auto-generated code.
+CHECK_CXX_COMPILER_FLAG("-Wno-error=redundant-parens"
+	CLANG_SUPPORTS_REDUNDANT_PARENS_DIAGNOSTIC)
+if(CLANG_SUPPORTS_REDUNDANT_PARENS_DIAGNOSTIC)
+	add_definitions(-Wno-error=redundant-parens)
+endif()
 
 # clang will complain about -isystem passed but not used.
 # This adds unnecessary noise
