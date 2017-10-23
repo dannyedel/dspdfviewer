@@ -2,7 +2,22 @@
 
 set -evx
 
-export CC=gcc
-export CXX=g++
+# find highest installed gcc version
+TEST_GCC_VERSIONS="9 8 7 6"
+
+for i in $TEST_GCC_VERSIONS ; do
+	if which "gcc-$i" &>/dev/null ; then
+		export CC=gcc-$i
+		export CXX=g++-$i
+		break
+	fi
+done
+
+# Fallback to unversioned binary
+if [ -z "$CC" ] ; then
+	export CC=gcc
+	export CXX=g++
+fi
+
 
 exec "$(dirname "$0")"/compile

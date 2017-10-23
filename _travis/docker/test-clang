@@ -2,7 +2,22 @@
 
 set -evx
 
-export CC=clang-5.0
-export CXX=clang++-5.0
+# find highest installed clang version
+TEST_CLANG_VERSIONS="7.0 6.0 5.0 4.0 3.8"
+
+for i in $TEST_CLANG_VERSIONS ; do
+	if which "clang-$i" &>/dev/null ; then
+		export CC=clang-$i
+		export CXX=clang++-$i
+		break
+	fi
+done
+
+# Fallback to unversioned binary
+if [ -z "$CC" ] ; then
+	export CC=clang
+	export CXX=clang++
+fi
+
 
 exec "$(dirname "$0")"/compile
