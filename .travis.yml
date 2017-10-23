@@ -42,7 +42,10 @@ branches:
 # 5. osx/clang
 matrix:
     include:
-        - compiler: clang
+        - dist: precise
+          compiler: gcc
+        - dist: precise
+          compiler: clang
         - dist: trusty
           sudo: required
           env: QT_VERSION=5
