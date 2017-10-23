@@ -2,4 +2,6 @@
 
 DOCKERDIR="$(dirname "$0")"
 
-docker build --pull=true -t dspdfviewer-build -f "$DOCKERDIR/Dockerfile-buster" "$DOCKERDIR"
+: "${DEBDIST:=buster}"
+
+docker build --pull=true -t "dspdfviewer-build-$DEBDIST" -f "$DOCKERDIR/Dockerfile-$DEBDIST" "$DOCKERDIR"
