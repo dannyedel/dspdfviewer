@@ -54,7 +54,20 @@ if(CLANG_SUPPORTS_UNDEFINED_FUNC_TEMPLATE_DIAGNOSTIC)
 	add_definitions(-Wno-error=undefined-func-template)
 endif()
 
-#message(FATAL_ERROR "Version: ${CMAKE_CXX_COMPILER_VERSION}")
+# Clang-6.0 notices this on the auto-generated moc files:
+#
+# moc_dspdfviewer.cpp:[many times]: error: redundant parentheses
+# surrounding declarator [-Werror,-Wredundant-parens]
+#
+# Since this is auto-generated code by Qt, we just demote the error
+# to warning.
+#
+# FIXME: Limit this to *only* the auto-generated code.
+CHECK_CXX_COMPILER_FLAG("-Wno-error=redundant-parens"
+	CLANG_SUPPORTS_REDUNDANT_PARENS_DIAGNOSTIC)
+if(CLANG_SUPPORTS_REDUNDANT_PARENS_DIAGNOSTIC)
+	add_definitions(-Wno-error=redundant-parens)
+endif()
 
 # clang will complain about -isystem passed but not used.
 # This adds unnecessary noise
