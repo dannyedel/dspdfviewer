@@ -69,6 +69,7 @@ matrix:
           addons:
               apt:
                   packages:
+          env: BUILDMETHOD=docker
           script:  _travis/docker/build-and-test-software
           install: _travis/docker/build-docker-image
 install:
