@@ -67,14 +67,14 @@ matrix:
           addons:
               apt:
                   packages:
-          env: BUILDMETHOD=docker DEBDIST=buster
+          env: DEBDIST=buster
           script:  _travis/docker/build-and-test-software
           install: _travis/docker/build-docker-image
         - services: docker
           addons:
               apt:
                   packages:
-          env: BUILDMETHOD=docker DEBDIST=experimental
+          env: DEBDIST=experimental
           script:  _travis/docker/build-and-test-software
           install: _travis/docker/build-docker-image
 install:
