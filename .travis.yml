@@ -61,9 +61,6 @@ matrix:
               apt:
                   packages: *q5dep
         - os: osx
-          compiler: clang
-          before_install: _travis/osx-install-dependencies
-        - os: osx
           osx_image: xcode7.3
           compiler: clang
           env: QT_VERSION=5
