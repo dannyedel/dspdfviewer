@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -evx
+
+export CC=gcc
+export CXX=g++
+
+exec "$(dirname "$0")"/compile

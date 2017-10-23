@@ -1,0 +1,12 @@
+FROM debian:buster
+MAINTAINER Danny Edel <mail@danny-edel.de>
+
+RUN echo deb-src http://deb.debian.org/debian buster main >> /etc/apt/sources.list
+
+RUN apt-get update -y && apt-get upgrade -yV
+
+RUN apt-get build-dep -y dspdfviewer
+
+RUN apt-get install -yV clang-5.0
+
+RUN apt-get install -yV xvfb xauth

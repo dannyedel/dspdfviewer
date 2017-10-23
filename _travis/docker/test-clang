@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -evx
+
+export CC=clang-5.0
+export CXX=clang++-5.0
+
+exec "$(dirname "$0")"/compile

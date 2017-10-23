@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -evx
+
+SOURCECODE="$PWD"
+
+# Uses the Debian image with the recent compilers installed to
+# build once against g++ and once against clang.
+
+# FIXME:  Does not run the actual testsuite yet
+
+# Pass 1:  g++
+docker run -it --rm -v "$SOURCECODE:/source:ro" \
+	dspdfviewer-build /source/_travis/docker/test-gcc
+
+# Pass 2:  clang
+docker run -it --rm -v "$SOURCECODE:/source:ro" \
+	dspdfviewer-build /source/_travis/docker/test-clang

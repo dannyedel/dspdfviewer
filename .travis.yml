@@ -65,6 +65,12 @@ matrix:
           compiler: clang
           env: QT_VERSION=5
           before_install: _travis/osx-install-dependencies
+        - services: docker
+          addons:
+              apt:
+                  packages:
+          script:  _travis/docker/build-and-test-software
+          install: _travis/docker/build-docker-image
 install:
     - _travis/configure
     - make -C build
