@@ -32,7 +32,7 @@ HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLab
     throw WrongLinkType();
   QRect mySize;
   const QPixmap* pixmap = imageLabel->pixmap();
-  if ( pixmap == 0 )
+  if ( pixmap == nullptr )
     throw /** FIXME Exception **/ std::runtime_error("Tried to construct a HyperlinkArea from an image label without a pixmap");
   
   QRectF sizeWithinImageLabel = link.linkArea();
