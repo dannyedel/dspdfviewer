@@ -122,13 +122,13 @@
     </message>
     <message>
         <location filename="../keybindings.ui" line="66"/>
-        <source>N or Left/Down arrow</source>
-        <translation>N oder Pfeil nach links/unten</translation>
+        <source>N or Right/Down arrow</source>
+        <translation>N oder Pfeil nach rechts/unten</translation>
     </message>
     <message>
         <location filename="../keybindings.ui" line="73"/>
-        <source>P or Right/Down arrow</source>
-        <translation>P oder Pfeil nach rechts/unten</translation>
+        <source>P or Left/Up arrow</source>
+        <translation>P oder Pfeil nach links/oben</translation>
     </message>
     <message>
         <location filename="../keybindings.ui" line="80"/>
