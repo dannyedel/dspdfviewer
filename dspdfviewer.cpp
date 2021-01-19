@@ -80,6 +80,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
   sconnect( &audienceWindow, SIGNAL(quitRequested()), this, SLOT(exit()));
   sconnect( &audienceWindow, SIGNAL(rerenderRequested()), this, SLOT(renderPage()));
   sconnect( &audienceWindow, SIGNAL(restartRequested()), this, SLOT(goToStartAndResetClocks()));
+  sconnect( &audienceWindow, SIGNAL(restartTimer()), this, SLOT(resetClocks()));
 
   sconnect( &audienceWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
 
@@ -102,6 +103,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
     sconnect( &secondaryWindow, SIGNAL(quitRequested()), this, SLOT(exit()));
     sconnect( &secondaryWindow, SIGNAL(rerenderRequested()), this, SLOT(renderPage()));
     sconnect( &secondaryWindow, SIGNAL(restartRequested()), this, SLOT(goToStartAndResetClocks()));
+    sconnect( &secondaryWindow, SIGNAL(restartTimer()), this, SLOT(resetClocks()));
 
     sconnect( &secondaryWindow, SIGNAL(screenSwapRequested()), this, SLOT(swapScreens()) );
 
@@ -247,6 +249,12 @@ void DSPDFViewer::goToStartAndResetClocks()
   presentationClockRunning=false;
   sendAllClockSignals();
   gotoPage(0);
+}
+
+void DSPDFViewer::resetClocks()
+{
+  presentationClockRunning=false;
+  sendAllClockSignals();
 }
 
 QTime DSPDFViewer::presentationClock() const

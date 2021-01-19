@@ -120,6 +120,7 @@ public slots:
     void goBackward();
 
     void goToStartAndResetClocks();
+    void resetClocks();
 
     void swapScreens();
 

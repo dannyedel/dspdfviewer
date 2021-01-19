@@ -130,6 +130,7 @@ public slots:
     void previousPageRequested();
     void pageRequested(unsigned requestedPageNumber);
     void restartRequested();
+    void restartTimer();
 
     void screenSwapRequested();
 

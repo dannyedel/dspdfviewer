@@ -26,6 +26,7 @@ add_definitions(
 	-pedantic
 	-Wold-style-cast
 	-Woverloaded-virtual
+        -Wno-deprecated-declarations
 	-Weffc++
 )
 
