@@ -1,0 +1,22 @@
+name: pages
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory:
+          docs/
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo apt-get update
+      - run: sudo apt-get -y install bundler
+      - run: bundle update --bundler
+      - run: bundle install
+      - run: bundle exec jekyll build --trace

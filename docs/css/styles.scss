@@ -1,0 +1,81 @@
+---
+---
+
+code {
+	white-space: pre;
+}
+
+body {
+	max-width: 60em;
+	margin: auto;
+}
+
+div.backlink {
+	float: right;
+}
+
+h1::after {
+	clear: right;
+}
+
+div.root code::before {
+	content: 'root permission required\A';
+	font-style: italic;
+	font-size: 90%;
+	padding: 2px;
+	border: thin #888;
+	border-radius: 4px;
+	margin-left: 4em;
+	color: black;
+}
+
+span.root code::before {
+	content: 'as root';
+	font-style: italic;
+	font-size: 85%;
+	background-color: #faa;
+	margin-right: 0.5em;
+	color: black;
+}
+
+p code, li > code, li > span.root > code {
+	/* Mark Inline code with a little border
+	 */
+	background-color: #eee;
+	border: thin #888;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+
+.root pre {
+	background-color: #f8eeee;
+}
+
+/* Underline headers */
+
+h1, h2, h3 {
+	border-bottom: 1px solid #eee;
+}
+
+code.language-bash .c
+{
+	/* Comments */
+	color: #888;
+}
+
+/* Include the page-generator css */
+@import 'page-generator';
+
+/* Include syntax highlighting,
+ * create with
+ * bundle exec rougify style github > /path/to/scss
+ */
+@import 'rouge';
+
+/* Overwrite any font definitions,
+ * use the systems default monospace font
+ */
+code,pre {
+	font-family: monospace;
+}
