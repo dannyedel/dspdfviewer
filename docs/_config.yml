@@ -1,0 +1,25 @@
+exclude:
+  - vendor
+  - Gemfile
+  - Makefile
+  - README.md
+  - build*
+
+markdown: kramdown
+kramdown:
+    input: GFM
+    hard_wrap: false
+#    syntax_highlighter_opts:
+#        line_numbers: false
+
+# mimick github
+# fixed
+lsi: false
+source: .
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
