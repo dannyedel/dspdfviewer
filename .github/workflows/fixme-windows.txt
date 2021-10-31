@@ -1,3 +1,9 @@
+Windows building is not configured yet.
+
+For reference, here is the .appveyor.yml that used to do windows building:
+
+-----
+
 version: '{build}'
 branches:
   only:
