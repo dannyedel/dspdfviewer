@@ -97,11 +97,12 @@ missing features in the [issues system].
 If you want to help on development, please use github's
 amazing [pull request] feature.
 
-Both the [sourcecode] and [this website] are available to view and improve,
+The full [sourcecode], which includes [this website], is available
+to view and improve,
 and any help is greatly appreciated!
 
 [sourcecode]: https://github.com/dannyedel/dspdfviewer
-[this website]: https://github.com/dannyedel/dspdfviewer/tree/gh-pages
+[this website]: https://github.com/dannyedel/dspdfviewer/tree/master/docs/
 [pull request]: https://help.github.com/articles/using-pull-requests/
 
 ## Who built this program?
