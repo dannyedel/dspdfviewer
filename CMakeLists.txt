@@ -94,7 +94,7 @@ endif()
 install(TARGETS	dspdfviewer
 	RUNTIME DESTINATION bin)
 
-install(FILES docs/dspdfviewer.1
+install(FILES dspdfviewer.1
 	DESTINATION share/man/man1)
 
 install(FILES dspdfviewer.desktop
