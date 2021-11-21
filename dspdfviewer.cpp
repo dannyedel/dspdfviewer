@@ -39,6 +39,7 @@ using boost::numeric_cast;
 
 DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 	runtimeConfiguration(r),
+	desktopSupport( DesktopSupportFactory::getDesktopSupport() ),
 	clockDisplayTimer(),
 	slideStart(),
 	presentationStart(),
@@ -46,8 +47,9 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 	documentFileWatcher(),
  renderFactory(r),
  m_pagenumber(0),
- audienceWindow(1,   r.useFullPage()                 ? PagePart::FullPage : PagePart::LeftHalf , false, r, WindowRole::AudienceWindow),
- secondaryWindow(0, (r.useFullPage() | r.duplicate())? PagePart::FullPage : PagePart::RightHalf, true , r, WindowRole::PresenterWindow, r.useSecondScreen())
+ audienceWindow(  r.useFullPage()                 ? PagePart::FullPage : PagePart::LeftHalf , false, r, WindowRole::AudienceWindow),
+ secondaryWindow((r.useFullPage() | r.duplicate())? PagePart::FullPage : PagePart::RightHalf, true , r, WindowRole::PresenterWindow, r.useSecondScreen()),
+	monitorsSwapped(false)
 {
   DEBUGOUT << tr("Starting constructor") ;
 
@@ -116,6 +118,16 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
 
 
   }
+
+  // Activate windows
+  audienceWindow.show();
+  if ( r.useSecondScreen() )
+  {
+	secondaryWindow.show();
+  }
+
+  /** Position the windows */
+  repositionWindows();
 
   renderPage();
 
@@ -209,20 +221,13 @@ void DSPDFViewer::gotoPage(unsigned int pageNumber)
 
 void DSPDFViewer::swapScreens()
 {
-  if ( audienceWindow.getMonitor() == 0 )
-  {
-    audienceWindow.setMonitor(1);
-    secondaryWindow.setMonitor(0);
-    renderPage();
-  }
-  else
-  {
-    audienceWindow.setMonitor(0);
-    secondaryWindow.setMonitor(1);
-    renderPage();
-  }
+	if( monitorsSwapped ) {
+		monitorsSwapped = false;
+	} else {
+		monitorsSwapped = true;
+	}
+	repositionWindows();
 }
-
 
 
 void DSPDFViewer::exit()
@@ -383,4 +388,66 @@ const QRect DSPDFViewer::audienceGeometry() const {
 
 const QRect DSPDFViewer::secondGeometry() const {
 	return secondaryWindow.geometry();
+}
+
+void DSPDFViewer::repositionWindows() {
+	renderFactory.suspendRendering();
+	auto primaryOutput = desktopSupport->getPrimary();
+
+	/** Get secondary output only if we actually use
+	 * two screens
+	 */
+	if ( runtimeConfiguration.useSecondScreen() ) {
+		auto secondaryOutput = desktopSupport->getSecondary();
+
+		/** If monitors should be swapped, invert the following
+		 * logic.
+		 */
+		if ( monitorsSwapped ) {
+			primaryOutput.swap( secondaryOutput );
+		}
+
+		if ( ! desktopSupport->canMoveWindowWhileFullscreen() ) {
+			desktopSupport->removeFullscreen( audienceWindow );
+			desktopSupport->removeFullscreen( secondaryWindow );
+		}
+
+		/** Primary Output: Built-in Laptop screen
+		 * This has the window for the presenter */
+		desktopSupport->moveWindow( secondaryWindow, *primaryOutput);
+
+		/** Secondary Output: External screen / beamer
+		 * This has the audience's window
+		 */
+		desktopSupport->moveWindow( audienceWindow, *secondaryOutput);
+
+		/** FIXME: Add configuration setting for non-fullscreen-mode
+		 */
+
+		/** Just in case the desktop environment will un-full-screen
+		 * the first window, make the presenter's window fullscreen
+		 * first (possibly disposable) and ensure the audience
+		 * gets the real fullscreen.
+		 */
+
+		if ( ! desktopSupport->canMoveWindowWhileFullscreen() ) {
+			desktopSupport->makeFullscreen( secondaryWindow );
+			desktopSupport->makeFullscreen( audienceWindow );
+		}
+	} else {
+		/** Only one window in use */
+		if ( ! desktopSupport->canMoveWindowWhileFullscreen() ) {
+			desktopSupport->removeFullscreen( audienceWindow );
+		}
+
+		desktopSupport->moveWindow(audienceWindow, *primaryOutput);
+
+		if ( ! desktopSupport->canMoveWindowWhileFullscreen() ) {
+			/** FIXME: Add configuration for non-fullscreen mode */
+			desktopSupport->makeFullscreen( audienceWindow );
+		}
+	}
+
+	renderFactory.resumeRendering();
+	renderPage();
 }

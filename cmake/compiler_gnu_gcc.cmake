@@ -12,6 +12,9 @@ else()
 	if(C0XFLAG)
 		message(STATUS "Using -std=c++0x")
 		add_definitions(-std=c++0x)
+		# Abuse the preprocessor to remove the
+		# override keyword on this old compiler.
+		add_definitions(-Doverride= )
 	else()
 		message(FATAL_ERROR "Compiler does not support -std=c++0x either. "
 			"Please upgrade your compiler."

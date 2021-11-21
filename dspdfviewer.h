@@ -29,6 +29,7 @@
 #include "pdfviewerwindow.h"
 #include "pdfrenderfactory.h"
 #include "runtimeconfiguration.h"
+#include "desktopsupportfactory.h"
 
 class DSPDFViewer: public QObject
 {
@@ -36,6 +37,7 @@ class DSPDFViewer: public QObject
 
 private:
   const RuntimeConfiguration& runtimeConfiguration;
+  const DesktopSupportPtr desktopSupport;
   enum {
     TIMER_UPDATE_INTERVAL=250
   };
@@ -52,7 +54,7 @@ private:
   unsigned int m_pagenumber;
   PDFViewerWindow audienceWindow;
   PDFViewerWindow secondaryWindow;
-
+  bool monitorsSwapped;
 
 
 private:
@@ -122,6 +124,7 @@ public slots:
     void goToStartAndResetClocks();
 
     void swapScreens();
+    void repositionWindows();
 
     void toggleAudienceScreenBlank();
     void setAudienceScreenBlank();
