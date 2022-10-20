@@ -38,7 +38,6 @@ set(CMAKE_AUTORCC OFF)
 set(CMAKE_INCLUDE_CURRENT_DIR OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-option(UseQtFive "Build with Qt5 and libpoppler-qt5" ON)
 option(UpdateTranslations "Do you want to update the .ts files (WARNING: running make clean will delete them!)" OFF)
 option(BuildTests "Build unit tests (this requires pdflatex or internet access and DownloadTestPDFs=ON)" ON)
 option(RunDualScreenTests "Also run tests that require two screens to be connected" ON)

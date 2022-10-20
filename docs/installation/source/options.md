@@ -36,13 +36,6 @@ The following `cmake` options manipulate the compilation and dependency list:
   to include a dist-specific version.
   * By default, this is auto-detected using `git describe`, with a hardcoded
   fallback version number (such as, when not building from a git clone).
-* `UseQtFive` boolean, default ON
-  * If this is OFF, `dspdfviewer` will be built against `Qt4` and the
-  `poppler-qt4` bindings, instead of the Qt5 version.
-  * If this options is disabled, dspdfviewer depends on Qt4 and libpoppler-qt4,
-  and no longer depends on Qt5 or libpoppler-qt5.
-  * The Qt4 support will get dropped eventually.  Please use the Qt5
-  version and report bugs if you experience regressions compared to Qt4.
 * `UpdateTranslations` boolean, default OFF
   * If you want to work on the translation, you can activate this flag
   to make `cmake` regenerate the `.ts` files.

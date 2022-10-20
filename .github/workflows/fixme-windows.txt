@@ -28,7 +28,6 @@ before_build:
     - cmd: >
         cmake ..
         -G "Visual Studio 12 2013" -T v120_xp
-        -DUseQtFive=ON
         -DUsePrerenderedPDF=ON
         -DBoostStaticLink=ON
         -DWindowsStaticLink=OFF

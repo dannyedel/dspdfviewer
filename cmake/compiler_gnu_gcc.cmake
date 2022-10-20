@@ -32,15 +32,6 @@ add_definitions(
 # Turn all warnings into errors
 add_definitions(-Werror -pedantic-errors)
 
-# These warnings produce false positives on some older qt4 libraries
-# (this failed debian s390x compilation), therefore tune them back
-# to warning when building against qt4.
-
-if( NOT UseQtFive )
-	add_definitions(-Wno-error=old-style-cast)
-	add_definitions(-Wno-error=effc++)
-endif()
-
 if(CodeCoverage)
 	message(STATUS "Adding gcov as test coverage helper")
 	add_definitions(-fprofile-arcs -ftest-coverage -O0)
