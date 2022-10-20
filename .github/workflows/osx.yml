@@ -9,25 +9,28 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    if: 0 #FIXME:  brew is already on Qt6
     strategy:
       matrix:
-        #os: [ macos-latest, macos-10.15 ]
-        #buildtype: [ Debug, Release ]
-        os: [ macos-10.15 ]
-        buildtype: [ Debug ]
+        os: [ macos-11, macos-12 ]
+        buildtype: [ Debug, Release ]
+    env:
+      CMAKE_PREFIX_PATH: /usr/local/opt/qt5
+      PKG_CONFIG_PATH: /usr/local/opt/poppler-qt5/lib/pkgconfig:/usr/local/opt/poppler-qt5/share/pkgconfig
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: brew install boost
-      - run: brew install poppler
-      - name: create build/ dir
+      - run: brew install poppler-qt5
+      - name: cmake -B build/
         run: >
           cmake -B build/
-          -DCMAKE_VERBOSE_MAKEFILE=ON
+          -DCMAKE_PREFIX_PATH=          -DCMAKE_VERBOSE_MAKEFILE=ON
           -DUsePrerenderedPDF=ON
           -DCodeCoverage=ON
           -DCMAKE_BUILD_TYPE=${{matrix.buildtype}}
+          -DRunDualScreenTests=OFF
           .
       - run: cmake --build build/
       - run: ctest --output-on-failure --timeout 60
         working-directory: build/
+      - name: upload coverage
+        run: bash <(curl -s https://codecov.io/bash)

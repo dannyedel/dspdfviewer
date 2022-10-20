@@ -99,6 +99,7 @@ else()
 endif()
 
 # include/link poppler
+link_directories(${POPPLER_LIBRARY_DIRS})
 list(APPEND LIST_LIBRARIES ${POPPLER_LIBRARIES})
 list(APPEND LIST_INCLUDE_DIRS ${POPPLER_INCLUDE_DIRS})
 
