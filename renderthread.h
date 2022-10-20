@@ -37,7 +37,7 @@ private:
 public:
   RenderThread( const PDFDocumentReference& theDocument, const RenderingIdentifier& renderIdent);
 
-  void run();
+  void run() override;
 
   signals:
     void renderingFinished(QSharedPointer<RenderedPage> result);

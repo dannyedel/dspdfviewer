@@ -37,7 +37,7 @@ class HyperlinkArea : public QLabel
 public:
   HyperlinkArea(QLabel* imageLabel, const AdjustedLink& gotoLink);
   
-  virtual void mousePressEvent(QMouseEvent* ev);
+  virtual void mousePressEvent(QMouseEvent* ev) override;
   
   signals:
     void gotoPageRequested(uint targetPage);

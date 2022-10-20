@@ -57,11 +57,11 @@ private:
     */
   void displayImage(QImage image);
 
-  virtual void wheelEvent(QWheelEvent* e);
+  virtual void wheelEvent(QWheelEvent* e) override;
 
-  virtual void keyPressEvent(QKeyEvent* e);
+  virtual void keyPressEvent(QKeyEvent* e) override;
 
-  virtual void mousePressEvent(QMouseEvent* e);
+  virtual void mousePressEvent(QMouseEvent* e) override;
 
   void addThumbnail(uint pageNumber, QImage thumbnail);
 
@@ -113,7 +113,7 @@ public:
 public slots:
   void renderedPageIncoming( QSharedPointer<RenderedPage> renderedPage);
 
-  void resizeEvent(QResizeEvent* resizeEvent);
+  void resizeEvent(QResizeEvent* resizeEvent) override;
 
   void updateWallClock(const QTime& wallClock);
   void updateSlideClock(const QTime& slideClock);
