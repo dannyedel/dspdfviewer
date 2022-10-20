@@ -68,7 +68,7 @@ private slots:
 
 public:
     DSPDFViewer(const RuntimeConfiguration& r);
-    virtual ~DSPDFViewer();
+    virtual ~DSPDFViewer() override;
 
 
     /** get current page number

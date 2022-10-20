@@ -117,7 +117,8 @@ void PDFViewerWindow::reposition()
     this->windowHandle()->setScreen(0);
   this->showFullScreen();
 #else
-  QRect rect = QGuiApplication::screens().at(m_monitor)->geometry();
+  const int screenNum=numeric_cast<int>(m_monitor);
+  QRect rect = QGuiApplication::screens().at(screenNum)->geometry();
   move( rect.topLeft() );
   resize( rect.size() );
   this->showFullScreen();
