@@ -26,7 +26,6 @@ jobs:
           -DCMAKE_VERBOSE_MAKEFILE=ON
           -DUsePrerenderedPDF=ON
           -DCodeCoverage=ON
-          -DUseQtFive=ON
           -DCMAKE_BUILD_TYPE=${{matrix.buildtype}}
           .
       - run: cmake --build build/

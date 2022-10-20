@@ -2,6 +2,7 @@
 #include "testhelpers.hh"
 
 #include <QDesktopWidget>
+#include <QScreen>
 #include <QRect>
 
 using namespace std;
@@ -9,17 +10,17 @@ using namespace TestHelpers;
 
 SwapScreensAndCheckAlign::SwapScreensAndCheckAlign(DSPDFViewer& d):
 	dspdfviewer(d),
-	screenPrimary( QApplication::desktop()->screenGeometry( 0 ) ),
-	screenSecondary( QApplication::desktop()->screenGeometry( 1 ) ),
+	screenPrimary( QApplication::screens().at(0)->geometry() ),
+	screenSecondary( QApplication::screens().at(1)->geometry() ),
 	verify(true)
 {
-	DEBUGOUT << "Number of screens:" << QApplication::desktop()->numScreens() ;
+	DEBUGOUT << "Number of screens:" << QApplication::screens().size();
 
 	DEBUGOUT << "screen 0 [pri]:" << screenPrimary;
 	DEBUGOUT << "screen 1 [sec]:" << screenSecondary;
 
 
-	if ( QApplication::desktop()->numScreens() != 2 ) {
+	if ( QApplication::screens().size() != 2 ) {
 		WARNINGOUT << "Not running in a dual-screen environment";
 		verify = false;
 	} else if ( screenPrimary == screenSecondary ) {

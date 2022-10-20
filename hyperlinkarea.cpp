@@ -23,6 +23,7 @@
 #include <cmath>
 #include <boost/math/special_functions/round.hpp>
 #include "debug.h"
+#include <QtGlobal>
 
 using boost::math::iround;
 
@@ -31,17 +32,28 @@ HyperlinkArea::HyperlinkArea(QLabel* imageLabel, const AdjustedLink& link): QLab
   if ( link.linkType() != Poppler::Link::Goto )
     throw WrongLinkType();
   QRect mySize;
-  const QPixmap* pixmap = imageLabel->pixmap();
-  if ( pixmap == 0 )
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+  // QT Version is below 5.15, which added the Return-By-Value overload.
+  // Handle the copy ourselves.
+  // FIXME: Delete this code at some point
+  const QPixmap *ppixmap = imageLabel->pixmap();
+  if ( ppixmap == nullptr)
+    throw std::runtime_error("imageLabel with nullptr pixmap()");
+  const QPixmap pixmap = QPixmap{ *ppixmap }; //copy
+#else
+  // Qt version is at least 5.15, use Qt's own copy function.
+  const QPixmap pixmap = imageLabel->pixmap(Qt::ReturnByValue);
+#endif
+  if ( pixmap.isNull() )
     throw /** FIXME Exception **/ std::runtime_error("Tried to construct a HyperlinkArea from an image label without a pixmap");
   
   QRectF sizeWithinImageLabel = link.linkArea();
   
-  mySize.setTop( iround(sizeWithinImageLabel.top() * pixmap->height()) );
-  mySize.setLeft( iround(sizeWithinImageLabel.left() * pixmap->width()) );
+  mySize.setTop( iround(sizeWithinImageLabel.top() * pixmap.height()) );
+  mySize.setLeft( iround(sizeWithinImageLabel.left() * pixmap.width()) );
   
-  mySize.setHeight(std::abs( iround(sizeWithinImageLabel.height() * pixmap->height())) );
-  mySize.setWidth( iround(sizeWithinImageLabel.width() * pixmap->width()) ); 
+  mySize.setHeight(std::abs( iround(sizeWithinImageLabel.height() * pixmap.height())) );
+  mySize.setWidth( iround(sizeWithinImageLabel.width() * pixmap.width()) );
   
   setParent(imageLabel);
   setGeometry(mySize);

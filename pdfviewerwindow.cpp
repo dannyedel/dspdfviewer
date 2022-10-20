@@ -24,9 +24,8 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMouseEvent>
-#if defined(POPPLER_QT5) && defined(_WIN32)
 #include <QWindow>
-#endif
+#include <QScreen>
 #include "debug.h"
 #include <QInputDialog>
 #include <QMessageBox>
@@ -108,16 +107,18 @@ void PDFViewerWindow::reposition()
     return;
   this->setWindowFlags(windowFlags() & ~Qt::FramelessWindowHint);
   this->showNormal();
-#if defined(POPPLER_QT5) && defined(_WIN32)
-  static QList<QScreen *> screens = QApplication::screens();
+
+  /* This works on Windows */
+#ifdef _WIN32
+  QList<QScreen *> screens = QApplication::screens();
   if ( m_monitor < numeric_cast<unsigned>(screens.count()) )
     this->windowHandle()->setScreen(screens[m_monitor]);
   else
     this->windowHandle()->setScreen(0);
   this->showFullScreen();
 #else
-  QRect rect = QApplication::desktop()->screenGeometry( numeric_cast<int>(getMonitor()) );
-  move(rect.topLeft());
+  QRect rect = QGuiApplication::screens().at(m_monitor)->geometry();
+  move( rect.topLeft() );
   resize( rect.size() );
   this->showFullScreen();
 #endif
@@ -158,7 +159,7 @@ void PDFViewerWindow::wheelEvent(QWheelEvent* e)
 {
     // QWidget::wheelEvent(e);
 
-    if ( e->delta() > 0 )
+    if ( e->angleDelta().y() > 0 )
     {
       DEBUGOUT << "Back";
       emit previousPageRequested();
@@ -381,7 +382,9 @@ void PDFViewerWindow::resizeEvent(QResizeEvent* resizeEvent)
 		! i3shellcode_executed
 		// Make sure to do this only once
 		) {
-		QApplication::flush(); // Make sure the window has been painted
+		/* FIXME this is deprecated */
+		// QCoreApplication::flush(); // Make sure the window has been painted
+
 		// This is the second screen. It has now been created.
 		// so we should call the i3 shellcode now
 		const std::string shellcode = runtimeConfiguration.i3workaround_shellcode();

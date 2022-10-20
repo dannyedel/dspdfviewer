@@ -14,8 +14,7 @@ include /usr/share/dpkg/buildflags.mk
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-		-DDSPDFVIEWER_VERSION=$(shell dpkg-parsechangelog --show-field Version) \
-		-DUseQtFive=ON
+		-DDSPDFVIEWER_VERSION=$(shell dpkg-parsechangelog --show-field Version)
 
 %:
 	dh $@ --parallel

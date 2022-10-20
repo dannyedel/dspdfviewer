@@ -7,6 +7,15 @@ If you're intrested in the specific source-level changes between versions,
 or non user-relevant changes (like build system or packaging related), please
 inspect the output of commands like `git diff -w v1.11..v1.12` directly.
 
+v1.15.2 - UNRELEASED
+--------------------
+
+This is a maintenance release, not introducing any new functionality,
+but restoring compatibility with Qt 5.15 LTS.
+
+Building with Qt4 is no longer supported.  If you really need Qt4
+support, please get in touch.
+
 
 v1.15.1 - 2016-09-13
 --------------------
