@@ -37,7 +37,8 @@
  * You can override the shellcode by providing -DI3WORKAROUND_SHELLCODE="your shellcode"
  * at the cmake step.
  */
-#define I3WORKAROUND_SHELLCODE "i3-msg '[class=\"Dspdfviewer\" window_role=\"Audience_Window\"] move to output right, fullscreen'"
+#define I3WORKAROUND_SHELLCODE "i3-msg '[class=\"dspdfviewer\" window_role=\"Audience_Window\"] move to output right, fullscreen' && " \
+	" i3-msg '[class=\"dspdfviewer\" window_role=\"Secondary_Window\"]' fullscreen"
 #endif
 
 using namespace std;
