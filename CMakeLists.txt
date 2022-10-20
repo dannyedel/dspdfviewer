@@ -23,6 +23,12 @@ endif()
 if( NOT CMAKE_VERSION VERSION_LESS 3.1)
 	cmake_policy(SET CMP0054 NEW) # dont expand quoted strings in if()s
 endif()
+if( NOT CMAKE_VERSION VERSION_LESS 3.10)
+	cmake_policy(SET CMP0071 NEW) # Also process generated source files with MOC
+endif()
+if( NOT CMAKE_VERSION VERSION_LESS 3.17)
+	cmake_policy(SET CMP0100 NEW) # Allow .hh extension
+endif()
 
 project(dspdfviewer)
 

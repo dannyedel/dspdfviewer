@@ -271,13 +271,11 @@ QTime DSPDFViewer::slideClock() const
 void DSPDFViewer::resetSlideClock()
 {
   /* Always resets the slide clock. */
-  slideStart.start();
+  slideStart = QTime::currentTime();
   if ( ! presentationClockRunning ) {
     /* If this starts a presentation, also reset the presentation clock. */
-    presentationStart.start();
+    presentationStart = QTime::currentTime();
   }
-  /* and make sure they'll get refreshed a second later aswell. */
-  slideStart.start();
 
   presentationClockRunning=true;
 
@@ -295,7 +293,8 @@ void DSPDFViewer::sendAllClockSignals() const
 QTime DSPDFViewer::timeSince(const QTime& startPoint) const
 {
   QTime result(0,0);
-  result = result.addMSecs(startPoint.elapsed());
+  result = result.addMSecs(
+    startPoint.msecsTo( QTime::currentTime() ) );
   return result;
 }
 
