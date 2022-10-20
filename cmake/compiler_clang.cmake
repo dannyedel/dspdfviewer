@@ -29,17 +29,20 @@ endif()
 # about undefined behaviours.
 
 # So don't set Werror for it.
-# TODO: Set this only for the automoc files
+# FIXME: Set this only for the automoc files
 add_definitions(-Wno-error=undefined-reinterpret-cast)
+add_definitions(-Wno-error=redundant-parens)
+add_definitions(-Wno-error=extra-semi-stmt)
 
 # Clang on recent XCode fails to compile the boost tests
 add_definitions(-Wno-error=disabled-macro-expansion)
 
-#message(FATAL_ERROR "Version: ${CMAKE_CXX_COMPILER_VERSION}")
-
 # clang will complain about -isystem passed but not used.
 # This adds unnecessary noise
 add_definitions(-Wno-unused-command-line-argument)
+
+# unit_test_log from boost::test will trigger this warning
+add_definitions(-Wno-error=used-but-marked-unused)
 
 # qrc system generates code that triggers a lot of the
 # clang warnings.
