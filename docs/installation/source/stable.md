@@ -11,12 +11,17 @@ You can also jump directly to the [latest version][latest].
 [rel]: https://github.com/dannyedel/dspdfviewer/releases
 [latest]: https://github.com/dannyedel/dspdfviewer/releases/latest
 
+Dependencies:  You will need to install the [build dependencies][bdep]
+before you can compile this software.
+
+
 Info:  When compiling software yourself, you have the opportunity to
 change certain aspects.
 Please read the [compile-time options list][opts] if you want to
 fine-tune certain things.
 
 [opts]: /installation/source/options.html
+[bdep]: /installation/source/dependencies.html
 
 {% highlight bash %}
 VERSION=1.33.7 # Change this!
