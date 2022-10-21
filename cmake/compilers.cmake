@@ -6,6 +6,10 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 	message(STATUS "GNU G++ detected.")
 	include(cmake/compiler_gnu_gcc.cmake)
 
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+	message(STATUS "AppleClang detected.")
+	include(cmake/compiler_appleclang.cmake)
+
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	message(STATUS "Clang++ detected.")
 	include(cmake/compiler_clang.cmake)

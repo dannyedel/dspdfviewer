@@ -34,6 +34,10 @@ add_definitions(-Wno-error=undefined-reinterpret-cast)
 add_definitions(-Wno-error=redundant-parens)
 add_definitions(-Wno-error=extra-semi-stmt)
 
+# FIXME: These are apple-clang specific
+add_definitions(-Wno-error=poison-system-directories)
+add_definitions("-Wno-error=#warnings")
+
 # Clang on recent XCode fails to compile the boost tests
 add_definitions(-Wno-error=disabled-macro-expansion)
 
