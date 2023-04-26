@@ -17,6 +17,5 @@ jobs:
       - uses: actions/checkout@v3
       - run: sudo apt-get update
       - run: sudo apt-get -y install bundler
-      - run: bundle update --bundler
       - run: bundle install
       - run: bundle exec jekyll build --trace
