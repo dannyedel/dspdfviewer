@@ -16,10 +16,7 @@
 #     with this program; if not, write to the Free Software Foundation, Inc.,
 #     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 # */
-cmake_minimum_required(VERSION 2.8.4 FATAL_ERROR)
-if( NOT CMAKE_VERSION VERSION_LESS 2.8.11)
-	cmake_policy(SET CMP0020 NEW) # qtmain.lib linkage on windows
-endif()
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 if( NOT CMAKE_VERSION VERSION_LESS 3.1)
 	cmake_policy(SET CMP0054 NEW) # dont expand quoted strings in if()s
 endif()
