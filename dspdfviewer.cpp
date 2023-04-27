@@ -47,7 +47,7 @@ DSPDFViewer::DSPDFViewer(const RuntimeConfiguration& r):
  renderFactory(r),
  m_pagenumber(0),
  audienceWindow(1,   r.useFullPage()                 ? PagePart::FullPage : PagePart::LeftHalf , false, r, WindowRole::AudienceWindow),
- secondaryWindow(0, (r.useFullPage() | r.duplicate())? PagePart::FullPage : PagePart::RightHalf, true , r, WindowRole::PresenterWindow, r.useSecondScreen())
+ secondaryWindow(0, (r.useFullPage() || r.duplicate())? PagePart::FullPage : PagePart::RightHalf, true , r, WindowRole::PresenterWindow, r.useSecondScreen())
 {
   DEBUGOUT << tr("Starting constructor") ;
 
@@ -307,7 +307,7 @@ RenderingIdentifier DSPDFViewer::toRenderIdent(unsigned int pageNumber, const PD
 
 RenderingIdentifier DSPDFViewer::toThumbnailRenderIdent(unsigned int pageNumber, PDFViewerWindow& window)
 {
-  QSize newSize = window.getPreviewImageSize();;
+  QSize newSize = window.getPreviewImageSize();
   static QSize thumbnailSize;
   if ( thumbnailSize != newSize ) {
     DEBUGOUT << "Thumbnail size changed from" << thumbnailSize << "to" << newSize;
