@@ -30,6 +30,7 @@ jobs:
           -DCodeCoverage=ON
           -DCMAKE_BUILD_TYPE=${{matrix.buildtype}}
           -DRunDualScreenTests=OFF
+          -DWarningAsError=ON
           .
       - run: cmake --build build/
       - run: ctest --output-on-failure --timeout 60
