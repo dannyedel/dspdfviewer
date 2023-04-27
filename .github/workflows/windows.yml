@@ -1,0 +1,94 @@
+name: windows
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ windows-2019 ] #, windows-2022]
+    runs-on: ${{matrix.os}}
+    steps:
+      - uses: actions/checkout@v3
+      - run: mkdir C:\local
+      - run: mkdir build
+      - run: |
+          echo %GITHUB_REF%
+          echo %GITHUB_SHA%
+        shell: cmd
+      - name: check cache for dependency archive
+        uses: actions/cache@v3
+        id: cachedeps
+        with:
+          path: |
+            C:\dspdf
+          key: ${{matrix.os}}-dependencies
+      - name: if not cached, download and extract dependency rar archive
+        if: steps.cachedeps.outputs.cache-hit != 'true'
+        run: >
+          (New-Object net.webclient).DownloadFile(
+          'https://github.com/projekter/dspdfviewer/releases/download/v1.14-42-g4acfb31/DependenciesDyn.rar',
+          'C:\dependencies.rar'
+          )
+
+          7z x dependencies.rar
+        working-directory: C:\
+      - name: check cache for boost
+        uses: actions/cache@v3
+        id: cacheboost
+        with:
+          path: |
+            C:\local\boost_1_78_0
+          key: ${{matrix.os}}-boost
+      - name: if not cached, download and install boost
+        if: steps.cacheboost.outputs.cache-hit != 'true'
+        run: >
+          (New-Object net.webclient).DownloadFile(
+          'https://sourceforge.net/projects/boost/files/boost-binaries/1.78.0/boost_1_78_0-msvc-14.2-32.exe/download',
+          'C:\boost-installer.exe')
+
+          C:\boost-installer.exe /SP- /VERYSILENT
+
+          Start-Sleep -Seconds 5
+
+          Get-Process boost* | Wait-Process
+      - name: install qt (caches internally)
+        uses: jurplel/install-qt-action@v3
+        with:
+          arch: win32_msvc2019
+          version: 5.15.2
+          cache: true
+      - name: cmake
+        working-directory: ./build
+        run: >
+          cmake .. -G "Visual Studio 16 2019" -T v142 -A Win32
+          -DUsePrerenderedPDF=ON
+          -DBoostStaticLink=ON
+          -DWindowsStaticLink=OFF
+          -DRunDualScreenTests=OFF
+          -DBOOST_ROOT=C:\local\boost_1_78_0
+          -DBOOST_LIBRARYDIR=C:\local\boost_1_78_0\lib32-msvc-14.2\
+      - name: cmake --build
+        run: cmake --build .
+        working-directory: ./build
+      - name: ctest
+        working-directory: ./build
+        run: |
+          $env:Path += ";C:\dspdf\popplerDyn\deps\cairo\bin"
+          $env:Path += ";C:\dspdf\popplerDyn\deps\expat\bin"
+          $env:Path += ";C:\dspdf\popplerDyn\deps\fontconfig\lib"
+          $env:Path += ";C:\dspdf\popplerDyn\deps\freetype\bin"
+          $env:Path += ";C:\dspdf\popplerDyn\deps\lcms\lib\MS"
+          $env:Path += ";C:\dspdf\popplerDyn\deps\libiconv\lib"
+          $env:Path += ";C:\dspdf\popplerDyn\deps\libjpeg-turbo\bin"
+          $env:Path += ";C:\dspdf\popplerDyn\deps\libpng\bin"
+          $env:Path += ";C:\dspdf\popplerDyn\deps\libtiff\bin"
+          $env:Path += ";C:\dspdf\popplerDyn\deps\openjpeg\bin"
+          $env:Path += ";C:\dspdf\popplerDyn\deps\zlib\bin"
+          $env:Path += ";C:\dspdf\popplerDyn\poppler\bin"
+          $env:CTEST_OUTPUT_ON_FAILURE = "1"
+          ctest -C Debug
