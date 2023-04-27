@@ -18,6 +18,8 @@ jobs:
       PKG_CONFIG_PATH: /usr/local/opt/poppler-qt5/lib/pkgconfig:/usr/local/opt/poppler-qt5/share/pkgconfig
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 3
       - run: brew install boost
       - run: brew install poppler-qt5
       - name: cmake -B build/
@@ -28,6 +30,7 @@ jobs:
           -DCodeCoverage=ON
           -DCMAKE_BUILD_TYPE=${{matrix.buildtype}}
           -DRunDualScreenTests=OFF
+          -DWarningAsError=ON
           .
       - run: cmake --build build/
       - run: ctest --output-on-failure --timeout 60

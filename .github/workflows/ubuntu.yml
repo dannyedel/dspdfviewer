@@ -11,10 +11,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-          os: [ ubuntu-18.04, ubuntu-20.04, ubuntu-22.04 ]
+          os: [ ubuntu-20.04, ubuntu-22.04 ]
           buildtype: [ Debug, Release ]
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 3
       - run: sudo apt-get update
       - name: Install build deps
         run: >
@@ -31,6 +33,7 @@ jobs:
           -DCMAKE_VERBOSE_MAKEFILE=ON
           -DUsePrerenderedPDF=ON
           -DCodeCoverage=ON
+          -DWarningAsError=ON
           -DCMAKE_BUILD_TYPE=${{matrix.buildtype}}
           .
       - run: cmake --build build/

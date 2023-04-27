@@ -1,0 +1,45 @@
+name: archlinux
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+    strategy:
+      matrix:
+        buildtype: [Debug, Release]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 3
+      - run: >
+          pacman -Sy --noconfirm
+          base-devel
+          git
+          boost-libs boost
+          qt5-base qt5-tools
+          poppler-qt5
+          cmake
+          xorg-server-xvfb
+      - run: >
+          cmake -B build/
+          -DCMAKE_VERBOSE_MAKEFILE=ON
+          -DUsePrerenderedPDF=ON
+          -DCodeCoverage=ON
+          -DWarningAsError=ON
+          -DCMAKE_BUILD_TYPE=${{matrix.buildtype}}
+          .
+      - run: cmake --build build/
+      - name: run tests within xvfb
+        working-directory: build/
+        run: >
+          xvfb-run -a -s '-screen 0 1920x1080x24 -screen 1 1920x1200x24'
+          ctest --output-on-failure --timeout 60
+      - name: upload coverage
+        run: bash <(curl -s https://codecov.io/bash)
