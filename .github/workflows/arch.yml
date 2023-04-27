@@ -16,6 +16,8 @@ jobs:
         buildtype: [Debug, Release]
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 3
       - run: >
           pacman -Sy --noconfirm
           base-devel
