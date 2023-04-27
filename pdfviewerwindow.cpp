@@ -224,6 +224,9 @@ void PDFViewerWindow::keyPressEvent(QKeyEvent* e)
       case Qt::Key_H: //Home
 	emit restartRequested();
 	break;
+      case Qt::Key_R: //Restart Timer
+	emit restartTimer();
+	break;
     }
 }
 
