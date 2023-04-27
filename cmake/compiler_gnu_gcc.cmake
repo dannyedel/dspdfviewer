@@ -2,8 +2,20 @@
 
 include(CheckCXXCompilerFlag)
 
+CHECK_CXX_COMPILER_FLAG("-std=c++20" C20FLAG)
+CHECK_CXX_COMPILER_FLAG("-std=c++17" C17FLAG)
+CHECK_CXX_COMPILER_FLAG("-std=c++14" C14FLAG)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" C11FLAG)
-if(C11FLAG)
+if(C20FLAG)
+    message(STATUS "Compiler supports -std=c++20, using it.")
+    add_definitions(-std=c++20)
+elseif(C17FLAG)
+    message(STATUS "Compiler supports -std=c++17, using it.")
+    add_definitions(-std=c++17)
+elseif(C14FLAG)
+    message(STATUS "Compiler supports -std=c++14, using it.")
+    add_definitions(-std=c++14)
+elseif(C11FLAG)
 	message(STATUS "Compiler supports -std=c++11, using it.")
 	add_definitions(-std=c++11)
 else()
@@ -29,8 +41,10 @@ add_definitions(
 	-Weffc++
 )
 
-# Turn all warnings into errors
-add_definitions(-Werror -pedantic-errors)
+if(WarningAsError)
+    # Turn all warnings into errors
+    add_definitions(-Werror -pedantic-errors)
+endif()
 
 if(CodeCoverage)
 	message(STATUS "Adding gcov as test coverage helper")

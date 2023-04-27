@@ -16,10 +16,7 @@
 #     with this program; if not, write to the Free Software Foundation, Inc.,
 #     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 # */
-cmake_minimum_required(VERSION 2.8.4 FATAL_ERROR)
-if( NOT CMAKE_VERSION VERSION_LESS 2.8.11)
-	cmake_policy(SET CMP0020 NEW) # qtmain.lib linkage on windows
-endif()
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 if( NOT CMAKE_VERSION VERSION_LESS 3.1)
 	cmake_policy(SET CMP0054 NEW) # dont expand quoted strings in if()s
 endif()
@@ -46,6 +43,7 @@ option(BoostStaticLink "Link statically against the boost libraries" OFF)
 option(WindowsStaticLink "Windows/MSVC only: Link statically against the dependencies and set /MT instead of /MD" ON)
 option(UsePrerenderedPDF "Use prerendered PDFs included in the source for testing, instead of building with pdflatex" OFF)
 option(CodeCoverage "Add coverage analysis code to the program. Will slow it down. A lot. Only supported on GCC right now." OFF)
+option(WarningAsError "Turn on -Werror and similar compiler settings.  This can be useful during development, but is disabled by default for release build scripts." OFF)
 
 include(cmake/platforms.cmake)
 include(cmake/filelists.cmake)
