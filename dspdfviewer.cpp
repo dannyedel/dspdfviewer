@@ -132,14 +132,12 @@ DSPDFViewer::~DSPDFViewer()
 
 void DSPDFViewer::goBackward()
 {
-  resetSlideClock();
   if ( pageNumber() > 0 )
     gotoPage(pageNumber()-1);
 }
 
 void DSPDFViewer::goForward()
 {
-  resetSlideClock();
   if ( pageNumber() < numberOfPages()-1 )
     gotoPage(pageNumber()+1);
 }
@@ -200,6 +198,7 @@ void DSPDFViewer::gotoPage(unsigned int pageNumber)
   if ( m_pagenumber != pageNumber
       && numberOfPages() > pageNumber )
   {
+    resetSlideClock();
     m_pagenumber = pageNumber;
     renderPage();
   } else {
